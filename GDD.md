@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Stand:** 2026-06-21  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -34,7 +34,14 @@
    - 6.3 [Weitere Charaktere](#63-weitere-charaktere)
 7. [Bergheim — Basislager](#7-bergheim--basislager)
 8. [UI & UX](#8-ui--ux)
+   - 8.1 [Hauptmenü](#81-hauptmenü)
+   - 8.2 [Spielstand-Verwaltung](#82-spielstand-verwaltung)
+   - 8.3 [Einstellungen](#83-einstellungen)
+   - 8.4 [Credits](#84-credits)
 9. [Technische Spezifikationen](#9-technische-spezifikationen)
+   - 9.1 [Art Style](#91-art-style)
+   - 9.2 [Speichersystem](#92-speichersystem)
+   - 9.3 [Engine & Projektstruktur](#93-engine--projektstruktur)
 10. [Offene Punkte & ToDos](#10-offene-punkte--todos)
 
 ---
@@ -184,9 +191,11 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 ### 5.1 Grid & Bewegung
 
-- **Grid-Typ:** Quadratisches Tile-Grid (Top-Down)
+- **Grid-Typ:** Quadratisches Tile-Grid, isometrisch dargestellt (Rauten-Optik für visuelle Tiefe)
 - **Distanzsystem:** Manhattan-Distanz (|Δx| + |Δy|) für Bewegung und Reichweite
 - **AoE:** Standard-Squares (quadratische Flächen, Radius in Tiles)
+- **Begründung:** Isometrische Darstellung bietet visuelle Tiefe bei gleichbleibend einfacher Grid-Logik (analog zu Final Fantasy Tactics). Hexagon- und Pentagon-Grids wurden geprüft und verworfen.
+- **Bekannte Einschränkungen:** Diagonale Distanzen wirken optisch kürzer als gerade — wird durch Manhattan-Distanz bewusst in Kauf genommen.
 - **Weitere Details:** *(folgt)*
 
 ### 5.2 Kampfsystem
@@ -266,17 +275,88 @@ Die Startklasse wird durch die Wahl der ersten Waffe bestimmt. Es gibt mehr Waff
 
 ## 8. UI & UX
 
-*(folgt)*
+### 8.1 Hauptmenü
+
+Das Hauptmenü ist der erste Screen nach dem Spielstart. Reihenfolge der Menüpunkte:
+
+| Reihenfolge | Menüpunkt | Verhalten |
+|-------------|-----------|-----------|
+| 1 | Spielstand laden | Ausgegraut wenn kein Spielstand vorhanden |
+| 2 | Neues Spiel | Öffnet Spielstand-Auswahl (max. 3 Slots) |
+| 3 | Einstellungen | Öffnet Einstellungsmenü |
+| 4 | Credits | Öffnet Credits |
+
+**Standardverhalten:** Wenn ein Spielstand vorhanden ist, ist "Spielstand laden" die aktive Standardauswahl.
+
+### 8.2 Spielstand-Verwaltung
+
+**Slots:** Maximal 3 Spielstände gleichzeitig.
+
+**Slot-Vorschau (je Spielstand):**
+- Charaktername (Spielercharakter)
+- Aktuelle Region
+- Gespielte Zeit
+- Datum des letzten Speicherns
+
+**Neues Spiel — leerer Slot:**
+- Slot auswählen → direkt in den Prolog
+
+**Neues Spiel — belegter Slot:**
+- Slot auswählen → Lösch-Dialog erscheint
+- Spieler muss den Text `bitte löschen` eintippen und bestätigen
+- Erst danach wird der Slot geleert und der Prolog gestartet
+
+**Speicher-Logik:**
+- **Auto-Save:** Nach jeder abgeschlossenen Kampfrunde und beim Verlassen einer Region
+- **Manuelles Speichern:** Nur in Bergheim (gibt dem Basislager spielerisch mehr Gewicht)
+- **Kein Speichern** mitten in einem laufenden Kampf — Kämpfe sind die atomare Spieleinheit
+
+### 8.3 Einstellungen
+
+Kategorien:
+
+- **Audio:** Musik-Lautstärke, Effekt-Lautstärke, Sprache/Voice (falls vorhanden)
+- **Bild/Video:** Auflösung, Vollbild/Fenster, Helligkeit, ggf. Farbblindheitsmodus
+- **Steuerung:** Eingabemodus wählbar
+  - Tastatur
+  - Maus + Tastatur
+  - Controller
+  - Mobil (Touch)
+  - Tastenbelegung anpassbar je Modus
+
+### 8.4 Credits
+
+Listet alle genutzten externen Ressourcen:
+- Godot-Community-Assets
+- Free Assets (Grafik, Audio, Fonts)
+- Tools & Plugins
+- *(Inhalt wird laufend gepflegt)*
 
 ---
 
 ## 9. Technische Spezifikationen
 
+### 9.1 Art Style
+
+- **Stil:** HD Pixel Art
+- **Perspektive:** Isometrisch (Rauten-Grid, 2D)
+- **Begründung:** HD Pixel Art harmoniert gut mit der Grid/Tile-Logik, ist für ein Einzelprojekt realisierbar und passt zum Taktik-RPG-Genre.
+- **Details (Tilesets, Auflösung, Sprite-Größen):** *(folgt)*
+
+### 9.2 Speichersystem
+
+- **Format:** JSON, im Release-Build verschlüsselt via Godot 4 `FileAccess.open_encrypted_with_pass`
+- **Im Dev-Build:** Unverschlüsselt (lesbar für Debugging)
+- **Gespeicherter Inhalt:** Game State, Inventar, Charakter-Progression, Region-Fortschritt, Spielzeit, Zeitstempel
+- **Speicherort:** Godot-Standard-User-Verzeichnis (`user://`)
+- **Anzahl Slots:** 3
+
+### 9.3 Engine & Projektstruktur
+
 - **Engine:** Godot 4
 - **Sprache:** *(GDScript / C# — folgt)*
 - **Zielplattform:** *(folgt)*
 - **Projektstruktur:** *(folgt)*
-- **Art Style:** *(folgt)*
 - **Audio:** *(folgt)*
 
 ---
@@ -289,7 +369,9 @@ Die Startklasse wird durch die Wahl der ersten Waffe bestimmt. Es gibt mehr Waff
 - [ ] Weitere Regionen definieren
 - [ ] Bergheim-Inhalte ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
-- [ ] UI/UX konzipieren
-- [ ] Technische Specs vervollständigen (Sprache, Plattform, Art Style)
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
+- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
+- [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
+- [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
+- [ ] Audio-Konzept definieren

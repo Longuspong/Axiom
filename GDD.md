@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.2  
+**Version:** 0.3  
 **Stand:** 2026-06-21  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -307,9 +307,19 @@ Das Hauptmenü ist der erste Screen nach dem Spielstart. Reihenfolge der Menüpu
 - Erst danach wird der Slot geleert und der Prolog gestartet
 
 **Speicher-Logik:**
-- **Auto-Save:** Nach jeder abgeschlossenen Kampfrunde und beim Verlassen einer Region
+- **Auto-Save:** Nach jeder abgeschlossenen Runde innerhalb eines Kampfes
+- **Gespeicherter Zustand:** HP, Mana, Cooldowns, Positionierung, verbrauchte Gegenstände
 - **Manuelles Speichern:** Nur in Bergheim (gibt dem Basislager spielerisch mehr Gewicht)
-- **Kein Speichern** mitten in einem laufenden Kampf — Kämpfe sind die atomare Spieleinheit
+
+**Laden eines laufenden Kampfes:**  
+Der Spieler hat beim Fortsetzen zwei Optionen:
+
+| Option | Effekt |
+|--------|--------|
+| Runde fortsetzen | Kampf wird ab dem gespeicherten Rundenstand fortgesetzt |
+| Abbrechen | Spieler kehrt nach Bergheim zurück — ohne Belohnung, verbrauchte Consumables und Gegenstände bleiben verloren, die Runde muss von vorne begonnen werden |
+
+**Design-Absicht:** Abbrechen hat echte Kosten (verlorene Verbrauchsgüter) aber keine permanente Bestrafung. Taktischer Druck bleibt erhalten, ein Softlock ist ausgeschlossen.
 
 ### 8.3 Einstellungen
 
@@ -340,7 +350,8 @@ Listet alle genutzten externen Ressourcen:
 
 - **Stil:** HD Pixel Art
 - **Perspektive:** Isometrisch (Rauten-Grid, 2D)
-- **Begründung:** HD Pixel Art harmoniert gut mit der Grid/Tile-Logik, ist für ein Einzelprojekt realisierbar und passt zum Taktik-RPG-Genre.
+- **Farbpalette & Ton:** Hell, freundlich, farbenfroh — bewusste Abkehr vom typischen dunklen Fantasy-Look. Viel Liebe zum Detail, hoher Polishgrad.
+- **Konsequenz:** Helle Umgebungen erfordern mehr Detailarbeit an Tilesets und Sprites (mehr Kontrast, sauberere Linien, mehr sichtbare Details), das ist bewusst einkalkuliert.
 - **Details (Tilesets, Auflösung, Sprite-Größen):** *(folgt)*
 
 ### 9.2 Speichersystem

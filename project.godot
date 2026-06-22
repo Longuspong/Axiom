@@ -1,0 +1,18 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; but valid to be edited manually.
+
+[configuration]
+
+config_version=5
+
+[application]
+
+config/name="Axiom"
+config/description="2D Top-Down Tactics Fantasy RPG"
+config/version="0.1"
+config/features=PackedStringArray("4.3", "Forward Plus")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/yggdrasil/plugin.cfg")

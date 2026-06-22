@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.4  
+**Version:** 0.5  
 **Stand:** 2026-06-21  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -28,6 +28,7 @@
    - 5.3 [Klassen & Waffen](#53-klassen--waffen)
    - 5.4 [Skill- & Fähigkeitssystem](#54-skill--fähigkeitssystem)
    - 5.5 [Fraktionsboni](#55-fraktionsboni)
+   - 5.6 [Attribute](#56-attribute)
 6. [Charaktere](#6-charaktere)
    - 6.1 [Spielercharakter](#61-spielercharakter)
    - 6.2 [Arathos](#62-arathos)
@@ -214,26 +215,135 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 ### 5.3 Klassen & Waffen
 
-Die Startklasse wird durch die Wahl der ersten Waffe bestimmt. Es gibt mehr Waffen als die fünf Startoptionen.
+Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
-| Waffe | Startklasse |
-|-------|-------------|
-| Bogen | Bogenschütze |
-| Schwert | Ritter |
+**Prolog-Startwaffen:**
+
+| Waffe | Klassen-Archetyp |
+|-------|-----------------|
+| Bogen | Schütze |
+| Schwert | Krieger |
 | Dolche | Assassine |
 | Energiesphäre | Mystiker |
 | Zauberstab | Magier |
-| Zepter | *(magische Nahkampfwaffe — Arathos' Klasse)* |
-| … | *(weitere folgen)* |
+| Zepter | *(Arathos — magische Nahkampfwaffe, nicht wählbar im Prolog)* |
 
-**Klassendetails (je Klasse):** *(folgt)*
+> Vollständiges Waffensystem (alle Waffen, Stats, Gravuren) → folgt in eigenem Abschnitt
+
+---
+
+#### Klassen-Archetypen
+
+**Design-Prinzip:** Alle Klassen starten als versatile, nützliche Schablone. Durch den Skilltree entwickeln sie sich zu hochspezialisierten Einheiten. Die Progressionskurve ist bis Level ~25 linear, ab Level 35 straff. Die letzten 5 Level (46–50) sind ggf. hinter einer Klassen-Prüfung / einem Herausforderungsmodus gegattet.
+
+**Max Level:** 50
+
+---
+
+##### Magier
+
+**Identitätsattribut:** WIL (Willenskraft) — skaliert magischen Schaden; Voraussetzung für Top-Ausrüstung und Waffen  
+**Sekundärattribute:** je nach Spezialisierung INT, VIT oder WID
+
+**Spezialisierungen:**
+
+| Pfad | Fokus | Kernattribute |
+|------|-------|---------------|
+| AOE-Magier | Flächenschaden, Elementarzauber | WIL + INT (Mana-Management) |
+| Frontline-Magier | Nahkampf-Sustain, Auren, Thread-Zauber | WIL + WID |
+| Beschwörer / Summoner | Beschworene Einheiten — skalieren mit VIT des Beschwörers | WIL + VIT |
+| Chaos-Build | Fähigkeiten kosten HP statt Mana | VIT + WID |
+
+**Wichtige Systemmechanik:** Mana-Verbrauch ist beim Magier ein echtes Thema — INT beeinflusst die Mana-Effizienz für alle Magier-Pfade.  
+**Elementarzauber** + **Chaos-Zauber** als zwei übergeordnete Magie-Schulen.
+
+---
+
+##### Mystiker
+
+**Identitätsattribut:** INT (Intelligenz) — skaliert Heilung, Schutzzauber und Buff-Dauer  
+**Sekundärattribut:** WIL — skaliert Buff-Stärke
+
+> **Terminologie:** Der Schadensabsorptions-Zauber heißt **Schutz** (nicht Schild), um Verwechslungen mit ausrüstbaren Schilden zu vermeiden. Diese Entscheidung gilt für das gesamte Spiel inkl. Gravurenbeschreibungen.
+
+**Skalierungs-Logik:**
+- Lange Buffs → INT
+- Starke Buffs → WIL
+- Starke Heilung & großer Schutz → INT
+
+**Spezialisierungen:**
+
+| Pfad | Fokus |
+|------|-------|
+| Heiler / Arzt | Heilung, Statuseffekt-Entfernung |
+| Schildbuffer | Schutz-Stacking, präventiver Support |
+| Debuffer | Feindliche Stats/Effekte schwächen |
+| Alchemist | Tränke und Gegenstände werfen, Flächeneffekte |
+| DoT-Build | Schaden über Zeit — für DD-orientierte Mystiker |
+
+**Klassen-Synergie:** Mystiker synergieren mit fast jeder Klasse. Paradebeispiel: Berserker-Krieger + HoT/Buff-Mystiker.  
+**Kein reiner Support:** Der Mystiker ist supportlastig, aber nicht ausschließlich Support.
+
+---
+
+##### Schütze
+
+**Identitätsattribut:** *(folgt — vermutlich AGI oder DEX)*  
+**Schadensprofil:** Primär physisch, eindimensionaler Schadenstyp auf verschiedenen Wegen
+
+**Spezialisierungen nach Waffe:**
+
+| Waffe | Distanz | Spielstil |
+|-------|---------|-----------|
+| Armbrust | Kurz | Hoher Einzelschaden, langsam |
+| Langbogen | Lang | Maximale Reichweite, Positionierung wichtig |
+| Jagdbogen | Mittel | Flink, gut zum Nachsetzen auf Ziele |
+| Wurfmesser | Kurz-Mittel | Mehrere Ziele gleichzeitig treffen |
+| Schleuder | Mittel | AoE-Treffer |
+
+Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
+
+---
+
+##### Krieger
+
+**Identitätsattribut:** STR (Stärke) für Schadenpfad; WID (Widerstandskraft) + VIT für Tankpfad  
+*(Anmerkung: Abkürzung STR statt STÄ — STÄ sieht ungewohnt aus)*
+
+**Spielstil:** Vielseitiger Nahkämpfer. Alles womit man draufhauen kann — Hauptsache es macht Rums.
+
+**Spezialisierungen:**
+
+| Pfad | Fokus | Kernattribute |
+|------|-------|---------------|
+| Spott-Tank | Aggro-Kontrolle, Bollwerke, unpassierbare Barrieren | WID + VIT |
+| Berserker | Zäh, schwer kleinzukriegen, Ausdauerschaden | VIT + STR |
+| Schadenpfad | Direktschaden, Dualwielding-Focus-Node | STR |
+
+**Tank-Fähigkeiten:** Schutzblindungen, Bollwerke (für Gegner unpassierbar), Projektilblockaden, Schutzfelder.  
+**Waffen:** Hammer + Schild, Rammbock, Dualwielding *(weitere folgen im Waffensystem)*
+
+---
+
+##### Assassine
+
+**Identitätsattribut:** *(folgt — vermutlich AGI oder DEX)*  
+**Schadensprofil:** Kurze, heftige Schadensschübe (Bursts); primär physisch + Gift → ermöglicht auch magischen Schaden  
+**Rolle:** Kill-Reset, Backline-Infiltration  
+**Schwierigkeit:** Taktisch am anspruchsvollsten zu spielen
+
+**Waffen:** Dolchpaar, Kampfmesser (Einhand-Dolch), Rapier  
+**Spezialisierungen:** *(folgt im Waffensystem)*
+
+---
 
 ### 5.4 Skill- & Fähigkeitssystem
 
-- Klassen verfügen über einzigartige Skills
+- Jede Klasse hat einen eigenen Skilltree mit mehreren Spezialisierungspfaden
 - Synergien zwischen Klassen sind zentral für taktische Tiefe
-- Erste Synergien werden im Prolog Tutorial eingeführt
-- **Details:** *(folgt)*
+- Erste Synergien werden im Prolog-Tutorial eingeführt
+- Klassen-Arks (→ §9.5) schalten besondere Aufträge per klassenspezifischer Herausforderung frei
+- **Details (Skilltree-Struktur, Punkte, Respec):** *(folgt)*
 
 ### 5.5 Fraktionsboni
 
@@ -242,6 +352,19 @@ Die Startklasse wird durch die Wahl der ersten Waffe bestimmt. Es gibt mehr Waff
 | Menschen | Gemeinschaft | +Regeneration pro Mensch auf dem Feld |
 | Orks | *(folgt)* | |
 | … | | |
+
+### 5.6 Attribute
+
+Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekürzt.
+
+| Kürzel | Attribut | Primäre Wirkung |
+|--------|----------|-----------------|
+| WIL | Willenskraft | Magischer Schaden; Voraussetzung für Top-Ausrüstung |
+| INT | Intelligenz | Mana-Pool/-Effizienz; Heilungs- und Schutzskalierung; Buff-Dauer |
+| VIT | Vitalität | HP-Pool; Skalierung von beschworenen Einheiten |
+| WID | Widerstandskraft | Defensivwerte, magische/physische Resistenz |
+| STR | Stärke | Physischer Schaden (Abkürzung STR statt STÄ) |
+| *(weitere folgen)* | | |
 
 ---
 
@@ -458,7 +581,8 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - [ ] Ork-Klassen & KI-Verhalten definieren
 - [ ] Ork-Fraktionsbonus definieren
-- [ ] Alle Klassen vollständig ausarbeiten (Stats, Skills, Synergien)
+- [ ] Klassen-Archetypen: fehlende Identitätsattribute ergänzen (Schütze, Assassine — AGI/DEX?)
+- [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Waffensystem ausarbeiten (inkl. Gravuren, Crafting, Aufwertung, Verfeinerung)
 - [ ] Weitere Regionen definieren

@@ -34,7 +34,7 @@ git push origin claude/repo-access-permissions-l4kamm --force
 
 ---
 
-## GDD-Stand (aktuell: v0.4)
+## GDD-Stand (aktuell: v0.6)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -44,7 +44,7 @@ git push origin claude/repo-access-permissions-l4kamm --force
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid ✅, Klassen/Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid ✅, Klassen ✅, Attribute ✅, Waffen/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -56,9 +56,9 @@ git push origin claude/repo-access-permissions-l4kamm --force
 
 ## Was als nächstes kommt (Reihenfolge laut Nutzer)
 
-1. **Klassen** — Nutzer beschreibt jede Klasse kurz → in §5.3 eintragen
-2. **Waffen** — detailliertes Waffensystem
-3. **Crafting / Verbesserung / Refinement** — inkl. Gravuren-System (bereits in §9.5 erwähnt)
+1. **Waffenliste** — detailliertes Waffensystem (nächste Sitzung)
+2. **Crafting / Verbesserung / Refinement** — inkl. Gravuren-System (§9.5)
+3. **Skilltree** — erstes gemeinsames Code-Projekt
 
 ---
 
@@ -77,3 +77,6 @@ git push origin claude/repo-access-permissions-l4kamm --force
 | Aufträge | 3 Typen: vorgegeben, generisch, freischaltbar (Klassen-Arks) |
 | Endlos-Modus | Ab Kampagne 10, physischer Loot-Pool, kein Magie-Loot |
 | Trupp-Größe | Standard: 3 Einheiten |
+| Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
+| Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |
+| Attribute | WIL, INT, VIT, WID, STR, GES — alle 3 Buchstaben Caps |

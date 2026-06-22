@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.5  
+**Version:** 0.6  
 **Stand:** 2026-06-21  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -288,7 +288,7 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
 ##### Schütze
 
-**Identitätsattribut:** *(folgt — vermutlich AGI oder DEX)*  
+**Identitätsattribut:** GES (Geschicklichkeit)  
 **Schadensprofil:** Primär physisch, eindimensionaler Schadenstyp auf verschiedenen Wegen
 
 **Spezialisierungen nach Waffe:**
@@ -327,13 +327,21 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 
 ##### Assassine
 
-**Identitätsattribut:** *(folgt — vermutlich AGI oder DEX)*  
+**Identitätsattribut:** STR (Stärke) — primär für Angriffsstärke  
+**Identität:** Verwertet alle Attribute gut, aber STR ist die Kernausrichtung  
 **Schadensprofil:** Kurze, heftige Schadensschübe (Bursts); primär physisch + Gift → ermöglicht auch magischen Schaden  
 **Rolle:** Kill-Reset, Backline-Infiltration  
 **Schwierigkeit:** Taktisch am anspruchsvollsten zu spielen
 
+**Spezialisierungen:**
+
+| Pfad | Kernattribute | Spielstil |
+|------|---------------|-----------|
+| Hit & Run | STR + GES | Hoher Burst, schnell aus der Gefahrenzone |
+| Schattenassassine | STR + INT | In Nebel hüllen, magische Utility |
+
 **Waffen:** Dolchpaar, Kampfmesser (Einhand-Dolch), Rapier  
-**Spezialisierungen:** *(folgt im Waffensystem)*
+**Weitere Spezialisierungen:** *(folgt im Waffensystem)*
 
 ---
 
@@ -364,6 +372,7 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 | VIT | Vitalität | HP-Pool; Skalierung von beschworenen Einheiten |
 | WID | Widerstandskraft | Defensivwerte, magische/physische Resistenz |
 | STR | Stärke | Physischer Schaden (Abkürzung STR statt STÄ) |
+| GES | Geschicklichkeit | Bewegung, Ausweichen, Schütze-Skalierung |
 | *(weitere folgen)* | | |
 
 ---
@@ -581,7 +590,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - [ ] Ork-Klassen & KI-Verhalten definieren
 - [ ] Ork-Fraktionsbonus definieren
-- [ ] Klassen-Archetypen: fehlende Identitätsattribute ergänzen (Schütze, Assassine — AGI/DEX?)
+- [ ] Skilltree-Struktur ausarbeiten (Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt
 - [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Waffensystem ausarbeiten (inkl. Gravuren, Crafting, Aufwertung, Verfeinerung)

@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.3  
+**Version:** 0.4  
 **Stand:** 2026-06-21  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -38,11 +38,18 @@
    - 8.2 [Spielstand-Verwaltung](#82-spielstand-verwaltung)
    - 8.3 [Einstellungen](#83-einstellungen)
    - 8.4 [Credits](#84-credits)
-9. [Technische Spezifikationen](#9-technische-spezifikationen)
-   - 9.1 [Art Style](#91-art-style)
-   - 9.2 [Speichersystem](#92-speichersystem)
-   - 9.3 [Engine & Projektstruktur](#93-engine--projektstruktur)
-10. [Offene Punkte & ToDos](#10-offene-punkte--todos)
+9. [Hub — Bergheim](#9-hub--bergheim)
+   - 9.1 [Visuelles Konzept](#91-visuelles-konzept)
+   - 9.2 [Hub-Menüs](#92-hub-menüs)
+   - 9.3 [Missionskarte](#93-missionskarte)
+   - 9.4 [Kampagnen](#94-kampagnen)
+   - 9.5 [Aufträge](#95-aufträge)
+   - 9.6 [Endlos-Modus](#96-endlos-modus)
+10. [Technische Spezifikationen](#10-technische-spezifikationen)
+    - 10.1 [Art Style](#101-art-style)
+    - 10.2 [Speichersystem](#102-speichersystem)
+    - 10.3 [Engine & Projektstruktur](#103-engine--projektstruktur)
+11. [Offene Punkte & ToDos](#11-offene-punkte--todos)
 
 ---
 
@@ -267,9 +274,9 @@ Die Startklasse wird durch die Wahl der ersten Waffe bestimmt. Es gibt mehr Waff
 
 ## 7. Bergheim — Basislager
 
-- **Funktion:** Home Screen & Basislager des überlebenden Trupps
+- **Funktion:** Ausgangspunkt nach dem Prolog, wird im weiteren Spiel zum Hub ausgebaut
 - **Erreichung:** Nach Abschluss des Prologs
-- **Inhalte:** *(folgt — Menüs, Upgrades, Rekrutierung, etc.)*
+- **Vollständige Beschreibung:** → Abschnitt 9 (Hub — Bergheim)
 
 ---
 
@@ -344,9 +351,84 @@ Listet alle genutzten externen Ressourcen:
 
 ---
 
-## 9. Technische Spezifikationen
+## 9. Hub — Bergheim
 
-### 9.1 Art Style
+### 9.1 Visuelles Konzept
+
+Der Hub ist keine abstrakte Menüoberfläche, sondern eine lebendige Szene der Anfangssiedlung.
+
+| Tageszeit | Darstellung |
+|-----------|-------------|
+| Tag | Die drei Startcharaktere stehen/sitzen um einen Brunnen |
+| Nacht | Die drei Startcharaktere sitzen am Lagerfeuer |
+
+Tageszeit wechselt dynamisch (Details zur Tag/Nacht-Logik folgen). Die Siedlung wächst visuell mit dem Spielfortschritt *(folgt)*.
+
+### 9.2 Hub-Menüs
+
+Von der Hub-Szene aus öffnet der Spieler folgende Bereiche:
+
+| Menü | Inhalt | Erweiterungen (später) |
+|------|--------|------------------------|
+| Trupp verwalten | Charakterübersicht, Ausrüstung, Skills | Rekrutierungs-Taverne |
+| Inventar | Gegenstände, Waffen, Ausrüstung | Crafting, Aufwertung, Verfeinerung (→ Waffensystem) |
+| Missionskarte | Kampagnen, Aufträge, Endlos-Modus | Weitere Regionen |
+
+### 9.3 Missionskarte
+
+Drei Spielmodi in der Missionskarte:
+
+1. **Kampagnen** — Hauptkampagne der Region (→ 9.4)
+2. **Aufträge** — Besondere Missionen (→ 9.5)
+3. **Endlos-Modus** — Ab Kampagne 10 freigeschaltet (→ 9.6)
+
+### 9.4 Kampagnen
+
+Die Hauptkampagne einer Region besteht aus einer Folge von Levels mit einheitlichem Schwierigkeitsniveau.
+
+**Loot-System:**
+
+| Level-Typ | Erste Completion | Wiederholung |
+|-----------|-----------------|--------------|
+| Hauptlevel | Fixer Einmal-Reward (manchmal Waffen-Auswahl) | Random Loot |
+| Zwischenlevel | Kein fixer Reward | Random Loot |
+
+- **Waffen-Auswahl-Rewards:** Bei manchen Hauptlevels wählt der Spieler eine Waffe aus mehreren vorgegebenen Optionen
+- **Zwischenlevel** haben keinen garantierten Reward, nur Random-Loot bei Wiederholung
+
+### 9.5 Aufträge
+
+Aufträge sind besondere oder herausfordernde Missionen außerhalb der Hauptkampagne. Drei Typen:
+
+| Typ | Beschreibung |
+|-----|-------------|
+| Vorgegeben | Feste, von Entwicklern erstellte Aufträge |
+| Generisch | Prozedurale/wiederholbare Aufträge |
+| Freischaltbar | Werden durch in-game Herausforderungen freigeschaltet |
+
+**Freischaltbare Aufträge — Klassen-Arks:**  
+Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezifische Herausforderung freigeschaltet wird.
+
+*Beispiel Bogenschütze:*
+- **Freischalt-Bedingung:** 50 Treffer auf optimaler Reichweite mit dem Bogen
+- **Auftrag:** "Bogenschützen-Ark" (mehrstufige Missionsreihe)
+- **Reward:** Sehr guter Bogen **oder** Bogen-Gravuren
+
+> **Gravuren** sind Waffen-Modifikatoren (eigenes System, → Waffensystem, folgt)
+
+### 9.6 Endlos-Modus
+
+- **Freischaltung:** Nach Abschluss von Kampagne 10 der Region Raldiguh ohk
+- **Ziel:** High Score, Ressourcen und Loot farmen
+- **Loot-Pool:** Vollständig zufällig, aber gebunden an die Ork-Region
+- **Einschränkung:** Keine außerordentlichen magischen Gegenstände — Orks sind thematisch physisch, ihr Loot-Pool spiegelt das wider
+- **High Score:** Wird pro Spielstand gespeichert
+
+---
+
+## 10. Technische Spezifikationen
+
+### 10.1 Art Style
 
 - **Stil:** HD Pixel Art
 - **Perspektive:** Isometrisch (Rauten-Grid, 2D)
@@ -354,7 +436,7 @@ Listet alle genutzten externen Ressourcen:
 - **Konsequenz:** Helle Umgebungen erfordern mehr Detailarbeit an Tilesets und Sprites (mehr Kontrast, sauberere Linien, mehr sichtbare Details), das ist bewusst einkalkuliert.
 - **Details (Tilesets, Auflösung, Sprite-Größen):** *(folgt)*
 
-### 9.2 Speichersystem
+### 10.2 Speichersystem
 
 - **Format:** JSON, im Release-Build verschlüsselt via Godot 4 `FileAccess.open_encrypted_with_pass`
 - **Im Dev-Build:** Unverschlüsselt (lesbar für Debugging)
@@ -362,7 +444,7 @@ Listet alle genutzten externen Ressourcen:
 - **Speicherort:** Godot-Standard-User-Verzeichnis (`user://`)
 - **Anzahl Slots:** 3
 
-### 9.3 Engine & Projektstruktur
+### 10.3 Engine & Projektstruktur
 
 - **Engine:** Godot 4
 - **Sprache:** *(GDScript / C# — folgt)*
@@ -372,13 +454,17 @@ Listet alle genutzten externen Ressourcen:
 
 ---
 
-## 10. Offene Punkte & ToDos
+## 11. Offene Punkte & ToDos
 
 - [ ] Ork-Klassen & KI-Verhalten definieren
 - [ ] Ork-Fraktionsbonus definieren
 - [ ] Alle Klassen vollständig ausarbeiten (Stats, Skills, Synergien)
+- [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
+- [ ] Waffensystem ausarbeiten (inkl. Gravuren, Crafting, Aufwertung, Verfeinerung)
 - [ ] Weitere Regionen definieren
-- [ ] Bergheim-Inhalte ausarbeiten
+- [ ] Hub Tag/Nacht-Logik definieren
+- [ ] Hub visuelle Progression (Siedlung wächst) konzipieren
+- [ ] Rekrutierungs-Taverne ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)

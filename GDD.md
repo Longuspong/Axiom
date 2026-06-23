@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.6  
-**Stand:** 2026-06-21  
+**Version:** 0.7  
+**Stand:** 2026-06-23  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -29,6 +29,7 @@
    - 5.4 [Skill- & Fähigkeitssystem](#54-skill--fähigkeitssystem)
    - 5.5 [Fraktionsboni](#55-fraktionsboni)
    - 5.6 [Attribute](#56-attribute)
+   - 5.7 [Gravurensystem](#57-gravurensystem)
 6. [Charaktere](#6-charaktere)
    - 6.1 [Spielercharakter](#61-spielercharakter)
    - 6.2 [Arathos](#62-arathos)
@@ -228,7 +229,7 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 | Zauberstab | Magier |
 | Zepter | *(Arathos — magische Nahkampfwaffe, nicht wählbar im Prolog)* |
 
-> Vollständiges Waffensystem (alle Waffen, Stats, Gravuren) → folgt in eigenem Abschnitt
+> Vollständiges Waffensystem (alle Waffen, Stats) → folgt in eigenem Abschnitt | Gravurensystem → §5.7
 
 ---
 
@@ -374,6 +375,92 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 | STR | Stärke | Physischer Schaden (Abkürzung STR statt STÄ) |
 | GES | Geschicklichkeit | Bewegung, Ausweichen, Schütze-Skalierung |
 | *(weitere folgen)* | | |
+
+### 5.7 Gravurensystem
+
+Gravuren sind Waffenmodifikatoren, die in freie Slots einer Waffe eingesetzt werden. Das System orientiert sich an PoE-Ability-Gems, mit eigenem Energie- und Mana-Management.
+
+#### Gravurtypen
+
+| Typ | Funktion | Mana-Mechanik |
+|-----|----------|---------------|
+| **Aktiv** | Gibt eine aktive Fähigkeit | Verbrauch bei Nutzung der Fähigkeit |
+| **Passiv** | Gibt eine passive Fähigkeit | Reserviert Mana dauerhaft — blockiert für Aktive & weitere Passive |
+| **Reaktiv** | Gibt eine reaktive Fähigkeit mit Cooldown und Auslösungs-Deckelung pro Zug | — |
+| **Modifikativ** | Modifiziert alle anderen Gravuren auf der Waffe (Aktiv, Passiv, Reaktiv, teils auch Signatur); wirkt ohne spezifische Verbindung automatisch auf alle | Erhöht Mana-Kosten/-Reservierung und ggf. Cooldown der modifizierten Gravuren |
+| **Spezial/Signatur** | Einzigartige Effekte außerhalb des normalen Rahmens | Sehr variabel |
+
+**Mana-Reservierung (Passiv-Logik):**  
+Passive Gravuren reservieren Mana fix. Reserviertes Mana ist weder für Aktive noch für weitere Passive verfügbar. Sobald der verfügbare Mana-Pool erschöpft ist, können keine weiteren aktiven oder passiven Gravuren eingesetzt werden.  
+*Beispiel: Zwei Passive mit je 50 Mana Reservierung → 100 Mana reserviert → keine weiteren Aktiven oder Passiven möglich.*
+
+**Reaktive Gravuren — Balance:**  
+Reaktive Fähigkeiten wie Gegenschlag oder Parry brauchen sowohl einen Cooldown als auch eine Deckelung (max. Auslösungen pro Zug), um Tank- und Assassinen-Builds nicht zu dominieren. Standard-Deckelung: **3 pro Zug** — finale Werte folgen im Balancing.
+
+**Spezial/Signatur — Beispiele:**
+- Transformiert eine bestehende Fähigkeit grundlegend (z. B. Power Strike → andere Fähigkeit)
+- Wandelt eine passive Fähigkeit in eine Charaktereigenschaft um
+- Beinhaltet eine eigene aktive Fähigkeit
+
+#### Slots & Energie
+
+Jede Waffe besitzt eine **Energiekapazität** und eine Anzahl **Slots**. Slots sind entweder generisch oder typisiert (Aktiv, Passiv, Reaktiv, Modifikativ, Spezial).
+
+**Typisierter Slot = halbe Energiekosten** für passende Gravur.
+
+| Belegung | Slot-Typ | Gravur-Typ | Kosten |
+|----------|----------|-----------|--------|
+| Passend | Aktiv | Aktiv-Gravur (Basiskosten 4) | **2** |
+| Nicht passend | Passiv | Reaktiv-Gravur (Basiskosten 2) | **2** |
+| Passend | Passiv | Passiv-Gravur (Basiskosten 2) | **1** |
+
+*Beispiel-Schwert (Kapazität 3 · 1× Aktiv-Slot · 1× Passiv-Slot):*
+- Option A: Aktiv-Gravur (4→2) + Passiv-Gravur (2→1) = **3** ✓
+- Option B: Aktiv-Gravur (2→1) + Reaktiv-Gravur im Passiv-Slot (2, kein Rabatt) = **3** ✓
+
+Anzahl Slots und Kapazität hängen von der **Seltenheit** der Waffe ab — höhere Seltenheit = mehr Slots + mehr Kapazität, aber seltener / teurer im Crafting.
+
+#### Verfeinern (Kapazitäts-Erweiterung)
+
+Jede Verfeinerung erhöht die Kapazität um **+1**.
+
+| Waffenmaterial | Max. Verfeinerungen |
+|----------------|---------------------|
+| Eisen | 1× |
+| Stahl | 2× |
+| Titan (und höher) | 3× |
+
+#### Gravur-Seltenheit
+
+| Stufe | Einordnung |
+|-------|-----------|
+| Stahl | Basis |
+| Titan | Mittel |
+| Diamant | Selten |
+
+#### Gravur-Leveling
+
+Alle Gravuren können von Level 1 auf maximal Level 3 aufgewertet werden. Aktive und passive Gravuren erreichen ab Titan-Seltenheit Level 5.
+
+| Level | Kapazitätskosten | Verfügbar für |
+|-------|-----------------|---------------|
+| 1 | 2 | Alle |
+| 2 | 4 | Alle |
+| 3 | 6 | Alle |
+| 4 | 8 | Aktiv & Passiv (Titan+) |
+| 5 | 10 | Aktiv & Passiv (Titan+) |
+
+Höheres Level = stärkerer Effekt der Gravur.
+
+#### Entfernen & Wiederverwenden
+
+Gravuren können jederzeit aus einer Waffe entfernt und in eine andere eingesetzt werden. Das Entfernen ist mit **hohen Kosten** verbunden, aber nicht permanent.
+
+#### Crafting-Vorschau
+
+Das Gravur-Crafting basiert auf generischen Rezepten, die durch spezifische Zutaten in eine Richtung gelenkt werden können — ohne den RNG-Faktor vollständig zu eliminieren. Loot soll seine Rolle behalten; garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen.
+
+*(Detailliertes Crafting-System → folgt)*
 
 ---
 
@@ -546,7 +633,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Auftrag:** "Bogenschützen-Ark" (mehrstufige Missionsreihe)
 - **Reward:** Sehr guter Bogen **oder** Bogen-Gravuren
 
-> **Gravuren** sind Waffen-Modifikatoren (eigenes System, → Waffensystem, folgt)
+> **Gravuren** sind Waffen-Modifikatoren → §5.7
 
 ### 9.6 Endlos-Modus
 
@@ -593,7 +680,8 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Skilltree-Struktur ausarbeiten (Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt
 - [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
-- [ ] Waffensystem ausarbeiten (inkl. Gravuren, Crafting, Aufwertung, Verfeinerung)
+- [x] Gravurensystem ausarbeiten → §5.7 ✅
+- [ ] Waffensystem ausarbeiten (inkl. Crafting, Aufwertung, Verfeinerung)
 - [ ] Weitere Regionen definieren
 - [ ] Hub Tag/Nacht-Logik definieren
 - [ ] Hub visuelle Progression (Siedlung wächst) konzipieren

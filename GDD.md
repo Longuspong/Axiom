@@ -440,15 +440,15 @@ Jede Verfeinerung erhöht die Kapazität um **+1**.
 
 #### Gravur-Leveling
 
-Alle Gravuren können von Level 1 auf maximal Level 3 aufgewertet werden. Aktive und passive Gravuren erreichen ab Titan-Seltenheit Level 5.
+Alle Gravuren können von Level 1 auf maximal Level 3 aufgewertet werden. Spezial/Signatur-Gravuren sind die Ausnahme — sie erreichen Level 5.
 
 | Level | Kapazitätskosten | Verfügbar für |
 |-------|-----------------|---------------|
 | 1 | 2 | Alle |
 | 2 | 4 | Alle |
 | 3 | 6 | Alle |
-| 4 | 8 | Aktiv & Passiv (Titan+) |
-| 5 | 10 | Aktiv & Passiv (Titan+) |
+| 4 | 8 | Spezial/Signatur |
+| 5 | 10 | Spezial/Signatur |
 
 Höheres Level = stärkerer Effekt der Gravur.
 

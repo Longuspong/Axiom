@@ -16,7 +16,7 @@ except ImportError:
     sys.exit("openpyxl fehlt:  pip install openpyxl")
 
 HEADER = [
-    "ID", "Name", "Klasse", "Typ", "Stufe\n(1–7)", "Material", "Eigenart",
+    "ID", "Name", "Klasse", "Typ", "Hand\n(E/B)", "Stufe\n(1–7)", "Material", "Eigenart",
     "Theme/Set", "Slots", "Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5",
     "Grund-\nkapazität", "Max.\nVerfeiner.", "Prim.\nAttr.", "Prim.\nWert",
     "Sek.\nAttr.", "Sek.\nWert", "Angriffe\n/Zug", "Reichweite", "Bauteile",
@@ -40,7 +40,7 @@ def slot_cells(w):
 def row_for(w):
     s = slot_cells(w)
     return [
-        w["id"], w["name"], w["klasse"], w["typ"], w["stufe"], w["material"],
+        w["id"], w["name"], w["klasse"], w["typ"], w["hand"], w["stufe"], w["material"],
         w["eigenart"], "Pures Material", len(w.get("slots", [])),
         s[0], s[1], s[2], s[3], s[4],
         w["grundkapazitaet"], w["max_verfeinerung"],

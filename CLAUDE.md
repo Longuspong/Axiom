@@ -71,8 +71,10 @@ Excel ist nur Bearbeitungs-/Balancing-Komfort, NICHT die Quelle.
   Klassen-Trennzeilen, Fußnote). Auf Zuruf „gib mir die Waffenliste als Excel"
   immer dieses Skript nutzen, damit die Struktur erhalten bleibt.
 - Quelle der Struktur: `itemliste_v6.xlsx`, Blatt „Waffen".
-- Einhänder (Hand=E, brauchen Offhand): Schwerter, Kriegsgeräte, Stabwaffen,
-  Dolche, Zauberwaffen. Beidhänder (B): Äxte, Bogenwaffen.
+- **Hand (E/B) liegt auf Typ-/Waffen-Ebene**, nicht auf Klassen-Ebene
+  (eine Klasse kann gemischt sein). Beidhänder: Äxte, Bogenwaffen, **Rammbock**.
+  Alles andere Einhänder (brauchen Offhand): Schwerter, Hammer, Zepter,
+  Stabwaffen, Dolche, Zauberwaffen.
 
 ---
 

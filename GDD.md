@@ -640,7 +640,8 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Initiative/Tempo: Gewichts-Schema (Waffen + Rüstung) & Umrechnung Gewicht→Füllrate festlegen
-- [ ] Gravur-Slot-Schema pro Waffenklasse überarbeiten (nicht alle gleich; Zauberwaffen mehr Aktiv-Slots)
+- [ ] Gravur-Slot-Schema pro Waffenklasse überarbeiten — **vorerst zurückgestellt**: sinnvolle Slot-Verteilung ist erst nach Gravuren-Design + Playtest möglich. Bis dahin bleibt die aktuelle Schablone.
+- [ ] **Playtest-Erinnerung (1. Test):** Alle Slots auf `Flex` stellen ODER Grundkapazität erhöhen ODER Start-Ressourcen in der Speicherdatei vergeben — damit Gravuren frei getestet werden können.
 - [ ] `data/nebenhand.json` anlegen (Offhands: 7 Stufen, Slots, Werte) — Katalog steht in §5.3
 - [ ] Köcher als Körperslot-Item definieren (bogenübergreifend)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)

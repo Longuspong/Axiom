@@ -1489,7 +1489,7 @@
     {
       "id": "DO-001-RH",
       "name": "KupferDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1518,7 +1518,7 @@
     {
       "id": "DO-002-RH",
       "name": "EisenDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1548,7 +1548,7 @@
     {
       "id": "DO-003-RH",
       "name": "StahlDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1578,7 +1578,7 @@
     {
       "id": "DO-004-RH",
       "name": "TitanDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1609,7 +1609,7 @@
     {
       "id": "DO-005-RH",
       "name": "AdamantDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1640,7 +1640,7 @@
     {
       "id": "DO-006-RH",
       "name": "DiamantDolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1673,7 +1673,7 @@
     {
       "id": "DO-007-RH",
       "name": "Stellar-Dolchpaar",
-      "klasse": "Dolche",
+      "klasse": "Stichwaffen",
       "typ": "Dolchpaar",
       "hand": "B",
       "gewicht": 1,
@@ -1692,6 +1692,430 @@
         "wert": 0
       },
       "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "DO-011-RH",
+      "name": "KupferRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "DO-012-RH",
+      "name": "EisenRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "DO-013-RH",
+      "name": "StahlRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "DO-014-RH",
+      "name": "TitanRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "DO-015-RH",
+      "name": "AdamantRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "DO-016-RH",
+      "name": "DiamantRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "DO-017-RH",
+      "name": "Stellar-Rapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Fechtkunst",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "DO-021-RH",
+      "name": "KupferStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "DO-022-RH",
+      "name": "EisenStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "DO-023-RH",
+      "name": "StahlStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "DO-024-RH",
+      "name": "TitanStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "DO-025-RH",
+      "name": "AdamantStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "DO-026-RH",
+      "name": "DiamantStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "DO-027-RH",
+      "name": "Stellar-Stilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Meuchelschlag",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
       "reichweite": 1,
       "bauteile": "Stellar-Kern",
       "kaufpreis": null,

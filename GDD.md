@@ -245,8 +245,29 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 | Eigenart | Waffe(n) | Effekt |
 |----------|----------|--------|
 | Durchschlagskraft | Kriegsarmbrust | Treffer ignorieren 50 % des gegnerischen Schild-/Rüstungswerts (Wert ggf. später gebalanced) |
+| Fechtkunst | Rapier | Nahkampfschaden skaliert zusätzlich mit GES (nicht nur STR) |
+| Meuchelschlag | Stilett | Backstab-Bonus: erhöhter Schaden bei Angriff aus dem Rücken des Ziels |
 
 > Weitere Eigenarten werden beim Durchgang der jeweiligen Waffentypen ergänzt.
+
+#### Nebenhand-Items (Offhand)
+
+Einhänder (E) können eine **Nebenhand** führen. Offhands sind **frei kombinierbar** (nicht klassengebunden) und liefern je **ein Attribut + eine Eigenart (Gimmick)** — **keine** aktiven Waffenskills.
+
+| Offhand | Gewicht | Attribut | Eigenart |
+|---------|---------|----------|----------|
+| Großes Schild (Turmschild) | schwer (4) | VIT | **Anker** — Träger immun gegen Verschieben/Heranziehen |
+| Kleines Schild (Buckler) | leicht (1) | GES | **Parade** — greift ein zuvor vom Träger im Nahkampf verletztes Ziel diesen im Gegnerzug an, erfolgt ein 100 % Gegenangriff |
+| Standarte / Banner | mittel (3) | WIL | **Feldzeichen** — Aura: Verbündete im Umkreis erhalten +10 % Schaden & +10 % Resistenz |
+| Fackel | leicht (1) | GES | **Hetzjagd** — Initiative-Leiste füllt schneller (Tempo-Bonus) |
+| Kampfkette | schwer (4) | STR | **Reichweite +1** für Nahkampfwaffen (Stilett 1 → 2 Felder); Gravur-Option *Enterhaken*: getroffenen Gegner heranziehen |
+| Räucherpendel | leicht (2) | WIL | **Heilrauch** — erhöht alle Heilung (inkl. Auren des Trägers) um 30 % |
+| Foliant | leicht (2) | INT | **Zaubermagie** — alle Zauber +20 % effektiver, verbrauchen aber +20 % Mana |
+| Energiekristall | leicht (1) | INT | **Manaeffizienz** — Zauber kosten 20 % weniger Mana, sind aber 20 % weniger effektiv |
+
+> Köcher-Thema liegt **nicht** auf der Offhand, sondern auf dem **Körperslot** (jeder Bogen nutzbar).
+> Attribut-Zuordnung & Gewichtswerte sind Vorschläge (Balancing offen). Eigene Datendatei `data/nebenhand.json` (7 Stufen, Slots) folgt, sobald das Gravur-Slot-Schema steht.
+
 
 ---
 
@@ -619,6 +640,9 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Initiative/Tempo: Gewichts-Schema (Waffen + Rüstung) & Umrechnung Gewicht→Füllrate festlegen
+- [ ] Gravur-Slot-Schema pro Waffenklasse überarbeiten (nicht alle gleich; Zauberwaffen mehr Aktiv-Slots)
+- [ ] `data/nebenhand.json` anlegen (Offhands: 7 Stufen, Slots, Werte) — Katalog steht in §5.3
+- [ ] Köcher als Körperslot-Item definieren (bogenübergreifend)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)

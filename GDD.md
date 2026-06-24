@@ -213,6 +213,16 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 - **Kampfreichweiten:** Nahkampf, Fernkampf
 - **Weitere Details:** *(folgt)*
 
+#### Initiative & Zugreihenfolge (ATB-Leiste)
+
+Die Zugreihenfolge läuft über eine sich füllende **Initiative-Leiste** (Active-Time-Battle-Prinzip), nicht über feste Runden pro Seite.
+
+- **Ablauf:** Alle Figuren starten mit **leerer** Leiste. Die Leiste füllt sich fortlaufend; je höher die Initiative, desto schneller. Ist sie voll, führt die Figur ihre **Bewegung + Angriffe** aus und beendet den Zug → Leiste zurück auf **leer** → Zyklus beginnt von vorn.
+- **Folge:** Schnellere Figuren sind **früher und öfter** dran als langsame.
+- **Geschwindigkeitsquelle:** Basis-Initiative = **1 für alle**. Der **einzige** Faktor ist das **Gewicht der getragenen Ausrüstung** (Waffe + Rüstung): schwerer → langsamer, leichter → schneller.
+- **Bewusst kein skillbarer Speed-Stat:** Initiative lässt sich nicht über Attribute/Skilltree hochziehen — sonst würde jedes Build stumpf Speed maximieren. Tempo ist reine Folge der Ausrüstungswahl (Trade-off: Panzerung/Wucht vs. Handlungsfrequenz).
+- **Gewicht (`gewicht`):** Neuer Datenwert pro Ausrüstungsteil. Schema (Waffen-Gewichtsstufen, Rüstungsgewicht, Umrechnung Gewicht→Füllrate) → **offen, wird festgelegt**.
+
 ### 5.3 Klassen & Waffen
 
 Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
@@ -600,6 +610,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Rekrutierungs-Taverne ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
+- [ ] Initiative/Tempo: Gewichts-Schema (Waffen + Rüstung) & Umrechnung Gewicht→Füllrate festlegen
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)

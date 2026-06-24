@@ -54,6 +54,30 @@ git push origin claude/repo-access-permissions-l4kamm --force
 
 ---
 
+## Daten-Pipeline (Items/Waffen)
+
+**Single Source of Truth = JSON im Repo** (Option 1, mit Nutzer vereinbart).
+Excel ist nur Bearbeitungs-/Balancing-Komfort, NICHT die Quelle.
+
+| Datei | Inhalt | Stand |
+|-------|--------|-------|
+| `data/waffen.json` | Roh-Waffen (Pures Material, 100% Attribute) | ✅ 91 Einträge |
+| `data/nebenhand.json` | Offhand-Items für Einhänder | ⏳ ausstehend |
+| (später) `data/themen.json`, `data/gravuren.json` | Sets/Themen, Gravuren | ⏳ |
+
+- Änderungen sagt der Nutzer durch → ich pflege sie direkt in die JSON ein.
+- **Excel-Export:** `python3 tools/waffen_to_excel.py [datei.xlsx]` baut aus
+  `data/waffen.json` eine Excel in der **v6-Struktur** (gleiche Spalten,
+  Klassen-Trennzeilen, Fußnote). Auf Zuruf „gib mir die Waffenliste als Excel"
+  immer dieses Skript nutzen, damit die Struktur erhalten bleibt.
+- Quelle der Struktur: `itemliste_v6.xlsx`, Blatt „Waffen".
+- **Hand (E/B) liegt auf Typ-/Waffen-Ebene**, nicht auf Klassen-Ebene
+  (eine Klasse kann gemischt sein). Beidhänder: Äxte, Bogenwaffen, **Rammbock**.
+  Alles andere Einhänder (brauchen Offhand): Schwerter, Hammer, Zepter,
+  Stabwaffen, Dolche, Zauberwaffen.
+
+---
+
 ## Was als nächstes kommt (Reihenfolge laut Nutzer)
 
 1. **Waffenliste** — detailliertes Waffensystem (nächste Sitzung)

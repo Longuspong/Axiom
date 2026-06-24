@@ -1,0 +1,3398 @@
+{
+  "_kommentar": "Roh-Waffen (Theme/Set 'Pures Material', 100% Attribute). Quelle: itemliste_v6.xlsx, Blatt 'Waffen'. Themen-/Set-Waffen folgen separat.",
+  "version": "0.6",
+  "waffen": [
+    {
+      "id": "SW-001-RH",
+      "name": "KupferBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 5
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "SW-002-RH",
+      "name": "EisenBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Aktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "SW-003-RH",
+      "name": "StahlBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Aktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "SW-004-RH",
+      "name": "TitanBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "SW-005-RH",
+      "name": "AdamantBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "SW-006-RH",
+      "name": "DiamantBreitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Frontmann",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange + Knauf",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "SW-007-RH",
+      "name": "Stellar-Breitschwert",
+      "klasse": "Schwerter",
+      "typ": "Breitschwert",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Frontmann",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "SW-011-RH",
+      "name": "KupferFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 5
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "SW-012-RH",
+      "name": "EisenFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Aktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "SW-013-RH",
+      "name": "StahlFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Aktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "SW-014-RH",
+      "name": "TitanFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "SW-015-RH",
+      "name": "AdamantFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "SW-016-RH",
+      "name": "DiamantFalchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Erbarmungslos",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Parrierstange + Knauf",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "SW-017-RH",
+      "name": "Stellar-Falchion",
+      "klasse": "Schwerter",
+      "typ": "Falchion",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Erbarmungslos",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "AX-001-RH",
+      "name": "KupferKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "AX-002-RH",
+      "name": "EisenKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "AX-003-RH",
+      "name": "StahlKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Stiel",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "AX-004-RH",
+      "name": "TitanKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Reaktiv",
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Stiel",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "AX-005-RH",
+      "name": "AdamantKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Reaktiv",
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 54
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Stiel",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "AX-006-RH",
+      "name": "DiamantKampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Kollateralschaden",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 74
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Stiel + Beschlag",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "AX-007-RH",
+      "name": "Stellar-Kampfaxt",
+      "klasse": "Äxte",
+      "typ": "Kampfaxt",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Kollateralschaden",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "KG-001-RH",
+      "name": "KupferHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "KG-002-RH",
+      "name": "EisenHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "KG-003-RH",
+      "name": "StahlHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "KG-004-RH",
+      "name": "TitanHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "KG-005-RH",
+      "name": "AdamantHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "KG-006-RH",
+      "name": "DiamantHammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Trägheit",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 40
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "KG-007-RH",
+      "name": "Stellar-Hammer",
+      "klasse": "Kriegsgeräte",
+      "typ": "Hammer",
+      "hand": "E",
+      "gewicht": 4,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Trägheit",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "KG-011-RH",
+      "name": "KupferRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "KG-012-RH",
+      "name": "EisenRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "KG-013-RH",
+      "name": "StahlRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "KG-014-RH",
+      "name": "TitanRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "KG-015-RH",
+      "name": "AdamantRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "KG-016-RH",
+      "name": "DiamantRammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Fliehkraft",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 40
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "KG-017-RH",
+      "name": "Stellar-Rammbock",
+      "klasse": "Kriegsgeräte",
+      "typ": "Rammbock",
+      "hand": "B",
+      "gewicht": 5,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Fliehkraft",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "VIT",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "KG-021-RH",
+      "name": "KupferZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "KG-022-RH",
+      "name": "EisenZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "KG-023-RH",
+      "name": "StahlZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Aktiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "KG-024-RH",
+      "name": "TitanZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "KG-025-RH",
+      "name": "AdamantZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Aktiv",
+        "Mod.",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "KG-026-RH",
+      "name": "DiamantZepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Manavampir",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 40
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Kopf + Stiel + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "KG-027-RH",
+      "name": "Stellar-Zepter",
+      "klasse": "Kriegsgeräte",
+      "typ": "Zepter",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Manavampir",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "ST-001-RH",
+      "name": "KupferPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Duellist",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "ST-002-RH",
+      "name": "EisenPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Duellist",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "ST-003-RH",
+      "name": "StahlPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Duellist",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze + Schaft",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "ST-004-RH",
+      "name": "TitanPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Duellist",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze + Schaft",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "ST-005-RH",
+      "name": "AdamantPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Duellist",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze + Schaft",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "ST-006-RH",
+      "name": "DiamantPike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Duellist",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 40
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Spitze + Schaft + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "ST-007-RH",
+      "name": "Stellar-Pike",
+      "klasse": "Stabwaffen",
+      "typ": "Pike",
+      "hand": "E",
+      "gewicht": 3,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Duellist",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "DO-001-RH",
+      "name": "KupferDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "DO-002-RH",
+      "name": "EisenDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "DO-003-RH",
+      "name": "StahlDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge + Griff",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "DO-004-RH",
+      "name": "TitanDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge + Griff",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "DO-005-RH",
+      "name": "AdamantDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge + Griff",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "DO-006-RH",
+      "name": "DiamantDolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Dopplereffekt",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "2× Klinge + Griff + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "DO-007-RH",
+      "name": "Stellar-Dolchpaar",
+      "klasse": "Stichwaffen",
+      "typ": "Dolchpaar",
+      "hand": "B",
+      "gewicht": 1,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Dopplereffekt",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 2,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "DO-011-RH",
+      "name": "KupferRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "DO-012-RH",
+      "name": "EisenRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "DO-013-RH",
+      "name": "StahlRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "DO-014-RH",
+      "name": "TitanRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "DO-015-RH",
+      "name": "AdamantRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "DO-016-RH",
+      "name": "DiamantRapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Fechtkunst",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "DO-017-RH",
+      "name": "Stellar-Rapier",
+      "klasse": "Stichwaffen",
+      "typ": "Rapier",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Fechtkunst",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "DO-021-RH",
+      "name": "KupferStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 8
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "DO-022-RH",
+      "name": "EisenStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 12
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "DO-023-RH",
+      "name": "StahlStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 18
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "DO-024-RH",
+      "name": "TitanStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 26
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "DO-025-RH",
+      "name": "AdamantStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Reaktiv",
+        "Passiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 38
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "DO-026-RH",
+      "name": "DiamantStilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Meuchelschlag",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 52
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Klinge + Griff + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "DO-027-RH",
+      "name": "Stellar-Stilett",
+      "klasse": "Stichwaffen",
+      "typ": "Stilett",
+      "hand": "E",
+      "gewicht": 1,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Meuchelschlag",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 1,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "BG-001-RH",
+      "name": "KupferJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "BG-002-RH",
+      "name": "EisenJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "BG-003-RH",
+      "name": "StahlJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "BG-004-RH",
+      "name": "TitanJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "BG-005-RH",
+      "name": "AdamantJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "BG-006-RH",
+      "name": "DiamantJagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Jagdinstinkt",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Bogenkörper + Sehne + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "BG-007-RH",
+      "name": "Stellar-Jagdbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Jagdbogen",
+      "hand": "B",
+      "gewicht": 2,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Jagdinstinkt",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "BG-011-RH",
+      "name": "KupferRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Techniker",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "BG-012-RH",
+      "name": "EisenRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Techniker",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "BG-013-RH",
+      "name": "StahlRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Techniker",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "BG-014-RH",
+      "name": "TitanRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Techniker",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "BG-015-RH",
+      "name": "AdamantRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Techniker",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "BG-016-RH",
+      "name": "DiamantRepetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Techniker",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "BG-017-RH",
+      "name": "Stellar-Repetierarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Techniker",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "BG-021-RH",
+      "name": "KupferLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "BG-022-RH",
+      "name": "EisenLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "BG-023-RH",
+      "name": "StahlLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "BG-024-RH",
+      "name": "TitanLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "BG-025-RH",
+      "name": "AdamantLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "BG-026-RH",
+      "name": "DiamantLangbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Heckenschütze",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Bogenkörper + Sehne + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "BG-027-RH",
+      "name": "Stellar-Langbogen",
+      "klasse": "Bogenwaffen",
+      "typ": "Langbogen",
+      "hand": "B",
+      "gewicht": 3,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Heckenschütze",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "WID",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 4,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "BG-031-RH",
+      "name": "KupferKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "BG-032-RH",
+      "name": "EisenKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "BG-033-RH",
+      "name": "StahlKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "BG-034-RH",
+      "name": "TitanKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "BG-035-RH",
+      "name": "AdamantKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "BG-036-RH",
+      "name": "DiamantKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "BG-037-RH",
+      "name": "Stellar-Kriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "gewicht": 4,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Durchschlagskraft",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "ZW-001-RH",
+      "name": "KupferZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "ZW-002-RH",
+      "name": "EisenZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Passiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "ZW-003-RH",
+      "name": "StahlZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Passiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "ZW-004-RH",
+      "name": "TitanZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Passiv",
+        "Mod.",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "ZW-005-RH",
+      "name": "AdamantZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Passiv",
+        "Mod.",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 8,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "ZW-006-RH",
+      "name": "DiamantZauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Energiefaser",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 10,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein + Essenz",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "ZW-007-RH",
+      "name": "Stellar-Zauberstab",
+      "klasse": "Zauberwaffen",
+      "typ": "Zauberstab",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Energiefaser",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "WIL",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "INT",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "ZW-011-RH",
+      "name": "Kupferenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Segnung",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 2,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 8
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "ZW-012-RH",
+      "name": "Eisenenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Segnung",
+      "slots": [
+        "Passiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 12
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "ZW-013-RH",
+      "name": "Stahlenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Segnung",
+      "slots": [
+        "Passiv",
+        "Mod."
+      ],
+      "grundkapazitaet": 5,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 18
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "ZW-014-RH",
+      "name": "Titanenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Segnung",
+      "slots": [
+        "Passiv",
+        "Mod.",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 26
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "ZW-015-RH",
+      "name": "Adamantenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Segnung",
+      "slots": [
+        "Passiv",
+        "Mod.",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 8,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 38
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "ZW-016-RH",
+      "name": "Diamantenergiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Segnung",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 10,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 52
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Kern + Fokusstein + Essenz",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "ZW-017-RH",
+      "name": "Stellar-Energiesphäre",
+      "klasse": "Zauberwaffen",
+      "typ": "Energiesphäre",
+      "hand": "E",
+      "gewicht": 2,
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Segnung",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "INT",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "WIL",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 3,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    }
+  ]
+}

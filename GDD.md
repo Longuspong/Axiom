@@ -240,6 +240,14 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
 > Vollständiges Waffensystem (alle Waffen, Stats, Gravuren) → folgt in eigenem Abschnitt
 
+**Waffen-Eigenarten (Effekte):**
+
+| Eigenart | Waffe(n) | Effekt |
+|----------|----------|--------|
+| Durchschlagskraft | Kriegsarmbrust | Treffer ignorieren 50 % des gegnerischen Schild-/Rüstungswerts (Wert ggf. später gebalanced) |
+
+> Weitere Eigenarten werden beim Durchgang der jeweiligen Waffentypen ergänzt.
+
 ---
 
 #### Klassen-Archetypen

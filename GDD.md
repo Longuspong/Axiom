@@ -579,10 +579,29 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 ### 10.3 Engine & Projektstruktur
 
 - **Engine:** Godot 4
-- **Sprache:** *(GDScript / C# — folgt)*
-- **Zielplattform:** *(folgt)*
+- **Sprache:** GDScript
+- **Zielplattform:** *(folgt — vermutlich PC/Desktop)*
 - **Projektstruktur:** *(folgt)*
-- **Audio:** *(folgt)*
+- **Audio:** AudioStreamPlayer + Audio Bus (nativ in Godot)
+
+**Plugins (Godot Asset Library — kostenlos):**
+
+| Plugin | Zweck |
+|--------|-------|
+| Dialogue Manager (Nathan Hoad) | Story-Szenen, Dialoge, Prolog-Text |
+| Phantom Camera 2D | Smooth Camera Follow, Zoom-Effekte, Cutscene-Kamera |
+
+**Game Feel — Kernpatterns (alle nativ in Godot, kein Plugin nötig):**
+
+| Effekt | Was es macht | Tool |
+|--------|-------------|------|
+| Hitstop | Kurzes Einfrieren (2–5 Frames) beim Treffer | `Engine.time_scale` per Tween |
+| Screen Shake | Kamera wackelt nach Impact | Camera2D + Noise |
+| Hit Flash | Gegner blitzt weiß auf | Shader (minimal) |
+| Floating Numbers | Schadenszahlen steigen auf | AnimationPlayer + Label |
+| Impact Particles | Funken/Staub/Magie beim Treffer | GPUParticles2D |
+| Anticipation | Windup vor dem Angriff | AnimationPlayer Timing |
+| Sound Punch | Treffergeräusch macht ~50% des Feels | AudioStreamPlayer |
 
 ---
 
@@ -601,7 +620,8 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
-- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
+- [ ] Zielplattform festlegen (PC/Desktop, Mobile, Konsole?)
+- [ ] Projektstruktur definieren (Ordnerstruktur, Scene-Aufbau)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
 - [ ] Audio-Konzept definieren

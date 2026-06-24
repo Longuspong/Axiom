@@ -1849,10 +1849,10 @@
     },
     {
       "id": "BG-011-RH",
-      "name": "KupferArmbrust",
+      "name": "KupferRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 1,
       "material": "Kupfer",
       "eigenart": "Techniker",
@@ -1877,10 +1877,10 @@
     },
     {
       "id": "BG-012-RH",
-      "name": "EisenArmbrust",
+      "name": "EisenRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 2,
       "material": "Eisen",
       "eigenart": "Techniker",
@@ -1906,10 +1906,10 @@
     },
     {
       "id": "BG-013-RH",
-      "name": "StahlArmbrust",
+      "name": "StahlRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 3,
       "material": "Stahl",
       "eigenart": "Techniker",
@@ -1935,10 +1935,10 @@
     },
     {
       "id": "BG-014-RH",
-      "name": "TitanArmbrust",
+      "name": "TitanRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 4,
       "material": "Titan",
       "eigenart": "Techniker",
@@ -1965,10 +1965,10 @@
     },
     {
       "id": "BG-015-RH",
-      "name": "AdamantArmbrust",
+      "name": "AdamantRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 5,
       "material": "Adamant",
       "eigenart": "Techniker",
@@ -1995,10 +1995,10 @@
     },
     {
       "id": "BG-016-RH",
-      "name": "DiamantArmbrust",
+      "name": "DiamantRepetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 6,
       "material": "Diamant",
       "eigenart": "Techniker",
@@ -2027,10 +2027,10 @@
     },
     {
       "id": "BG-017-RH",
-      "name": "Stellar-Armbrust",
+      "name": "Stellar-Repetierarmbrust",
       "klasse": "Bogenwaffen",
-      "typ": "Armbrust",
-      "hand": "B",
+      "typ": "Repetierarmbrust",
+      "hand": "E",
       "stufe": 7,
       "material": "Stellar",
       "eigenart": "Techniker",
@@ -2252,6 +2252,211 @@
       },
       "angriffe_pro_zug": 1,
       "reichweite": 4,
+      "bauteile": "Stellar-Kern",
+      "kaufpreis": null,
+      "verkaufspreis": 0,
+      "platzhalter": true
+    },
+    {
+      "id": "BG-031-RH",
+      "name": "KupferKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 1,
+      "material": "Kupfer",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Flex"
+      ],
+      "grundkapazitaet": 1,
+      "max_verfeinerung": 1,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 10
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 4
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 10,
+      "verkaufspreis": 6
+    },
+    {
+      "id": "BG-032-RH",
+      "name": "EisenKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 2,
+      "material": "Eisen",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 3,
+      "max_verfeinerung": 2,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 15
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 6
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper",
+      "kaufpreis": 20,
+      "verkaufspreis": 12
+    },
+    {
+      "id": "BG-033-RH",
+      "name": "StahlKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 3,
+      "material": "Stahl",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv"
+      ],
+      "grundkapazitaet": 4,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 22
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 9
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 40,
+      "verkaufspreis": 24
+    },
+    {
+      "id": "BG-034-RH",
+      "name": "TitanKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 4,
+      "material": "Titan",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 6,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 32
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 14
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 100,
+      "verkaufspreis": 60
+    },
+    {
+      "id": "BG-035-RH",
+      "name": "AdamantKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 5,
+      "material": "Adamant",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Passiv",
+        "Aktiv",
+        "Reaktiv"
+      ],
+      "grundkapazitaet": 7,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 45
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 20
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne",
+      "kaufpreis": 200,
+      "verkaufspreis": 120
+    },
+    {
+      "id": "BG-036-RH",
+      "name": "DiamantKriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 6,
+      "material": "Diamant",
+      "eigenart": "Durchschlagskraft",
+      "slots": [
+        "Aktiv",
+        "Passiv",
+        "Reaktiv",
+        "Mod.",
+        "Spezial"
+      ],
+      "grundkapazitaet": 9,
+      "max_verfeinerung": 3,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 62
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 28
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
+      "bauteile": "Bogenkörper + Sehne + Kern",
+      "kaufpreis": 500,
+      "verkaufspreis": 300
+    },
+    {
+      "id": "BG-037-RH",
+      "name": "Stellar-Kriegsarmbrust",
+      "klasse": "Bogenwaffen",
+      "typ": "Kriegsarmbrust",
+      "hand": "B",
+      "stufe": 7,
+      "material": "Stellar",
+      "eigenart": "Durchschlagskraft",
+      "slots": [],
+      "grundkapazitaet": 0,
+      "max_verfeinerung": 0,
+      "primaer": {
+        "attribut": "GES",
+        "wert": 0
+      },
+      "sekundaer": {
+        "attribut": "STR",
+        "wert": 0
+      },
+      "angriffe_pro_zug": 1,
+      "reichweite": 2,
       "bauteile": "Stellar-Kern",
       "kaufpreis": null,
       "verkaufspreis": 0,

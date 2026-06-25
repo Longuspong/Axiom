@@ -17,8 +17,9 @@ Dieses Dokument ist die interne Referenz für Claude Code. Bei Sitzungsstart hie
 - Nutzer gibt Designinformationen schrittweise durch
 - Ich trage alles in **`GDD.md`** ein — immer dasselbe Dokument, niemals ein neues anlegen
 - Bei Widersprüchen mit bestehendem Inhalt: **vor dem Eintragen fragen**
-- Direkt auf `main` pushen (kein PR-Overhead), außer der Nutzer sagt ausdrücklich etwas anderes
-- **Am Sitzungsende immer sicherstellen dass alles auf `main` gepusht ist — explizit bestätigen**
+- **Phase 0 (aktuell) — Vorüberlegung & Design:** Immer direkt auf `main` pushen, keine Branches
+- **Ab Phase 1 (Playtest / Integration):** Branches erlaubt und sinnvoll — bis dahin nicht
+- **Am Sitzungsende immer bestätigen:** "Alles auf main" — explizit aussprechen, nie stillschweigend
 - **Nach jedem Commit:** `git commit --amend --no-edit --reset-author` + force push, damit der Stop-Hook nicht anschlägt
 - Git-Config vor jedem Commit sicherstellen: `user.email = noreply@anthropic.com`, `user.name = Claude`
 

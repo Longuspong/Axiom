@@ -50,6 +50,7 @@
     - 10.1 [Art Style](#101-art-style)
     - 10.2 [Speichersystem](#102-speichersystem)
     - 10.3 [Engine & Projektstruktur](#103-engine--projektstruktur)
+    - 10.4 [Placeholder-Assets (MVP)](#104-placeholder-assets-mvp)
 11. [Offene Punkte & ToDos](#11-offene-punkte--todos)
 
 ---
@@ -603,6 +604,29 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 | Anticipation | Windup vor dem Angriff | AnimationPlayer Timing |
 | Sound Punch | Treffergeräusch macht ~50% des Feels | AudioStreamPlayer |
 
+### 10.4 Placeholder-Assets (MVP)
+
+Alle Assets liegen unter `assets/placeholder/`. Sie werden durch finale Grafiken ersetzt, sobald die Spiellogik steht.
+
+**Charaktere & Gegner**
+
+| Asset | Quelle | Pfad | Animationen |
+|-------|--------|------|-------------|
+| Soldat (Mensch-Placeholder) | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | Idle, Walk, Attack (3x), Hurt, Death |
+| Ork (Gegner-Placeholder) | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | Idle, Walk, Attack (2x), Hurt, Death |
+| Pfeil-Projektil | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | — |
+
+> **Hinweis Richtung:** Sprites zeigen nur in eine Richtung. Für MVP: horizontales Spiegeln in Godot + Richtungsindikator (Pfeil/Dreieck) auf dem Tile. Richtung ist Spielmechanik (Backstab, Flanke) — visuell durch den Indikator gelöst bis finale Sprites vorliegen.
+
+**Umgebung / Tilesets**
+
+| Asset | Quelle | Pfad | Inhalt |
+|-------|--------|------|--------|
+| Taverne (Innenraum) | Vledic's Pixel RPG — Tavern (32x16 isometrisch) | `assets/placeholder/environments/tavern/` | 126 Items: Boden, Wände, Tische, Tresen, Fässer, Props |
+| Außen-Terrain (Wald, Wasser, Wege) | Isometric Isolation — ZatoArt (32x32 isometrisch) | *ausstehend — Premium-Version kaufen* | Gras, Wald, Wasser, Wege, Terrain-Varianten |
+
+> **Skalierungs-Hinweis:** Taverne (32x16) und Isometric Isolation (32x32) sind beide isometrisch — Kompatibilität beim Zusammenbauen in Godot prüfen.
+
 ---
 
 ## 11. Offene Punkte & ToDos
@@ -622,6 +646,8 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Zielplattform festlegen (PC/Desktop, Mobile, Konsole?)
 - [ ] Projektstruktur definieren (Ordnerstruktur, Scene-Aufbau)
-- [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
+- [ ] Isometric Isolation Premium kaufen und unter `assets/placeholder/environments/` ablegen
+- [ ] Skalierungs-Kompatibilität Taverne (32x16) vs. Isometric Isolation (32x32) in Godot prüfen
+- [ ] Finale Charakter-Sprites (4-direktional, isometrisch) beschaffen oder erstellen — Tiny RPG ist reiner Placeholder
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
 - [ ] Audio-Konzept definieren

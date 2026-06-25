@@ -49,16 +49,17 @@ git push origin claude/repo-access-permissions-l4kamm --force
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
 | 9 | Hub — Bergheim | ✅ vollständig |
-| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, Sprache/Plattform/Struktur fehlen |
+| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Placeholder-Assets ✅, Plattform/Struktur fehlen |
 | 11 | Offene Punkte & ToDos | ✅ laufend gepflegt |
 
 ---
 
 ## Was als nächstes kommt (Reihenfolge laut Nutzer)
 
-1. **Waffenliste** — detailliertes Waffensystem (nächste Sitzung)
-2. **Crafting / Verbesserung / Refinement** — inkl. Gravuren-System (§9.5)
-3. **Skilltree** — erstes gemeinsames Code-Projekt
+1. **Isometric Isolation Premium** kaufen → unter `assets/placeholder/environments/` ablegen
+2. **Kampfsystem-Kernmechanik** — Rundenablauf, Aktionsökonomie, Initiative (noch nicht dokumentiert)
+3. **Attribute im Detail** — Basiswerte, Skalierungsformeln
+4. **Skilltree** — erstes gemeinsames Code-Projekt (Godot MVP)
 
 ---
 

@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.6  
-**Stand:** 2026-06-21  
+**Version:** 0.7  
+**Stand:** 2026-06-25  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -210,6 +210,8 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 - **Schadenstypen:** Physisch, Magisch
 - **Defensive Werte:** Resistenz (gegen magischen Schaden), Block (gegen physischen Schaden)
+- **Schadensreduktion (Attribut):** **WID** skaliert die gesamte Schadensreduktion — physisch **und** magisch. **WIL** bleibt rein offensiv (magischer Schaden).
+  - *Design-Entscheidung: Reduktion konsolidiert auf WID (kein Split auf INT/WIL) → eine klare Defensiv-Achse. Der physisch/magisch-Split lebt eine Ebene tiefer über die Werte Block vs. Resistenz bzw. die Ausrüstung.*
 - **Kampfreichweiten:** Nahkampf, Fernkampf
 
 ---
@@ -258,7 +260,35 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 
 ---
 
-- **Statuseffekte:** *(folgt — Liste wird nachgereicht)*
+#### Statuseffekte
+
+##### Einheiten-Statuseffekte
+
+- **Brennen** *(negativ, stapelbar bis 3)*: Beim Stapeln wird die Dauer auf 3 Züge zurückgesetzt; jede weitere Applikation setzt die Dauer erneut auf 3. Eine brennende Einheit erleidet **am Ende ihres Zuges physischen Schaden i. H. v. 6 % des max. Lebens pro Stapel**.
+- **Kälte** *(negativ, stapelbar bis 10)*: Die Figur verliert pro Zug einen Stapel. Jeder Stapel hat eine **5 % Chance, die Figur einzufrieren (→ Gefroren)** und mindert fix den Wert einer **Gegenreaktion** (Gegenschlag, Block sowie Zauberblock). **Bei vollen 10 Stapeln** löst der nächste Treffer (Fähigkeit o. Ä.) **sofort Gefroren** aus.
+  - *Hinweis: „Gegenschlag" und „Zauberblock" sind neue Gegenreaktions-Mechaniken — Detaildefinition folgt (→ §11).*
+- **Gefroren** *(negativ)*: Die Einheit kann sich weder bewegen noch angreifen. Der **nächste erlittene Schaden wird um 50 % verringert und löst Gefroren auf**. Dauer max. 2 Züge (Zug 1 = Applikationszug).
+- **Festgehalten** *(negativ)*: Die Figur kann sich nicht bewegen, aber weiterhin angreifen und Fähigkeiten wirken. **Keine Standarddauer.**
+- **Betäubt** *(negativ)*: Komplett bewegungs- und aktionsunfähig. Kann noch inspiziert und von Fähigkeiten anvisiert werden, führt aber keine eigenen Aktionen aus.
+- **Gebrochen** *(negativ)*: Verringert jegliche Möglichkeit für **Schutz**, **Block** sowie Schadensreduktion. Wird ausgelöst durch das **gleichzeitige** Auftreten von **Blutung + Schwächen + Verwirren**. Dauer 2 Züge.
+- **Schwächen** *(negativ, stapelbar)*: Erhöht die Anfälligkeit für **physischen** Schaden; die Höhe hängt vom Anwender ab. Jeder Stapel = 1 Zug Dauer. Ein Stapel wird **mit einem Angriff verbraucht**; zusätzlich verliert die Figur am Zugende einen Stapel (falls vorhanden).
+- **Verwirren** *(negativ, stapelbar)*: Wie Schwächen, aber für **magischen** Schaden. Jeder Stapel = 1 Zug; ein Stapel wird mit einem Angriff verbraucht; zusätzlich −1 Stapel am Zugende.
+- **Blutung** *(negativ)*: Kann nach der Schadensberechnung physischer Waffen auftreten (waffen-/passivabhängig). Verursacht **30 % des verursachten Schadens, verteilt über 3 Züge** (10 % pro Tick), beginnend mit dem Applikationszug. Der Tick-Schaden wird **hälftig in physisch und magisch** aufgeteilt und dann **nach Reduktion durch WID** abgezogen.
+- **Vergiftet / Gift** *(negativ, stapelbar & verlängernd, sofern nicht anders beschrieben)*: Ein Stapel wird **am Zugende** verbraucht und fügt **10 % des fehlenden Lebens als magischen Schaden** zu (mind. 1). Ein Stapel = 1 Runde Dauer; 3 Stapel = 3 Runden.
+- **Instabil** *(negativ, stapelbar)*: Jeder Stapel hebt die Exekutionsschwelle um **2 % des max. Lebens**. Bei Erreichen der Schwelle wird die Figur beim Erhalt **irgendeines Schadens sofort exekutiert**. 1 Stapel = 2 %, 2 = 4 %, … 10 = 20 %.
+- **Entwaffnet** *(negativ)*: Schadenverursachende Effekte, Fähigkeiten oder Angriffe können **nicht** benutzt werden. Bewegen, Heilen, **Schutz geben** und Buffen bleibt normal möglich. **Keine Standarddauer.**
+- **Verstummt / Verstummen** *(negativ)*: Verhindert das Einsetzen von Fähigkeiten, Spells oder Skills. **Keine Standarddauer.**
+- **Ermutigt / Ermutigen** *(**positiv / Buff**)*: Erhöht die Schadensreduktion um **20 %** (physisch und magisch). **Keine Standarddauer.**
+
+##### Feld-Statuseffekte
+
+- **In Brand gesteckt**: Auf brennenden Feldern können Einheiten **weder Kälte noch Gefroren** haben/erleiden. Am Zugende erleidet die Figur **Brandschaden (physisch) i. H. v. 6 % des max. Lebens**. Stapelt nicht; hält nur, solange die Einheit auf dem Feld steht.
+- **Vereist**: **Pull- und Push-Fähigkeiten sind doppelt so effektiv.** Wird eine Figur auf einem vereisten Feld gefroren, verlängert sich Gefroren **auf unbestimmte Zeit** — bis zur Auflösung durch Schaden.
+- **Giftnebel**: Appliziert der darauf stehenden Figur **einen Stapel Gift beim Betreten** und **zu Rundenbeginn** (normaler Giftschaden, magisch).
+- **Nagelbett**: Jede Aktion (Angriff, Fähigkeit, Bewegung) kostet **10 % des max. Lebens**. Wird eine Figur auf ein Nagelbett-Feld gepusht/gepullt, kostet auch das **Betreten** 10 %. Dieser Schaden ist **total und nicht reduzierbar**.
+- **Dichter Nebel**: Eine Figur darauf sieht nur **2 Felder weit**; ohne Sichtlinie kein Angriff möglich. Durch dichten Nebel kann man **nicht hindurchsehen**.
+- **Blockiert**: Per Fähigkeit blockierte Felder sind für die Dauer des Effekts **nicht begehbar** und zählen als nicht begehbares Terrain — **Verbündete können sie normal betreten**.
+
 - **Weitere Details:** *(folgt)*
 
 ### 5.3 Klassen & Waffen
@@ -686,6 +716,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Rekrutierungs-Taverne ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
+- [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — referenziert in §5.2 Kälte)
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)

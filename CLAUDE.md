@@ -36,7 +36,7 @@ git push origin claude/keen-gauss-2k5waj --force
 
 ---
 
-## GDD-Stand (aktuell: v0.6)
+## GDD-Stand (aktuell: v0.7)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -46,7 +46,7 @@ git push origin claude/keen-gauss-2k5waj --force
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid ✅, Klassen ✅, Attribute ✅, Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid ✅, Kampfsystem+Statuseffekte ✅, Klassen ✅, Attribute ✅, Bögen ✅, restl. Waffen/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -82,3 +82,5 @@ git push origin claude/keen-gauss-2k5waj --force
 | Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
 | Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |
 | Attribute | WIL, INT, VIT, WID, STR, GES — alle 3 Buchstaben Caps |
+| Schadensreduktion | Komplett auf **WID** (physisch + magisch); WIL bleibt rein offensiv. Split-Differenzierung über Werte Block/Resistenz + Ausrüstung |
+| Bögen-Reichweite | Notation `optimal/max` (z. B. 3–4/5); −30 % Schaden & Trefferchance pro Feld außerhalb der Optimalzone; Adlerauge +1 auf beide Grenzen |

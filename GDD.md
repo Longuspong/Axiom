@@ -393,6 +393,44 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 
 ---
 
+#### Waffensystem — Fernkampfwaffen: Bögen (drei Distanzprofile)
+
+**Kern:** Reichweite als Ressource. Positionierung ist eine aktive Entscheidung.
+
+**Reichweite & Schadens-Falloff**
+
+- Fernkampfwaffen greifen im **Manhattan-System** an. Die Anzahl der Felder ist von der Waffe abhängig.
+- In der Waffenbeschreibung bedeutet die Notation z. B. **3–4/5**: Der meiste Schaden wird auf **3–4 Feldern** Reichweite erzielt (optimale Zone); die **maximale** Reichweite ist **5** Felder.
+- Außerhalb der optimalen Zone verliert man **pro Feld 30 % Schaden und Trefferchance**.
+  - Beispiel: Auf Feld 3–4 sind Schaden und Trefferchance 100 %, auf Feld 2 und 5 jeweils 70 %, usw.
+  - Felder mit Trefferchance ≤ 0 % werden **nicht angezeigt**.
+- Dies gilt ebenso für das **Ankerfeld von Bogenschützenfähigkeiten**.
+  - Beispiel: Ein **Pfeilhagel**, der von einem Jagdbogen auf ein Feld in 5 Feldern Entfernung gewirkt wird (Wirkungsbereich 2 Felder, Manhattan), hat auf jedem Feld um das Zielfeld eine Chance von **70 %**, insgesamt **70 % Schaden** zu verursachen.
+
+**Nahkampf**
+
+- Je nach Waffe haben Bögen Nahkampfmali; diese werden in der jeweiligen Waffe klar beschrieben.
+- „Nahkampf" bedeutet für den Bogen **immer ein Feld orthogonaler Abstand**.
+
+**Distanzprofile**
+
+| Waffe | Optimale Reichweite | Nahkampf | Zu weit | Identität |
+|---|---|---|---|---|
+| **Armbrust** | 1–2 Felder | kein Malus (0–1) | ab 3 | „Schwert unter den Fernkampfwaffen" — immer brauchbar, nie optimal |
+| **Jagdbogen** | 3–4 Felder | −50 % | ab 5 | Mittlere Distanz, Generalist |
+| **Langbogen** | 4–5 Felder | **kein Angriff** | ab 6 | Maximale Reichweite, maximales Nahkampf-Risiko |
+
+**Adlerauge-Interaktion:** erweitert **beide** Grenzen um +1 (optimale Zone und Malus-/Reichweitengrenze).
+
+| Waffe | Optimale Reichweite | Nahkampf | Zu weit |
+|---|---|---|---|
+| **Jagdbogen** ohne Adlerauge | 3–4 Felder | −50 % (0–1) | ab 5 |
+| **Jagdbogen** mit Adlerauge | 3–5 Felder | −50 % (0–1) | ab 6 |
+
+> **Konsequenz:** Adlerauge auf der Armbrust ist mechanisch sinnlos — das System zeigt das von selbst, ohne ein explizites Verbot.
+
+---
+
 ### 5.4 Skill- & Fähigkeitssystem
 
 - Jede Klasse hat einen eigenen Skilltree mit mehreren Spezialisierungspfaden

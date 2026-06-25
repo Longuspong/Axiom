@@ -28,9 +28,11 @@ git config user.name Claude
 git add GDD.md
 git commit -m "..."
 git commit --amend --no-edit --reset-author
-git push origin claude/repo-access-permissions-l4kamm:main --force
-git push origin claude/repo-access-permissions-l4kamm --force
+git push origin claude/keen-gauss-2k5waj:main --force
+git push origin claude/keen-gauss-2k5waj --force
 ```
+
+> **Push-Ziel (aktuell):** Bis zum Phase-1-Startschuss kommt alles (nach Widerspruchsprüfung) **direkt auf `main`**. Session-Arbeitsbranch ist `claude/keen-gauss-2k5waj`.
 
 ---
 

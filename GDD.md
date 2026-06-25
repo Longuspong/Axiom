@@ -211,6 +211,54 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 - **Schadenstypen:** Physisch, Magisch
 - **Defensive Werte:** Resistenz (gegen magischen Schaden), Block (gegen physischen Schaden)
 - **Kampfreichweiten:** Nahkampf, Fernkampf
+
+---
+
+#### Systemweite Begriffsdefinitionen
+
+Damit Skills, Gravuren und Angriffe eindeutig definierbar sind, gelten die folgenden Begriffe systemweit. **Voraussetzung ist stets, dass eindeutig ist, wo Angreifer und Verteidiger stehen und in welche Richtung sie ausgerichtet sind.**
+
+##### Angriff
+
+Das Nutzen eines normalen Angriffs mit der ausgerüsteten Waffe **oder** einer aktiven Gravur, die direkt als Angriff deklariert ist.
+
+- Ein Angriff verbraucht eine **Angriffsaktion**.
+- Die **Art** des Angriffs wird von der **Waffe** vorgegeben, nicht von der Gravur.
+- Beispiel: Eine Gravur, die einen garantierten Krit beim nächsten Angriff gibt, wirkt waffenabhängig:
+
+| Waffe | Resultierender Angriffstyp |
+|---|---|
+| Schwert | Single-Target |
+| Axt | Multi-Target |
+| Bogen | Fernkampf |
+| Dolch | Nahkampf |
+
+##### Felder & Flächen
+
+AoE und Flächen werden **immer** auf eine von zwei Arten angegeben:
+
+- **Manhattan-System** (orthogonale Distanz), oder
+- **Square** mit Größe und Distanz (z. B. *3×3 um das Zielfeld*).
+
+| Begriff | Definition | Felder |
+|---|---|---|
+| **Direkt angrenzend** | nur orthogonal | 4 (N, S, O, W) |
+| **Indirekt angrenzend** | nur diagonal | 4 (NO, NW, SO, SW) |
+| **Alle angrenzenden** | orthogonal + diagonal | 8 |
+
+##### Angriffsrichtungen
+
+Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidiger.
+
+| Begriff | Definition | Beispiel |
+|---|---|---|
+| **Frontalangriff** | Angriff aus der Richtung, in die der Verteidiger blickt | Verteidiger blickt nach Süden, wird von Süden angegriffen |
+| **Backstab** | Verteidiger ist entgegengesetzt zur Angriffsrichtung ausgerichtet | Verteidiger blickt nach Norden, wird von Süden angegriffen |
+| **Flankierung** | Eine weitere Figur des Angreiferteams grenzt (direkt oder indirekt) an den Verteidiger an | — |
+
+---
+
+- **Statuseffekte:** *(folgt — Liste wird nachgereicht)*
 - **Weitere Details:** *(folgt)*
 
 ### 5.3 Klassen & Waffen

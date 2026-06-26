@@ -43,7 +43,7 @@ git push origin claude/keen-gauss-2k5waj --force
 
 ---
 
-## GDD-Stand (aktuell: v0.7)
+## GDD-Stand (aktuell: v0.8)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -53,7 +53,7 @@ git push origin claude/keen-gauss-2k5waj --force
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid ✅, Kampfsystem+Statuseffekte ✅, Klassen ✅, Attribute ✅, Bögen ✅, restl. Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, restl. Waffen/Offhands/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -63,24 +63,21 @@ git push origin claude/keen-gauss-2k5waj --force
 
 ---
 
-## Stand letzte Sitzung (Kampfsystem)
+## Stand letzte Sitzung
 
-§5.2 ist jetzt der dickste Block. Abgeschlossen:
-- Systemweite Begriffe (Angriff, Felder/Flächen, Angriffsrichtungen)
-- Kampfablauf & Aktionsökonomie (1 Angriffsaktion + Mobilitätspunkte, frei verschachtelbar; Fähigkeiten/Zauber kosten keine Angriffsaktion außer ausdrücklich; „Zug beenden")
-- Grundwerte: keine Auto-HP-Regen (außer „Gemeinschaft"), Mana 10/Zug (+INT), VIT = 6 HP/Punkt
-- Schadensmodell: WID-Formel `WID/(WID+100)` + Rüstung/Resistenz (flat) + RD (prozentual), inkl. EHP-Begründung & WID-Cap-Vermerk
-- Reaktionen: Gegenschlag, Parieren/Block, Zauberblock, Konter
-- Statuseffekte: Einheiten (14) + Felder (6)
-- §5.3 Waffensystem-Start: Bögen (Distanzprofile, Falloff, Adlerauge)
+Abgeschlossen in dieser Sitzung:
+- **Speed-System:** Gewichtsklassen (Schnell/Wendig/Ausgeglichen/Bedächtig/Träge), Speed-Modifikatoren für Waffe/Körper (±0,30/0,15/0/−0,15/−0,30) und Kopf/Füße (±0,20/0,10/0/−0,10/−0,20), Max ±1,0
+- **Initiative-Balken:** Mehrfachzug-Mechanik, Gleichstand-Regel, Rundendefinition
+- **Mobilität:** MOB-Basiswert (max 5, nur Items/Nodes), Traits geben Bonus-Bewegung außerhalb des Pools
+- **Rohschaden-Formeln:** Physisch (STR), Magisch (WIL), Fernkampf (GES×0,75 + STR×0,25)
+- **Mana-System:** Pool 100 (Standard), Regen 10/Zug (INT 10), Aktive Gravurs-Skills kosten Mana, Passive reservieren Mana in der Homezone
+- **Armbrüste aufgeteilt:** Repetierarmbrust (E, leicht) vs. Kriegsarmbrust (B, schwer) — beide 1–2 Felder
 
 ## Was als nächstes kommt
 
-Offene Kampf-Bausteine (→ §11): Gegenschlag/Zauberblock-Detailwerte, Trefferchance/Krit-Grundregeln, Initiative/Zugreihenfolge, WID-Cap final.
-
-1. **Waffenliste** — restliches Waffensystem (Nahkampf, Stats, Gravuren)
-2. **Crafting / Verbesserung / Refinement** — inkl. Gravuren-System (§9.5)
-3. **Skilltree** — erstes gemeinsames Code-Projekt
+1. **Klassen-Startattribute** (STR, GES, WIL, INT, VIT, WID, MOB je Klasse)
+2. **Einhand/Zweihand + Offhand-System** definieren
+3. **Restliches Waffensystem** (Nahkampf-Stats, Gravuren, Crafting)
 
 ---
 
@@ -104,3 +101,10 @@ Offene Kampf-Bausteine (→ §11): Gegenschlag/Zauberblock-Detailwerte, Trefferc
 | Attribute | WIL, INT, VIT, WID, STR, GES — alle 3 Buchstaben Caps |
 | Schadensreduktion | 3 Hebel: **WID** = prozentual (`WID/(WID+100)`, beide Typen), **Rüstung/Resistenz** = flacher Abzug pro Treffer (physisch/magisch, Squishy≈0), **RD** = Rüstungsdurchdringung (prozentual, senkt nur den Flat-Wert). WIL bleibt rein offensiv. Multi-Hit = höherer Gesamt-Rohschaden |
 | Bögen-Reichweite | Notation `optimal/max` (z. B. 3–4/5); −30 % Schaden & Trefferchance pro Feld außerhalb der Optimalzone; Adlerauge +1 auf beide Grenzen |
+| Armbrüste | Repetierarmbrust = E (einhändig, leicht); Kriegsarmbrust = B (beidhändig, schwer); beide 1–2 Felder optimal |
+| Speed-System | Basiswert 1,0; Gewichtsklassen Schnell/Wendig/Ausgeglichen/Bedächtig/Träge; Waffe+Körper ±0,30; Kopf+Füße ±0,20; Max Bonus/Malus ±1,0 |
+| Mobilität | MOB-Basiswert pro Klasse (max 5); nur durch Items/Skillnodes erhöhbar; Trait-Bewegung zählt nicht auf MOB an |
+| Rohschaden Nahkampf | Physisch: STR(Einheit)+STR(Waffe)+Buffs; Magisch: WIL(Einheit)+WIL(Waffe)+Buffs |
+| Rohschaden Fernkampf | GES×0,75 + STR×0,25 (alle Quellen summiert) |
+| Mana | Standard 100; Regen 10/Zug (INT 10 Standard); aktive Gravur-Skills kosten Mana; passive Gravuren reservieren Mana in der Homezone |
+| VIT/LP | 1 VIT = 6 LP (Faktor modellierbar) |

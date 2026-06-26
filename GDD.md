@@ -286,8 +286,37 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 **Grundwerte:**
 
 - **Regeneration:** keine automatische HP-Regen (Ausnahme: Menschen-Trait „Gemeinschaft", → §5.5).
-- **Mana-Regeneration:** standardmäßig **10 pro Zug**, erhöhbar über **INT**.
-- **Leben:** jeder Punkt **VIT** = **6 Lebenspunkte**.
+- **Mana-Pool:** Standardwert **100**; erhöhbar durch Skilltree-Nodes und Items.
+- **Mana-Start:** Jede Einheit beginnt jeden Kampf mit **vollem Mana**.
+- **Mana-Regeneration:** standardmäßig **10 pro Zug** bei INT 10 (Standard), skaliert mit INT.
+- **Mana-Verbrauch:** Aktive Skills einer aktiven Gravur kosten Mana.
+- **Mana-Reservierung:** Passive Gravuren reservieren Mana **beim Platzieren der Einheit in der Homezone** (dem Bereich, in dem Einheiten zu Kampfbeginn aufgestellt werden). Das reservierte Mana steht nicht als freies Mana zur Verfügung.
+- **Leben:** jeder Punkt **VIT** = **6 Lebenspunkte** *(Faktor modellierbar — kann im Balancing angepasst werden)*.
+
+---
+
+#### Rohschaden-Formeln
+
+Der Rohschaden wird **vor** der Schadensreduktion (WID, Rüstung/Resistenz) berechnet. Fähigkeiten, die den Rohschaden erhöhen (z. B. +20 %), greifen **an dieser Stelle**, nicht nach der Reduktion.
+
+**Nahkampf — Physisch:**
+```
+Rohschaden = STR (Einheit) + STR (Waffe) + Buffs/Debuffs
+```
+
+**Nahkampf — Magisch:**
+```
+Rohschaden = WIL (Einheit) + WIL (Waffe) + Buffs/Debuffs
+```
+
+> STR und WIL kumulieren aus allen Quellen (Basisattribut + Waffe + Ausrüstung + Buffs).
+
+**Fernkampf (Schützen-Skalierung):**
+```
+Rohschaden = GES × 0,75 + STR × 0,25
+```
+> Alle GES- und STR-Werte aus sämtlichen Quellen (Basisattribut + Waffe + Ausrüstung + Buffs) werden zuerst summiert, dann mit 0,75 bzw. 0,25 gewichtet.  
+> *Design-Entscheidung: GES dominiert den Fernkampf-Rohschaden (¾), STR spielt eine untergeordnete Rolle (¼). Das erzeugt eine klare Nah-/Fernkampf-Dynamik: STR-Builds sind im Nahkampf stärker, GES-Builds auf Distanz.*
 
 ---
 
@@ -598,9 +627,10 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 
 | Waffe | Optimale Reichweite | Nahkampf | Zu weit | Identität |
 |---|---|---|---|---|
-| **Armbrust** | 1–2 Felder | kein Malus (0–1) | ab 3 | „Schwert unter den Fernkampfwaffen" — immer brauchbar, nie optimal |
-| **Jagdbogen** | 3–4 Felder | −50 % | ab 5 | Mittlere Distanz, Generalist |
-| **Langbogen** | 4–5 Felder | **kein Angriff** | ab 6 | Maximale Reichweite, maximales Nahkampf-Risiko |
+| **Repetierarmbrust** *(E, Wendig)* | 1–2 Felder | kein Malus (0–1) | ab 3 | Einhändig, leicht — mobiler Kurzdistanz-Schütze; Offhand möglich |
+| **Kriegsarmbrust** *(B, Träge)* | 1–2 Felder | kein Malus (0–1) | ab 3 | Beidhändig, schwer — maximaler Einzelschaden & RD auf kurze Distanz |
+| **Jagdbogen** *(B, Ausgeglichen)* | 3–4 Felder | −50 % | ab 5 | Mittlere Distanz, Generalist |
+| **Langbogen** *(B, Bedächtig)* | 4–5 Felder | **kein Angriff** | ab 6 | Maximale Reichweite, maximales Nahkampf-Risiko |
 
 **Adlerauge-Interaktion:** erweitert **beide** Grenzen um +1 (optimale Zone und Malus-/Reichweitengrenze).
 
@@ -867,9 +897,24 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Hub visuelle Progression (Siedlung wächst) konzipieren
 - [ ] Rekrutierungs-Taverne ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
-- [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
-- [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — referenziert in §5.2 Kälte)
-- [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree) — Plattentank darf nicht unbesiegbar werden
+- [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — Detailwerte)
+- [ ] Trefferchance & Krit-Grundregeln definieren
+- [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
+- [ ] MOB-Basiswerte je Klasse definieren (folgt bei Klassen-Attributen)
+- [ ] Startattribute aller Klassen ausarbeiten (STR, GES, WIL, INT, VIT, WID, MOB, Speed-Basis)
+- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten
+- [ ] Waffentypen Gewichtsklassen-Zuweisung vervollständigen (alle 13 Typen)
+- [ ] Kriegsarmbrust Distanzprofil von Repetierarmbrust abgrenzen (bisher identisch, ggf. differenzieren)
+- [ ] Waffensystem ausarbeiten (Gravuren, Crafting, Aufwertung, Verfeinerung)
+- [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
+- [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
+- [ ] Ork-Klassen & KI-Verhalten definieren
+- [ ] Ork-Fraktionsbonus definieren
+- [ ] Weitere Regionen definieren
+- [ ] Hub Tag/Nacht-Logik definieren
+- [ ] Hub visuelle Progression (Siedlung wächst) konzipieren
+- [ ] Rekrutierungs-Taverne ausarbeiten
+- [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)

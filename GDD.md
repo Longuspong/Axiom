@@ -208,11 +208,71 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 ### 5.2 Kampfsystem
 
+- **Schadens-/Angriffsarten:** Nahkampfangriff, Fernkampfangriff, Zauber, Fähigkeit
 - **Schadenstypen:** Physisch, Magisch
-- **Defensive Werte:** Resistenz (gegen magischen Schaden), Block (gegen physischen Schaden)
-- **Schadensreduktion (Attribut):** **WID** skaliert die gesamte Schadensreduktion — physisch **und** magisch. **WIL** bleibt rein offensiv (magischer Schaden).
-  - *Design-Entscheidung: Reduktion konsolidiert auf WID (kein Split auf INT/WIL) → eine klare Defensiv-Achse. Der physisch/magisch-Split lebt eine Ebene tiefer über die Werte Block vs. Resistenz bzw. die Ausrüstung.*
-- **Kampfreichweiten:** Nahkampf, Fernkampf
+- **Defensive Werte:**
+  - **Rüstung** — flacher Abzug gegen *physischen* Schaden (pro Treffer)
+  - **Resistenz** — flacher Abzug gegen *magischen* Schaden (pro Treffer)
+  - *(„Block" ist kein Wert mehr, sondern eine Reaktion → siehe Reaktionen)*
+- **Schadensreduktion (Attribut):** **WID** liefert die **prozentuale** Reduktion (physisch **und** magisch); **WIL** bleibt rein offensiv (magischer Schaden).
+  - *Design-Entscheidung: Prozent-Reduktion konsolidiert auf WID (kein Split auf INT/WIL). Der physisch/magisch-Split lebt über die flachen Werte Rüstung vs. Resistenz bzw. die Ausrüstung.*
+
+---
+
+#### Kampfablauf & Aktionsökonomie
+
+- Unterschieden wird in **Nahkampfangriff**, **Fernkampfangriff**, **Zauber** und **Fähigkeit**.
+- Jede Einheit hat in ihrem Zug:
+  - **1 Angriffsaktion** (standardmäßig)
+  - so viele **Bewegungsaktionen**, wie der Charakter **Mobilitätspunkte** hat *(Details bei Klassen/Attributen folgen)*
+- **Reihenfolge frei verschachtelbar:** z. B. 2 Felder gehen → angreifen → 1 Feld gehen; oder angreifen → 2 Felder gehen; oder Fähigkeit nutzen → 1 Feld gehen. Solange Aktionen übrig sind, dürfen sie genutzt werden.
+- **Fähigkeiten & Zauber kosten KEINE Angriffsaktion** — außer die Fähigkeit sagt das ausdrücklich. Balancing läuft über Effekte, die den **nächsten NA (Normalangriff)** verstärken (z. B. *„dein nächster Angriff ist ein garantierter Krit"*).
+- Der Zug endet über die Schaltfläche **„Zug beenden"**.
+
+**Grundwerte:**
+
+- **Regeneration:** keine automatische HP-Regen (Ausnahme: Menschen-Trait „Gemeinschaft", → §5.5).
+- **Mana-Regeneration:** standardmäßig **10 pro Zug**, erhöhbar über **INT**.
+- **Leben:** jeder Punkt **VIT** = **6 Lebenspunkte**.
+
+---
+
+#### Schadensreduktion — WID-Formel
+
+```
+Schaden = max( ⌈ Roh × (1 − R%) ⌉ − Flat , Mindestschaden )
+
+R%   = WID / (WID + 100)     (abnehmender Ertrag, nie 100 %)
+Flat = Rüstung (vs. physisch)  bzw.  Resistenz (vs. magisch)   — pro Treffer
+Mindestschaden = 1
+```
+
+- **WID** liefert die **prozentuale** Reduktion (beide Schadenstypen), mit abnehmendem Ertrag (Halbwert bei WID = 100).
+- **Rüstung / Resistenz** liefern den **flachen Abzug pro Treffer** (physisch / magisch).
+- **Design-Kern:** Der flache Abzug **pro Treffer** macht Einzelschläge stark und Vielfachtreffer schwach gegen schwere Verteidigung — ein großer Schlag verliert den Flat-Abzug einmal, viele kleine Schläge jedes Mal.
+
+**Beispiel** — *Platte* (WID 80 → R% 44 %, Rüstung 12) vs. *Squishy* (WID 30 → R% 23 %, Rüstung 2):
+
+| Angriff | vs. Platte | vs. Squishy |
+|---|---|---|
+| Dolch (1× 40) | **10** | **29** |
+| Dolchpaar (4× 12) | **~4** (je auf Mindestschaden gedrückt) | **~28** |
+| Kriegsarmbrust (1× 60) | **22** | **44** |
+
+> Konsequenz: Dolchpaar = Konter gegen Squishies, hilflos gegen Platte. Kriegsarmbrust durchschlägt Platte, ist aber durch kurze Reichweite & Immobilität schlecht gegen flinke Ziele. Konstante `100` und die Flat-Werte sind Balancing-Stellschrauben.
+
+---
+
+#### Reaktionen
+
+Reaktionen sind verteidigerseitige Reaktionen auf einen Angriff. Ihre **Stärke/Chance ist immer quellenabhängig** (eine Fähigkeit kann z. B. „pariert alle Angriffe für 2 Runden" = 100 % geben, eine reaktive Gravur z. B. „10 % Chance, einen Angriff zu parieren").
+
+| Reaktion | Trigger | Wirkung |
+|---|---|---|
+| **Gegenschlag** | erlittener **Nahkampf**angriff | Verteidiger schlägt mit einem **Normalangriff** zurück. **Triggert nicht bei Backstab.** Verteidiger erleidet den Treffer dennoch. |
+| **Parieren / Block** | erlittener **Nahkampf**angriff | **Verhindert** den Schaden des Nahkampftreffers (kein Rückschlag). |
+| **Zauberblock** | erlittener **Zauber**, bei dem man **selbst Ankerpunkt/Ziel** ist | Verhindert den Zauberschaden. **Wirkt nicht**, wenn eine AoE-Fähigkeit *neben* einem gewirkt wird — dann trifft sie normal. |
+| **Konter** | erlittener **Nahkampf**angriff | **Parieren + Gegenschlag**: kein Schaden erlitten **und** Rückschlag auf den Angreifer. |
 
 ---
 
@@ -486,7 +546,7 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 | WIL | Willenskraft | Magischer Schaden; Voraussetzung für Top-Ausrüstung |
 | INT | Intelligenz | Mana-Pool/-Effizienz; Heilungs- und Schutzskalierung; Buff-Dauer |
 | VIT | Vitalität | HP-Pool; Skalierung von beschworenen Einheiten |
-| WID | Widerstandskraft | Defensivwerte, magische/physische Resistenz |
+| WID | Widerstandskraft | Prozentuale Schadensreduktion (physisch + magisch) — Formel in §5.2; flache Reduktion läuft über Rüstung/Resistenz |
 | STR | Stärke | Physischer Schaden (Abkürzung STR statt STÄ) |
 | GES | Geschicklichkeit | Bewegung, Ausweichen, Schütze-Skalierung |
 | *(weitere folgen)* | | |

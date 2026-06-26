@@ -56,9 +56,22 @@ git push origin claude/keen-gauss-2k5waj --force
 
 ---
 
-## Was als nächstes kommt (Reihenfolge laut Nutzer)
+## Stand letzte Sitzung (Kampfsystem)
 
-1. **Waffenliste** — detailliertes Waffensystem (nächste Sitzung)
+§5.2 ist jetzt der dickste Block. Abgeschlossen:
+- Systemweite Begriffe (Angriff, Felder/Flächen, Angriffsrichtungen)
+- Kampfablauf & Aktionsökonomie (1 Angriffsaktion + Mobilitätspunkte, frei verschachtelbar; Fähigkeiten/Zauber kosten keine Angriffsaktion außer ausdrücklich; „Zug beenden")
+- Grundwerte: keine Auto-HP-Regen (außer „Gemeinschaft"), Mana 10/Zug (+INT), VIT = 6 HP/Punkt
+- Schadensmodell: WID-Formel `WID/(WID+100)` + Rüstung/Resistenz (flat) + RD (prozentual), inkl. EHP-Begründung & WID-Cap-Vermerk
+- Reaktionen: Gegenschlag, Parieren/Block, Zauberblock, Konter
+- Statuseffekte: Einheiten (14) + Felder (6)
+- §5.3 Waffensystem-Start: Bögen (Distanzprofile, Falloff, Adlerauge)
+
+## Was als nächstes kommt
+
+Offene Kampf-Bausteine (→ §11): Gegenschlag/Zauberblock-Detailwerte, Trefferchance/Krit-Grundregeln, Initiative/Zugreihenfolge, WID-Cap final.
+
+1. **Waffenliste** — restliches Waffensystem (Nahkampf, Stats, Gravuren)
 2. **Crafting / Verbesserung / Refinement** — inkl. Gravuren-System (§9.5)
 3. **Skilltree** — erstes gemeinsames Code-Projekt
 

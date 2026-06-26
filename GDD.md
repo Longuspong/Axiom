@@ -280,6 +280,25 @@ R%  = WID / (WID + 100)    (abnehmender Ertrag, nie 100 %)
 > - **Kriegsarmbrust:** echter Plattenknacker (28 dank 50 % RD), gegen Squishy nichts dazu (RD verpufft bei Rüstung 0). Ihre Schwäche gegen Flinke ist **positionell** (kurze Reichweite, Immobilität, Trefferchance-Falloff), nicht beim Schaden-auf-Treffer.
 > - Konstante `100`, die Rüstungswerte und RD-% sind die Balancing-Stellschrauben.
 
+**Warum `WID/(WID+100)`? (Design-Begründung)**
+
+In **Prozent** hat WID abnehmenden Ertrag (50 → 33 %, 100 → 50 %, 150 → 60 %). In **effektiver Lebenskraft (EHP)** ist es aber **linear** — jeder Punkt ist gleich viel wert:
+
+```
+EHP-Faktor = 1 / (1 − R%) = (WID + 100) / 100 = 1 + WID/100
+```
+
+| WID | R% | EHP-Faktor |
+|---|---|---|
+| 0 | 0 % | ×1,0 |
+| 100 | 50 % | ×2,0 |
+| 200 | 66,7 % | ×3,0 |
+| 300 | 75 % | ×4,0 |
+
+→ Jede **100 WID = +1 volle Lebensleiste effektiv**. Konsequenz: **keine verschwendeten späten Punkte** (Stacking lohnt konstant), aber auch **kein kaputtes Stacking** (man nähert sich nie 100 % Immunität). Der gefühlte abnehmende %-Ertrag ist genau das Self-Balancing, das einen Tank nicht unkillbar werden lässt.
+
+**WID-Cap (Pflicht):** Damit ein voll gepanzerter Plattentank **nicht unbesiegbar** wird, muss WID gedeckelt werden. Vorgesehen: **Hard-Cap bei 100 WID** (= 50 % Reduktion) bzw. Soft-Cap über das Skilltree-Limit (der Baum gibt nicht mehr als ~100 dauerhaft her). Höhere Reduktion entsteht dann nur **situativ** über Buffs/Ausrüstung, nicht als Dauerzustand. *(Konkreter Cap-Wert → Balancing, siehe §11.)*
+
 ---
 
 #### Reaktionen
@@ -796,6 +815,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Kampfsystem-Werte definieren (Regeneration, Block, Resistenz etc.)
 - [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — referenziert in §5.2 Kälte)
+- [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree) — Plattentank darf nicht unbesiegbar werden
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
 - [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)

@@ -240,26 +240,45 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 #### Schadensreduktion — WID-Formel
 
 ```
-Schaden = max( ⌈ Roh × (1 − R%) ⌉ − Flat , Mindestschaden )
+effektive_Rüstung = Rüstung × (1 − RD%)            (RD = Rüstungsdurchdringung)
+Schaden           = max( ⌈ Roh × (1 − R%) ⌉ − effektive_Rüstung , 1 )
 
-R%   = WID / (WID + 100)     (abnehmender Ertrag, nie 100 %)
-Flat = Rüstung (vs. physisch)  bzw.  Resistenz (vs. magisch)   — pro Treffer
-Mindestschaden = 1
+R%  = WID / (WID + 100)    (abnehmender Ertrag, nie 100 %)
 ```
 
-- **WID** liefert die **prozentuale** Reduktion (beide Schadenstypen), mit abnehmendem Ertrag (Halbwert bei WID = 100).
-- **Rüstung / Resistenz** liefern den **flachen Abzug pro Treffer** (physisch / magisch).
-- **Design-Kern:** Der flache Abzug **pro Treffer** macht Einzelschläge stark und Vielfachtreffer schwach gegen schwere Verteidigung — ein großer Schlag verliert den Flat-Abzug einmal, viele kleine Schläge jedes Mal.
+**Die drei getrennten Hebel:**
 
-**Beispiel** — *Platte* (WID 80 → R% 44 %, Rüstung 12) vs. *Squishy* (WID 30 → R% 23 %, Rüstung 2):
+- **WID → prozentuale Reduktion** (beide Schadenstypen), abnehmender Ertrag (Halbwert bei WID = 100). Das ist die *allgemeine Zähigkeit*.
+- **Rüstung (physisch) / Resistenz (magisch) → flacher Abzug pro Treffer.** Das ist *Panzerung* — eine Eigenschaft schwerer Rüstung; Squishy-Builds haben **≈ 0**.
+- **Rüstungsdurchdringung (RD) → prozentual**, senkt die Rüstung/Resistenz des Ziels **vor** der Berechnung. Wirkt **nur auf den Flat-Wert, nicht auf die WID-Prozentreduktion** — RD kontert Panzerung, nicht allgemeine Zähigkeit.
 
-| Angriff | vs. Platte | vs. Squishy |
+**Zwei Designregeln, die das System tragen:**
+
+1. **Flat = Rüstungshärte.** Squishies haben kaum Rüstung → der flache Abzug greift dort fast nicht.
+2. **Multi-Hit-Waffen haben höheren *Gesamt*-Rohschaden** (verteilt auf viele kleine Treffer). Dadurch sind sie gegen ungepanzerte Ziele stark (höherer Rohschaden, nur %-Reduktion), gegen Panzerung schwach (jeder kleine Treffer zahlt den Flat-Abzug erneut).
+
+**Beispiel** — *Stilett* (1× 45), *Dolchpaar* (2× 29,25 = 58,5 gesamt, RD 0) und *Kriegsarmbrust* (1× 60, **RD 50 %**):
+
+*Squishy* — WID 30 → R% 23 %, **Rüstung 0:**
+
+| Angriff | Rechnung | Schaden |
 |---|---|---|
-| Dolch (1× 40) | **10** | **29** |
-| Dolchpaar (4× 12) | **~4** (je auf Mindestschaden gedrückt) | **~28** |
-| Kriegsarmbrust (1× 60) | **22** | **44** |
+| Stilett (1× 45) | ⌈45 × 0,77⌉ | **35** |
+| Dolchpaar (2× 29,25) | ⌈29,25 × 0,77⌉ × 2 = 23 × 2 | **46** |
+| Kriegsarmbrust (1× 60) | ⌈60 × 0,77⌉ | **47** |
 
-> Konsequenz: Dolchpaar = Konter gegen Squishies, hilflos gegen Platte. Kriegsarmbrust durchschlägt Platte, ist aber durch kurze Reichweite & Immobilität schlecht gegen flinke Ziele. Konstante `100` und die Flat-Werte sind Balancing-Stellschrauben.
+*Platte* — WID 80 → R% 44 %, **Rüstung 12:**
+
+| Angriff | Rechnung | Schaden |
+|---|---|---|
+| Stilett (1× 45) | 25 − 12 | **13** |
+| Dolchpaar (2× 29,25) | (17 − 12) × 2 | **10** |
+| Kriegsarmbrust (1× 60, RD 50 % → eff. Rüstung 6) | 34 − 6 | **28** |
+
+> **Konsequenz:**
+> - **Dolchpaar:** DPS-König gegen Squishies (46 > 35), kollabiert gegen Platte (10 < 13).
+> - **Kriegsarmbrust:** echter Plattenknacker (28 dank 50 % RD), gegen Squishy nichts dazu (RD verpufft bei Rüstung 0). Ihre Schwäche gegen Flinke ist **positionell** (kurze Reichweite, Immobilität, Trefferchance-Falloff), nicht beim Schaden-auf-Treffer.
+> - Konstante `100`, die Rüstungswerte und RD-% sind die Balancing-Stellschrauben.
 
 ---
 

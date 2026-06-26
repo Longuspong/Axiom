@@ -82,5 +82,5 @@ git push origin claude/keen-gauss-2k5waj --force
 | Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
 | Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |
 | Attribute | WIL, INT, VIT, WID, STR, GES — alle 3 Buchstaben Caps |
-| Schadensreduktion | Komplett auf **WID** (physisch + magisch); WIL bleibt rein offensiv. Split-Differenzierung über Werte Block/Resistenz + Ausrüstung |
+| Schadensreduktion | 3 Hebel: **WID** = prozentual (`WID/(WID+100)`, beide Typen), **Rüstung/Resistenz** = flacher Abzug pro Treffer (physisch/magisch, Squishy≈0), **RD** = Rüstungsdurchdringung (prozentual, senkt nur den Flat-Wert). WIL bleibt rein offensiv. Multi-Hit = höherer Gesamt-Rohschaden |
 | Bögen-Reichweite | Notation `optimal/max` (z. B. 3–4/5); −30 % Schaden & Trefferchance pro Feld außerhalb der Optimalzone; Adlerauge +1 auf beide Grenzen |

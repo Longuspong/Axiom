@@ -204,7 +204,61 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 - **AoE:** Standard-Squares (quadratische Flächen, Radius in Tiles)
 - **Begründung:** Isometrische Darstellung bietet visuelle Tiefe bei gleichbleibend einfacher Grid-Logik (analog zu Final Fantasy Tactics). Hexagon- und Pentagon-Grids wurden geprüft und verworfen.
 - **Bekannte Einschränkungen:** Diagonale Distanzen wirken optisch kürzer als gerade — wird durch Manhattan-Distanz bewusst in Kauf genommen.
-- **Weitere Details:** *(folgt)*
+
+---
+
+#### Speed & Initiative
+
+**Speed-Wert**
+
+Jede Einheit hat einen Speed-Wert, der die Zugreihenfolge bestimmt. Basiswert ist **1,0**. Ausrüstung modifiziert diesen Wert nach oben oder unten.
+
+**Gewichtsklassen (5 Stufen)**
+
+Jedes Ausrüstungsstück gehört einer von fünf Gewichtsklassen an. Die Klasse steht auf der Waffenkarte bzw. Rüstungskarte als Index.
+
+| Index | Name | Körper-/Waffenslot | Kopf-/Füße-Slot |
+|-------|------|--------------------|-----------------|
+| 1 | **Schnell** | +0,30 | +0,20 |
+| 2 | **Wendig** | +0,15 | +0,10 |
+| 3 | **Ausgeglichen** | ±0,00 | ±0,00 |
+| 4 | **Bedächtig** | −0,15 | −0,10 |
+| 5 | **Träge** | −0,30 | −0,20 |
+
+> Waffen verwenden denselben Speed-Index wie Körperrüstungen (+0,30 bis −0,30).
+
+**Speed-Maximum & -Minimum**
+
+- **Max. Speed-Bonus durch Ausrüstung:** +1,0 (Waffe +0,30 + Körper +0,30 + Kopf +0,20 + Füße +0,20)
+- **Max. Speed-Malus durch Ausrüstung:** −1,0 (symmetrisch)
+- Zusätzliche Speed-Modifikation durch Buffs/Debuffs (z. B. +20 % durch bestimmte Skills) ist möglich.
+
+**Waffenkarte (UI)**
+
+Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
+- Oben links: Waffensymbol
+- Name der Waffe
+- Waffenklasse (z. B. „Stichwaffen")
+- Gewichtsklassen-Index (z. B. „Wendig")
+
+**Initiativereihenfolge**
+
+- Die Einheit mit dem **höchsten Speed-Wert** zieht zuerst.
+- **Gleichstand:** Die Einheit, die in dieser Runde noch **nicht** gezogen hat, hat Vorrang. Haben beide noch nicht gezogen, entscheidet die längste Wartezeit.
+- **Mehrfachzüge:** Eine Einheit kann in einer Runde mehrfach ziehen, wenn ihr Speed-Wert entsprechend hoch ist. Das Spiel füllt alle Einheiten über einen gemeinsamen Initiative-Balken auf — wer zuerst den Schwellenwert erreicht, ist dran.
+  - *Beispiel: Einheit A (Speed 1) und Einheit B (Speed 2). B zieht zuerst. Dann kommt es zum Gleichstand: A hat noch nicht gezogen → A zieht. Direkt danach zieht B erneut.*
+- Eine **Runde** gilt als beendet, wenn jede Einheit mindestens einmal gezogen hat.
+
+---
+
+#### Mobilität (MOB)
+
+- Jede Einheit hat einen **MOB-Wert**, der bestimmt, wie viele Felder sie sich pro Zug bewegen kann (Manhattan-Distanz).
+- Eine Einheit mit MOB 5 kann sich bis zu 5 Felder bewegen — in beliebig vielen Teilschritten, solange die Gesamtdistanz ≤ 5 bleibt.
+- MOB ist ein **Basiswert pro Klasse** und kann nur durch Items und spezielle Skilltree-Nodes erhöht werden. **Maximum: 5.**
+- **Traits/Eigenarten können zusätzliche Bewegung zurückgeben**, die nicht auf den MOB-Pool angerechnet wird.
+  - *Beispiel: Eine Einheit mit MOB 5 und Pike-Eigenart kann nach den 5 Feldern und einem Angriff durch die Eigenart noch 2 weitere Felder laufen.*
+- Konkrete MOB-Basiswerte je Klasse → folgt bei Klassen-Attributen (§5.3).
 
 ### 5.2 Kampfsystem
 

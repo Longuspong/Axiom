@@ -64,6 +64,43 @@ git push origin claude/keen-gauss-2k5waj --force
 
 ---
 
+## Placeholder-Sprites (Stand: Sitzung 2026-06-26)
+
+### Strategie
+- **Ein grayscale Sprite** für alle Charaktertypen → Godot `modulate` für Farb-Differenzierung
+- Spieler: Blau (`Color(0.29, 0.56, 0.89)`) | Gegner: Rot (`Color(0.89, 0.29, 0.29)`)
+- Format: 4 ISO-Richtungen (S, N, O, W), Sprite-Sheet 2×2 Grid
+
+```gdscript
+# Spieler
+sprite.modulate = Color(0.29, 0.56, 0.89)
+# Gegner
+sprite.modulate = Color(0.89, 0.29, 0.29)
+```
+
+### Tools ausprobiert
+| Tool | Status | Ergebnis |
+|------|--------|----------|
+| Pixellab.ai | ❌ Tokens leer | Bestes Tool für Pixel-Sprites (8-Richtungen direkt wählbar) — für nächste Sitzung mit Tokens nutzen |
+| DALL-E / OpenAI | ⚠️ nicht getestet | Detaillierte 4-Richtungs-Prompts wurden vorbereitet |
+| LibreSprite | ⏳ geplant | Manuell; Tutorial-Links vorhanden |
+| Claude / Fable 5 | ❌ nicht möglich | Text-LLM, kann keine Bilder generieren |
+
+### Pixellab.ai-Prompt (für nächste Sitzung)
+```
+Isometric pixel art character sprite, generic humanoid placeholder, 
+grayscale/desaturated only (no color), 32x32 or 48x48 pixels,
+top-down isometric 3/4 view, 4 directions: South (facing viewer), 
+North (facing away), East (facing right), West (facing left),
+clean simple silhouette, thick 1px black outline, suitable for 
+tactical RPG, HD pixel art style, no background, transparent
+```
+
+### Nächster Schritt Sprites
+→ Pixellab.ai mit neuen Tokens aufrufen, obigen Prompt verwenden, alle 4 Richtungen generieren → in Godot als SpriteFrames einbinden.
+
+---
+
 ## Wichtige Design-Entscheidungen (Kurzreferenz)
 
 | Thema | Entscheidung |

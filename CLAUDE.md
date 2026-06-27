@@ -75,9 +75,8 @@ Abgeschlossen in dieser Sitzung:
 
 ## Was als nächstes kommt
 
-1. **Klassen-Startattribute** (STR, GES, WIL, INT, VIT, WID, MOB je Klasse)
-2. **Einhand/Zweihand + Offhand-System** definieren
-3. **Restliches Waffensystem** (Nahkampf-Stats, Gravuren, Crafting)
+1. **Einhand/Zweihand + Offhand-System** definieren
+2. **Restliches Waffensystem** (Nahkampf-Stats, Gravuren, Crafting)
 
 ---
 

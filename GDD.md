@@ -491,6 +491,21 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
 ---
 
+#### Klassen-Startattribute
+
+| Klasse | VIT | WID | STR | GES | INT | WIL | MOB |
+|--------|-----|-----|-----|-----|-----|-----|-----|
+| Krieger | 20 | 20 | 10 | 10 | 10 | 10 | 3 |
+| Assassine | 10 | 10 | 20 | 15 | 10 | 10 | 4 |
+| Schütze | 10 | 10 | 15 | 20 | 10 | 10 | 3 |
+| Magier | 10 | 10 | 10 | 10 | 15 | 20 | 3 |
+| Mystiker | 15 | 15 | 10 | 10 | 15 | 10 | 3 |
+
+> Speed-Basiswert aller Klassen: **1,0** (wird durch Ausrüstung modifiziert).  
+> MOB-Maximum durch Items/Skillnodes: **5**.
+
+---
+
 #### Klassen-Archetypen
 
 **Design-Prinzip:** Alle Klassen starten als versatile, nützliche Schablone. Durch den Skilltree entwickeln sie sich zu hochspezialisierten Einheiten. Die Progressionskurve ist bis Level ~25 linear, ab Level 35 straff. Die letzten 5 Level (46–50) sind ggf. hinter einer Klassen-Prüfung / einem Herausforderungsmodus gegattet.
@@ -900,8 +915,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — Detailwerte)
 - [ ] Trefferchance & Krit-Grundregeln definieren
 - [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
-- [ ] MOB-Basiswerte je Klasse definieren (folgt bei Klassen-Attributen)
-- [ ] Startattribute aller Klassen ausarbeiten (STR, GES, WIL, INT, VIT, WID, MOB, Speed-Basis)
+- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten
 - [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten
 - [ ] Waffentypen Gewichtsklassen-Zuweisung vervollständigen (alle 13 Typen)
 - [ ] Kriegsarmbrust Distanzprofil von Repetierarmbrust abgrenzen (bisher identisch, ggf. differenzieren)

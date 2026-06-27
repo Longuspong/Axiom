@@ -493,13 +493,13 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
 #### Klassen-Startattribute
 
-| Klasse | VIT | WID | STR | GES | INT | WIL | MOB |
-|--------|-----|-----|-----|-----|-----|-----|-----|
-| Krieger | 20 | 20 | 10 | 10 | 10 | 10 | 3 |
-| Assassine | 10 | 10 | 20 | 15 | 10 | 10 | 4 |
-| Schütze | 10 | 10 | 15 | 20 | 10 | 10 | 3 |
-| Magier | 10 | 10 | 10 | 10 | 15 | 20 | 3 |
-| Mystiker | 15 | 15 | 10 | 10 | 15 | 10 | 3 |
+| Klasse | VIT | WID | STR | GES | INT | WIL | MOB | Σ |
+|--------|-----|-----|-----|-----|-----|-----|-----|---|
+| Krieger | 20 | 20 | 10 | 10 | 10 | 10 | 3 | 80 |
+| Assassine | 10 | 10 | 20 | 15 | 10 | 10 | 4 | 75 |
+| Schütze | 10 | 10 | 15 | 20 | 10 | 10 | 3 | 75 |
+| Magier | 10 | 10 | 10 | 10 | 15 | 20 | 3 | 75 |
+| Mystiker | 15 | 15 | 10 | 10 | 15 | 10 | 3 | 75 |
 
 > Speed-Basiswert aller Klassen: **1,0** (wird durch Ausrüstung modifiziert).  
 > MOB-Maximum durch Items/Skillnodes: **5**.

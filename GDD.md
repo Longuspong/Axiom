@@ -470,6 +470,8 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 - **Dichter Nebel**: Eine Figur darauf sieht nur **2 Felder weit**; ohne Sichtlinie kein Angriff möglich. Durch dichten Nebel kann man **nicht hindurchsehen**.
 - **Blockiert**: Per Fähigkeit blockierte Felder sind für die Dauer des Effekts **nicht begehbar** und zählen als nicht begehbares Terrain — **Verbündete können sie normal betreten**.
 
+- **Straucheln** *(negativ)*: Dauer 1 Runde. Reduziert die WID des Ziels um **50 %**. Wird ausgelöst wenn eine Einheit durch einen Push in ein unbegehbares Feld oder eine bereits belegte Position gedrückt wird.
+
 - **Weitere Details:** *(folgt)*
 
 ### 5.3 Klassen & Waffen
@@ -616,6 +618,31 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 
 **Waffen:** Dolchpaar, Kampfmesser (Einhand-Dolch), Rapier  
 **Weitere Spezialisierungen:** *(folgt im Waffensystem)*
+
+---
+
+#### Waffensystem — Waffentypen & Eigenarten
+
+Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechanik, die den Spielstil der Waffe definiert.
+
+| Waffenklasse | Waffentyp | Hand | Gewicht | Eigenart | Effekt |
+|---|---|---|---|---|---|
+| Schwerter | Breitschwert | E | Ausgeglichen | **Frontmann** | +15 % Rohschaden bei Frontalangriff. |
+| Schwerter | Falchion | E | Ausgeglichen | **Erbarmungslos** | Trifft das Falchion eine Einheit, wird diese mit **Opfer** markiert (nur eine Einheit gleichzeitig; Markierung springt beim nächsten Treffer auf die neue Einheit). Markierte Einheit erhält von weiteren Falchion-Angriffen **+20 % Schaden** und Angriffe haben **20 % Chance, Blutung** auszulösen. |
+| Äxte | Kampfaxt | B | Bedächtig | **Kollateralschaden** | Treffen alle möglichen Ziele (Hauptziel + bis zu 2 Nachbarn), erhalten **alle Getroffenen zusätzlich 30 % des Schadens** dieses Angriffs. |
+| Kriegsgeräte | Hammer | E | Bedächtig | **Trägheit** | Angriffe mit dem Hammer **reduzieren den MOB des Ziels um 1** für dessen nächsten Zug. |
+| Kriegsgeräte | Rammbock | B | Träge | **Fliehkraft** | Pusht das Ziel **1 Feld nach hinten**. Ist das Feld unbegehbar oder belegt, erhält das Ziel stattdessen **10 % seiner max. LP als Schaden** und den Statuseffekt **Straucheln** (1 Runde, −50 % WID). |
+| Kriegsgeräte | Zepter | B | Ausgeglichen | **Manavampir** | **20 % des verursachten Schadens** werden dem Angreifer als Mana erstattet. |
+| Stabwaffen | Pike | E | Ausgeglichen | **Duellist** | Trifft ein Angriff einen Gegner, darf die Einheit sofort **2 Felder ohne MOB-Kosten** gehen (max. einmal pro Zug, aber mehrmals pro Runde möglich). |
+| Stichwaffen | Dolchpaar | B | Schnell | **Dopplereffekt** | Das Dolchpaar sticht **zweimal zu**, jeder Stich verursacht **65 % des normalen Schadens**. |
+| Stichwaffen | Rapier | E | Schnell | **Fechtkunst** | Parieren triggert **immer einen Gegenschlag**. Universeller **+20 % Bonus auf die Parieren-Chance**. |
+| Stichwaffen | Stilett | E | Schnell | **Meuchelschlag** | Backstabs triggern **immer Blutung**. Backstabs haben **+50 % Schaden**. |
+| Bogenwaffen | Jagdbogen | B | Wendig | **Jagdinstinkt** | *(folgt)* |
+| Bogenwaffen | Repetierarmbrust | E | Wendig | **Techniker** | *(folgt)* |
+| Bogenwaffen | Langbogen | B | Ausgeglichen | **Heckenschütze** | *(folgt)* |
+| Bogenwaffen | Kriegsarmbrust | B | Bedächtig | **Durchschlagskraft** | *(folgt)* |
+| Zauberwaffen | Zauberstab | E | Wendig | **Energiefaser** | *(folgt)* |
+| Zauberwaffen | Energiesphäre | E | Wendig | **Segnung** | *(folgt)* |
 
 ---
 

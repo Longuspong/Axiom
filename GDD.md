@@ -637,12 +637,12 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 | Stichwaffen | Dolchpaar | B | Schnell | **Dopplereffekt** | Das Dolchpaar sticht **zweimal zu**, jeder Stich verursacht **65 % des normalen Schadens**. |
 | Stichwaffen | Rapier | E | Schnell | **Fechtkunst** | Parieren triggert **immer einen Gegenschlag**. Universeller **+20 % Bonus auf die Parieren-Chance**. |
 | Stichwaffen | Stilett | E | Schnell | **Meuchelschlag** | Backstabs triggern **immer Blutung**. Backstabs haben **+50 % Schaden**. |
-| Bogenwaffen | Jagdbogen | B | Wendig | **Jagdinstinkt** | *(folgt)* |
-| Bogenwaffen | Repetierarmbrust | E | Wendig | **Techniker** | *(folgt)* |
-| Bogenwaffen | Langbogen | B | Ausgeglichen | **Heckenschütze** | *(folgt)* |
-| Bogenwaffen | Kriegsarmbrust | B | Bedächtig | **Durchschlagskraft** | *(folgt)* |
-| Zauberwaffen | Zauberstab | E | Wendig | **Energiefaser** | *(folgt)* |
-| Zauberwaffen | Energiesphäre | E | Wendig | **Segnung** | *(folgt)* |
+| Bogenwaffen | Jagdbogen | B | Wendig | **Jagdinstinkt** | Deckt **unsichtbare Gegner** innerhalb der eigenen Bewegungsreichweite (MOB) auf. |
+| Bogenwaffen | Repetierarmbrust | E | Wendig | **Techniker** | Wurde letzten Zug **kein Angriff** ausgeführt, wird ein zweiter Bolzen geladen — der nächste Angriff verursacht **+50 % Schaden**. |
+| Bogenwaffen | Langbogen | B | Ausgeglichen | **Heckenschütze** | Wurde die Einheit letzten Zug **nicht bewegt**, verursacht sie diesen Zug **+30 % Schaden**. |
+| Bogenwaffen | Kriegsarmbrust | B | Bedächtig | **Durchschlagskraft** | Alle Angriffe haben **50 % Rüstungsdurchdringung (RD)**. |
+| Zauberwaffen | Zauberstab | E | Wendig | **Energiefaser** | Erhält die Einheit **zwei Züge lang keinen Schaden**, entsteht ein **Energieschild (Schutz)** in Höhe des **maximalen Mana-Pools**. |
+| Zauberwaffen | Energiesphäre | E | Wendig | **Segnung** | Heilungen dieser Einheit wirken zu **Beginn des nächsten Zuges erneut**, aber nur zu **20 % des ursprünglichen Wertes**. |
 
 ---
 

@@ -52,7 +52,7 @@ git push origin claude/updated-weapons-list-l1iuk8 --force
 
 ---
 
-## GDD-Stand (aktuell: v0.8)
+## GDD-Stand (aktuell: v0.9)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -62,7 +62,7 @@ git push origin claude/updated-weapons-list-l1iuk8 --force
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, restl. Waffen/Offhands/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, restl. Waffen/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -75,20 +75,21 @@ git push origin claude/updated-weapons-list-l1iuk8 --force
 ## Stand letzte Sitzung
 
 Abgeschlossen in dieser Sitzung:
-- **Waffenliste verifiziert & ausgegeben:** vollständige 112-Waffen-Liste im Excel-Format (alle 16 Typen × 7 Stufen)
-- **`data/itemliste_v6.xlsx` angelegt:** Gesamt-Excel mit allen 7 Sheets (Seltenheit, Waffenklassen, Waffentypen, Slot-Templates, Stat-Skalierung, Waffen vollständig, Gravuren)
-- **Ausgabeformat-Regel** in CLAUDE.md verankert: Wertelisten immer in Excel-Listenform (siehe oben)
-- **Datenhaltung getrennt:** Scaffold-JSONs für `offhands`, `kopf-`, `koerper-`, `fussausruestung` angelegt (Struktur + feststehende Fakten, `eintraege` noch leer)
+- **Einhand/Zweihand + Offhand-System** definiert (GDD §5.3): Einhand = Offhand/Dualwield, Zweihand = kein Offhand, +35 % Grundwerte (mit weapons.json abzustimmen)
+- **`data/offhands.json` befüllt:** 12 Offhand-Typen × 7 Stufen = 84 Einträge + `offhandtypen` + Platzhalter-`stat_skalierung`. Klassen: Schild (Buckler/Turmschild), Magischer Fokus (Foliant/Energiekristall), Hilfsmittel (Kampfkette, Laterne, Fester Gürtel, Fackel, Signalhorn, Standarte, Rauchschwenker, Köderkolben). Jedes Offhand: genau 1 Hauptattribut, Eigenart fest, Gravur-Slots bis Stahl 1 / ab Titan 2
+- **Zwei neue Systeme dokumentiert** (GDD §5.2): **Aggro/Threat** (Formel, Hysterese, Decay, Taunt, Guard, Präsenz-Aggro) und **Sichtsystem** (3 Zustände Offenbar/Unsichtbar/Scheinbar)
 
-Frühere Sitzung (Gameplay):
+Frühere Sitzungen:
+- Waffenliste (112 Waffen) + `itemliste_v6.xlsx`; Scaffold-JSONs für Rüstung
 - Speed-System, Initiative, Mobilität, Rohschaden-Formeln, Mana-System, Armbrüste aufgeteilt
 
 ## Was als nächstes kommt
 
-1. **Einhand/Zweihand + Offhand-System** definieren → `offhands.json` füllen
-2. **Rüstungs-Items** (Kopf/Körper/Füße) designen → jeweilige JSONs füllen
-3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-4. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
+1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
+2. **Zweihand-Ausgleich (+35 %)** mit `data/weapons.json` final abstimmen
+3. **Rüstungs-Items** (Kopf/Körper/Füße) designen → jeweilige JSONs füllen
+4. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
+5. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
 
 ## Dateistruktur
 
@@ -96,7 +97,7 @@ Frühere Sitzung (Gameplay):
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
 | `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
-| `data/offhands.json` | Offhand-Daten (Schilde etc.) — **Scaffold**, `eintraege` noch leer |
+| `data/offhands.json` | Offhand-Daten: Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12), `stat_skalierung` (Platzhalter), **84 Einträge** (12 Typen × 7 Stufen) |
 | `data/kopfausruestung.json` | Kopf-Rüstung — **Scaffold**, `eintraege` noch leer |
 | `data/koerperausruestung.json` | Körper-Rüstung — **Scaffold**, `eintraege` noch leer |
 | `data/fussausruestung.json` | Fuß-Rüstung — **Scaffold**, `eintraege` noch leer |
@@ -133,3 +134,7 @@ Frühere Sitzung (Gameplay):
 | Rohschaden Fernkampf | GES×0,75 + STR×0,25 (alle Quellen summiert) |
 | Mana | Standard 100; Regen 10/Zug (INT 10 Standard); aktive Gravur-Skills kosten Mana; passive Gravuren reservieren Mana in der Homezone |
 | VIT/LP | 1 VIT = 6 LP (Faktor modellierbar) |
+| Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf alle Grundwerte (mit weapons.json abzustimmen) |
+| Offhands | Klasse+Typ wie Waffen, aber KEINE Waffen (Gimmicks). Genau 1 Hauptattribut, Eigenart fest = Identität, Gravuren modular. Gravur-Slots: bis Stahl 1, ab Titan 2. Daten: `data/offhands.json` (84 Einträge). Affinitäten = Empfehlung, frei kombinierbar |
+| Aggro/Threat | Threat nur durch Aktionen (`base×coeff×proximity`); Hysterese 110/130 %, Decay 5 %, Taunt-Lock 3 Züge, Guard 50/50. Präsenz-Aggro nur über Ausrüstungs-Auren (§5.2) |
+| Sichtsystem | Kein Fog of War. 3 Zustände: Offenbar / Unsichtbar / Scheinbar (≤2 Felder von Gegner aufgedeckt). Angriff/Zauber/Treffer → Offenbar (§5.2) |

@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.7  
+**Version:** 0.9  
 **Stand:** 2026-06-25  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -472,6 +472,67 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 
 - **Straucheln** *(negativ)*: Dauer 1 Runde. Reduziert die WID des Ziels um **50 %**. Wird ausgelöst wenn eine Einheit durch einen Push in ein unbegehbares Feld oder eine bereits belegte Position gedrückt wird.
 
+---
+
+#### Aggro- & Threat-System
+
+**Grundprinzip:** Threat entsteht **ausschließlich durch Aktionen**, nicht durch Klasse oder Haltung. Tanken ist emergent: Wer vorne steht und threat-starke Fähigkeiten nutzt, hält die Aggro. Die Zielwahl der Gegner-KI folgt der Threat-Tabelle — die Zielwahl des **Spielers** ist davon unabhängig.
+
+**Datenstruktur:** Jeder Gegner führt eine eigene Threat-Tabelle. Werte kumulieren über die Runden und zerfallen passiv (→ Decay).
+
+**Threat-Formel:** `threat += baseValue × abilityCoeff × proximityMod`
+
+| Parameter | Bedeutung |
+|---|---|
+| `baseValue` | Schaden bzw. Heilmenge der Aktion |
+| `abilityCoeff` | Fähigkeits-spezifischer Multiplikator (s. u.) |
+| `proximityMod` | 1.5 wenn Manhattan-Distanz (Angreifer → Gegner) ≤ 2 Felder (Frontline, §5.1), sonst 1.0 |
+
+**Ability-Threat-Koeffizienten** (je Fähigkeit als `threatCoeff` hinterlegt, einzeln tunebar):
+
+| Kategorie | `abilityCoeff` | Beispiele |
+|---|---|---|
+| Normaler Angriff | 1.0 | Basis-Nahkampf, Basis-Fernkampf |
+| Schaden-Skills | 1.0 | Wuchtschlag, Wirbelschlag, Feuerball, Schildschlag |
+| Heilung | 0.5 | Erste Hilfe, Zweiter Wind |
+| Präzisions-/Snipe-Skills | 0.35 | Gezielter Schuss, Mehrfachschuss |
+| Defensiv (Guard-Aktivierung) | flat `50 × 1.0` | Beschützen |
+| Taunt | Sonderfall | s. u. |
+
+**Hysterese (klebrige Aggro):** Ein Gegner wechselt das Ziel erst, wenn eine andere Einheit den Threat des aktuellen Ziels übersteigt — Nahkampf-Gegner ab **110 %**, Distanz-/Werfer-Gegner ab **130 %** (träger, damit sie schwerer von der Backline weggelockt werden). Verhindert Zielflackern.
+
+**Decay:** Pro Gegnerzug verlieren alle Einträge **außer dem aktuellen Ziel** 5 % (`× 0.95`). Werte < 1 werden gelöscht.
+
+**Taunt:** Keine flache Addition. Stattdessen `threat[Caster] = max(Tabelle) × 1.1` und Force-Lock des Gegners auf den Caster für **3 Züge** (überschreibt Hysterese). Eskaliert nicht bei Wiederholung, weil der Max-Wert die Basis ist.
+
+**Guard (aktiv, WID):** Eine Einheit schützt einen Verbündeten für **2 Züge**. Der erzeugte Threat des Verbündeten wird 50/50 zwischen Guardian und Verbündetem aufgeteilt; die Aktivierung selbst erzeugt flat **50 Threat** gegen alle Gegner.
+
+**Präsenz-Aggro:** Pure Präsenz erzeugt **keinen** Threat (der Proximity-Mod ist ein Multiplikator auf Aktionen, keine Aura). Präsenz-basierte Aggro ist **Ausrüstungs-Effekten / Auren** vorbehalten — z. B. das Offhand **Köderkolben** (§5.3 / `data/offhands.json`).
+
+**Tuning-Werte (zentral `THREAT_CONFIG`, Ablageort → §10.3):** Frontline-Dist 2 · Proximity 1.5/1.0 · Hysterese 1.10/1.30 · Decay 0.05 · Taunt ×1.1 / 3 Züge · Guard 0.5 / 2 Züge · Defensiv-Flat 50.
+
+---
+
+#### Sichtbarkeit & Tarnung
+
+**Kein Fog of War:** Die Karte ist generell aufgedeckt — Szenerien sind meist Schlachtfelder, auf denen ohnehin gekämpft wird. Tarnung betrifft einzelne Einheiten, nicht das Gelände (Feld-Sichtbeschränkungen wie *Dichter Nebel* laufen separat über Feld-Statuseffekte).
+
+**Drei Sichtbarkeitszustände:**
+
+| Zustand | Sichtbarkeit | Anvisierbar |
+|---------|--------------|-------------|
+| **Offenbar** | Jede Einheit sieht die Figur | Von allen |
+| **Unsichtbar** | Nur verbündete Einheiten sehen die Figur | Von keinem Gegner |
+| **Scheinbar** | Halbtransparent; generell unsichtbar, **aber** gegnerische Einheiten im Umkreis von 2 Feldern (Manhattan, §5.1) decken sie automatisch auf | Nur von Gegnern, die sie aufgedeckt haben (≤ 2 Felder) — andere Gegner nicht |
+
+**Wechsel zu Offenbar (beendet Unsichtbar/Scheinbar):**
+- Eigene Aktion: Angreifen oder einen Zauber wirken → sofort **Offenbar**.
+- Getroffen werden: jeder Treffer (auch indirekt durch AoE oder Aura-Effekt), unabhängig vom Trigger → sofort **Offenbar**.
+
+**Zielbarkeit:** Während **Unsichtbar** oder **Scheinbar** kann die Figur grundsätzlich nicht anvisiert werden — Ausnahme: eine **Scheinbar**-Figur, die ein Gegner ≤ 2 Felder aufgedeckt hat, kann von genau diesem Gegner anvisiert werden, von keinem anderen.
+
+> **Querbezüge:** Das Offhand **Laterne** (*Erhellen*, §5.3) und der Jagdbogen-Eigenart **Jagdinstinkt** (§5.3) decken unsichtbare/scheinbare Gegner auf. Der Assassinen-Pfad *Schattenassassine* (§5.3) nutzt Tarnung als Kern-Utility.
+
 - **Weitere Details:** *(folgt)*
 
 ### 5.3 Klassen & Waffen
@@ -682,6 +743,41 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 | **Jagdbogen** mit Adlerauge | 3–5 Felder | −50 % (0–1) | ab 6 |
 
 > **Konsequenz:** Adlerauge auf der Armbrust ist mechanisch sinnlos — das System zeigt das von selbst, ohne ein explizites Verbot.
+
+---
+
+#### Einhand / Zweihand & Offhand-System
+
+Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `data/weapons.json`.
+
+| Waffentyp | Zweite Hand | Ausgleich |
+|-----------|-------------|-----------|
+| **Einhand (E)** | Offhand **oder** zweite Einhandwaffe (Dualwielding) | — |
+| **Zweihand (B)** | belegt, kein Offhand | **+35 % auf alle Grundwerte** der Waffe |
+
+- **Zweihand-Ausgleich:** Da Zweihänder kein Offhand führen können, werden ihre normalen Grundwerte (Schaden + sonstige Stats) automatisch um **35 %** erhöht. *(Wert mit den konkreten Tabellen in `data/weapons.json` abzustimmen — entweder dort eingerechnet oder als globaler Aufschlag beim Balancing.)*
+- **Freie Kombination:** Jedes Offhand ist mit jeder Einhandwaffe kombinierbar; die Affinitäten in `data/offhands.json` sind Empfehlungen, keine Einschränkungen.
+
+**Offhands** sind **keine Waffen**, sondern Gimmicks/Hilfsmittel mit einer **identitätsstiftenden Eigenart**. Wie Waffen haben sie Klasse, Typ, Gewichtsklasse, Seltenheitsstufen (Kupfer→Stellar) und Gravur-Slots. **Jedes Offhand trägt genau ein Hauptattribut.**
+
+> **Eigenart vs. Gravur:** Die **Eigenart** ist fest und identitätsstiftend (*was das Offhand ist*). Modulare Effekte (z. B. ein Enterhaken, der heranzieht) laufen über **Gravuren** in den Gravur-Slots. **Gravur-Slots:** bis Stahl 1, ab Titan 2.
+
+| Klasse | Typ | Gew.-Klasse | Attr. | Eigenart |
+|--------|-----|-------------|-------|----------|
+| **Schild** | Buckler | Wendig | GES | **Gegenschlag** — 50 % Chance auf die Reaktion *Gegenschlag* (§5.2) bei Nahkampftreffer |
+| **Schild** | Turmschild | Träge | WID | **Bollwerk** — hoher Block; 50 % Chance, Projektile abzufangen (Block + Zauberblock), für Träger + angrenzende Verbündete |
+| **Magischer Fokus** | Foliant | Ausgeglichen | WIL | **Verstärkung** — +30 % Zauberschaden, +30 % Manakosten |
+| **Magischer Fokus** | Energiekristall | Schnell | INT | **Resonanz** — −30 % Manakosten, −50 % Zauberschaden |
+| **Hilfsmittel** | Kampfkette | Bedächtig | STR | **Reichweite** — +1 Nahkampfreichweite |
+| **Hilfsmittel** | Laterne | Wendig | GES | **Erhellen** — Sicht- + Zauberreichweite je +2; deckt scheinbare/unsichtbare Gegner in 4 Feldern auf |
+| **Hilfsmittel** | Fester Gürtel | Ausgeglichen | WID | **Standhaft** — ignoriert alle Push-/Pull-Effekte |
+| **Hilfsmittel** | Fackel | Schnell | GES | **Hetzjagd** — +Geschwindigkeit/Bewegung (vorl. +1) |
+| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(aktiv)* — Verbündete +10 % Initiative bis nächsten Zug; CD 5 Züge |
+| **Hilfsmittel** | Standarte | Träge | WIL | **Heerführer** — Verbündete in 3 Feldern +10 % Schaden & +10 % Schadensreduktion |
+| **Hilfsmittel** | Rauchschwenker | Wendig | INT | **Spezereien** — vom Träger gewirkte Heilungen +20 % effektiver |
+| **Hilfsmittel** | Köderkolben | Schnell | VIT | **Achtung!** — +20 % Threat-Gen.; Threat-Aura 2 Felder (Präsenz-Aggro, §5.2) |
+
+> Vollständige Daten (12 Typen × 7 Stufen = 84 Einträge, mit Materialien, Preisen, Slots): **`data/offhands.json`**. Prim.-Werte/Slot-Kapazitäten sind aktuell Platzhalter (Balancing).
 
 ---
 
@@ -942,7 +1038,10 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — Detailwerte)
 - [ ] Trefferchance & Krit-Grundregeln definieren
 - [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
-- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten (→ `data/offhands.json` füllen)
+- [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
+- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
+- [ ] Zweihand-Ausgleich (+35 %) mit `data/weapons.json`-Werten abstimmen (eingerechnet vs. globaler Aufschlag)
+- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
 - [ ] Rüstungs-Items Kopf/Körper/Füße designen (→ `data/kopf-/koerper-/fussausruestung.json` füllen — Scaffolds liegen vor)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
 - [ ] Waffentypen Gewichtsklassen-Zuweisung vervollständigen (alle 13 Typen)

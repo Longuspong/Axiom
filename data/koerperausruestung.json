@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "version": "v0.1-scaffold",
+    "kategorie": "Körper",
+    "status": "SCAFFOLD — Struktur steht, eintraege noch nicht designt (siehe GDD §11 ToDos)",
+    "quelle": "GDD §5.1 (Gewichtsklassen/Speed), §5.2 (WID/Rüstung/Resistenz), Seltenheitsstufen aus weapons.json",
+    "id_präfix": "KP",
+    "hinweis": "Körper-Slot verwendet den ±0,30-Speed-Index (wie Waffen). Defensivwerte: WID, Rüstung, Resistenz, VIT/LP."
+  },
+  "seltenheitsstufen": [
+    {
+      "stufe": 1,
+      "name": "Basis",
+      "material": "Kupfer",
+      "kaufpreis": 10,
+      "verkaufspreis": 6,
+      "farbe": "Mattes Braun",
+      "schriftfarbe": "Schwarz"
+    },
+    {
+      "stufe": 2,
+      "name": "Gewöhnlich",
+      "material": "Eisen",
+      "kaufpreis": 20,
+      "verkaufspreis": 12,
+      "farbe": "Mattes Grau",
+      "schriftfarbe": "Grau"
+    },
+    {
+      "stufe": 3,
+      "name": "Ungewöhnlich",
+      "material": "Stahl",
+      "kaufpreis": 40,
+      "verkaufspreis": 24,
+      "farbe": "Glänzendes Silber",
+      "schriftfarbe": "Grün"
+    },
+    {
+      "stufe": 4,
+      "name": "Selten",
+      "material": "Titan",
+      "kaufpreis": 100,
+      "verkaufspreis": 60,
+      "farbe": "Mattes Blau",
+      "schriftfarbe": "Dunkelblau"
+    },
+    {
+      "stufe": 5,
+      "name": "Episch",
+      "material": "Adamant",
+      "kaufpreis": 200,
+      "verkaufspreis": 120,
+      "farbe": "Mattes Rot",
+      "schriftfarbe": "Rot"
+    },
+    {
+      "stufe": 6,
+      "name": "Mythisch",
+      "material": "Diamant",
+      "kaufpreis": 500,
+      "verkaufspreis": 300,
+      "farbe": "Glänzendes Blau",
+      "schriftfarbe": "Hellblau"
+    },
+    {
+      "stufe": 7,
+      "name": "Legendär",
+      "material": "Stellar",
+      "kaufpreis": null,
+      "verkaufspreis": 1000,
+      "farbe": "Glänzend leuchtend transparent",
+      "schriftfarbe": "Neon-Regenbogen"
+    }
+  ],
+  "gewichtsklassen": [
+    {
+      "index": 1,
+      "name": "Schnell",
+      "speed_mod": 0.3
+    },
+    {
+      "index": 2,
+      "name": "Wendig",
+      "speed_mod": 0.15
+    },
+    {
+      "index": 3,
+      "name": "Ausgeglichen",
+      "speed_mod": 0.0
+    },
+    {
+      "index": 4,
+      "name": "Bedächtig",
+      "speed_mod": -0.15
+    },
+    {
+      "index": 5,
+      "name": "Träge",
+      "speed_mod": -0.3
+    }
+  ],
+  "gravuren": [
+    {
+      "Typ": "Aktiv",
+      "Min. Level": 1,
+      "Max. Level": 3,
+      "Mana-Mechanik": "Mana-Verbrauch beim Einsatz der Fähigkeit",
+      "Deckelung / Cooldown": "—",
+      "Entfernen": "Ja, gegen Kosten"
+    },
+    {
+      "Typ": "Passiv",
+      "Min. Level": 1,
+      "Max. Level": 3,
+      "Mana-Mechanik": "Reserviert Mana dauerhaft",
+      "Deckelung / Cooldown": "—",
+      "Entfernen": "Ja, gegen Kosten"
+    },
+    {
+      "Typ": "Reaktiv",
+      "Min. Level": 1,
+      "Max. Level": 3,
+      "Mana-Mechanik": "—",
+      "Deckelung / Cooldown": "Cooldown + max. 3 Auslösungen/Zug (TBD)",
+      "Entfernen": "Ja, gegen Kosten"
+    },
+    {
+      "Typ": "Modifikativ",
+      "Min. Level": 1,
+      "Max. Level": 3,
+      "Mana-Mechanik": "Erhöht Mana-Kosten/-Reserve aller Gravuren auf der Waffe",
+      "Deckelung / Cooldown": "Ggf. erhöhter Cooldown",
+      "Entfernen": "Ja, gegen Kosten"
+    },
+    {
+      "Typ": "Spezial",
+      "Min. Level": 1,
+      "Max. Level": 5,
+      "Mana-Mechanik": "Sehr variabel je Gravur",
+      "Deckelung / Cooldown": "Je nach Effekt",
+      "Entfernen": "Ja, gegen Kosten"
+    },
+    {
+      "Typ": "Leveling:",
+      "Min. Level": "L1=2 Kap  |  L2=4  |  L3=6  |  L4=8 (nur Spezial)  |  L5=10 (nur Spezial)",
+      "Max. Level": null,
+      "Mana-Mechanik": null,
+      "Deckelung / Cooldown": null,
+      "Entfernen": null
+    },
+    {
+      "Typ": "Seltenheit:",
+      "Min. Level": "Stahl (Basis)",
+      "Max. Level": "Titan (Mittel)",
+      "Mana-Mechanik": "Diamant (Selten)",
+      "Deckelung / Cooldown": null,
+      "Entfernen": null
+    }
+  ],
+  "item_schema": {
+    "ID": "z. B. KO-001 / OH-001",
+    "Name": "",
+    "Typ": "",
+    "Stufe (1–7)": null,
+    "Material": "",
+    "Gewichtsklasse": "Schnell|Wendig|Ausgeglichen|Bedächtig|Träge",
+    "Speed-Mod": "abgeleitet aus Gewichtsklasse + Slot-Typ",
+    "Eigenart": "",
+    "Eigenart-Effekt": "",
+    "Theme/Set": "",
+    "Slots": null,
+    "Slot-Typen": [],
+    "Grundkapazität": null,
+    "Max. Verfeiner.": null,
+    "WID": null,
+    "Rüstung (phys. flach)": null,
+    "Resistenz (mag. flach)": null,
+    "VIT/LP-Bonus": null,
+    "Prim. Attr.": "",
+    "Prim. Wert": null,
+    "Sek. Attr.": "",
+    "Sek. Wert": null,
+    "Bauteile": "",
+    "Kaufpreis (Barren)": null,
+    "Verkaufspreis": null
+  },
+  "eintraege": []
+}

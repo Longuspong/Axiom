@@ -44,11 +44,11 @@ git config user.name Claude
 git add GDD.md
 git commit -m "..."
 git commit --amend --no-edit --reset-author
-git push origin claude/keen-gauss-2k5waj:main --force
-git push origin claude/keen-gauss-2k5waj --force
+git push origin claude/updated-weapons-list-l1iuk8:main --force
+git push origin claude/updated-weapons-list-l1iuk8 --force
 ```
 
-> **Push-Ziel (aktuell):** Bis zum Phase-1-Startschuss kommt alles (nach Widerspruchsprüfung) **direkt auf `main`**. Session-Arbeitsbranch ist `claude/keen-gauss-2k5waj`.
+> **Push-Ziel (aktuell):** Bis zum Phase-1-Startschuss kommt alles (nach Widerspruchsprüfung) **direkt auf `main`**. Session-Arbeitsbranch ist `claude/updated-weapons-list-l1iuk8`.
 
 ---
 
@@ -75,17 +75,20 @@ git push origin claude/keen-gauss-2k5waj --force
 ## Stand letzte Sitzung
 
 Abgeschlossen in dieser Sitzung:
-- **Speed-System:** Gewichtsklassen (Schnell/Wendig/Ausgeglichen/Bedächtig/Träge), Speed-Modifikatoren für Waffe/Körper (±0,30/0,15/0/−0,15/−0,30) und Kopf/Füße (±0,20/0,10/0/−0,10/−0,20), Max ±1,0
-- **Initiative-Balken:** Mehrfachzug-Mechanik, Gleichstand-Regel, Rundendefinition
-- **Mobilität:** MOB-Basiswert (max 5, nur Items/Nodes), Traits geben Bonus-Bewegung außerhalb des Pools
-- **Rohschaden-Formeln:** Physisch (STR), Magisch (WIL), Fernkampf (GES×0,75 + STR×0,25)
-- **Mana-System:** Pool 100 (Standard), Regen 10/Zug (INT 10), Aktive Gravurs-Skills kosten Mana, Passive reservieren Mana in der Homezone
-- **Armbrüste aufgeteilt:** Repetierarmbrust (E, leicht) vs. Kriegsarmbrust (B, schwer) — beide 1–2 Felder
+- **Waffenliste verifiziert & ausgegeben:** vollständige 112-Waffen-Liste im Excel-Format (alle 16 Typen × 7 Stufen)
+- **`data/itemliste_v6.xlsx` angelegt:** Gesamt-Excel mit allen 7 Sheets (Seltenheit, Waffenklassen, Waffentypen, Slot-Templates, Stat-Skalierung, Waffen vollständig, Gravuren)
+- **Ausgabeformat-Regel** in CLAUDE.md verankert: Wertelisten immer in Excel-Listenform (siehe oben)
+- **Datenhaltung getrennt:** Scaffold-JSONs für `offhands`, `kopf-`, `koerper-`, `fussausruestung` angelegt (Struktur + feststehende Fakten, `eintraege` noch leer)
+
+Frühere Sitzung (Gameplay):
+- Speed-System, Initiative, Mobilität, Rohschaden-Formeln, Mana-System, Armbrüste aufgeteilt
 
 ## Was als nächstes kommt
 
-1. **Einhand/Zweihand + Offhand-System** definieren
-2. **Restliches Waffensystem** (Gravuren, Crafting, Aufwertung)
+1. **Einhand/Zweihand + Offhand-System** definieren → `offhands.json` füllen
+2. **Rüstungs-Items** (Kopf/Körper/Füße) designen → jeweilige JSONs füllen
+3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
+4. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
 
 ## Dateistruktur
 
@@ -93,6 +96,13 @@ Abgeschlossen in dieser Sitzung:
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
 | `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
+| `data/offhands.json` | Offhand-Daten (Schilde etc.) — **Scaffold**, `eintraege` noch leer |
+| `data/kopfausruestung.json` | Kopf-Rüstung — **Scaffold**, `eintraege` noch leer |
+| `data/koerperausruestung.json` | Körper-Rüstung — **Scaffold**, `eintraege` noch leer |
+| `data/fussausruestung.json` | Fuß-Rüstung — **Scaffold**, `eintraege` noch leer |
+| `data/itemliste_v6.xlsx` | Gesamt-Excel (alle Sheets/Kategorien); JSONs sind die getrennte Coding-Datenbank |
+
+> **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
 
 ---
 

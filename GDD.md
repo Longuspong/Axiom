@@ -942,8 +942,9 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — Detailwerte)
 - [ ] Trefferchance & Krit-Grundregeln definieren
 - [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
-- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten
-- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten
+- [ ] Einhand/Zweihand-Systematik formal definieren + Offhand-System ausarbeiten (→ `data/offhands.json` füllen)
+- [ ] Rüstungs-Items Kopf/Körper/Füße designen (→ `data/kopf-/koerper-/fussausruestung.json` füllen — Scaffolds liegen vor)
+- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
 - [ ] Waffentypen Gewichtsklassen-Zuweisung vervollständigen (alle 13 Typen)
 - [ ] Kriegsarmbrust Distanzprofil von Repetierarmbrust abgrenzen (bisher identisch, ggf. differenzieren)
 - [ ] Waffensystem ausarbeiten (Gravuren, Crafting, Aufwertung, Verfeinerung)

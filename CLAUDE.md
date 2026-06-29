@@ -76,7 +76,14 @@ Abgeschlossen in dieser Sitzung:
 ## Was als nächstes kommt
 
 1. **Einhand/Zweihand + Offhand-System** definieren
-2. **Restliches Waffensystem** (Nahkampf-Stats, Gravuren, Crafting)
+2. **Restliches Waffensystem** (Gravuren, Crafting, Aufwertung)
+
+## Dateistruktur
+
+| Datei | Inhalt |
+|-------|--------|
+| `GDD.md` | Einziges Designdokument |
+| `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
 
 ---
 

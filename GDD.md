@@ -962,3 +962,5 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
 - [ ] Audio-Konzept definieren
+
+> **Tech-Evaluation (29.06.2026) — GodotGAS / Gameplay Ability System:** Geprüft, ob das GAS-Framework ([Asset Store](https://store.godotengine.org/asset/indiegamedad/godotgas/)) als Engine für das Gravursystem taugt. Fazit: konzeptionell passend (Gravuren = datengetriebene „Gameplay Effects", die Attribute modifizieren), aber GAS ist ein Fundament für die *gesamte* Stat-/Skill-/Buff-Schicht, kein Einzel-Plugin — und primär auf Echtzeit ausgelegt (Cast-Zeiten/Cooldowns in Sekunden statt Runden). **Entscheidung: vorerst kein Framework.** Erst Waffen- & Gravursystem im GDD designen, dann prüfen, ob schlanker Eigenbau reicht (vermutlich ja). Kostenlose MIT-Alternative zum Reinschnuppern ins Muster: `OctoD/godot-gameplay-systems`.

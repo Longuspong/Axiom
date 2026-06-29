@@ -1,7 +1,9 @@
 {
   "meta": {
     "version": "v6+korrekturen",
-    "quelle": "itemliste_v5.xlsx + itemliste_v6.xlsx + GDD-Sitzung 2026-06-29"
+    "quelle": "itemliste_v5.xlsx + itemliste_v6.xlsx + GDD-Sitzung 2026-06-29",
+    "zweihand_grundwert_bonus": 0.35,
+    "zweihand_grundwert_bonus_hinweis": "Die gespeicherten Prim./Sek.-Werte sind ECHTE Grundwerte. Zweihandwaffen (Hand = B) erhalten als Ausgleich fürs fehlende Offhand +35 % auf Prim. Wert und Sek. Wert — NICHT in die Daten eingerechnet, sondern beim Ausrüsten/Anzeigen aufgeschlagen. Die In-Game-Informationskarte zeigt den fertigen (geboosteten) Endwert und idealerweise den Bonus als eigene Zeile (z. B. 'Grundwert 20  +35 % Zweihand = 27'). Faktor zentral hier tunebar."
   },
   "seltenheitsstufen": [
     {

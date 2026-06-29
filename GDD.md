@@ -753,9 +753,12 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | Waffentyp | Zweite Hand | Ausgleich |
 |-----------|-------------|-----------|
 | **Einhand (E)** | Offhand **oder** zweite Einhandwaffe (Dualwielding) | — |
-| **Zweihand (B)** | belegt, kein Offhand | **+35 % auf alle Grundwerte** der Waffe |
+| **Zweihand (B)** | belegt, kein Offhand | **+35 % auf die Grundwerte** der Waffe |
 
-- **Zweihand-Ausgleich:** Da Zweihänder kein Offhand führen können, werden ihre normalen Grundwerte (Schaden + sonstige Stats) automatisch um **35 %** erhöht. *(Wert mit den konkreten Tabellen in `data/weapons.json` abzustimmen — entweder dort eingerechnet oder als globaler Aufschlag beim Balancing.)*
+- **Zweihand-Ausgleich:** Da Zweihänder kein Offhand führen können, erhalten sie **+35 %** auf ihre Grundwerte (Prim./Sek. Wert).
+- **Implementierung (festgelegt):** Die Werte in `data/weapons.json` bleiben **echte Grundwerte**; der +35 %-Aufschlag wird **nicht eingerechnet**, sondern **beim Ausrüsten/Anzeigen** als globaler, an einer Stelle tunebarer Faktor (`meta.zweihand_grundwert_bonus`) aufgeschlagen.
+  - **Informationskarte:** zeigt für Zweihänder den **fertigen Endwert** und den Bonus als eigene Zeile — z. B. *„Schaden 27 (Grundwert 20 +35 % Zweihand)"*. So bleibt die Datenquelle ehrlich und der Bonus für den Spieler sichtbar.
+  - **Begründung:** Die Waffenwerte werden zentral aus `stat_skalierung` abgeleitet (Balancing-Tabelle). Ein eingerechneter Bonus würde beim nächsten Balancing-Pass überschrieben oder mit der Klassen-Flavor-Differenz vermischt; ein globaler Faktor bleibt sauber und an einer Stelle änderbar.
 - **Freie Kombination:** Jedes Offhand ist mit jeder Einhandwaffe kombinierbar; die Affinitäten in `data/offhands.json` sind Empfehlungen, keine Einschränkungen.
 
 **Offhands** sind **keine Waffen**, sondern Gimmicks/Hilfsmittel mit einer **identitätsstiftenden Eigenart**. Wie Waffen haben sie Klasse, Typ, Gewichtsklasse, Seltenheitsstufen (Kupfer→Stellar) und Gravur-Slots. **Jedes Offhand trägt genau ein Hauptattribut.**
@@ -1040,7 +1043,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
 - [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
 - [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
-- [ ] Zweihand-Ausgleich (+35 %) mit `data/weapons.json`-Werten abstimmen (eingerechnet vs. globaler Aufschlag)
+- [x] Zweihand-Ausgleich (+35 %) festgelegt: globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`), Grundwerte bleiben echt; Infokarte zeigt Endwert + Bonus-Zeile
 - [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
 - [ ] Rüstungs-Items Kopf/Körper/Füße designen (→ `data/kopf-/koerper-/fussausruestung.json` füllen — Scaffolds liegen vor)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)

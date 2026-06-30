@@ -87,7 +87,7 @@ Frühere Sitzungen:
 
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
 2. **Zweihand-Ausgleich (+35 %)** mit `data/weapons.json` final abstimmen
-3. **Rüstungs-Items** (Kopf/Körper/Füße) designen → jeweilige JSONs füllen
+3. **Körperrüstung kalibrieren** (Defensivwerte/Eigenarten = Platzhalter) + **Kopf/Füße** designen → jeweilige JSONs füllen
 4. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
 5. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
 
@@ -99,7 +99,7 @@ Frühere Sitzungen:
 | `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
 | `data/offhands.json` | Offhand-Daten: Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12), `stat_skalierung` (Platzhalter), **84 Einträge** (12 Typen × 7 Stufen) |
 | `data/kopfausruestung.json` | Kopf-Rüstung — **Scaffold**, `eintraege` noch leer |
-| `data/koerperausruestung.json` | Körper-Rüstung — **Scaffold**, `eintraege` noch leer |
+| `data/koerperausruestung.json` | Körper-Rüstung: `ruestungstypen` (5), `stat_skalierung` (Platzhalter), **35 Einträge** (5 Typen × 7 Stufen) — Defensivwerte/Eigenarten = Entwurf |
 | `data/fussausruestung.json` | Fuß-Rüstung — **Scaffold**, `eintraege` noch leer |
 | `data/itemliste_v6.xlsx` | Gesamt-Excel (alle Sheets/Kategorien); JSONs sind die getrennte Coding-Datenbank |
 

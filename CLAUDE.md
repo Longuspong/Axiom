@@ -75,11 +75,12 @@ git push origin claude/updated-weapons-list-l1iuk8 --force
 ## Stand letzte Sitzung
 
 Abgeschlossen in dieser Sitzung:
-- **Einhand/Zweihand + Offhand-System** definiert (GDD §5.3): Einhand = Offhand/Dualwield, Zweihand = kein Offhand, +35 % Grundwerte (mit weapons.json abzustimmen)
-- **`data/offhands.json` befüllt:** 12 Offhand-Typen × 7 Stufen = 84 Einträge + `offhandtypen` + Platzhalter-`stat_skalierung`. Klassen: Schild (Buckler/Turmschild), Magischer Fokus (Foliant/Energiekristall), Hilfsmittel (Kampfkette, Laterne, Fester Gürtel, Fackel, Signalhorn, Standarte, Rauchschwenker, Köderkolben). Jedes Offhand: genau 1 Hauptattribut, Eigenart fest, Gravur-Slots bis Stahl 1 / ab Titan 2
-- **Zwei neue Systeme dokumentiert** (GDD §5.2): **Aggro/Threat** (Formel, Hysterese, Decay, Taunt, Guard, Präsenz-Aggro) und **Sichtsystem** (3 Zustände Offenbar/Unsichtbar/Scheinbar)
+- **Modulare Ausrüstungs-/Skilltree-Philosophie** festgehalten (GDD §5.3): Jede Klasse kann alles (keine Waffen-/Attribut-Sperre nach Prolog-Wahl), ein universeller Skilltree für alle Klassen mit klassenabhängigem Einstiegspunkt statt getrennter Bäume, früh empfohlene lineare Pfade ohne Zwang. Offen: mögliche Attributsvoraussetzungen für starke Kombos bei höheren Stufen (in Evaluation)
 
 Frühere Sitzungen:
+- Einhand/Zweihand + Offhand-System definiert (GDD §5.3): Einhand = Offhand/Dualwield, Zweihand = kein Offhand, +35 % Grundwerte (mit weapons.json abzustimmen)
+- `data/offhands.json` befüllt: 12 Offhand-Typen × 7 Stufen = 84 Einträge + `offhandtypen` + Platzhalter-`stat_skalierung`. Klassen: Schild (Buckler/Turmschild), Magischer Fokus (Foliant/Energiekristall), Hilfsmittel (Kampfkette, Laterne, Fester Gürtel, Fackel, Signalhorn, Standarte, Rauchschwenker, Köderkolben). Jedes Offhand: genau 1 Hauptattribut, Eigenart fest, Gravur-Slots bis Stahl 1 / ab Titan 2
+- Zwei neue Systeme dokumentiert (GDD §5.2): Aggro/Threat (Formel, Hysterese, Decay, Taunt, Guard, Präsenz-Aggro) und Sichtsystem (3 Zustände Offenbar/Unsichtbar/Scheinbar)
 - Waffenliste (112 Waffen) + `itemliste_v6.xlsx`; Scaffold-JSONs für Rüstung
 - Speed-System, Initiative, Mobilität, Rohschaden-Formeln, Mana-System, Armbrüste aufgeteilt
 

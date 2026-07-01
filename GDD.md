@@ -573,6 +573,13 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 
 **Design-Prinzip:** Alle Klassen starten als versatile, nützliche Schablone. Durch den Skilltree entwickeln sie sich zu hochspezialisierten Einheiten. Die Progressionskurve ist bis Level ~25 linear, ab Level 35 straff. Die letzten 5 Level (46–50) sind ggf. hinter einer Klassen-Prüfung / einem Herausforderungsmodus gegattet.
 
+**Modulare Ausrüstungs-/Skilltree-Philosophie:**
+
+- **Jede Klasse kann alles.** Nach der Prolog-Startwahl gibt es keine harte Waffen- oder Attribut-Sperre — ein Krieger kann sich z. B. Richtung Fernkampf-Tank (GES/WID) entwickeln, ein Magier Richtung physischem Hybrid-Build. Bewusste Design-Entscheidung, auch wenn das mehr Balancing-Aufwand bedeutet und das Risiko von schwer zu balancenden „Chaos-Builds" besteht.
+- **Ein einziger, universeller Skilltree für alle Klassen** — kein separater Baum pro Klasse. Klassen unterscheiden sich nur durch ihren **Einstiegspunkt** in diesen einen Baum, nicht durch exklusiven Zugriff auf Teile davon. Erstes Umsetzungsprojekt in Godot mit dem Yggdrasil-Skilltree-Editor-Plugin.
+- **Früh im Spiel:** lineare, empfohlene/emphatisierte Pfade nahe am Einstiegspunkt — als Führung, nicht als Zwang. Das System bleibt durchgehend modular.
+- **Offene Evaluationsfrage:** Ob bestimmte starke Attribut-/Effekt-Kombinationen (z. B. Fernkampf-GES + magischer Schaden/Effekte) ab höheren Stufen **Attributsvoraussetzungen** zum Freischalten brauchen, wird noch geprüft — bewusst nicht final entschieden.
+
 **Max Level:** 50
 
 ---

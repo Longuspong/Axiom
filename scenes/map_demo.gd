@@ -10,6 +10,7 @@ extends Node2D
 ##   R  Strasse (Auto-Verbindung)        W  See (Auto-Ufer)
 ##   M  Berg    C  Klippe/Plateau        B  dichtes Gestrüpp
 ##   T  Laubbaum    P  Nadelbaum         O  Findling
+##   =  Brücke (Deck E-W über N-S-Fluss)
 
 const MAP: Array[String] = [
 	"MMMM..........r.....",
@@ -18,7 +19,7 @@ const MAP: Array[String] = [
 	"C......T......r...T.",
 	"..T..FF.......r.....",
 	"...........O..rr....",
-	"RRRRRRRRRRRRR..r...P",
+	"RRRRRRRRRRRRRRR=RRRR",
 	"...T........R..r.B..",
 	".....BB.....R..r....",
 	".P..........R..r....",
@@ -69,9 +70,11 @@ func _place(x: int, y: int, c: String) -> void:
 		"D":
 			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.FIELD)
 		"r":
-			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.RIVER[_conn_mask(x, y, "rW")])
+			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.RIVER[_conn_mask(x, y, "rW=")])
 		"R":
-			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.ROAD[_conn_mask(x, y, "R")])
+			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.ROAD[_conn_mask(x, y, "R=")])
+		"=":
+			ground.set_cell(pos, TileIds.GROUND_SRC, TileIds.BRIDGE_EW)
 		"W":
 			ground.set_cell(pos, TileIds.GROUND_SRC, _lake_tile(x, y))
 		"M":
@@ -104,7 +107,7 @@ func _cell_at(x: int, y: int, default: String) -> String:
 
 
 func _is_water(c: String) -> bool:
-	return c == "r" or c == "W"
+	return c == "r" or c == "W" or c == "="
 
 
 ## Bitmaske der verbundenen Nachbarn (N=1, E=2, S=4, W=8).

@@ -230,6 +230,22 @@ texture_region_size = Vector2i(128, 64)
 7:6/0/custom_data_0 = "water"
 7:6/0/custom_data_1 = 0
 7:6/0/custom_data_2 = false
+0:7/0 = 0
+0:7/0/custom_data_0 = "bridge"
+0:7/0/custom_data_1 = 1
+0:7/0/custom_data_2 = true
+1:7/0 = 0
+1:7/0/custom_data_0 = "bridge"
+1:7/0/custom_data_1 = 1
+1:7/0/custom_data_2 = true
+2:7/0 = 0
+2:7/0/custom_data_0 = "ford"
+2:7/0/custom_data_1 = 2
+2:7/0/custom_data_2 = true
+3:7/0 = 0
+3:7/0/custom_data_0 = "ford"
+3:7/0/custom_data_1 = 2
+3:7/0/custom_data_2 = true
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tall"]
 texture = ExtResource("2_tall")

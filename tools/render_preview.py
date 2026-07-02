@@ -23,7 +23,7 @@ MAP = [
     "C......T......r...T.",
     "..T..FF.......r.....",
     "...........O..rr....",
-    "RRRRRRRRRRRRR..r...P",
+    "RRRRRRRRRRRRRRR=RRRR",
     "...T........R..r.B..",
     ".....BB.....R..r....",
     ".P..........R..r....",
@@ -47,6 +47,7 @@ LAKE_EDGE = {"N": (0, 5), "E": (1, 5), "S": (2, 5), "W": (3, 5)}
 LAKE_OUT = {"NE": (4, 5), "SE": (5, 5), "SW": (6, 5), "NW": (7, 5)}
 LAKE_IN = {"NE": (0, 6), "SE": (1, 6), "SW": (2, 6), "NW": (3, 6)}
 WATER_FULL = (4, 6)
+BRIDGE_EW = (0, 7)
 MOUNTAIN = [(0, 0), (1, 0)]
 CLIFF = (2, 0)
 BOULDER = (3, 0)
@@ -65,7 +66,7 @@ def cell(x, y, default):
 
 
 def is_water(c):
-    return c in "rW"
+    return c in "rW="
 
 
 OPPOSITE = {"N": "S", "S": "N", "E": "W", "W": "E"}
@@ -152,9 +153,11 @@ def main():
             elif c == "D":
                 blit_ground(x, y, FIELD)
             elif c == "r":
-                blit_ground(x, y, RIVER[conn_mask(x, y, "rW")])
+                blit_ground(x, y, RIVER[conn_mask(x, y, "rW=")])
             elif c == "R":
-                blit_ground(x, y, ROAD[conn_mask(x, y, "R")])
+                blit_ground(x, y, ROAD[conn_mask(x, y, "R=")])
+            elif c == "=":
+                blit_ground(x, y, BRIDGE_EW)
             elif c == "W":
                 blit_ground(x, y, lake_tile(x, y))
             elif c in "MCB":

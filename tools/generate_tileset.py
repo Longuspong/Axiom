@@ -4,14 +4,16 @@ Axiom — Isometrischer Terrain-Tileset-Generator
 ================================================
 Erzeugt das komplette isometrische HD-Pixel-Art-Tileset prozedural:
 
-  assets/tiles/terrain_ground.png   Boden-Atlas  (Zellen 128x64,  8x7 Tiles)
+  assets/tiles/terrain_ground.png   Boden-Atlas  (Zellen 128x64,  8x8 Tiles)
   assets/tiles/terrain_tall.png     Hoch-Atlas   (Zellen 128x192, 4x2 Tiles)
   assets/tiles/terrain_tileset.tres Godot-4-TileSet (beide Atlanten, Custom-Data)
   scripts/tile_ids.gd               GDScript-Konstanten (Atlas-Koordinaten)
 
-Logische Auflösung 64x32 pro Tile (2:1-Iso-Raute), 2x nearest hochskaliert
--> 128x64 "HD Pixel Art". Hohe Tiles (Berge, Bäume, ...) nutzen 128x192 mit
-texture_origin (0, 64), damit die Rautenbasis auf dem Grid sitzt (2.5D-Effekt).
+Look: HD-2D-inspiriert (Octopath-Richtung, aber hell & freundlich) —
+native 128x64-Pixeldichte, hue-geshiftete Farbrampen (kühle Schatten,
+warme Lichter), Mikrodetails wie Grasbüschel und Kiesel.
+Hohe Tiles (Berge, Bäume, ...) nutzen 128x192 mit texture_origin (0, 64),
+damit die Rautenbasis auf dem Grid sitzt (2.5D-Effekt).
 
 Grid-Konvention (Godot TILE_LAYOUT_DIAMOND_DOWN):
   N = -y (Bildschirm: Kante oben rechts)   E = +x (unten rechts)
@@ -27,50 +29,55 @@ from PIL import Image
 
 SEED = 1337
 
-# Logische (halbe) Auflösung; final wird 2x nearest skaliert.
-TW, TH = 64, 32          # Rauten-Grundfläche
-TALL_H = 96              # hohe Zellen
-SCALE = 2
+TW, TH = 128, 64         # Rauten-Grundfläche (nativ, kein Upscale)
+TALL_H = 192             # hohe Zellen
+SCALE = 1
 
-GROUND_COLS, GROUND_ROWS = 8, 7
+GROUND_COLS, GROUND_ROWS = 8, 8
 TALL_COLS, TALL_ROWS = 4, 2
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_TILES = os.path.join(ROOT, "assets", "tiles")
 OUT_SCRIPTS = os.path.join(ROOT, "scripts")
 
-# ---------------------------------------------------------------- Paletten
-GRASS = [(88, 158, 70), (108, 182, 80), (128, 200, 92), (152, 216, 106)]
-GRASS_LIGHT = (178, 230, 124)
-GRASS_DARK = (70, 136, 56)
-FLOWER_COLORS = [(255, 255, 255), (255, 210, 72), (255, 128, 158), (168, 136, 255)]
-FLOWER_CORE = (255, 236, 120)
+# ------------------------------------------------------------------ Paletten
+# Alle Rampen sind hue-geshiftet: Schatten kühl (blau/teal), Lichter warm.
+GRASS = [(64, 120, 84), (86, 150, 80), (110, 178, 82), (138, 202, 92), (166, 222, 108)]
+GRASS_LIGHT = (198, 238, 132)
+GRASS_DARK = (50, 100, 74)
+STONE_SPECK = [(168, 168, 158), (138, 140, 134)]
+FLOWER_COLORS = [(255, 255, 255), (255, 208, 70), (255, 126, 156), (170, 140, 255)]
+FLOWER_CORE = (255, 238, 130)
 
-WATER = [(36, 112, 184), (52, 142, 208), (76, 172, 228), (116, 200, 240)]
-WATER_SPARKLE = (214, 240, 252)
-FOAM = (246, 252, 255)
+WATER = [(26, 82, 156), (36, 114, 190), (56, 146, 214), (86, 178, 232), (128, 206, 244)]
+WATER_SPARKLE = (222, 244, 252)
+WATER_GLINT = (170, 224, 246)
+FOAM = (248, 253, 255)
 
-SAND = [(204, 172, 116), (222, 192, 136), (236, 210, 156), (246, 226, 178)]
-SAND_SPECK = (188, 152, 100)
+SAND = [(178, 138, 96), (202, 166, 116), (222, 190, 138), (238, 212, 162), (250, 232, 188)]
+SAND_SPECK = (160, 122, 86)
 
-ROAD = [(164, 134, 94), (182, 152, 108), (198, 168, 122), (212, 184, 136)]
-ROAD_PEBBLE = (224, 208, 180)
-ROAD_RUT = (146, 116, 80)
-ROAD_EDGE = (128, 102, 70)
+ROAD = [(138, 104, 78), (162, 126, 92), (184, 148, 106), (204, 170, 122), (220, 190, 140)]
+ROAD_PEBBLE = (232, 216, 186)
+ROAD_RUT = (122, 90, 66)
+ROAD_EDGE = (106, 78, 58)
 
-DIRT = [(134, 96, 62), (154, 114, 74), (172, 130, 86), (188, 146, 98)]
-FIELD_DARK = (120, 84, 54)
+DIRT = [(108, 74, 52), (132, 94, 62), (154, 114, 74), (174, 132, 88), (192, 152, 102)]
+FIELD_DARK = (96, 64, 46)
 
-ROCK = [(92, 98, 110), (118, 124, 136), (146, 152, 164), (176, 182, 192), (204, 208, 216)]
-SNOW = [(210, 224, 238), (234, 242, 250), (252, 254, 255)]
+ROCK = [(76, 80, 102), (100, 104, 124), (126, 130, 146), (154, 158, 170), (184, 188, 196), (212, 214, 218)]
+SNOW = [(196, 212, 236), (226, 238, 250), (248, 252, 255)]
 
-TRUNK = [(90, 60, 38), (118, 82, 50), (146, 104, 64)]
-LEAF = [(52, 124, 58), (78, 154, 68), (106, 184, 80), (140, 210, 96)]
-PINE = [(36, 100, 72), (52, 124, 86), (72, 148, 100), (96, 172, 116)]
-BRUSH = [(44, 98, 46), (60, 122, 54), (78, 144, 62), (100, 166, 74)]
-BERRY = (218, 70, 92)
-LILY = [(70, 150, 66), (98, 180, 84)]
-LILY_BLOOM = (255, 168, 190)
+WOOD = [(94, 60, 44), (120, 80, 52), (146, 102, 62), (170, 124, 76), (192, 148, 92)]
+WOOD_DARK = (74, 46, 34)
+
+TRUNK = [(74, 48, 40), (100, 66, 46), (126, 88, 56), (152, 112, 68)]
+LEAF = [(36, 102, 66), (58, 132, 66), (86, 162, 72), (116, 190, 84), (148, 216, 100)]
+PINE = [(26, 86, 72), (40, 110, 86), (58, 136, 100), (80, 160, 114), (106, 184, 128)]
+BRUSH = [(32, 84, 54), (48, 108, 56), (66, 130, 62), (86, 152, 70), (110, 174, 82)]
+BERRY = (222, 72, 94)
+LILY = [(66, 146, 68), (96, 178, 86)]
+LILY_BLOOM = (255, 170, 192)
 
 BAYER4 = [
     [0, 8, 2, 10],
@@ -119,23 +126,30 @@ class VNoise:
 N1 = VNoise(SEED + 1, 5)
 N2 = VNoise(SEED + 2, 9)
 N3 = VNoise(SEED + 3, 17)
-NWOB = VNoise(SEED + 4, 4)   # Ufer-/Wegkanten-Wobble
+N4 = VNoise(SEED + 6, 29)   # Mikrodetail
+NWOB = VNoise(SEED + 4, 4)  # Ufer-/Wegkanten-Wobble
 NW2 = VNoise(SEED + 5, 7)
 
 
 def fbm(u, v):
-    return 0.55 * N1.at(u, v) + 0.3 * N2.at(u, v) + 0.15 * N3.at(u, v)
+    return 0.5 * N1.at(u, v) + 0.28 * N2.at(u, v) + 0.14 * N3.at(u, v) + 0.08 * N4.at(u, v)
 
 
 def wobble(u, v, amp=0.07):
     return (NWOB.at(u, v) - 0.5) * 2 * amp + (NW2.at(u, v) - 0.5) * amp
 
 
-def ramp(colors, t, px, py, dither=0.35):
+def ramp(colors, t, px, py, dither=0.4):
     """Dither-quantisierte Farbauswahl aus einer Rampe."""
     t = t + (BAYER4[py % 4][px % 4] / 16.0 - 0.5) * dither / len(colors) * 2
     idx = clamp(int(t * len(colors)), 0, len(colors) - 1)
     return colors[idx]
+
+
+def mix(a, b, t):
+    return (int(a[0] * (1 - t) + b[0] * t),
+            int(a[1] * (1 - t) + b[1] * t),
+            int(a[2] * (1 - t) + b[2] * t))
 
 
 def uv_at(px, py):
@@ -151,14 +165,17 @@ def in_diamond(u, v):
     return 0.0 <= u < 1.0 and 0.0 <= v < 1.0
 
 
-# ---------------------------------------------------------------- Bodenfarben
+# -------------------------------------------------------------- Bodenfarben
 def grass_at(u, v, px, py, variant=0):
-    t = fbm(u + variant * 0.31, v + variant * 0.17)
+    # Zwei Noise-Ebenen: grosse weiche Flecken + feines Rauschen
+    macro = fbm(u + variant * 0.31, v + variant * 0.17)
+    micro = N4.at(u * 2 + variant, v * 2)
+    t = macro * 0.72 + micro * 0.28
     c = ramp(GRASS, t, px, py)
     h = hash01(px, py, 11 + variant)
-    if h > 0.965:  # helle Grashalme
+    if h > 0.978:  # helle Halmspitzen
         return GRASS_LIGHT
-    if h < 0.02:   # dunkle Büschel
+    if h < 0.012:  # dunkle Büschel
         return GRASS_DARK
     return c
 
@@ -173,24 +190,26 @@ def flower_positions(variant, count=9):
 
 
 FLOWERS_A = flower_positions(1)
-FLOWERS_B = flower_positions(2, 12)
+FLOWERS_B = flower_positions(2, 13)
 
 
 def grass_flowers_at(u, v, px, py, variant=0):
     flowers = FLOWERS_A if variant == 0 else FLOWERS_B
     for fu, fv, col in flowers:
-        d = max(abs(u - fu), abs(v - fv))
-        if d < 0.018:
+        d = math.hypot(u - fu, (v - fv))
+        if d < 0.016:
             return FLOWER_CORE
-        if d < 0.05:
+        if d < 0.042:
             return col
+        if d < 0.058:  # dunkler Blattkranz um die Blüte
+            return GRASS[1]
     return grass_at(u, v, px, py, 2 + variant)
 
 
 def sand_at(u, v, px, py, variant=0):
-    t = fbm(u + variant * 0.43, v)
+    t = fbm(u + variant * 0.43, v) * 0.8 + N4.at(u * 3, v * 3) * 0.2
     c = ramp(SAND, t, px, py)
-    if hash01(px, py, 21 + variant) > 0.96:
+    if hash01(px, py, 21 + variant) > 0.975:
         return SAND_SPECK
     return c
 
@@ -198,7 +217,7 @@ def sand_at(u, v, px, py, variant=0):
 def dirt_at(u, v, px, py):
     t = fbm(u + 0.71, v + 0.29)
     c = ramp(DIRT, t, px, py)
-    if hash01(px, py, 31) > 0.97:
+    if hash01(px, py, 31) > 0.98:
         return ROAD_PEBBLE
     return c
 
@@ -206,24 +225,28 @@ def dirt_at(u, v, px, py):
 def field_at(u, v, px, py):
     """Acker: Furchen entlang der u-Achse."""
     row = (v * 7.0 + (fbm(u, v) - 0.5) * 0.35) % 1.0
-    t = fbm(u, v) * 0.5 + (0.55 if row < 0.55 else 0.1)
+    t = fbm(u, v) * 0.5 + (0.55 if row < 0.55 else 0.08)
     c = ramp(DIRT, t, px, py)
-    if row >= 0.55 and hash01(px, py, 41) > 0.93:
+    if row >= 0.55 and hash01(px, py, 41) > 0.94:
         return FIELD_DARK
     return c
 
 
 def water_at(u, v, px, py, depth=1.0):
-    t = 0.35 + 0.5 * fbm(u * 2 + 0.13, v * 2 + 0.57) - 0.45 * clamp(depth, 0, 1)
+    t = 0.4 + 0.45 * fbm(u * 2 + 0.13, v * 2 + 0.57) - 0.5 * clamp(depth, 0, 1)
     c = ramp(WATER, clamp(t, 0, 0.99), px, py)
-    # Wellen-Glitzer entlang der Iso-Diagonalen
+    # Grobe Wellen-Glitzer entlang der Iso-Diagonalen
     w = math.sin((u + v) * 22 + fbm(u, v) * 9)
-    if w > 0.92 and hash01(px, py, 51) > 0.55:
+    if w > 0.93 and hash01(px, py, 51) > 0.5:
         return WATER_SPARKLE
+    # Feine Gegenrichtung-Glints
+    w2 = math.sin((u - v) * 31 - fbm(v, u) * 7)
+    if w2 > 0.965 and hash01(px, py, 52) > 0.55:
+        return WATER_GLINT
     return c
 
 
-# ---------------------------------------------------------------- Wasser-/Wegformen
+# ------------------------------------------------- Wasser-/Wegformen (Felder)
 SHORE_SAND = 0.075   # Sandstreifen-Breite (Grid-Einheiten)
 SHORE_FOAM = 0.045   # Schaumsaum im Wasser
 
@@ -231,8 +254,10 @@ SHORE_FOAM = 0.045   # Schaumsaum im Wasser
 def shore_color(d, u, v, px, py, land_fn):
     """d > 0: Wasser (Tiefe), d <= 0: Land; Sand + Schaum am Übergang."""
     if d > 0:
-        if d < SHORE_FOAM and hash01(px, py, 61) > 0.25:
+        if d < SHORE_FOAM and hash01(px, py, 61) > 0.3:
             return FOAM
+        if d < SHORE_FOAM * 2.2:  # türkises Flachwasser
+            return mix(water_at(u, v, px, py, 0.0), SAND[3], 0.25)
         return water_at(u, v, px, py, depth=d / 0.22)
     if d > -SHORE_SAND:
         return sand_at(u, v, px, py)
@@ -306,15 +331,39 @@ def road_at(mask, u, v, px, py):
     dist = path_dist(mask, uu, vv)
     d = hw - dist
     if d <= 0:
-        if d > -0.03:  # dunkle Wegkante
+        if d > -0.022:  # dunkle Wegkante
             return ROAD_EDGE
+        if d > -0.05 and hash01(px, py, 72) > 0.82:  # Randsteine
+            return STONE_SPECK[hash01(px, py, 73) > 0.5]
         return grass_at(u, v, px, py)
-    if abs(dist - 0.10) < 0.016 and mask:  # Wagenspuren
+    if abs(dist - 0.10) < 0.013 and mask:  # Wagenspuren
         return ROAD_RUT
-    t = fbm(u * 1.7 + 0.41, v * 1.7 + 0.09)
-    if hash01(px, py, 71) > 0.94:
+    t = fbm(u * 1.7 + 0.41, v * 1.7 + 0.09) * 0.8 + N4.at(u * 3, v * 3) * 0.2
+    if hash01(px, py, 71) > 0.965:
         return ROAD_PEBBLE
     return ramp(ROAD, t, px, py)
+
+
+def ford_at(u, v, px, py, ew=True):
+    """Furt: Strasse quert seichtes Wasser mit Trittsteinen.
+
+    ew=True: Weg verläuft E-W, Wasser N-S.
+    """
+    wmask = (1 | 4) if ew else (2 | 8)  # Wasserkanal quer zum Weg
+    rmask = 15 ^ wmask
+    uu = u + wobble(v + 0.37, u, 0.05)
+    vv = v + wobble(u, v + 0.61, 0.05)
+    d = 0.26 - path_dist(wmask, uu, vv)  # Wassertiefe (>0 = Wasser)
+    ru = u + wobble(v + 0.83, u, 0.035)
+    rv = v + wobble(u + 0.19, v, 0.035)
+    rdist = path_dist(rmask, ru, rv)
+    if d > 0 and rdist < 0.20:
+        if N3.at(u * 2.3, v * 2.3) > 0.64:  # Trittsteine
+            t = 0.5 + (fbm(u * 4, v * 4) - 0.5) * 0.6
+            return ramp(ROCK, clamp(t, 0, 0.99), px, py)
+        return mix(water_at(u, v, px, py, 0.05), SAND[2], 0.35)
+    return shore_color(d, u, v, px, py,
+                       lambda u2, v2, px2, py2: road_at(rmask, u2, v2, px2, py2))
 
 
 LILIES = [(0.3, 0.35), (0.62, 0.28), (0.45, 0.62), (0.72, 0.7), (0.25, 0.75)]
@@ -325,7 +374,7 @@ def water_lily_at(u, v, px, py):
         d = math.hypot(u - lu, v - lv)
         if d < 0.017 and i % 2 == 0:
             return LILY_BLOOM
-        if d < 0.07 and not (u - lu > 0 and abs(v - lv) < 0.018):
+        if d < 0.07 and not (u - lu > 0 and abs(v - lv) < 0.016):
             return LILY[1] if hash01(px, py, 81) > 0.4 else LILY[0]
     return water_at(u, v, px, py, 0.55)
 
@@ -344,50 +393,114 @@ def water_rocks_at(u, v, px, py):
     return water_at(u, v, px, py, 0.6)
 
 
-# ---------------------------------------------------------------- Tile-Renderer
+# ------------------------------------------------------------ Tile-Renderer
 def paint_ground(img, ox, oy, color_fn):
-    put = img.putpixel
+    pix = img.load()
     for py in range(TH):
         for px in range(TW):
             u, v = uv_at(px, py)
             if in_diamond(u, v):
-                put((ox + px, oy + py), color_fn(u, v, px, py) + (255,))
+                pix[ox + px, oy + py] = color_fn(u, v, px, py) + (255,)
 
 
-def paint_grass_base(img, ox, oy, variant=0):
+def add_grass_details(img, ox, oy, salt, tufts=16, stones=3):
+    """Grasbüschel + Kiesel als Overlay — nur auf bereits gefüllten Pixeln."""
+    pix = img.load()
+    rnd = random.Random(SEED * 13 + salt)
+
+    def on_tile(px, py):
+        return 0 <= px < TW and 0 <= py < img.height - oy and pix[ox + px, oy + py][3] == 255
+
+    for _ in range(tufts):
+        u, v = rnd.uniform(0.08, 0.92), rnd.uniform(0.08, 0.92)
+        sx = int((u - v) * (TW / 2) + TW / 2)
+        sy = int((u + v) * (TH / 2))
+        for b in (-1, 0, 1):
+            h = rnd.randint(2, 4) - abs(b)
+            for k in range(h):
+                px_, py_ = sx + b * 2, sy - k
+                if on_tile(px_, py_):
+                    col = GRASS_LIGHT if k == h - 1 else GRASS[3 + (k % 2)]
+                    pix[ox + px_, oy + py_] = col + (255,)
+        if on_tile(sx, sy + 1):
+            pix[ox + sx, oy + sy + 1] = GRASS_DARK + (255,)
+    for _ in range(stones):
+        u, v = rnd.uniform(0.15, 0.85), rnd.uniform(0.15, 0.85)
+        sx = int((u - v) * (TW / 2) + TW / 2)
+        sy = int((u + v) * (TH / 2))
+        for dx, dy, ci in ((0, 0, 0), (1, 0, 0), (0, 1, 1), (1, 1, 1)):
+            if on_tile(sx + dx, sy + dy):
+                pix[ox + sx + dx, oy + sy + dy] = STONE_SPECK[ci] + (255,)
+
+
+def paint_grass_base(img, ox, oy, variant=0, details=True):
     paint_ground(img, ox, oy, lambda u, v, px, py: grass_at(u, v, px, py, variant))
+    if details:
+        add_grass_details(img, ox, oy, salt=variant)
 
 
 def blit_shadow(img, cx, cy, rx, ry, alpha=60):
+    pix = img.load()
     for py in range(int(cy - ry), int(cy + ry + 1)):
         for px in range(int(cx - rx), int(cx + rx + 1)):
             if not (0 <= px < img.width and 0 <= py < img.height):
                 continue
             dx, dy = (px - cx) / rx, (py - cy) / ry
             if dx * dx + dy * dy < 1:
-                r, g, b, a = img.getpixel((px, py))
+                r, g, b, a = pix[px, py]
                 if a == 0:
-                    img.putpixel((px, py), (30, 44, 30, alpha))
+                    pix[px, py] = (30, 44, 30, alpha)
                 else:
                     f = alpha / 255.0
-                    img.putpixel((px, py), (int(r * (1 - f * 0.6)),
-                                            int(g * (1 - f * 0.6)),
-                                            int(b * (1 - f * 0.6)), a))
+                    pix[px, py] = (int(r * (1 - f * 0.6)), int(g * (1 - f * 0.6)),
+                                   int(b * (1 - f * 0.6)), a)
+
+
+def paint_bridge(img, ox, oy, ew=True):
+    """Holzbrücke über den Fluss (leicht gewölbtes Plankendeck)."""
+    wmask = (1 | 4) if ew else (2 | 8)
+    paint_ground(img, ox, oy, lambda u, v, px, py: river_at(wmask, u, v, px, py))
+    pix = img.load()
+    deck_hw = 0.21
+    for py in range(TH):
+        for px in range(TW):
+            u, v = uv_at(px, py)
+            if not in_diamond(u, v):
+                continue
+            along = u if ew else v
+            cross = (v if ew else u) - 0.5
+            if abs(cross) > deck_hw:
+                continue
+            lift = int(round(5.0 * math.sin(math.pi * clamp(along, 0, 1))))
+            t = 0.3 + fbm(u * 2 + 0.53, v * 2 + 0.11) * 0.55
+            col = ramp(WOOD, t, px, py)
+            if (along * 9) % 1.0 < 0.1:           # Plankenfugen
+                col = WOOD_DARK
+            if abs(cross) > deck_hw - 0.04:       # Brüstungskante
+                col = WOOD_DARK if abs(cross) > deck_hw - 0.02 else WOOD[4]
+            ty = py - lift
+            if ty >= 0:
+                pix[ox + px, oy + ty] = col + (255,)
+            for k in range(1, lift + 1):          # Seitenfläche unter dem Deck
+                yy = py - lift + k
+                if 0 <= yy < TH:
+                    pix[ox + px, oy + yy] = (int(col[0] * 0.5), int(col[1] * 0.5),
+                                             int(col[2] * 0.55), 255)
 
 
 def paint_mountain(img, ox, oy, snow=False, variant=0):
     """Heightfield-Berg, back-to-front als Voxelsäulen gerendert."""
     base_y = TALL_H - TH  # Rautenbasis beginnt hier
-    paint_grass_base(img, ox, oy + base_y, variant)
+    paint_grass_base(img, ox, oy + base_y, variant, details=False)
 
     hn = VNoise(SEED + 40 + variant, 6)
     rn = VNoise(SEED + 44 + variant, 13)
-    hmax = 52.0 if not snow else 56.0
+    hmax = 104.0 if not snow else 112.0
     cu, cv = 0.46, 0.42
     cu2, cv2 = 0.66, 0.66  # Nebengipfel
-    put = img.putpixel
+    pix = img.load()
 
-    steps = 160
+    steps = 288
     for si in range(steps * 2):      # Iso-Tiefe = u+v aufsteigend
         for sj in range(steps):
             s = si / (2.0 * steps)
@@ -399,18 +512,18 @@ def paint_mountain(img, ox, oy, snow=False, variant=0):
             rough = 0.45 + 0.95 * hn.at(u * 1.2, v * 1.2)
             h = hmax * max(fall, 0.0) ** 1.15 * rough
             h = max(h, hmax * 0.62 * max(fall2, 0.0) ** 1.2 * rough)
-            if h < 2.5:
+            if h < 5.0:
                 continue
             sx = int((u - v) * (TW / 2) + TW / 2)
             sy_ground = int((u + v) * (TH / 2)) + base_y
             top = sy_ground - int(h)
             # Beleuchtung über Gradient (Licht von rechts oben)
             e = 0.02
-            gu = (hn.at(u + e, v) - hn.at(u - e, v)) * hmax * 0.35 + \
+            gu = (hn.at(u + e, v) - hn.at(u - e, v)) * hmax * 0.18 + \
                  (-1 if u > cu else 1) * hmax * 0.014
-            gv = (hn.at(u, v + e) - hn.at(u, v - e)) * hmax * 0.35 + \
+            gv = (hn.at(u, v + e) - hn.at(u, v - e)) * hmax * 0.18 + \
                  (-1 if v > cv else 1) * hmax * 0.014
-            shade = clamp(0.45 + 0.030 * (gu - gv), 0.04, 0.96)
+            shade = clamp(0.45 + 0.015 * (gu - gv), 0.04, 0.96)
             shade = clamp(shade + (rn.at(u, v) - 0.5) * 0.35, 0.02, 0.98)
             snowline = hmax * (0.52 + (rn.at(u * 2, v * 2) - 0.5) * 0.25)
             for yy in range(top, sy_ground + 1):
@@ -422,13 +535,13 @@ def paint_mountain(img, ox, oy, snow=False, variant=0):
                     col = ramp(SNOW, clamp(t + 0.25, 0, 0.99), sx, yy)
                 else:
                     col = ramp(ROCK, clamp(t, 0, 0.99), sx, yy)
-                put((ox + sx, oy + yy), col + (255,))
+                pix[ox + sx, oy + yy] = col + (255,)
 
 
-def paint_cliff(img, ox, oy, height=22, variant=0):
+def paint_cliff(img, ox, oy, height=44, variant=0):
     """Erhöhtes Gras-Plateau mit Felswänden (2.5D-Höhenstufe)."""
     base_y = TALL_H - TH
-    top_y = base_y - height
+    pix = img.load()
     # Felswände: sichtbare SW-/SE-Flächen
     for px in range(TW):
         half = TW // 2
@@ -440,33 +553,34 @@ def paint_cliff(img, ox, oy, height=22, variant=0):
             left = False
         yb = int(yb)
         for yy in range(yb - height, yb):
-            strata = ((yy + fbm(px / TW, yy / TALL_H) * 7) // 3) % 4 / 4.0
-            t = 0.3 + strata * 0.5 + (fbm(px / 21.0, yy / 13.0) - 0.5) * 0.3
+            strata = ((yy + fbm(px / TW, yy / TALL_H) * 14) // 6) % 4 / 4.0
+            t = 0.32 + strata * 0.48 + (fbm(px / 42.0, yy / 26.0) - 0.5) * 0.3
             if left:
                 t -= 0.24
-            if yy == yb - height:
+            if yy >= yb - height and yy < yb - height + 2:
                 t += 0.45
             col = ramp(ROCK, clamp(t, 0, 0.99), px, yy)
             if 0 <= yy < TALL_H:
-                img.putpixel((ox + px, oy + yy), col + (255,))
+                pix[ox + px, oy + yy] = col + (255,)
     # Grasdeckel oben
-    paint_grass_base(img, ox, oy + top_y, 3 + variant)
+    paint_grass_base(img, ox, oy + base_y - height, 3 + variant)
 
 
 def paint_boulder(img, ox, oy):
     base_y = TALL_H - TH
-    blit_shadow(img, ox + TW / 2, oy + base_y + TH / 2 + 2, 15, 6)
+    blit_shadow(img, ox + TW / 2, oy + base_y + TH / 2 + 4, 30, 12)
     bn = VNoise(SEED + 60, 5)
-    for si in range(160):
-        for sj in range(80):
-            s, q = si / 160.0, sj / 80.0
+    pix = img.load()
+    for si in range(320):
+        for sj in range(160):
+            s, q = si / 320.0, sj / 160.0
             u = clamp(0.5 + (s - 0.5) * 0.55 + (q - 0.5) * 0.5, 0.02, 0.98)
             v = clamp(0.5 + (s - 0.5) * 0.55 - (q - 0.5) * 0.5, 0.02, 0.98)
             fall = 1.0 - math.hypot(u - 0.5, v - 0.52) / 0.26
             if fall <= 0:
                 continue
-            h = 15.0 * (fall ** 0.8) * (0.7 + 0.5 * bn.at(u * 2, v * 2))
-            if h < 1.2:
+            h = 30.0 * (fall ** 0.8) * (0.7 + 0.5 * bn.at(u * 2, v * 2))
+            if h < 2.4:
                 continue
             sx = int((u - v) * (TW / 2) + TW / 2)
             syg = int((u + v) * (TH / 2)) + base_y
@@ -476,13 +590,14 @@ def paint_boulder(img, ox, oy):
                 depth = (yy - top) / max(h, 1)
                 col = ramp(ROCK, clamp(shade * (1 - depth * 0.5), 0, 0.99), sx, yy)
                 if 0 <= sx < TW and 0 <= yy < TALL_H:
-                    img.putpixel((ox + sx, oy + yy), col + (255,))
+                    pix[ox + sx, oy + yy] = col + (255,)
 
 
 def paint_blob(img, ox, oy, cx, cy, rx, ry, palette, salt, light=(0.6, -0.75),
                berries=False):
     """Schattiere eine Busch-/Laubkugel (Licht von rechts oben)."""
     lx, ly = light
+    pix = img.load()
     for py in range(int(cy - ry - 1), int(cy + ry + 2)):
         for px in range(int(cx - rx - 1), int(cx + rx + 2)):
             if not (0 <= px < TW and 0 <= py < TALL_H):
@@ -493,23 +608,23 @@ def paint_blob(img, ox, oy, cx, cy, rx, ry, palette, salt, light=(0.6, -0.75),
             if rr >= 1:
                 continue
             t = 0.5 + 0.42 * (dx * lx + dy * ly) - rr * 0.22
-            t += (fbm(px / 17.0, py / 17.0) - 0.5) * 0.35
+            t += (fbm(px / 34.0, py / 34.0) - 0.5) * 0.35
             col = ramp(palette, clamp(t, 0, 0.99), px, py)
-            if berries and hash01(px, py, salt + 5) > 0.965:
+            if berries and hash01(px, py, salt + 5) > 0.97:
                 col = BERRY
-            img.putpixel((ox + px, oy + py), col + (255,))
+            pix[ox + px, oy + py] = col + (255,)
 
 
 def paint_scrub(img, ox, oy, variant=0):
     """Dichtes Gestrüpp: Grasbasis + Buschballen mit Höhe."""
     base_y = TALL_H - TH
-    paint_grass_base(img, ox, oy + base_y, variant)
+    paint_grass_base(img, ox, oy + base_y, variant, details=False)
     rnd = random.Random(SEED + 70 + variant)
     bushes = []
     for _ in range(11):
         u = rnd.uniform(0.16, 0.84)
         v = rnd.uniform(0.16, 0.84)
-        bushes.append((u, v, rnd.uniform(7, 11), rnd.uniform(5, 8), rnd.uniform(2, 9)))
+        bushes.append((u, v, rnd.uniform(14, 22), rnd.uniform(10, 15), rnd.uniform(4, 18)))
     bushes.sort(key=lambda b: b[0] + b[1])  # back to front
     for i, (u, v, rx, ry, lift) in enumerate(bushes):
         sx = (u - v) * (TW / 2) + TW / 2
@@ -517,63 +632,68 @@ def paint_scrub(img, ox, oy, variant=0):
         paint_blob(img, ox, oy, sx, sy, rx, ry, BRUSH, 100 + i * 7 + variant,
                    berries=(variant == 1 and i % 3 == 0))
     # ein paar dornige Zweige oben heraus
-    for i in range(6):
+    pix = img.load()
+    for i in range(8):
         u, v, rx, ry, lift = bushes[rnd.randrange(len(bushes))]
         sx = int((u - v) * (TW / 2) + TW / 2)
         sy = int((u + v) * (TH / 2) + base_y - lift - ry)
-        for k in range(rnd.randint(3, 5)):
+        for k in range(rnd.randint(6, 10)):
             px, py = sx + (k if i % 2 else -k) // 2, sy - k
             if 0 <= px < TW and 0 <= py < TALL_H:
-                img.putpixel((ox + px, oy + py), BRUSH[0] + (255,))
+                pix[px + ox, py + oy] = BRUSH[0] + (255,)
 
 
 def paint_tree_round(img, ox, oy):
     base_y = TALL_H - TH
     gx, gy = TW // 2, base_y + TH // 2
-    blit_shadow(img, ox + gx, oy + gy + 2, 14, 5)
+    blit_shadow(img, ox + gx, oy + gy + 4, 28, 10)
+    pix = img.load()
     # Stamm
-    for yy in range(gy - 26, gy + 1):
-        w = 2 + (gy - yy < 5) + (gy - yy < 2)
+    for yy in range(gy - 52, gy + 1):
+        w = 5 + (3 if gy - yy < 10 else 0) + (2 if gy - yy < 4 else 0)
         for xx in range(gx - w // 2 - 1, gx + w // 2 + 1):
-            t = 0.35 + (xx - gx) * 0.28 + (hash01(xx, yy, 120) - 0.5) * 0.4
-            img.putpixel((ox + xx, oy + yy), ramp(TRUNK, clamp(t, 0, 0.99), xx, yy) + (255,))
+            t = 0.35 + (xx - gx) * 0.14 + (hash01(xx, yy, 120) - 0.5) * 0.4
+            pix[ox + xx, oy + yy] = ramp(TRUNK, clamp(t, 0, 0.99), xx, yy) + (255,)
     # Krone aus überlappenden Kugeln
-    cx, cy = gx, gy - 42
-    blobs = [(0, 2, 18, 14), (-12, 8, 12, 10), (12, 8, 12, 10), (-8, -9, 11, 9), (9, -8, 11, 9)]
+    cx, cy = gx, gy - 84
+    blobs = [(0, 4, 36, 28), (-24, 16, 24, 20), (24, 16, 24, 20),
+             (-16, -18, 22, 18), (18, -16, 22, 18)]
     for i, (dx, dy, rx, ry) in enumerate(blobs):
         paint_blob(img, ox, oy, cx + dx, cy + dy, rx, ry, LEAF, 130 + i * 3)
     # Blüten-Tupfer (hell & freundlich)
     rnd = random.Random(SEED + 77)
-    for _ in range(7):
-        px = cx + rnd.randint(-13, 13)
-        py = cy + rnd.randint(-9, 10)
-        cur = img.getpixel((ox + px, oy + py))
+    for _ in range(16):
+        px = cx + rnd.randint(-26, 26)
+        py = cy + rnd.randint(-18, 20)
+        cur = pix[ox + px, oy + py]
         if cur[3] == 255 and cur[:3] in LEAF:
-            img.putpixel((ox + px, oy + py), (255, 190, 205, 255))
+            pix[ox + px, oy + py] = (255, 192, 208, 255)
+            if pix[ox + px + 1, oy + py][3] == 255 and pix[ox + px + 1, oy + py][:3] in LEAF:
+                pix[ox + px + 1, oy + py] = (255, 214, 224, 255)
 
 
 def paint_tree_pine(img, ox, oy):
     base_y = TALL_H - TH
     gx, gy = TW // 2, base_y + TH // 2
-    blit_shadow(img, ox + gx, oy + gy + 2, 12, 5)
-    for yy in range(gy - 8, gy + 1):
-        for xx in range(gx - 1, gx + 2):
-            img.putpixel((ox + xx, oy + yy), TRUNK[1] + (255,))
-    tiers = [(gy - 58, 8, 16), (gy - 44, 12, 18), (gy - 28, 16, 20)]
+    blit_shadow(img, ox + gx, oy + gy + 4, 24, 10)
+    pix = img.load()
+    for yy in range(gy - 16, gy + 1):
+        for xx in range(gx - 2, gx + 3):
+            pix[ox + xx, oy + yy] = TRUNK[1] + (255,)
+    tiers = [(gy - 116, 16, 32), (gy - 88, 24, 36), (gy - 56, 32, 40)]
     for ti, (apex_y, hw, hgt) in enumerate(tiers):
         for yy in range(apex_y, apex_y + hgt):
             frac = (yy - apex_y) / hgt
             w = hw * frac
-            jag = (hash01(yy, ti, 140) - 0.5) * 3 if frac > 0.75 else 0
+            jag = (hash01(yy, ti, 140) - 0.5) * 6 if frac > 0.75 else 0
             for xx in range(int(gx - w - jag), int(gx + w + jag) + 1):
                 t = 0.42 + (xx - gx) / max(w * 2, 1) * 0.7 - frac * 0.25
-                t += (fbm(xx / 13.0, yy / 13.0) - 0.5) * 0.3
+                t += (fbm(xx / 26.0, yy / 26.0) - 0.5) * 0.3
                 if 0 <= xx < TW and 0 <= yy < TALL_H:
-                    img.putpixel((ox + xx, oy + yy),
-                                 ramp(PINE, clamp(t, 0, 0.99), xx, yy) + (255,))
+                    pix[ox + xx, oy + yy] = ramp(PINE, clamp(t, 0, 0.99), xx, yy) + (255,)
 
 
-# ---------------------------------------------------------------- Atlas-Layout
+# ------------------------------------------------------------ Atlas-Layout
 CORNERS = ["NE", "SE", "SW", "NW"]
 
 GROUND_TILES = []  # (col, row, name, painter, terrain, cost, walkable)
@@ -644,6 +764,15 @@ def build_ground_layout():
     _reg(7, 6, "WATER_ROCKS", lambda i, x, y: paint_ground(i, x, y, water_rocks_at),
          "water", 0, False)
 
+    _reg(0, 7, "BRIDGE_EW", lambda i, x, y: paint_bridge(i, x, y, True), "bridge", 1, True)
+    _reg(1, 7, "BRIDGE_NS", lambda i, x, y: paint_bridge(i, x, y, False), "bridge", 1, True)
+    _reg(2, 7, "FORD_EW",
+         lambda i, x, y: paint_ground(i, x, y, lambda u, v, px, py: ford_at(u, v, px, py, True)),
+         "ford", 2, True)
+    _reg(3, 7, "FORD_NS",
+         lambda i, x, y: paint_ground(i, x, y, lambda u, v, px, py: ford_at(u, v, px, py, False)),
+         "ford", 2, True)
+
 
 TALL_TILES = [
     (0, 0, "MOUNTAIN_A", lambda i, x, y: paint_mountain(i, x, y, False, 0), "mountain", 0, False),
@@ -667,8 +796,9 @@ def render_atlases():
         tile = Image.new("RGBA", (TW, TALL_H), (0, 0, 0, 0))
         painter(tile, 0, 0)
         tall.paste(tile, (col * TW, row * TALL_H))
-    ground = ground.resize((ground.width * SCALE, ground.height * SCALE), Image.NEAREST)
-    tall = tall.resize((tall.width * SCALE, tall.height * SCALE), Image.NEAREST)
+    if SCALE != 1:
+        ground = ground.resize((ground.width * SCALE, ground.height * SCALE), Image.NEAREST)
+        tall = tall.resize((tall.width * SCALE, tall.height * SCALE), Image.NEAREST)
     return ground, tall
 
 

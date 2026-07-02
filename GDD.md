@@ -570,7 +570,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
   - Terrain-Tiles: 128×64 px (2:1-Iso-Raute), logische Auflösung 64×32 mit 2× Nearest-Upscale
   - Hohe Tiles (Berge, Klippen, Bäume, Gestrüpp): 128×192 px, Rautenbasis unten (`texture_origin (0, 64)`) → 2,5D-Höhenillusion
   - Godot-TileSet: `Isometric` / `Diamond Down` — quadratische Grid-Logik bleibt erhalten (Manhattan-Distanz)
-  - Terrain-Umfang v1: Gras (+Blumen), Fluss & See (16 Verbindungen + 13 Ufer-Übergänge), Straße (16 Verbindungen), Berge (+Schneevariante), dichtes Gestrüpp, Klippen-Plateau, Sand, Acker, Bäume, Findling
+  - Terrain-Umfang v1: Gras (+Blumen), Fluss & See (16 Verbindungen + 13 Ufer-Übergänge), Straße (16 Verbindungen), Brücke & Furt (je 2 Ausrichtungen), Berge (+Schneevariante), dichtes Gestrüpp, Klippen-Plateau, Sand, Acker, Bäume, Findling
   - Jedes Tile trägt Custom-Data fürs Taktik-Grid: `terrain` (String), `move_cost` (int), `walkable` (bool)
   - Quelle: prozeduraler Generator `tools/generate_tileset.py` (Platzhalter-Qualität, später durch handgemalte Assets ersetzbar — gleiche Maße/Slots). Details: `docs/TILESET.md`
 - **Sprite-Größen (Charaktere):** *(folgt)*

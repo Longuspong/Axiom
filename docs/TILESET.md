@@ -10,7 +10,7 @@ Isometrisches HD-Pixel-Art-Tileset für den Map-Bau in Godot 4 (TileMapLayer).
 
 | Datei | Inhalt |
 |-------|--------|
-| `assets/tiles/terrain_ground.png` | Boden-Atlas: Gras, Blumen, Sand, Erde, Acker, Fluss, Straße, See (Zellen 128×64) |
+| `assets/tiles/terrain_ground.png` | Boden-Atlas: Gras, Blumen, Sand, Erde, Acker, Fluss, Straße, See, Brücke, Furt (Zellen 128×64) |
 | `assets/tiles/terrain_tall.png` | Hohe Tiles: Berge, Klippe, Findling, Gestrüpp, Bäume (Zellen 128×192) |
 | `assets/tiles/terrain_tileset.tres` | Fertige Godot-TileSet-Ressource (beide Atlanten + Custom-Data) |
 | `scripts/tile_ids.gd` | `TileIds`-Konstanten: Atlas-Koordinaten aller Tiles |
@@ -66,13 +66,20 @@ Benennung nach der **Gras-Seite**:
 
 Auswahl-Logik: `scenes/map_demo.gd` (`_lake_tile`).
 
+## Flussquerungen
+
+- `BRIDGE_EW` / `BRIDGE_NS` — Holzbrücke (Deck E–W bzw. N–S, Wasser quer dazu); `terrain = "bridge"`, begehbar, Kosten 1
+- `FORD_EW` / `FORD_NS` — Furt mit Trittsteinen im Flachwasser; `terrain = "ford"`, begehbar, Kosten 2 (taktisch interessant: langsamer als die Brücke)
+
+Die Benennung gibt die **Weg-Richtung** an. In `map_demo.gd` steht `=` für eine E–W-Brücke.
+
 ## Custom-Data (fürs Taktik-Grid)
 
 Jedes Tile trägt drei Custom-Data-Felder:
 
 | Feld | Typ | Bedeutung |
 |------|-----|-----------|
-| `terrain` | String | `grass`, `water`, `road`, `sand`, `dirt`, `brush`, `mountain`, `cliff`, `tree`, `boulder` |
+| `terrain` | String | `grass`, `water`, `road`, `bridge`, `ford`, `sand`, `dirt`, `brush`, `mountain`, `cliff`, `tree`, `boulder` |
 | `move_cost` | int | Bewegungskosten (Gestrüpp = 2) |
 | `walkable` | bool | Wasser, Berge, Bäume, Findlinge = `false` |
 
@@ -103,7 +110,6 @@ Paletten, Tile-Layout und alle Parameter liegen oben in `tools/generate_tileset.
 
 ## Ideen für den Ausbau
 
-- Brücke / Furt (Straße × Fluss)
 - Wasserfall-Tile an Klippenkanten, Fluss mit Gefällestufe
 - Schnee-/Winter-Biom (Paletten-Swap ist im Generator trivial)
 - Klippen-Varianten für alle vier Richtungen + Rampen/Treppen (Höhenstufen fürs Taktik-Grid)

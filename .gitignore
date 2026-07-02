@@ -1,0 +1,7 @@
+# Godot
+.godot/
+*.translation
+
+# System
+.DS_Store
+__pycache__/

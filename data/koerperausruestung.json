@@ -7,7 +7,8 @@
     "id_präfix": "KP",
     "hinweis": "Körper-Slot verwendet den ±0,30-Speed-Index (wie Waffen). Defensivwerte: WID, Rüstung, Resistenz, VIT/LP.",
     "hauptattribut_regel": "Jede Körperrüstung trägt genau EIN Hauptattribut (prim); kein Sekundär-Attribut. Mehrwert über Defensivwerte + Eigenart.",
-    "namensregel": "Reine Metallgegenstände: '<Material> <Typ>'. Nicht-Metall-Items (Pergament/Leder/Kristall/Holz) werden mit dem Seltenheits-Metall beschlagen/bearbeitet (z. B. 'kupferbearbeiteter Köcher'). Endung nach Genus (Nom.): m=-er, f=-e, n=-es. Felder 'material_form' + 'genus' pro Typ."
+    "namensregel": "Reine Metallgegenstände: '<Material> <Typ>'. Nicht-Metall-Items (Pergament/Leder/Kristall/Holz) werden mit dem Seltenheits-Metall beschlagen/bearbeitet (z. B. 'kupferbearbeiteter Köcher'). Endung nach Genus (Nom.): m=-er, f=-e, n=-es. Felder 'material_form' + 'genus' pro Typ.",
+    "designentscheidung_zubehoer": "BEWUSSTER TRADE-OFF: Rüstung und Zubehör (Köcher/Buchrolle) teilen sich EINEN Körper-Slot — entweder/oder, nicht beides. Wer ein Zubehör trägt, verzichtet auf die Defensivwerte der Körperrüstung (z. B. Schütze: Köcher statt Brustrüstung). Kein separater Unter-Slot."
   },
   "seltenheitsstufen": [
     {

@@ -1,13 +1,14 @@
 {
   "meta": {
-    "version": "v1.0",
+    "version": "v1.2",
     "kategorie": "Offhand",
-    "status": "Befüllt — 12 Offhand-Typen × 7 Stufen (84 Einträge). Prim.-Werte & Slot-Kapazitäten sind PLATZHALTER (beim Balancing anpassen). Stufe 7 (Stellar) Prim.-Wert = 0 (offen).",
+    "status": "Befüllt — 12 Offhand-Typen × 7 Stufen (84 Einträge). Prim.-Werte & Slot-Kapazitäten sind PLATZHALTER. Stufe 7 (Stellar) Prim.-Wert = 0 (offen). Köcher & Buchrolle wurden in die Rücken-Ausrüstung (data/rueckenausruestung.json) verschoben.",
     "quelle": "GDD §5.1 (Gewichtsklassen/Speed), §5.2 (WID/Rüstung/Resistenz), Seltenheitsstufen aus weapons.json",
     "id_präfix": "OH",
     "hinweis": "Offhands sind nur mit einhändigen (E) Waffen kombinierbar. Bekanntes Beispiel: Schild (= ausrüstbarer Schild, NICHT der Schutz-Zauber, siehe GDD-Terminologie). Speed-Index wie Körperslot (±0,30).",
     "regel_einhand_zweihand": "Offhands nur mit Einhandwaffen (E). Zweihandwaffen (B) können kein Offhand führen; ihr Ausgleich = +35 % auf die Grundwerte, FESTGELEGT als globaler Aufschlag beim Anzeigen/Ausrüsten (weapons.json meta.zweihand_grundwert_bonus), nicht in die Daten eingerechnet. Siehe GDD §5.3.",
-    "hauptattribut_regel": "Jedes Offhand trägt genau EIN Hauptattribut; kein Sekundär-Attribut."
+    "hauptattribut_regel": "Jedes Offhand trägt genau EIN Hauptattribut; kein Sekundär-Attribut.",
+    "namensregel": "Reine Metallgegenstände: '<Material> <Typ>' (z. B. 'Kupfer Buckler'). Gegenstände, deren Grundmaterial NICHT das Seltenheits-Metall ist (Pergament, Leder, Kristall, Holz), werden mit dem Metall beschlagen ('beschlagen') oder bearbeitet ('bearbeitet'): Name = '<material><form><endung> <Typ>' (z. B. 'stahlbeschlagener Foliant', 'kupferbearbeiteter Köcher'). Adjektiv-Endung nach Genus (Nominativ): m=-er, f=-e, n=-es. Steuerfelder pro Typ: 'material_form' (pur|beschlagen|bearbeitet) + 'genus' (m|f|n)."
   },
   "seltenheitsstufen": [
     {
@@ -176,7 +177,9 @@
         "Hammer",
         "Rapier",
         "Kampfmesser"
-      ]
+      ],
+      "material_form": "pur",
+      "genus": "m"
     },
     {
       "klasse": "Schild",
@@ -191,7 +194,9 @@
       "affinitaet": [
         "Schwert",
         "Hammer"
-      ]
+      ],
+      "material_form": "pur",
+      "genus": "m"
     },
     {
       "klasse": "Magischer Fokus",
@@ -207,7 +212,9 @@
         "Zauberstab",
         "Zepter",
         "Energiesphäre"
-      ]
+      ],
+      "material_form": "beschlagen",
+      "genus": "m"
     },
     {
       "klasse": "Magischer Fokus",
@@ -223,7 +230,9 @@
         "Energiesphäre",
         "Zauberstab",
         "Zepter"
-      ]
+      ],
+      "material_form": "beschlagen",
+      "genus": "m"
     },
     {
       "klasse": "Hilfsmittel",
@@ -240,7 +249,9 @@
         "Hammer",
         "Stilett",
         "Kampfmesser"
-      ]
+      ],
+      "material_form": "pur",
+      "genus": "f"
     },
     {
       "klasse": "Hilfsmittel",
@@ -256,7 +267,9 @@
         "Wurfmesser",
         "Schleuder",
         "Stilett"
-      ]
+      ],
+      "material_form": "pur",
+      "genus": "f"
     },
     {
       "klasse": "Hilfsmittel",
@@ -271,7 +284,9 @@
       "affinitaet": [
         "Schwert",
         "Hammer"
-      ]
+      ],
+      "material_form": "beschlagen",
+      "genus": "m"
     },
     {
       "klasse": "Hilfsmittel",
@@ -287,7 +302,9 @@
         "Stilett",
         "Kampfmesser",
         "Wurfmesser"
-      ]
+      ],
+      "material_form": "bearbeitet",
+      "genus": "f"
     },
     {
       "klasse": "Hilfsmittel",
@@ -302,7 +319,9 @@
       "affinitaet": [
         "Schwert",
         "Hammer"
-      ]
+      ],
+      "material_form": "beschlagen",
+      "genus": "n"
     },
     {
       "klasse": "Hilfsmittel",
@@ -317,7 +336,9 @@
       "affinitaet": [
         "Schwert",
         "Hammer"
-      ]
+      ],
+      "material_form": "bearbeitet",
+      "genus": "f"
     },
     {
       "klasse": "Hilfsmittel",
@@ -333,7 +354,9 @@
         "Energiesphäre",
         "Zepter",
         "Zauberstab"
-      ]
+      ],
+      "material_form": "pur",
+      "genus": "m"
     },
     {
       "klasse": "Hilfsmittel",
@@ -348,7 +371,9 @@
       "affinitaet": [
         "Schwert",
         "Hammer"
-      ]
+      ],
+      "material_form": "bearbeitet",
+      "genus": "m"
     }
   ],
   "stat_skalierung": {
@@ -772,7 +797,7 @@
     },
     {
       "ID": "OH-FOL-1",
-      "Name": "Kupfer Foliant",
+      "Name": "kupferbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 1,
@@ -798,7 +823,7 @@
     },
     {
       "ID": "OH-FOL-2",
-      "Name": "Eisen Foliant",
+      "Name": "eisenbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 2,
@@ -824,7 +849,7 @@
     },
     {
       "ID": "OH-FOL-3",
-      "Name": "Stahl Foliant",
+      "Name": "stahlbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 3,
@@ -850,7 +875,7 @@
     },
     {
       "ID": "OH-FOL-4",
-      "Name": "Titan Foliant",
+      "Name": "titanbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 4,
@@ -877,7 +902,7 @@
     },
     {
       "ID": "OH-FOL-5",
-      "Name": "Adamant Foliant",
+      "Name": "adamantbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 5,
@@ -904,7 +929,7 @@
     },
     {
       "ID": "OH-FOL-6",
-      "Name": "Diamant Foliant",
+      "Name": "diamantbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 6,
@@ -931,7 +956,7 @@
     },
     {
       "ID": "OH-FOL-7",
-      "Name": "Stellar Foliant",
+      "Name": "stellarbeschlagener Foliant",
       "Klasse": "Magischer Fokus",
       "Typ": "Foliant",
       "Stufe (1–7)": 7,
@@ -958,7 +983,7 @@
     },
     {
       "ID": "OH-EKR-1",
-      "Name": "Kupfer Energiekristall",
+      "Name": "kupferbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 1,
@@ -984,7 +1009,7 @@
     },
     {
       "ID": "OH-EKR-2",
-      "Name": "Eisen Energiekristall",
+      "Name": "eisenbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 2,
@@ -1010,7 +1035,7 @@
     },
     {
       "ID": "OH-EKR-3",
-      "Name": "Stahl Energiekristall",
+      "Name": "stahlbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 3,
@@ -1036,7 +1061,7 @@
     },
     {
       "ID": "OH-EKR-4",
-      "Name": "Titan Energiekristall",
+      "Name": "titanbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 4,
@@ -1063,7 +1088,7 @@
     },
     {
       "ID": "OH-EKR-5",
-      "Name": "Adamant Energiekristall",
+      "Name": "adamantbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 5,
@@ -1090,7 +1115,7 @@
     },
     {
       "ID": "OH-EKR-6",
-      "Name": "Diamant Energiekristall",
+      "Name": "diamantbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 6,
@@ -1117,7 +1142,7 @@
     },
     {
       "ID": "OH-EKR-7",
-      "Name": "Stellar Energiekristall",
+      "Name": "stellarbeschlagener Energiekristall",
       "Klasse": "Magischer Fokus",
       "Typ": "Energiekristall",
       "Stufe (1–7)": 7,
@@ -1516,7 +1541,7 @@
     },
     {
       "ID": "OH-FGU-1",
-      "Name": "Kupfer Fester Gürtel",
+      "Name": "kupferbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 1,
@@ -1542,7 +1567,7 @@
     },
     {
       "ID": "OH-FGU-2",
-      "Name": "Eisen Fester Gürtel",
+      "Name": "eisenbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 2,
@@ -1568,7 +1593,7 @@
     },
     {
       "ID": "OH-FGU-3",
-      "Name": "Stahl Fester Gürtel",
+      "Name": "stahlbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 3,
@@ -1594,7 +1619,7 @@
     },
     {
       "ID": "OH-FGU-4",
-      "Name": "Titan Fester Gürtel",
+      "Name": "titanbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 4,
@@ -1621,7 +1646,7 @@
     },
     {
       "ID": "OH-FGU-5",
-      "Name": "Adamant Fester Gürtel",
+      "Name": "adamantbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 5,
@@ -1648,7 +1673,7 @@
     },
     {
       "ID": "OH-FGU-6",
-      "Name": "Diamant Fester Gürtel",
+      "Name": "diamantbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 6,
@@ -1675,7 +1700,7 @@
     },
     {
       "ID": "OH-FGU-7",
-      "Name": "Stellar Fester Gürtel",
+      "Name": "stellarbeschlagener Fester Gürtel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fester Gürtel",
       "Stufe (1–7)": 7,
@@ -1702,7 +1727,7 @@
     },
     {
       "ID": "OH-FAC-1",
-      "Name": "Kupfer Fackel",
+      "Name": "kupferbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 1,
@@ -1728,7 +1753,7 @@
     },
     {
       "ID": "OH-FAC-2",
-      "Name": "Eisen Fackel",
+      "Name": "eisenbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 2,
@@ -1754,7 +1779,7 @@
     },
     {
       "ID": "OH-FAC-3",
-      "Name": "Stahl Fackel",
+      "Name": "stahlbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 3,
@@ -1780,7 +1805,7 @@
     },
     {
       "ID": "OH-FAC-4",
-      "Name": "Titan Fackel",
+      "Name": "titanbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 4,
@@ -1807,7 +1832,7 @@
     },
     {
       "ID": "OH-FAC-5",
-      "Name": "Adamant Fackel",
+      "Name": "adamantbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 5,
@@ -1834,7 +1859,7 @@
     },
     {
       "ID": "OH-FAC-6",
-      "Name": "Diamant Fackel",
+      "Name": "diamantbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 6,
@@ -1861,7 +1886,7 @@
     },
     {
       "ID": "OH-FAC-7",
-      "Name": "Stellar Fackel",
+      "Name": "stellarbearbeitete Fackel",
       "Klasse": "Hilfsmittel",
       "Typ": "Fackel",
       "Stufe (1–7)": 7,
@@ -1888,7 +1913,7 @@
     },
     {
       "ID": "OH-SGH-1",
-      "Name": "Kupfer Signalhorn",
+      "Name": "kupferbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 1,
@@ -1914,7 +1939,7 @@
     },
     {
       "ID": "OH-SGH-2",
-      "Name": "Eisen Signalhorn",
+      "Name": "eisenbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 2,
@@ -1940,7 +1965,7 @@
     },
     {
       "ID": "OH-SGH-3",
-      "Name": "Stahl Signalhorn",
+      "Name": "stahlbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 3,
@@ -1966,7 +1991,7 @@
     },
     {
       "ID": "OH-SGH-4",
-      "Name": "Titan Signalhorn",
+      "Name": "titanbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 4,
@@ -1993,7 +2018,7 @@
     },
     {
       "ID": "OH-SGH-5",
-      "Name": "Adamant Signalhorn",
+      "Name": "adamantbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 5,
@@ -2020,7 +2045,7 @@
     },
     {
       "ID": "OH-SGH-6",
-      "Name": "Diamant Signalhorn",
+      "Name": "diamantbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 6,
@@ -2047,7 +2072,7 @@
     },
     {
       "ID": "OH-SGH-7",
-      "Name": "Stellar Signalhorn",
+      "Name": "stellarbeschlagenes Signalhorn",
       "Klasse": "Hilfsmittel",
       "Typ": "Signalhorn",
       "Stufe (1–7)": 7,
@@ -2074,7 +2099,7 @@
     },
     {
       "ID": "OH-STD-1",
-      "Name": "Kupfer Standarte",
+      "Name": "kupferbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 1,
@@ -2100,7 +2125,7 @@
     },
     {
       "ID": "OH-STD-2",
-      "Name": "Eisen Standarte",
+      "Name": "eisenbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 2,
@@ -2126,7 +2151,7 @@
     },
     {
       "ID": "OH-STD-3",
-      "Name": "Stahl Standarte",
+      "Name": "stahlbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 3,
@@ -2152,7 +2177,7 @@
     },
     {
       "ID": "OH-STD-4",
-      "Name": "Titan Standarte",
+      "Name": "titanbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 4,
@@ -2179,7 +2204,7 @@
     },
     {
       "ID": "OH-STD-5",
-      "Name": "Adamant Standarte",
+      "Name": "adamantbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 5,
@@ -2206,7 +2231,7 @@
     },
     {
       "ID": "OH-STD-6",
-      "Name": "Diamant Standarte",
+      "Name": "diamantbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 6,
@@ -2233,7 +2258,7 @@
     },
     {
       "ID": "OH-STD-7",
-      "Name": "Stellar Standarte",
+      "Name": "stellarbearbeitete Standarte",
       "Klasse": "Hilfsmittel",
       "Typ": "Standarte",
       "Stufe (1–7)": 7,
@@ -2446,7 +2471,7 @@
     },
     {
       "ID": "OH-KKB-1",
-      "Name": "Kupfer Köderkolben",
+      "Name": "kupferbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 1,
@@ -2472,7 +2497,7 @@
     },
     {
       "ID": "OH-KKB-2",
-      "Name": "Eisen Köderkolben",
+      "Name": "eisenbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 2,
@@ -2498,7 +2523,7 @@
     },
     {
       "ID": "OH-KKB-3",
-      "Name": "Stahl Köderkolben",
+      "Name": "stahlbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 3,
@@ -2524,7 +2549,7 @@
     },
     {
       "ID": "OH-KKB-4",
-      "Name": "Titan Köderkolben",
+      "Name": "titanbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 4,
@@ -2551,7 +2576,7 @@
     },
     {
       "ID": "OH-KKB-5",
-      "Name": "Adamant Köderkolben",
+      "Name": "adamantbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 5,
@@ -2578,7 +2603,7 @@
     },
     {
       "ID": "OH-KKB-6",
-      "Name": "Diamant Köderkolben",
+      "Name": "diamantbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 6,
@@ -2605,7 +2630,7 @@
     },
     {
       "ID": "OH-KKB-7",
-      "Name": "Stellar Köderkolben",
+      "Name": "stellarbearbeiteter Köderkolben",
       "Klasse": "Hilfsmittel",
       "Typ": "Köderkolben",
       "Stufe (1–7)": 7,

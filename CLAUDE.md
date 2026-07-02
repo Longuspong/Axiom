@@ -17,7 +17,7 @@ Dieses Dokument ist die interne Referenz für Claude Code. Bei Sitzungsstart hie
 - Nutzer gibt Designinformationen schrittweise durch
 - Ich trage alles in **`GDD.md`** ein — immer dasselbe Dokument, niemals ein neues anlegen
 - Bei Widersprüchen mit bestehendem Inhalt: **vor dem Eintragen fragen**
-- Direkt auf `main` pushen (kein PR-Overhead), außer der Nutzer sagt ausdrücklich etwas anderes
+- **Workflow: ganz normal über Pull Requests.** Pro Aufgabe ein Feature-Branch, committen, pushen, **Draft-PR** öffnen bzw. den bestehenden PR aktualisieren. **Kein Direkt-Push auf `main`, kein `--force`, kein `--amend`** — der Merge in `main` läuft ausschließlich über den PR. (Der frühere Direkt-auf-`main`-/Force-Workflow ist bewusst abgeschafft, weil dabei History überschrieben wurde und Arbeit verloren ging.)
 
 ### 📋 Ausgabeformat für Wertelisten (PFLICHT)
 
@@ -31,24 +31,23 @@ Wenn der Nutzer um eine **Ausgabe von Werten** bittet — **egal ob Waffen, Item
 ### ⚠️ Sitzungsende-Checkliste (PFLICHT wenn Nutzer „Sitzung schließen" sagt)
 
 1. **Alle besprochenen Designentscheidungen** sind vollständig ins GDD eingetragen — nichts darf in der Konversation steckenbleiben
-2. **GDD ist committed und auf `main` gepusht**
+2. **GDD ist committed, auf den Feature-Branch gepusht und der PR aktualisiert** (nicht direkt auf `main`)
 3. **CLAUDE.md ist aktualisiert** (GDD-Stand-Tabelle, letzte Sitzung, Kurzreferenz)
 4. Kurze Bestätigung an den Nutzer: was wurde eingetragen, was ist noch offen
-- **Nach jedem Commit:** `git commit --amend --no-edit --reset-author` + force push, damit der Stop-Hook nicht anschlägt
 - Git-Config vor jedem Commit sicherstellen: `user.email = noreply@anthropic.com`, `user.name = Claude`
 
 ### Commit-Ablauf (immer so):
 ```bash
 git config user.email noreply@anthropic.com
 git config user.name Claude
-git add GDD.md
-git commit -m "..."
-git commit --amend --no-edit --reset-author
-git push origin claude/updated-weapons-list-l1iuk8:main --force
-git push origin claude/updated-weapons-list-l1iuk8 --force
+git add GDD.md              # bzw. die geänderten data/-Dateien
+git commit -m "..."          # aussagekräftige Commit-Message
+git push -u origin <feature-branch>
+# danach: Draft-PR öffnen, falls für den Branch noch keiner offen ist —
+# sonst den bestehenden PR aktualisieren. Merge in main via PR.
 ```
 
-> **Push-Ziel (aktuell):** Bis zum Phase-1-Startschuss kommt alles (nach Widerspruchsprüfung) **direkt auf `main`**. Session-Arbeitsbranch ist `claude/updated-weapons-list-l1iuk8`.
+> **Push-Ziel:** Immer auf den jeweiligen **Feature-Branch**; Änderungen landen über einen **Pull Request** in `main`. Nichts wird mehr direkt auf `main` gepusht oder mit `--force`/`--amend` überschrieben.
 
 ---
 
@@ -88,7 +87,7 @@ Frühere Sitzungen:
 
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
 2. **Zweihand-Ausgleich (+35 %)** mit `data/weapons.json` final abstimmen
-3. **Rüstungs-Items** (Kopf/Körper/Füße) designen → jeweilige JSONs füllen
+3. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensivwerte/Eigenarten/MOB = Platzhalter) — alle Slots befüllt
 4. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
 5. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
 
@@ -98,10 +97,10 @@ Frühere Sitzungen:
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
 | `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
-| `data/offhands.json` | Offhand-Daten: Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12), `stat_skalierung` (Platzhalter), **84 Einträge** (12 Typen × 7 Stufen) |
-| `data/kopfausruestung.json` | Kopf-Rüstung — **Scaffold**, `eintraege` noch leer |
-| `data/koerperausruestung.json` | Körper-Rüstung — **Scaffold**, `eintraege` noch leer |
-| `data/fussausruestung.json` | Fuß-Rüstung — **Scaffold**, `eintraege` noch leer |
+| `data/offhands.json` | Offhand-Daten: Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (Platzhalter), **84 Einträge** (12 Typen × 7 Stufen) |
+| `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, Platzhalter/Entwurf |
+| `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — Platzhalter/Entwurf |
+| `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, Platzhalter/Entwurf |
 | `data/itemliste_v6.xlsx` | Gesamt-Excel (alle Sheets/Kategorien); JSONs sind die getrennte Coding-Datenbank |
 
 > **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
@@ -136,6 +135,7 @@ Frühere Sitzungen:
 | Mana | Standard 100; Regen 10/Zug (INT 10 Standard); aktive Gravur-Skills kosten Mana; passive Gravuren reservieren Mana in der Homezone |
 | VIT/LP | 1 VIT = 6 LP (Faktor modellierbar) |
 | Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf Grundwerte. **Festgelegt:** nicht in weapons.json eingerechnet, sondern globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`); Infokarte zeigt Endwert + Bonus-Zeile |
-| Offhands | Klasse+Typ wie Waffen, aber KEINE Waffen (Gimmicks). Genau 1 Hauptattribut, Eigenart fest = Identität, Gravuren modular. Gravur-Slots: bis Stahl 1, ab Titan 2. Daten: `data/offhands.json` (84 Einträge). Affinitäten = Empfehlung, frei kombinierbar |
+| Offhands | Klasse+Typ wie Waffen, aber KEINE Waffen (Gimmicks). Genau 1 Hauptattribut, Eigenart fest = Identität, Gravuren modular. Gravur-Slots: bis Stahl 1, ab Titan 2. Daten: `data/offhands.json` (84 Einträge, 12 Typen). Affinitäten = Empfehlung, frei kombinierbar. Köcher & Buchrolle liegen im **Körper-Slot** (`koerperausruestung.json`), nicht als Offhand — funktionieren so auch mit Zweihandwaffen. **Bewusster Trade-off:** Zubehör und Körperrüstung teilen sich einen Slot (entweder/oder) |
+| Item-Namensregel | Reine Metallgegenstände: „`<Material> <Typ>`" (z. B. „Kupfer Buckler"). Nicht-Metall-Items (Pergament/Leder/Kristall/Holz) werden mit dem Seltenheits-Metall **beschlagen**/**bearbeitet**: „stahlbeschlagener Foliant", „kupferbearbeiteter Köcher". Adjektiv-Endung nach Genus (Nom.): m=-er, f=-e, n=-es. Steuerfelder pro Typ: `material_form` (pur\|beschlagen\|bearbeitet) + `genus` |
 | Aggro/Threat | Threat nur durch Aktionen (`base×coeff×proximity`); Hysterese 110/130 %, Decay 5 %, Taunt-Lock 3 Züge, Guard 50/50. Präsenz-Aggro nur über Ausrüstungs-Auren (§5.2) |
 | Sichtsystem | Kein Fog of War. 3 Zustände: Offenbar / Unsichtbar / Scheinbar (≤2 Felder von Gegner aufgedeckt). Angriff/Zauber/Treffer → Offenbar (§5.2) |

@@ -17,7 +17,7 @@ Dieses Dokument ist die interne Referenz für Claude Code. Bei Sitzungsstart hie
 - Nutzer gibt Designinformationen schrittweise durch
 - Ich trage alles in **`GDD.md`** ein — immer dasselbe Dokument, niemals ein neues anlegen
 - Bei Widersprüchen mit bestehendem Inhalt: **vor dem Eintragen fragen**
-- Direkt auf `main` pushen (kein PR-Overhead), außer der Nutzer sagt ausdrücklich etwas anderes
+- **Workflow: ganz normal über Pull Requests.** Pro Aufgabe ein Feature-Branch, committen, pushen, **Draft-PR** öffnen bzw. den bestehenden PR aktualisieren. **Kein Direkt-Push auf `main`, kein `--force`, kein `--amend`** — der Merge in `main` läuft ausschließlich über den PR. (Der frühere Direkt-auf-`main`-/Force-Workflow ist bewusst abgeschafft, weil dabei History überschrieben wurde und Arbeit verloren ging.)
 
 ### 📋 Ausgabeformat für Wertelisten (PFLICHT)
 
@@ -31,24 +31,23 @@ Wenn der Nutzer um eine **Ausgabe von Werten** bittet — **egal ob Waffen, Item
 ### ⚠️ Sitzungsende-Checkliste (PFLICHT wenn Nutzer „Sitzung schließen" sagt)
 
 1. **Alle besprochenen Designentscheidungen** sind vollständig ins GDD eingetragen — nichts darf in der Konversation steckenbleiben
-2. **GDD ist committed und auf `main` gepusht**
+2. **GDD ist committed, auf den Feature-Branch gepusht und der PR aktualisiert** (nicht direkt auf `main`)
 3. **CLAUDE.md ist aktualisiert** (GDD-Stand-Tabelle, letzte Sitzung, Kurzreferenz)
 4. Kurze Bestätigung an den Nutzer: was wurde eingetragen, was ist noch offen
-- **Nach jedem Commit:** `git commit --amend --no-edit --reset-author` + force push, damit der Stop-Hook nicht anschlägt
 - Git-Config vor jedem Commit sicherstellen: `user.email = noreply@anthropic.com`, `user.name = Claude`
 
 ### Commit-Ablauf (immer so):
 ```bash
 git config user.email noreply@anthropic.com
 git config user.name Claude
-git add GDD.md
-git commit -m "..."
-git commit --amend --no-edit --reset-author
-git push origin claude/updated-weapons-list-l1iuk8:main --force
-git push origin claude/updated-weapons-list-l1iuk8 --force
+git add GDD.md              # bzw. die geänderten data/-Dateien
+git commit -m "..."          # aussagekräftige Commit-Message
+git push -u origin <feature-branch>
+# danach: Draft-PR öffnen, falls für den Branch noch keiner offen ist —
+# sonst den bestehenden PR aktualisieren. Merge in main via PR.
 ```
 
-> **Push-Ziel (aktuell):** Bis zum Phase-1-Startschuss kommt alles (nach Widerspruchsprüfung) **direkt auf `main`**. Session-Arbeitsbranch ist `claude/updated-weapons-list-l1iuk8`.
+> **Push-Ziel:** Immer auf den jeweiligen **Feature-Branch**; Änderungen landen über einen **Pull Request** in `main`. Nichts wird mehr direkt auf `main` gepusht oder mit `--force`/`--amend` überschrieben.
 
 ---
 

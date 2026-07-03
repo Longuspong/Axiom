@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.12  
+**Version:** 0.13  
 **Stand:** 2026-07-03  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -821,7 +821,19 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | **Hilfsmittel** | Rauchschwenker | Wendig | INT | **Spezereien** — vom Träger gewirkte Heilungen +20 % effektiver |
 | **Hilfsmittel** | Köderkolben | Schnell | VIT | **Achtung!** — +20 % Threat-Gen.; Threat-Aura 2 Felder (Präsenz-Aggro, §5.2) |
 
-> Vollständige Daten (12 Typen × 7 Stufen = 84 Einträge, mit Materialien, Preisen, Slots): **`data/offhands.json`**. Prim.-Werte/Slot-Kapazitäten sind aktuell Platzhalter (Balancing).
+> Vollständige Daten (12 Typen × 7 Stufen = 84 Einträge, mit Materialien, Preisen, Slots): **`data/offhands.json`**.
+
+**Offhand-Werte** *(kalibriert 2026-07-03)*:
+
+| Stufe | 1 (Kupfer) | 2 (Eisen) | 3 (Stahl) | 4 (Titan) | 5 (Adamant) | 6 (Diamant) | 7 (Stellar) |
+|-------|-----------|-----------|-----------|-----------|-------------|-------------|-------------|
+| **Prim.-Wert** | 3 | 5 | 7 | 10 | 14 | 18 | 24 |
+| **Grundkapazität** | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| **Max. Verfeinerung** | 1× | 2× | 3× | 3× | 3× | 3× | 3× |
+| **Gravur-Slots** | 1 | 1 | 1 | 2 | 2 | 2 | 2 |
+
+- **Begründung Prim.-Wert:** ≈ 50 % des Zweihand-Äquivalents (der +35 %-Bonus entspricht Ø 5/8/12/18/25/35 Attributspunkten über alle Waffenklassen). Die andere Hälfte des Offhand-Werts steckt in **Eigenart + Gravur-Slots** — Offhands sind Eigenart-Träger, keine Stat-Sticks. Der Tier ist identisch mit dem Sekundärslot-Tier von Kopf-/Fußausrüstung; Stufe 7 = Kurvenfortsetzung (×1,33).
+- **Verfeinerung** analog Waffen (Kupfer 1× / Eisen 2× / Stahl+ 3×). Offhand-Slots sind *Flex* → Gravuren kosten dort immer die vollen Level-Kapazitätskosten (§5.7).
 
 ---
 
@@ -888,6 +900,7 @@ Reaktive Fähigkeiten wie Gegenschlag oder Parry brauchen sowohl einen Cooldown 
 Jede Waffe besitzt eine **Energiekapazität** und eine Anzahl **Slots**. Slots sind entweder generisch (*Flex*) oder typisiert (Aktiv, Passiv, Reaktiv, Modifikativ, Spezial). Anzahl Slots und Kapazität hängen von der **Seltenheit** der Waffe ab (Slot-Templates in `data/weapons.json`).
 
 **Kostenmodell** *(entschieden 2026-07-03)*: Die Kapazitätskosten einer Gravur hängen **ausschließlich von ihrem Level** ab (Tabelle unter „Gravur-Leveling": L1 = 2 … L5 = 10) — der Gravur-Typ hat keine eigenen Basiskosten. **Typisierter Slot = halbe Kapazitätskosten** für eine passende Gravur; im nicht passenden oder generischen (*Flex*-)Slot gelten die vollen Kosten.
+*Konsequenz-Beispiel: Waffe mit Kapazität 1 und einem Aktiv-Slot → nur eine Aktiv-Gravur L1 passt (2 → 1); jede andere Gravur (voller Preis 2) passt nicht.*
 
 | Belegung | Slot-Typ | Gravur | Kosten |
 |----------|----------|--------|--------|
@@ -1213,7 +1226,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Phase 0 gilt als abgeschlossen, wenn:** *(Zuordnungs-Vorschlag — vom Nutzer zu bestätigen)*
 
-- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet
+- [x] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet *(2026-07-03)*
 - [ ] Rüstungswerte Kopf/Körper/Füße kalibriert (Defensiv-/Prim.-Werte & Slot-Kapazitäten)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
@@ -1239,11 +1252,11 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] `itemliste_v6.xlsx` → **v7** aktualisiert: Waffen-Sheet aus `weapons.json` v7 (Bogen-Notation `optimal/max`), neue Sheets Offhands (84), Kopf-/Körper-/Fußausrüstung (je 49, inkl. Köcher/Buchrolle im Körper-Slot), Referenz-Sheet Offhand- & Rüstungstypen *(2026-07-03)*
 - [x] Techstack dokumentiert (§10.3): GDScript, Audio nativ, Plugins (Dialogue Manager, Phantom Camera 2D), Game-Feel-Kernpatterns — übernommen aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn` *(2026-07-03)*
 - [x] Gravur-Kostenmodell entschieden *(2026-07-03, §5.7)*: Kapazitätskosten **rein Level-basiert** (L1=2 … L5=10), passender typisierter Slot halbiert, Flex/unpassend = volle Kosten; Typ-Basiskosten gestrichen
+- [x] Offhands kalibriert *(2026-07-03, §5.3)*: Prim.-Wert **3/5/7/10/14/18/24** (≈ 50 % des Zweihand-Äquivalents, = Sekundärslot-Tier), Grundkapazität = Stufe (1–7), Max. Verfeinerung **1×/2×/3×** (Stahl+ = 3×) — inkl. Stufe-7-Offhands; `data/offhands.json` v1.3 + Excel aktualisiert
 - [x] Gestrandete Branch-Inhalte gerettet *(2026-07-03)*: Gravurensystem → §5.7 (Verfeinerungs-Tabelle an Datenstand angepasst), Placeholder-Assets (`assets/placeholder/`: Tiny-RPG Soldat/Ork, Taverne) + §10.4, Terrain-Tileset v1 (`assets/tiles/`, `docs/TILESET.md`) + Tileset-Specs in §10.1, Godot-Projektskelett (`project.godot`, `scenes/`, `scripts/`, `tools/`), Yggdrasil-Skilltree-Editor (`addons/yggdrasil/`), Placeholder-Sprite-Strategie (§10.4/CLAUDE.md)
 
 **Offen — Balancing & Daten:**
 
-- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
 - [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte & Slot-Kapazitäten = Platzhalter)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
 - [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*

@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.10)
+## GDD-Stand (aktuell: v0.11)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -66,22 +66,27 @@ git push -u origin <feature-branch>
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
 | 9 | Hub — Bergheim | ✅ vollständig |
-| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, Sprache/Plattform/Struktur fehlen |
-| 11 | Offene Punkte & ToDos | ✅ laufend gepflegt |
+| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Plattform/Struktur fehlen |
+| 11 | Offene Punkte & ToDos | ✅ laufend gepflegt, inkl. Phasenplan & Phase-0-Abschlusskriterien |
 
 ---
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Audit & Widerspruchsbereinigung):
-- **Vollaudit aller Daten**: 112 Waffen + 84 Offhands + 147 Rüstungsteile rechnerisch gegen Skalierungstabellen geprüft — null Wertabweichungen
-- **Neue Systeme definiert (GDD §5.2)**: Trefferchance (100 % Basis; Fernkampf-Falloff = Trefferchance, −30 %/Feld, Max-Reichweite = harte Grenze; Ausweichen Basis 0 %, nur aus Quellen), Krit (5 % Basis, ×1,5 Rohschaden, keine Backstab/Flanken-Kopplung), WID **kein Cap** (Formel selbstbegrenzend), Kälte-Reaktionsmalus **−10 %/Stapel**
-- **Eigenarten-Grundregel**: niemals aktiv, immer passiv/reaktiv/automatisch. Umgestellt: Spruchrolle (auto alle 7 Züge: nächster Zauber gratis), Signalhorn „Sammeln" (auto alle 5 Züge), Windsohle neu = **„Aufwind"** (Zugbeginn ohne angrenzenden Gegner → +1 MOB); Fackel „Hetzjagd" final **+0,2 Speed**
-- **Alle 21 Rüstungs-/Zubehör-Eigenarten abgesegnet** — `[Entwurf]`-Marker entfernt (Zahlenwerte bleiben Balancing-Vorbehalt)
-- **Widersprüche bereinigt**: Bogen-Gewichtsklassen (Daten-Version gilt: Kriegsarmbrust Bedächtig, Jagdbogen Wendig, Langbogen Ausgeglichen), Krieger Σ80 = Absicht dokumentiert, Armbrüste bewusst identisches Distanzprofil, `stat_skalierung`-Schlüssel „Dolche"→„Stichwaffen", toter `rueckenausruestung`-Verweis korrigiert, Schütze-/Assassinen-Tabellen an reale Waffentypen angepasst, §11-ToDos dedupliziert & kategorisiert
-- **weapons.json v7**: Bogenwaffen tragen jetzt `Reichweite optimal` + `Reichweite max` als strukturierte Felder (28 Einträge + 4 Typdefinitionen)
+Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Abschlussplan & Excel v7):
+- **Phasenplan definiert (GDD §11)**: Phase 0 = Vorüberlegung & Design, Phase 1 = Playtest & Integration (startet mit Skilltree/Godot-MVP). Abschlusskriterien-Checkliste für Phase 0 eingetragen (Zuordnung = Vorschlag, vom Nutzer zu bestätigen); Playtest-abhängige Punkte explizit nach Phase 1 verschoben
+- **`data/itemliste_v7.xlsx` erstellt** (ersetzt v6): Waffen-Sheet aus weapons.json v7 neu aufgebaut (Bogen-Notation `optimal/max`, z. B. `3–4/5`), neue Sheets **Offhands** (84), **Kopf-/Körper-/Fußausrüstung** (je 49, Köcher/Buchrolle im Körper-Slot), Referenz-Sheet **Offhand- & Rüstungstypen** (33 Typen). Verifiziert: alle IDs deckungsgleich mit den JSONs
+- **Techstack in GDD §10.3 übernommen** (aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn`): Sprache **GDScript**, Audio nativ (AudioStreamPlayer + Bus), Plugins Dialogue Manager + Phantom Camera 2D, Game-Feel-Kernpatterns
+- **Hinweis:** Auf `claude/game-content-roadmap-jotfhn` liegen weitere nie gemergte Inhalte (GDD §10.4 Placeholder-Assets + `assets/placeholder/`-Dateien: Tiny-RPG-Soldat/Ork, Taverne); auf anderen Branches u. a. Godot-Projektskelett & isometrisches Tileset — Übernahme mit Nutzer klären
 
 Frühere Sitzungen:
+- **Phase-0-Audit & Widerspruchsbereinigung (2026-07-03):**
+  - **Vollaudit aller Daten**: 112 Waffen + 84 Offhands + 147 Rüstungsteile rechnerisch gegen Skalierungstabellen geprüft — null Wertabweichungen
+  - **Neue Systeme definiert (GDD §5.2)**: Trefferchance (100 % Basis; Fernkampf-Falloff = Trefferchance, −30 %/Feld, Max-Reichweite = harte Grenze; Ausweichen Basis 0 %, nur aus Quellen), Krit (5 % Basis, ×1,5 Rohschaden, keine Backstab/Flanken-Kopplung), WID **kein Cap** (Formel selbstbegrenzend), Kälte-Reaktionsmalus **−10 %/Stapel**
+  - **Eigenarten-Grundregel**: niemals aktiv, immer passiv/reaktiv/automatisch. Umgestellt: Spruchrolle (auto alle 7 Züge: nächster Zauber gratis), Signalhorn „Sammeln" (auto alle 5 Züge), Windsohle neu = **„Aufwind"** (Zugbeginn ohne angrenzenden Gegner → +1 MOB); Fackel „Hetzjagd" final **+0,2 Speed**
+  - **Alle 21 Rüstungs-/Zubehör-Eigenarten abgesegnet** — `[Entwurf]`-Marker entfernt (Zahlenwerte bleiben Balancing-Vorbehalt)
+  - **Widersprüche bereinigt**: Bogen-Gewichtsklassen (Daten-Version gilt: Kriegsarmbrust Bedächtig, Jagdbogen Wendig, Langbogen Ausgeglichen), Krieger Σ80 = Absicht dokumentiert, Armbrüste bewusst identisches Distanzprofil, `stat_skalierung`-Schlüssel „Dolche"→„Stichwaffen", toter `rueckenausruestung`-Verweis korrigiert, Schütze-/Assassinen-Tabellen an reale Waffentypen angepasst, §11-ToDos dedupliziert & kategorisiert
+  - **weapons.json v7**: Bogenwaffen tragen jetzt `Reichweite optimal` + `Reichweite max` als strukturierte Felder (28 Einträge + 4 Typdefinitionen)
 - Modulare Ausrüstungs-/Skilltree-Philosophie festgehalten (GDD §5.3): Jede Klasse kann alles, ein universeller Skilltree mit klassenabhängigem Einstiegspunkt, früh empfohlene Pfade ohne Zwang. Offen: Attributsvoraussetzungen für starke Kombos (in Evaluation)
 - Einhand/Zweihand + Offhand-System definiert (GDD §5.3): Einhand = Offhand/Dualwield, Zweihand = kein Offhand, +35 % Grundwerte (mit weapons.json abzustimmen)
 - `data/offhands.json` befüllt: 12 Offhand-Typen × 7 Stufen = 84 Einträge + `offhandtypen` + Platzhalter-`stat_skalierung`. Klassen: Schild (Buckler/Turmschild), Magischer Fokus (Foliant/Energiekristall), Hilfsmittel (Kampfkette, Laterne, Fester Gürtel, Fackel, Signalhorn, Standarte, Rauchschwenker, Köderkolben). Jedes Offhand: genau 1 Hauptattribut, Eigenart fest, Gravur-Slots bis Stahl 1 / ab Titan 2
@@ -91,11 +96,14 @@ Frühere Sitzungen:
 
 ## Was als nächstes kommt
 
+Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
+
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
 2. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensiv-/Prim.-Werte = Platzhalter; Eigenarten sind final)
 3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-4. **`itemliste_v6.xlsx` → v7 aktualisieren** (Offhands, Rüstung, Köcher/Buchrolle-Umzug fehlen in der Excel)
-5. **Restliches Waffensystem** (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
+4. **Restliches Waffensystem** (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
+5. **Skilltree-Struktur designen** — danach Umsetzung in Godot = Start Phase 1
+6. **Techn. Rest:** Zielplattform + Projektstruktur festlegen; Übernahme der gestrandeten Branch-Inhalte (Placeholder-Assets, Godot-Skelett, Tileset) klären
 
 ## Dateistruktur
 
@@ -107,7 +115,7 @@ Frühere Sitzungen:
 | `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, Platzhalter/Entwurf |
 | `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — Platzhalter/Entwurf |
 | `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, Platzhalter/Entwurf |
-| `data/itemliste_v6.xlsx` | Gesamt-Excel (alle Sheets/Kategorien); JSONs sind die getrennte Coding-Datenbank |
+| `data/itemliste_v7.xlsx` | Gesamt-Excel (alle Sheets/Kategorien inkl. Offhands + Kopf-/Körper-/Fußausrüstung + Typen-Referenz); JSONs sind die getrennte Coding-Datenbank |
 
 > **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
 

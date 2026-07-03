@@ -1057,14 +1057,52 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 ### 10.3 Engine & Projektstruktur
 
 - **Engine:** Godot 4
-- **Sprache:** *(GDScript / C# — folgt)*
-- **Zielplattform:** *(folgt)*
+- **Sprache:** GDScript
+- **Zielplattform:** *(folgt — vermutlich PC/Desktop)*
 - **Projektstruktur:** *(folgt)*
-- **Audio:** *(folgt)*
+- **Audio:** AudioStreamPlayer + Audio Bus (nativ in Godot)
+
+**Plugins (Godot Asset Library — kostenlos):**
+
+| Plugin | Zweck |
+|--------|-------|
+| Dialogue Manager (Nathan Hoad) | Story-Szenen, Dialoge, Prolog-Text |
+| Phantom Camera 2D | Smooth Camera Follow, Zoom-Effekte, Cutscene-Kamera |
+
+**Game Feel — Kernpatterns (alle nativ in Godot, kein Plugin nötig):**
+
+| Effekt | Was es macht | Tool |
+|--------|-------------|------|
+| Hitstop | Kurzes Einfrieren (2–5 Frames) beim Treffer | `Engine.time_scale` per Tween |
+| Screen Shake | Kamera wackelt nach Impact | Camera2D + Noise |
+| Hit Flash | Gegner blitzt weiß auf | Shader (minimal) |
+| Floating Numbers | Schadenszahlen steigen auf | AnimationPlayer + Label |
+| Impact Particles | Funken/Staub/Magie beim Treffer | GPUParticles2D |
+| Anticipation | Windup vor dem Angriff | AnimationPlayer Timing |
+| Sound Punch | Treffergeräusch macht ~50% des Feels | AudioStreamPlayer |
 
 ---
 
 ## 11. Offene Punkte & ToDos
+
+### Phasenplan & Phase-0-Abschlusskriterien
+
+- **Phase 0 — Vorüberlegung & Design (aktuell):** GDD und Daten-JSONs sind so weit vollständig, dass die Spiellogik gebaut werden kann.
+- **Phase 1 — Playtest & Integration:** beginnt mit dem ersten Code-Projekt (Skilltree / Godot-MVP). Feintuning von Balancing-Werten gehört hierhin, weil es Playtests braucht.
+
+**Phase 0 gilt als abgeschlossen, wenn:** *(Zuordnungs-Vorschlag — vom Nutzer zu bestätigen)*
+
+- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet
+- [ ] Rüstungswerte Kopf/Körper/Füße kalibriert (Defensiv-/Prim.-Werte & Slot-Kapazitäten)
+- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet
+- [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
+- [ ] Waffensystem-Rest designt (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
+- [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1
+- [ ] Technische Specs vervollständigt (Zielplattform, Projektstruktur)
+
+**Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
+
+---
 
 **Erledigt (Referenz):**
 
@@ -1077,14 +1115,15 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [x] WID-Cap entschieden: **kein Cap**, Formel begrenzt sich selbst *(2026-07-03, §5.2)*
 - [x] Reaktionen definiert (§5.2: Gegenschlag, Parieren/Block, Zauberblock, Konter); Kälte-Malus auf Reaktionen: **−10 % pro Stapel** *(2026-07-03)*
 - [x] Eigenarten-Grundregel: niemals aktiv, immer passiv/reaktiv/automatisch *(2026-07-03, §5.3)* — Spruchrolle & Sammeln auf Auto-Trigger umgestellt, Windsohle-Eigenart ersetzt (*Aufwind*)
+- [x] `itemliste_v6.xlsx` → **v7** aktualisiert: Waffen-Sheet aus `weapons.json` v7 (Bogen-Notation `optimal/max`), neue Sheets Offhands (84), Kopf-/Körper-/Fußausrüstung (je 49, inkl. Köcher/Buchrolle im Körper-Slot), Referenz-Sheet Offhand- & Rüstungstypen *(2026-07-03)*
+- [x] Techstack dokumentiert (§10.3): GDScript, Audio nativ, Plugins (Dialogue Manager, Phantom Camera 2D), Game-Feel-Kernpatterns — übernommen aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn` *(2026-07-03)*
 
 **Offen — Balancing & Daten:**
 
 - [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
 - [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte & Slot-Kapazitäten = Platzhalter)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
-- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
-- [ ] `data/itemliste_v6.xlsx` auf v7 aktualisieren (Offhands, Rüstung, Körper-Slot-Umzug von Köcher/Buchrolle fehlen in der Excel)
+- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*
 
 **Offen — Systeme:**
 
@@ -1107,7 +1146,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 **Offen — Technik:**
 
-- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur, Audio)
+- [ ] Technische Specs vervollständigen (Zielplattform, Projektstruktur) — Sprache (GDScript) & Audio sind festgelegt (§10.3)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
 

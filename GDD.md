@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.9  
-**Stand:** 2026-06-25  
+**Version:** 0.10  
+**Stand:** 2026-07-03  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -258,7 +258,7 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 - MOB ist ein **Basiswert pro Klasse** und kann nur durch Items und spezielle Skilltree-Nodes erhöht werden. **Maximum: 5.**
 - **Traits/Eigenarten können zusätzliche Bewegung zurückgeben**, die nicht auf den MOB-Pool angerechnet wird.
   - *Beispiel: Eine Einheit mit MOB 5 und Pike-Eigenart kann nach den 5 Feldern und einem Angriff durch die Eigenart noch 2 weitere Felder laufen.*
-- Konkrete MOB-Basiswerte je Klasse → folgt bei Klassen-Attributen (§5.3).
+- Konkrete MOB-Basiswerte je Klasse → Tabelle **Klassen-Startattribute** (§5.3).
 
 ### 5.2 Kampfsystem
 
@@ -380,7 +380,34 @@ EHP-Faktor = 1 / (1 − R%) = (WID + 100) / 100 = 1 + WID/100
 
 → Jede **100 WID = +1 volle Lebensleiste effektiv**. Konsequenz: **keine verschwendeten späten Punkte** (Stacking lohnt konstant), aber auch **kein kaputtes Stacking** (man nähert sich nie 100 % Immunität). Der gefühlte abnehmende %-Ertrag ist genau das Self-Balancing, das einen Tank nicht unkillbar werden lässt.
 
-**WID-Cap (Pflicht):** Damit ein voll gepanzerter Plattentank **nicht unbesiegbar** wird, muss WID gedeckelt werden. Vorgesehen: **Hard-Cap bei 100 WID** (= 50 % Reduktion) bzw. Soft-Cap über das Skilltree-Limit (der Baum gibt nicht mehr als ~100 dauerhaft her). Höhere Reduktion entsteht dann nur **situativ** über Buffs/Ausrüstung, nicht als Dauerzustand. *(Konkreter Cap-Wert → Balancing, siehe §11.)*
+**WID-Cap — Entscheidung: kein Cap** *(2026-07-03)*: Die Formel begrenzt sich selbst — sie nähert sich 100 % nur asymptotisch (WID 100 = 50 %, WID 200 = 66,7 %), jeder weitere Punkt bringt prozentual weniger. Ein künstlicher Deckel ist damit überflüssig; das Balancing läuft über die **Verfügbarkeit** von WID (Items, Skilltree-Nodes, Buffs), nicht über eine Sonderregel.
+
+---
+
+#### Trefferchance & Ausweichen
+
+**Grundregel:** Es gibt keinen allgemeinen Trefferwurf. Angriffe treffen standardmäßig zu **100 %** — Abweichungen entstehen ausschließlich durch die zwei folgenden Mechaniken:
+
+**1. Distanz-Falloff (Fernkampf):** Die Trefferchance des Fernkampfs **ist** der Reichweiten-Falloff (→ Distanzprofile, §5.3). Innerhalb der optimalen Zone treffen Fernkampfangriffe zu 100 % mit 100 % Schaden; **pro Feld außerhalb der Optimalzone (in beide Richtungen) sinken Trefferchance und Schaden um je 30 %**. Jenseits der **maximalen Reichweite** ist kein Angriff möglich — das Feld ist nicht anwählbar, unabhängig vom rechnerischen Restwert.
+
+*Beispiel — fiktiver Bogen, optimal 3–4, maximal 6:*
+
+| Feld | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|
+| Trefferchance / Schaden | 40 % | 70 % | **100 %** | **100 %** | 70 % | 40 % | — (außer Reichweite) |
+
+Waffenspezifische Nahkampfregeln (z. B. Langbogen: **kein** Nahkampfangriff; Armbrüste: **kein** Malus auf 0–1) stehen im Distanzprofil der Waffe und ersetzen dort den generischen Falloff.
+
+**2. Ausweichen (Verteidiger):** Die Basis-Ausweichchance jeder Einheit ist **0 %**. Ausweichen existiert nur durch explizite Quellen (z. B. Lederkluft +10 %, Sandale +5 %, Skills, Buffs) und wird von der Trefferchance des Angreifers abgezogen. Bewegungsunfähige Ziele (Betäubt, Gefroren) können nicht ausweichen.
+
+---
+
+#### Kritische Treffer
+
+- **Basis-Kritchance:** **5 %** auf jeden Angriff.
+- **Krit-Schaden:** **×1,5 Rohschaden** — der Bonus greift **vor** der Schadensreduktion (wie alle Rohschaden-Modifikatoren).
+- **Erhöhung:** ausschließlich durch explizite Quellen (Skills, Gravuren, Eigenarten). Effekte wie *„dein nächster Angriff ist ein garantierter Krit"* setzen die Chance auf 100 %.
+- **Keine Richtungs-Kopplung:** Backstab und Flankierung (→ Angriffsrichtungen) haben **keinen** generellen Einfluss auf Trefferchance oder Kritchance — sie bleiben reine Trigger für Eigenarten und Skills (z. B. Frontmann, Meuchelschlag).
 
 ---
 
@@ -446,8 +473,7 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 ##### Einheiten-Statuseffekte
 
 - **Brennen** *(negativ, stapelbar bis 3)*: Beim Stapeln wird die Dauer auf 3 Züge zurückgesetzt; jede weitere Applikation setzt die Dauer erneut auf 3. Eine brennende Einheit erleidet **am Ende ihres Zuges physischen Schaden i. H. v. 6 % des max. Lebens pro Stapel**.
-- **Kälte** *(negativ, stapelbar bis 10)*: Die Figur verliert pro Zug einen Stapel. Jeder Stapel hat eine **5 % Chance, die Figur einzufrieren (→ Gefroren)** und mindert fix den Wert einer **Gegenreaktion** (Gegenschlag, Block sowie Zauberblock). **Bei vollen 10 Stapeln** löst der nächste Treffer (Fähigkeit o. Ä.) **sofort Gefroren** aus.
-  - *Hinweis: „Gegenschlag" und „Zauberblock" sind neue Gegenreaktions-Mechaniken — Detaildefinition folgt (→ §11).*
+- **Kälte** *(negativ, stapelbar bis 10)*: Die Figur verliert pro Zug einen Stapel. Jeder Stapel hat eine **5 % Chance, die Figur einzufrieren (→ Gefroren)** und mindert den Wert/die Chance jeder **Reaktion** (Gegenschlag, Parieren/Block, Zauberblock, Konter — → Reaktionen, §5.2) um **fix 10 % pro Stapel** (bei vollen 10 Stapeln sind Reaktionen also komplett deaktiviert). **Bei vollen 10 Stapeln** löst der nächste Treffer (Fähigkeit o. Ä.) **sofort Gefroren** aus.
 - **Gefroren** *(negativ)*: Die Einheit kann sich weder bewegen noch angreifen. Der **nächste erlittene Schaden wird um 50 % verringert und löst Gefroren auf**. Dauer max. 2 Züge (Zug 1 = Applikationszug).
 - **Festgehalten** *(negativ)*: Die Figur kann sich nicht bewegen, aber weiterhin angreifen und Fähigkeiten wirken. **Keine Standarddauer.**
 - **Betäubt** *(negativ)*: Komplett bewegungs- und aktionsunfähig. Kann noch inspiziert und von Fähigkeiten anvisiert werden, führt aber keine eigenen Aktionen aus.
@@ -565,7 +591,8 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 | Mystiker | 15 | 15 | 10 | 10 | 15 | 10 | 3 | 75 |
 
 > Speed-Basiswert aller Klassen: **1,0** (wird durch Ausrüstung modifiziert).  
-> MOB-Maximum durch Items/Skillnodes: **5**.
+> MOB-Maximum durch Items/Skillnodes: **5**.  
+> **Krieger Σ 80 ist Absicht** *(bestätigt 2026-07-03)*: Der Krieger startet mit 5 Punkten mehr als alle anderen Klassen (Σ 75) — das ist sein Tank-Fundament; als Ausgleich hat er nur MOB 3 (der Assassine z. B. MOB 4 bei Σ 75).
 
 ---
 
@@ -635,15 +662,14 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 **Identitätsattribut:** GES (Geschicklichkeit)  
 **Schadensprofil:** Primär physisch, eindimensionaler Schadenstyp auf verschiedenen Wegen
 
-**Spezialisierungen nach Waffe:**
+**Spezialisierungen nach Waffe** *(an die finalen Waffentypen in `data/weapons.json` angepasst)*:
 
 | Waffe | Distanz | Spielstil |
 |-------|---------|-----------|
-| Armbrust | Kurz | Hoher Einzelschaden, langsam |
-| Langbogen | Lang | Maximale Reichweite, Positionierung wichtig |
+| Repetierarmbrust | Kurz | Mobiler Kurzdistanz-Schütze, einhändig (Offhand möglich) |
+| Kriegsarmbrust | Kurz | Hoher Einzelschaden + Rüstungsdurchdringung, langsam |
 | Jagdbogen | Mittel | Flink, gut zum Nachsetzen auf Ziele |
-| Wurfmesser | Kurz-Mittel | Mehrere Ziele gleichzeitig treffen |
-| Schleuder | Mittel | AoE-Treffer |
+| Langbogen | Lang | Maximale Reichweite, Positionierung wichtig |
 
 Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 
@@ -684,7 +710,7 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 | Hit & Run | STR + GES | Hoher Burst, schnell aus der Gefahrenzone |
 | Schattenassassine | STR + INT | In Nebel hüllen, magische Utility |
 
-**Waffen:** Dolchpaar, Kampfmesser (Einhand-Dolch), Rapier  
+**Waffen:** Dolchpaar, Stilett, Rapier *(→ Stichwaffen, `data/weapons.json`)*  
 **Weitere Spezialisierungen:** *(folgt im Waffensystem)*
 
 ---
@@ -692,6 +718,8 @@ Jede Waffe hat individuelle Verbesserungsmöglichkeiten im Skilltree.
 #### Waffensystem — Waffentypen & Eigenarten
 
 Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechanik, die den Spielstil der Waffe definiert.
+
+> **Grundregel** *(2026-07-03)*: **Eigenarten sind niemals aktive Fähigkeiten** — sie wirken immer **passiv, reaktiv oder automatisch** (Auto-Trigger ggf. mit Cooldown). Aktivierbare Effekte sind ausschließlich Sache der **Gravuren** (aktive Gravur-Skills). Gilt für alle Ausrüstungskategorien: Waffen, Offhands, Rüstung, Zubehör.
 
 | Waffenklasse | Waffentyp | Hand | Gewicht | Eigenart | Effekt |
 |---|---|---|---|---|---|
@@ -722,9 +750,10 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 
 - Fernkampfwaffen greifen im **Manhattan-System** an. Die Anzahl der Felder ist von der Waffe abhängig.
 - In der Waffenbeschreibung bedeutet die Notation z. B. **3–4/5**: Der meiste Schaden wird auf **3–4 Feldern** Reichweite erzielt (optimale Zone); die **maximale** Reichweite ist **5** Felder.
-- Außerhalb der optimalen Zone verliert man **pro Feld 30 % Schaden und Trefferchance**.
+- Außerhalb der optimalen Zone verliert man **pro Feld 30 % Schaden und Trefferchance** (in beide Richtungen).
   - Beispiel: Auf Feld 3–4 sind Schaden und Trefferchance 100 %, auf Feld 2 und 5 jeweils 70 %, usw.
-  - Felder mit Trefferchance ≤ 0 % werden **nicht angezeigt**.
+- Die **maximale Reichweite ist eine harte Grenze**: Felder jenseits davon sind **nicht anwählbar**, unabhängig vom rechnerischen Restwert (→ Trefferchance & Ausweichen, §5.2).
+- In `data/weapons.json` sind beide Grenzen als eigene Felder hinterlegt: **`Reichweite optimal`** (z. B. „3–4") und **`Reichweite max`** (z. B. 5); die Anzeige-Notation `3–4/5` wird daraus abgeleitet. Nahkampf- und Zauberwaffen behalten die einfache Reichweiten-Zahl.
 - Dies gilt ebenso für das **Ankerfeld von Bogenschützenfähigkeiten**.
   - Beispiel: Ein **Pfeilhagel**, der von einem Jagdbogen auf ein Feld in 5 Feldern Entfernung gewirkt wird (Wirkungsbereich 2 Felder, Manhattan), hat auf jedem Feld um das Zielfeld eine Chance von **70 %**, insgesamt **70 % Schaden** zu verursachen.
 
@@ -735,19 +764,22 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 
 **Distanzprofile**
 
-| Waffe | Optimale Reichweite | Nahkampf | Zu weit | Identität |
+| Waffe | Optimale Reichweite | Nahkampf | Max. Reichweite | Identität |
 |---|---|---|---|---|
-| **Repetierarmbrust** *(E, Wendig)* | 1–2 Felder | kein Malus (0–1) | ab 3 | Einhändig, leicht — mobiler Kurzdistanz-Schütze; Offhand möglich |
-| **Kriegsarmbrust** *(B, Träge)* | 1–2 Felder | kein Malus (0–1) | ab 3 | Beidhändig, schwer — maximaler Einzelschaden & RD auf kurze Distanz |
-| **Jagdbogen** *(B, Ausgeglichen)* | 3–4 Felder | −50 % | ab 5 | Mittlere Distanz, Generalist |
-| **Langbogen** *(B, Bedächtig)* | 4–5 Felder | **kein Angriff** | ab 6 | Maximale Reichweite, maximales Nahkampf-Risiko |
+| **Repetierarmbrust** *(E, Wendig)* | 1–2 Felder | kein Malus (0–1) | 3 | Einhändig, leicht — mobiler Kurzdistanz-Schütze; Offhand möglich |
+| **Kriegsarmbrust** *(B, Bedächtig)* | 1–2 Felder | kein Malus (0–1) | 3 | Beidhändig, schwer — maximaler Einzelschaden & RD auf kurze Distanz |
+| **Jagdbogen** *(B, Wendig)* | 3–4 Felder | −50 % | 5 | Mittlere Distanz, Generalist |
+| **Langbogen** *(B, Ausgeglichen)* | 4–5 Felder | **kein Angriff** | 6 | Maximale Reichweite, maximales Nahkampf-Risiko |
+
+> **Gewichtsklassen korrigiert** *(2026-07-03)*: Diese Tabelle widersprach der Eigenarten-Tabelle und `data/weapons.json` — es gilt die Daten-Version (Kriegsarmbrust *Bedächtig*, Jagdbogen *Wendig*, Langbogen *Ausgeglichen*).  
+> **Kriegsarmbrust vs. Repetierarmbrust — bewusst identisches Distanzprofil** *(entschieden 2026-07-03)*: Beide 1–2/3. Die Differenzierung läuft über Hand (E vs. B), Gewicht (Wendig vs. Bedächtig) und Eigenart (*Techniker* vs. *50 % RD*), nicht über die Reichweite.
 
 **Adlerauge-Interaktion:** erweitert **beide** Grenzen um +1 (optimale Zone und Malus-/Reichweitengrenze).
 
-| Waffe | Optimale Reichweite | Nahkampf | Zu weit |
+| Waffe | Optimale Reichweite | Nahkampf | Max. Reichweite |
 |---|---|---|---|
-| **Jagdbogen** ohne Adlerauge | 3–4 Felder | −50 % (0–1) | ab 5 |
-| **Jagdbogen** mit Adlerauge | 3–5 Felder | −50 % (0–1) | ab 6 |
+| **Jagdbogen** ohne Adlerauge | 3–4 Felder | −50 % (0–1) | 5 |
+| **Jagdbogen** mit Adlerauge | 3–5 Felder | −50 % (0–1) | 6 |
 
 > **Konsequenz:** Adlerauge auf der Armbrust ist mechanisch sinnlos — das System zeigt das von selbst, ohne ein explizites Verbot.
 
@@ -781,8 +813,8 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | **Hilfsmittel** | Kampfkette | Bedächtig | STR | **Reichweite** — +1 Nahkampfreichweite |
 | **Hilfsmittel** | Laterne | Wendig | GES | **Erhellen** — Sicht- + Zauberreichweite je +2; deckt scheinbare/unsichtbare Gegner in 4 Feldern auf |
 | **Hilfsmittel** | Fester Gürtel | Ausgeglichen | WID | **Standhaft** — ignoriert alle Push-/Pull-Effekte |
-| **Hilfsmittel** | Fackel | Schnell | GES | **Hetzjagd** — +Geschwindigkeit/Bewegung (vorl. +1) |
-| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(aktiv)* — Verbündete +10 % Initiative bis nächsten Zug; CD 5 Züge |
+| **Hilfsmittel** | Fackel | Schnell | GES | **Hetzjagd** — +0,2 Speed (zusätzlich zur Gewichtsklasse) |
+| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(automatisch)* — alle 5 Züge zu Beginn des Träger-Zuges: Verbündete +10 % Initiative bis zum nächsten Zug |
 | **Hilfsmittel** | Standarte | Träge | WIL | **Heerführer** — Verbündete in 3 Feldern +10 % Schaden & +10 % Schadensreduktion |
 | **Hilfsmittel** | Rauchschwenker | Wendig | INT | **Spezereien** — vom Träger gewirkte Heilungen +20 % effektiver |
 | **Hilfsmittel** | Köderkolben | Schnell | VIT | **Achtung!** — +20 % Threat-Gen.; Threat-Aura 2 Felder (Präsenz-Aggro, §5.2) |
@@ -1034,42 +1066,49 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 ## 11. Offene Punkte & ToDos
 
-- [ ] Ork-Klassen & KI-Verhalten definieren
-- [ ] Ork-Fraktionsbonus definieren
-- [ ] Skilltree-Struktur ausarbeiten (Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt
-- [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
-- [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
-- [ ] Waffensystem ausarbeiten (inkl. Gravuren, Crafting, Aufwertung, Verfeinerung)
-- [ ] Weitere Regionen definieren
-- [ ] Hub Tag/Nacht-Logik definieren
-- [ ] Hub visuelle Progression (Siedlung wächst) konzipieren
-- [ ] Rekrutierungs-Taverne ausarbeiten
-- [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
-- [ ] Gegenreaktions-Mechaniken ausarbeiten (Gegenschlag, Zauberblock — Detailwerte)
-- [ ] Trefferchance & Krit-Grundregeln definieren
-- [ ] WID-Cap final festlegen (Hard-Cap 100 vs. Soft-Cap via Skilltree)
+**Erledigt (Referenz):**
+
 - [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
-- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
 - [x] Zweihand-Ausgleich (+35 %) festgelegt: globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`), Grundwerte bleiben echt; Infokarte zeigt Endwert + Bonus-Zeile
-- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
-- [ ] Rüstungs-Items Kopf/Körper/Füße designen (→ `data/kopf-/koerper-/fussausruestung.json` füllen — Scaffolds liegen vor)
+- [x] Rüstungs-Items Kopf/Körper/Füße designt und befüllt (`data/kopf-/koerper-/fussausruestung.json`, je 49 Einträge); Eigenarten abgesegnet *(2026-07-03, Werte weiterhin Platzhalter)*
+- [x] Waffentypen Gewichtsklassen-Zuweisung — alle 16 Typen zugewiesen (`data/weapons.json`)
+- [x] Kriegsarmbrust vs. Repetierarmbrust — bewusst identisches Distanzprofil 1–2/3, Differenzierung über Hand/Gewicht/Eigenart *(2026-07-03, §5.3)*
+- [x] Trefferchance & Krit-Grundregeln definiert *(2026-07-03, §5.2)*: 100 % Basis, Falloff = Trefferchance, Ausweichen nur aus Quellen; Krit 5 % Basis / ×1,5 Rohschaden
+- [x] WID-Cap entschieden: **kein Cap**, Formel begrenzt sich selbst *(2026-07-03, §5.2)*
+- [x] Reaktionen definiert (§5.2: Gegenschlag, Parieren/Block, Zauberblock, Konter); Kälte-Malus auf Reaktionen: **−10 % pro Stapel** *(2026-07-03)*
+- [x] Eigenarten-Grundregel: niemals aktiv, immer passiv/reaktiv/automatisch *(2026-07-03, §5.3)* — Spruchrolle & Sammeln auf Auto-Trigger umgestellt, Windsohle-Eigenart ersetzt (*Aufwind*)
+
+**Offen — Balancing & Daten:**
+
+- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
+- [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte & Slot-Kapazitäten = Platzhalter)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
-- [ ] Waffentypen Gewichtsklassen-Zuweisung vervollständigen (alle 13 Typen)
-- [ ] Kriegsarmbrust Distanzprofil von Repetierarmbrust abgrenzen (bisher identisch, ggf. differenzieren)
-- [ ] Waffensystem ausarbeiten (Gravuren, Crafting, Aufwertung, Verfeinerung)
-- [ ] Alle Skilltrees ausarbeiten (Struktur, Punkte, Respec-Möglichkeit)
+- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
+- [ ] `data/itemliste_v6.xlsx` auf v7 aktualisieren (Offhands, Rüstung, Körper-Slot-Umzug von Köcher/Buchrolle fehlen in der Excel)
+
+**Offen — Systeme:**
+
+- [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
+- [ ] Waffensystem-Rest ausarbeiten (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
+- [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)
+
+**Offen — Welt & Inhalt:**
+
 - [ ] Ork-Klassen & KI-Verhalten definieren
 - [ ] Ork-Fraktionsbonus definieren
+- [ ] Menschen-Fraktionsbonus „Gemeinschaft" — konkrete Regenerationswerte festlegen
 - [ ] Weitere Regionen definieren
 - [ ] Hub Tag/Nacht-Logik definieren
 - [ ] Hub visuelle Progression (Siedlung wächst) konzipieren
 - [ ] Rekrutierungs-Taverne ausarbeiten
 - [ ] Charakter-Erstellungssystem (Erscheinungsbild) definieren
 - [ ] Arathos-Backstory intern dokumentieren (spoilerbehaftet)
-- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur)
+
+**Offen — Technik:**
+
+- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur, Audio)
 - [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
-- [ ] Audio-Konzept definieren
 
 > **Tech-Evaluation (29.06.2026) — GodotGAS / Gameplay Ability System:** Geprüft, ob das GAS-Framework ([Asset Store](https://store.godotengine.org/asset/indiegamedad/godotgas/)) als Engine für das Gravursystem taugt. Fazit: konzeptionell passend (Gravuren = datengetriebene „Gameplay Effects", die Attribute modifizieren), aber GAS ist ein Fundament für die *gesamte* Stat-/Skill-/Buff-Schicht, kein Einzel-Plugin — und primär auf Echtzeit ausgelegt (Cast-Zeiten/Cooldowns in Sekunden statt Runden). **Entscheidung: vorerst kein Framework.** Erst Waffen- & Gravursystem im GDD designen, dann prüfen, ob schlanker Eigenbau reicht (vermutlich ja). Kostenlose MIT-Alternative zum Reinschnuppern ins Muster: `OctoD/godot-gameplay-systems`.

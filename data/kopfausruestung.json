@@ -2,7 +2,7 @@
   "meta": {
     "version": "v1.1",
     "kategorie": "Kopf",
-    "status": "Befüllt — 5 Rüstungstypen × 7 Stufen (35) + 2 Zubehör (14) = 49 Einträge. Defensiv-/Prim.-Werte & Slot-Kapazitäten = PLATZHALTER; Stufe 7 (Stellar) offen. Eigenart-Effekte = Entwurf.",
+    "status": "Befüllt — 5 Rüstungstypen × 7 Stufen (35) + 2 Zubehör (14) = 49 Einträge. Defensiv-/Prim.-Werte & Slot-Kapazitäten = PLATZHALTER; Stufe 7 (Stellar) offen. Eigenart-Effekte final (abgesegnet 2026-07-03; Zahlenwerte weiterhin Balancing-Vorbehalt).",
     "quelle": "GDD §5.1 (Gewichtsklassen/Speed), §5.2 (WID/Rüstung/Resistenz), Seltenheitsstufen aus weapons.json",
     "id_präfix": "KO",
     "hinweis": "Kopf-Slot verwendet den ±0,20-Speed-Index. Defensivwerte: WID (prozentual), Rüstung (phys. flach), Resistenz (mag. flach).",
@@ -168,7 +168,7 @@
       "prim_attr": "WIL",
       "sek_attr": "—",
       "eigenart": "Konzentration",
-      "eigenart_effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "eigenart_effekt": "+10 % Manaregeneration pro Zug.",
       "bauteile": "Stoffkapuze + Kordel",
       "affinitaet": [
         "Zauberstab",
@@ -186,7 +186,7 @@
       "prim_attr": "GES",
       "sek_attr": "—",
       "eigenart": "Wachsam",
-      "eigenart_effekt": "+10 % Initiative. [Entwurf]",
+      "eigenart_effekt": "+10 % Initiative.",
       "bauteile": "Lederkappe + Riemen",
       "affinitaet": [
         "Jagdbogen",
@@ -204,7 +204,7 @@
       "prim_attr": "VIT",
       "sek_attr": "—",
       "eigenart": "Hartschädel",
-      "eigenart_effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "eigenart_effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "bauteile": "Kettengeflecht + Polster",
       "affinitaet": [
         "Breitschwert",
@@ -222,7 +222,7 @@
       "prim_attr": "STR",
       "sek_attr": "—",
       "eigenart": "Ramme",
-      "eigenart_effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "eigenart_effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "bauteile": "Schuppen + Helmglocke",
       "affinitaet": [
         "Kampfaxt",
@@ -240,7 +240,7 @@
       "prim_attr": "WID",
       "sek_attr": "—",
       "eigenart": "Eisenschädel",
-      "eigenart_effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "eigenart_effekt": "−20 % erlittener kritischer Schaden.",
       "bauteile": "Helmglocke + Visier",
       "affinitaet": [
         "Hammer",
@@ -260,7 +260,7 @@
       "prim_attr": "GES",
       "sek_attr": "—",
       "eigenart": "Anvisieren",
-      "eigenart_effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "eigenart_effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "bauteile": "Metallvisier + Schliffglas",
       "affinitaet": [
         "Jagdbogen",
@@ -279,7 +279,7 @@
       "prim_attr": "INT",
       "sek_attr": "—",
       "eigenart": "Erleuchtung",
-      "eigenart_effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "eigenart_effekt": "+15 % Buff-/Zauberdauer.",
       "bauteile": "Reif + Fassung",
       "affinitaet": [
         "Energiesphäre",
@@ -420,7 +420,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -450,7 +450,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -480,7 +480,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -510,7 +510,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -541,7 +541,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -572,7 +572,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -603,7 +603,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Konzentration",
-      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Manaregeneration pro Zug.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -634,7 +634,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -664,7 +664,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -694,7 +694,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -724,7 +724,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -755,7 +755,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -786,7 +786,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -817,7 +817,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Wachsam",
-      "Eigenart-Effekt": "+10 % Initiative. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Initiative.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -848,7 +848,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -878,7 +878,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -908,7 +908,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -938,7 +938,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -969,7 +969,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1000,7 +1000,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1031,7 +1031,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Hartschädel",
-      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit. [Entwurf]",
+      "Eigenart-Effekt": "−25 % Dauer von Betäubung/Benommenheit.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1062,7 +1062,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1092,7 +1092,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1122,7 +1122,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1152,7 +1152,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1183,7 +1183,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1214,7 +1214,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1245,7 +1245,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.1,
       "Eigenart": "Ramme",
-      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Nach Bewegung ≥2 Felder: nächster Nahkampf +15 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1276,7 +1276,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1306,7 +1306,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1336,7 +1336,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1366,7 +1366,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1397,7 +1397,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1428,7 +1428,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1459,7 +1459,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.2,
       "Eigenart": "Eisenschädel",
-      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden. [Entwurf]",
+      "Eigenart-Effekt": "−20 % erlittener kritischer Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1490,7 +1490,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1520,7 +1520,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1550,7 +1550,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1580,7 +1580,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1611,7 +1611,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1642,7 +1642,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1673,7 +1673,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.1,
       "Eigenart": "Anvisieren",
-      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen. [Entwurf]",
+      "Eigenart-Effekt": "+1 Feld Optimalreichweite für Bogenwaffen.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1704,7 +1704,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1734,7 +1734,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1764,7 +1764,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1794,7 +1794,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1825,7 +1825,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1856,7 +1856,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1887,7 +1887,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.2,
       "Eigenart": "Erleuchtung",
-      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer. [Entwurf]",
+      "Eigenart-Effekt": "+15 % Buff-/Zauberdauer.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [

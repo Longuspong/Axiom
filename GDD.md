@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.10  
+**Version:** 0.11  
 **Stand:** 2026-07-03  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -29,6 +29,7 @@
    - 5.4 [Skill- & Fähigkeitssystem](#54-skill--fähigkeitssystem)
    - 5.5 [Fraktionsboni](#55-fraktionsboni)
    - 5.6 [Attribute](#56-attribute)
+   - 5.7 [Gravurensystem](#57-gravurensystem)
 6. [Charaktere](#6-charaktere)
    - 6.1 [Spielercharakter](#61-spielercharakter)
    - 6.2 [Arathos](#62-arathos)
@@ -50,6 +51,7 @@
     - 10.1 [Art Style](#101-art-style)
     - 10.2 [Speichersystem](#102-speichersystem)
     - 10.3 [Engine & Projektstruktur](#103-engine--projektstruktur)
+    - 10.4 [Placeholder-Assets (MVP)](#104-placeholder-assets-mvp)
 11. [Offene Punkte & ToDos](#11-offene-punkte--todos)
 
 ---
@@ -576,7 +578,7 @@ Die Startklasse wird durch die Wahl der ersten Waffe im Prolog bestimmt.
 | Zauberstab | Magier |
 | Zepter | *(Arathos — magische Nahkampfwaffe, nicht wählbar im Prolog)* |
 
-> Vollständiges Waffensystem (alle Waffen, Stats, Gravuren) → folgt in eigenem Abschnitt
+> Vollständiges Waffensystem (alle Waffen, Stats) → `data/weapons.json` + §5.3 | Gravurensystem → §5.7
 
 ---
 
@@ -853,6 +855,93 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 | GES | Geschicklichkeit | Bewegung, Ausweichen, Schütze-Skalierung |
 | *(weitere folgen)* | | |
 
+### 5.7 Gravurensystem
+
+*(übernommen aus dem nie gemergten Branch `claude/waffenkiste-engraving-discussion-h9m12r` (GDD-v0.7-Ära); Verfeinerungs-Tabelle an den aktuellen Datenstand `data/weapons.json` v7 angepasst — bei Abweichungen gilt die Daten-Version)*
+
+Gravuren sind Waffenmodifikatoren, die in freie Slots einer Waffe eingesetzt werden. Das System orientiert sich an PoE-Ability-Gems, mit eigenem Energie- und Mana-Management. Die maschinenlesbaren Grunddaten (Typen, Leveling, Seltenheit, Slot-Templates) liegen in `data/weapons.json`.
+
+#### Gravurtypen
+
+| Typ | Funktion | Mana-Mechanik |
+|-----|----------|---------------|
+| **Aktiv** | Gibt eine aktive Fähigkeit | Verbrauch bei Nutzung der Fähigkeit |
+| **Passiv** | Gibt eine passive Fähigkeit | Reserviert Mana dauerhaft — blockiert für Aktive & weitere Passive |
+| **Reaktiv** | Gibt eine reaktive Fähigkeit mit Cooldown und Auslösungs-Deckelung pro Zug | — |
+| **Modifikativ** | Modifiziert alle anderen Gravuren auf der Waffe (Aktiv, Passiv, Reaktiv, teils auch Signatur); wirkt ohne spezifische Verbindung automatisch auf alle | Erhöht Mana-Kosten/-Reservierung und ggf. Cooldown der modifizierten Gravuren |
+| **Spezial/Signatur** | Einzigartige Effekte außerhalb des normalen Rahmens | Sehr variabel |
+
+**Mana-Reservierung (Passiv-Logik):**
+Passive Gravuren reservieren Mana fix (Reservierung erfolgt beim Platzieren in der Homezone, siehe §5.2). Reserviertes Mana ist weder für Aktive noch für weitere Passive verfügbar. Sobald der verfügbare Mana-Pool erschöpft ist, können keine weiteren aktiven oder passiven Gravuren eingesetzt werden.
+*Beispiel: Zwei Passive mit je 50 Mana Reservierung → 100 Mana reserviert → keine weiteren Aktiven oder Passiven möglich.*
+
+**Reaktive Gravuren — Balance:**
+Reaktive Fähigkeiten wie Gegenschlag oder Parry brauchen sowohl einen Cooldown als auch eine Deckelung (max. Auslösungen pro Zug), um Tank- und Assassinen-Builds nicht zu dominieren. Standard-Deckelung: **3 pro Zug** — finale Werte folgen im Balancing (Phase 1).
+
+**Spezial/Signatur — Beispiele:**
+- Transformiert eine bestehende Fähigkeit grundlegend (z. B. Power Strike → andere Fähigkeit)
+- Wandelt eine passive Fähigkeit in eine Charaktereigenschaft um
+- Beinhaltet eine eigene aktive Fähigkeit
+
+#### Slots & Energie
+
+Jede Waffe besitzt eine **Energiekapazität** und eine Anzahl **Slots**. Slots sind entweder generisch (*Flex*) oder typisiert (Aktiv, Passiv, Reaktiv, Modifikativ, Spezial). Anzahl Slots und Kapazität hängen von der **Seltenheit** der Waffe ab (Slot-Templates in `data/weapons.json`).
+
+**Typisierter Slot = halbe Energiekosten** für passende Gravur.
+
+| Belegung | Slot-Typ | Gravur-Typ | Kosten |
+|----------|----------|-----------|--------|
+| Passend | Aktiv | Aktiv-Gravur (Basiskosten 4) | **2** |
+| Nicht passend | Passiv | Reaktiv-Gravur (Basiskosten 2) | **2** |
+| Passend | Passiv | Passiv-Gravur (Basiskosten 2) | **1** |
+
+*Beispiel-Schwert (Stahl: Kapazität 3 · 1× Aktiv-Slot · 1× Passiv-Slot):*
+- Option A: Aktiv-Gravur (4→2) + Passiv-Gravur (2→1) = **3** ✓
+- Option B: Aktiv-Gravur (2→1) + Reaktiv-Gravur im Passiv-Slot (2, kein Rabatt) = **3** ✓ — **[prüfen]** *Original rechnet hier mit Basiskosten 2 statt 4 für die Aktiv-Gravur; vermutlich sind Kosten pro Gravur-Level gemeint (L1 = 2) — Verhältnis Basiskosten ↔ Level-Kapazitätskosten klären*
+
+#### Verfeinern (Kapazitäts-Erweiterung)
+
+Jede Verfeinerung erhöht die Kapazität um **+1**. *(Werte = Daten-Version aus `data/weapons.json`)*
+
+| Waffenmaterial | Max. Verfeinerungen |
+|----------------|---------------------|
+| Kupfer | 1× |
+| Eisen | 2× |
+| Stahl (und höher) | 3× |
+| Stellar | *(offen, Platzhalter)* |
+
+#### Gravur-Seltenheit
+
+| Stufe | Einordnung |
+|-------|-----------|
+| Stahl | Basis |
+| Titan | Mittel |
+| Diamant | Selten |
+
+#### Gravur-Leveling
+
+Alle Gravuren können von Level 1 auf maximal Level 3 aufgewertet werden. Spezial/Signatur-Gravuren sind die Ausnahme — sie erreichen Level 5.
+
+| Level | Kapazitätskosten | Verfügbar für |
+|-------|-----------------|---------------|
+| 1 | 2 | Alle |
+| 2 | 4 | Alle |
+| 3 | 6 | Alle |
+| 4 | 8 | Spezial/Signatur |
+| 5 | 10 | Spezial/Signatur |
+
+Höheres Level = stärkerer Effekt der Gravur.
+
+#### Entfernen & Wiederverwenden
+
+Gravuren können jederzeit aus einer Waffe entfernt und in eine andere eingesetzt werden. Das Entfernen ist mit **hohen Kosten** verbunden, aber nicht permanent.
+
+#### Crafting-Vorschau
+
+Das Gravur-Crafting basiert auf generischen Rezepten, die durch spezifische Zutaten in eine Richtung gelenkt werden können — ohne den RNG-Faktor vollständig zu eliminieren. Loot soll seine Rolle behalten; garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen.
+
+*(Detailliertes Crafting-System + konkreter Gravuren-Katalog → folgen)*
+
 ---
 
 ## 6. Charaktere
@@ -1024,7 +1113,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Auftrag:** "Bogenschützen-Ark" (mehrstufige Missionsreihe)
 - **Reward:** Sehr guter Bogen **oder** Bogen-Gravuren
 
-> **Gravuren** sind Waffen-Modifikatoren (eigenes System, → Waffensystem, folgt)
+> **Gravuren** sind Waffen-Modifikatoren → §5.7
 
 ### 9.6 Endlos-Modus
 
@@ -1044,7 +1133,14 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Perspektive:** Isometrisch (Rauten-Grid, 2D)
 - **Farbpalette & Ton:** Hell, freundlich, farbenfroh — bewusste Abkehr vom typischen dunklen Fantasy-Look. Viel Liebe zum Detail, hoher Polishgrad.
 - **Konsequenz:** Helle Umgebungen erfordern mehr Detailarbeit an Tilesets und Sprites (mehr Kontrast, sauberere Linien, mehr sichtbare Details), das ist bewusst einkalkuliert.
-- **Details (Tilesets, Auflösung, Sprite-Größen):** *(folgt)*
+- **Tileset-Specs (v1, umgesetzt):**
+  - Terrain-Tiles: 128×64 px (2:1-Iso-Raute), logische Auflösung 64×32 mit 2× Nearest-Upscale
+  - Hohe Tiles (Berge, Klippen, Bäume, Gestrüpp): 128×192 px, Rautenbasis unten (`texture_origin (0, 64)`) → 2,5D-Höhenillusion
+  - Godot-TileSet: `Isometric` / `Diamond Down` — quadratische Grid-Logik bleibt erhalten (Manhattan-Distanz)
+  - Terrain-Umfang v1: Gras (+Blumen), Fluss & See (16 Verbindungen + 13 Ufer-Übergänge), Straße (16 Verbindungen), Brücke & Furt (je 2 Ausrichtungen), Berge (+Schneevariante), dichtes Gestrüpp, Klippen-Plateau, Sand, Acker, Bäume, Findling
+  - Jedes Tile trägt Custom-Data fürs Taktik-Grid: `terrain` (String), `move_cost` (int), `walkable` (bool)
+  - Quelle: prozeduraler Generator `tools/generate_tileset.py` (Platzhalter-Qualität, später durch handgemalte Assets ersetzbar — gleiche Maße/Slots). Details: `docs/TILESET.md`
+- **Sprite-Größen (Charaktere):** *(folgt)*
 
 ### 10.2 Speichersystem
 
@@ -1057,14 +1153,77 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 ### 10.3 Engine & Projektstruktur
 
 - **Engine:** Godot 4
-- **Sprache:** *(GDScript / C# — folgt)*
-- **Zielplattform:** *(folgt)*
-- **Projektstruktur:** *(folgt)*
-- **Audio:** *(folgt)*
+- **Sprache:** GDScript
+- **Zielplattform:** *(folgt — vermutlich PC/Desktop)*
+- **Projektstruktur (angelegt):** `addons/` (Editor-Plugins, u. a. Yggdrasil-Skilltree-Editor), `assets/` (Grafiken, TileSets; `assets/placeholder/` für MVP-Assets), `data/` (Item-JSONs, Coding-Datenbank), `scenes/` (Szenen + zugehörige Scripts), `scripts/` (geteilte Scripts/Autoloads), `tools/` (Generator-/Hilfsskripte, Python), `docs/` (interne Doku)
+- **Audio:** AudioStreamPlayer + Audio Bus (nativ in Godot)
+
+**Plugins (Godot Asset Library — kostenlos):**
+
+| Plugin | Zweck |
+|--------|-------|
+| Dialogue Manager (Nathan Hoad) | Story-Szenen, Dialoge, Prolog-Text |
+| Phantom Camera 2D | Smooth Camera Follow, Zoom-Effekte, Cutscene-Kamera |
+
+**Game Feel — Kernpatterns (alle nativ in Godot, kein Plugin nötig):**
+
+| Effekt | Was es macht | Tool |
+|--------|-------------|------|
+| Hitstop | Kurzes Einfrieren (2–5 Frames) beim Treffer | `Engine.time_scale` per Tween |
+| Screen Shake | Kamera wackelt nach Impact | Camera2D + Noise |
+| Hit Flash | Gegner blitzt weiß auf | Shader (minimal) |
+| Floating Numbers | Schadenszahlen steigen auf | AnimationPlayer + Label |
+| Impact Particles | Funken/Staub/Magie beim Treffer | GPUParticles2D |
+| Anticipation | Windup vor dem Angriff | AnimationPlayer Timing |
+| Sound Punch | Treffergeräusch macht ~50% des Feels | AudioStreamPlayer |
+
+### 10.4 Placeholder-Assets (MVP)
+
+Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/`. Sie werden durch finale Grafiken ersetzt, sobald die Spiellogik steht.
+
+**Charaktere & Gegner**
+
+| Asset | Quelle | Pfad | Animationen |
+|-------|--------|------|-------------|
+| Soldat (Mensch-Placeholder) | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | Idle, Walk, Attack (3x), Hurt, Death |
+| Ork (Gegner-Placeholder) | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | Idle, Walk, Attack (2x), Hurt, Death |
+| Pfeil-Projektil | Tiny RPG Character Asset Pack v1.03 (Free) | `assets/placeholder/characters/tiny-rpg-soldier-orc/` | — |
+
+> **Hinweis Richtung:** Sprites zeigen nur in eine Richtung. Für MVP: horizontales Spiegeln in Godot + Richtungsindikator (Pfeil/Dreieck) auf dem Tile. Richtung ist Spielmechanik (Backstab, Flanke) — visuell durch den Indikator gelöst bis finale Sprites vorliegen.
+
+**Umgebung / Tilesets**
+
+| Asset | Quelle | Pfad | Inhalt |
+|-------|--------|------|--------|
+| Taverne (Innenraum) | Vledic's Pixel RPG — Tavern (32x16 isometrisch) | `assets/placeholder/environments/tavern/` | 126 Items: Boden, Wände, Tische, Tresen, Fässer, Props |
+| Außen-Terrain (Wald, Wasser, Wege) | Eigener prozeduraler Generator (`tools/generate_tileset.py`), 128×64 isometrisch | `assets/tiles/` | Terrain-Tileset v1, siehe §10.1 / `docs/TILESET.md` |
+
+> **Skalierungs-Hinweis:** Taverne (32×16) und eigenes Terrain-Tileset (128×64, logisch 64×32) haben unterschiedliche Rastermaße — Kompatibilität beim Zusammenbauen in Godot prüfen (Taverne ggf. skalieren oder nur für Innenraum-Szenen nutzen).
+
+**Placeholder-Sprite-Strategie (Charaktere, geplant):** Ein Grayscale-Sprite für alle Charaktertypen, Farb-Differenzierung über Godot `modulate` (Spieler Blau `Color(0.29, 0.56, 0.89)`, Gegner Rot `Color(0.89, 0.29, 0.29)`); Format 4 ISO-Richtungen (S/N/O/W) als 2×2-Sprite-Sheet. Tool der Wahl: Pixellab.ai (Prompt in CLAUDE.md hinterlegt).
 
 ---
 
 ## 11. Offene Punkte & ToDos
+
+### Phasenplan & Phase-0-Abschlusskriterien
+
+- **Phase 0 — Vorüberlegung & Design (aktuell):** GDD und Daten-JSONs sind so weit vollständig, dass die Spiellogik gebaut werden kann.
+- **Phase 1 — Playtest & Integration:** beginnt mit dem ersten Code-Projekt (Skilltree / Godot-MVP). Feintuning von Balancing-Werten gehört hierhin, weil es Playtests braucht.
+
+**Phase 0 gilt als abgeschlossen, wenn:** *(Zuordnungs-Vorschlag — vom Nutzer zu bestätigen)*
+
+- [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet
+- [ ] Rüstungswerte Kopf/Körper/Füße kalibriert (Defensiv-/Prim.-Werte & Slot-Kapazitäten)
+- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet
+- [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
+- [ ] Waffensystem-Rest designt (Gravuren-Katalog, Crafting-Details, Aufwertung) — Gravurensystem-Rahmen steht (§5.7), Verfeinerung definiert
+- [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
+- [ ] Technische Specs vervollständigt (Zielplattform) — Projektstruktur ist angelegt (§10.3)
+
+**Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
+
+---
 
 **Erledigt (Referenz):**
 
@@ -1077,19 +1236,22 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - [x] WID-Cap entschieden: **kein Cap**, Formel begrenzt sich selbst *(2026-07-03, §5.2)*
 - [x] Reaktionen definiert (§5.2: Gegenschlag, Parieren/Block, Zauberblock, Konter); Kälte-Malus auf Reaktionen: **−10 % pro Stapel** *(2026-07-03)*
 - [x] Eigenarten-Grundregel: niemals aktiv, immer passiv/reaktiv/automatisch *(2026-07-03, §5.3)* — Spruchrolle & Sammeln auf Auto-Trigger umgestellt, Windsohle-Eigenart ersetzt (*Aufwind*)
+- [x] `itemliste_v6.xlsx` → **v7** aktualisiert: Waffen-Sheet aus `weapons.json` v7 (Bogen-Notation `optimal/max`), neue Sheets Offhands (84), Kopf-/Körper-/Fußausrüstung (je 49, inkl. Köcher/Buchrolle im Körper-Slot), Referenz-Sheet Offhand- & Rüstungstypen *(2026-07-03)*
+- [x] Techstack dokumentiert (§10.3): GDScript, Audio nativ, Plugins (Dialogue Manager, Phantom Camera 2D), Game-Feel-Kernpatterns — übernommen aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn` *(2026-07-03)*
+- [x] Gestrandete Branch-Inhalte gerettet *(2026-07-03)*: Gravurensystem → §5.7 (Verfeinerungs-Tabelle an Datenstand angepasst), Placeholder-Assets (`assets/placeholder/`: Tiny-RPG Soldat/Ork, Taverne) + §10.4, Terrain-Tileset v1 (`assets/tiles/`, `docs/TILESET.md`) + Tileset-Specs in §10.1, Godot-Projektskelett (`project.godot`, `scenes/`, `scripts/`, `tools/`), Yggdrasil-Skilltree-Editor (`addons/yggdrasil/`), Placeholder-Sprite-Strategie (§10.4/CLAUDE.md)
 
 **Offen — Balancing & Daten:**
 
 - [ ] Offhand Prim.-Werte & Slot-Kapazitäten kalibrieren (aktuell Platzhalter) + Stufe-7-Offhands ausarbeiten
 - [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte & Slot-Kapazitäten = Platzhalter)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
-- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2)
-- [ ] `data/itemliste_v6.xlsx` auf v7 aktualisieren (Offhands, Rüstung, Körper-Slot-Umzug von Köcher/Buchrolle fehlen in der Excel)
+- [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*
 
 **Offen — Systeme:**
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [ ] Waffensystem-Rest ausarbeiten (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
+- [ ] Waffensystem-Rest ausarbeiten (Gravuren-Katalog, Crafting-Details, Aufwertung) — Systemrahmen in §5.7
+- [ ] Gravur-Kostenmodell klären: Verhältnis Basiskosten (Aktiv 4 / Passiv 2 / Reaktiv 2) ↔ Level-Kapazitätskosten (L1=2 … L5=10), siehe **[prüfen]** in §5.7
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)
 
@@ -1107,8 +1269,11 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 **Offen — Technik:**
 
-- [ ] Technische Specs vervollständigen (Sprache, Zielplattform, Projektstruktur, Audio)
-- [ ] Tileset- & Sprite-Specs definieren (Auflösung, Größen, Palette)
+- [ ] Technische Specs vervollständigen (Zielplattform) — Sprache (GDScript), Audio & Projektstruktur sind festgelegt (§10.3)
+- [x] Tileset-Specs definiert & Terrain-Tileset v1 umgesetzt (siehe §10.1, `docs/TILESET.md`) *(gerettet 2026-07-03)*
+- [ ] Sprite-Specs für Charaktere definieren (Auflösung, Größen, Palette) — Strategie in §10.4, Umsetzung via Pixellab.ai ausstehend
+- [ ] Tileset ausbauen: Klippen-Rampen, Winter-Biom, animiertes Wasser, Bergheim-Gebäude
+- [ ] Skalierungs-Kompatibilität Taverne (32×16) vs. eigenes Terrain-Tileset (128×64) in Godot prüfen
 - [ ] Credits-Liste aufbauen (Assets, Tools, Plugins)
 
 > **Tech-Evaluation (29.06.2026) — GodotGAS / Gameplay Ability System:** Geprüft, ob das GAS-Framework ([Asset Store](https://store.godotengine.org/asset/indiegamedad/godotgas/)) als Engine für das Gravursystem taugt. Fazit: konzeptionell passend (Gravuren = datengetriebene „Gameplay Effects", die Attribute modifizieren), aber GAS ist ein Fundament für die *gesamte* Stat-/Skill-/Buff-Schicht, kein Einzel-Plugin — und primär auf Echtzeit ausgelegt (Cast-Zeiten/Cooldowns in Sekunden statt Runden). **Entscheidung: vorerst kein Framework.** Erst Waffen- & Gravursystem im GDD designen, dann prüfen, ob schlanker Eigenbau reicht (vermutlich ja). Kostenlose MIT-Alternative zum Reinschnuppern ins Muster: `OctoD/godot-gameplay-systems`.

@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.11)
+## GDD-Stand (aktuell: v0.12)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -74,11 +74,13 @@ git push -u origin <feature-branch>
 ## Stand letzte Sitzung
 
 Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches):
+- **Gravur-Kostenmodell entschieden (GDD §5.7)**: Kapazitätskosten **rein Level-basiert** (L1=2, L2=4, L3=6, L4=8, L5=10; L4/L5 nur Spezial), passender typisierter Slot halbiert, Flex/unpassender Slot = volle Kosten. Typ-Basiskosten gestrichen, `[prüfen]`-Marker aufgelöst, Beispiele korrigiert
+- **Branch-Putz**: PR #12 gemergt (main = v0.12-Stand); alle überholten Remote-Branches gelöscht (5 gerettete Quellen + gemergte/überholte, inkl. `bold-dijkstra`)
 - **Phasenplan definiert (GDD §11)**: Phase 0 = Vorüberlegung & Design, Phase 1 = Playtest & Integration (startet mit Skilltree/Godot-MVP). Abschlusskriterien-Checkliste für Phase 0 eingetragen (Zuordnung = Vorschlag, vom Nutzer zu bestätigen); Playtest-abhängige Punkte explizit nach Phase 1 verschoben
 - **`data/itemliste_v7.xlsx` erstellt** (ersetzt v6): Waffen-Sheet aus weapons.json v7 neu aufgebaut (Bogen-Notation `optimal/max`, z. B. `3–4/5`), neue Sheets **Offhands** (84), **Kopf-/Körper-/Fußausrüstung** (je 49, Köcher/Buchrolle im Körper-Slot), Referenz-Sheet **Offhand- & Rüstungstypen** (33 Typen). Verifiziert: alle IDs deckungsgleich mit den JSONs
 - **Techstack in GDD §10.3 übernommen** (aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn`): Sprache **GDScript**, Audio nativ (AudioStreamPlayer + Bus), Plugins Dialogue Manager + Phantom Camera 2D, Game-Feel-Kernpatterns
 - **Gestrandete Branch-Inhalte gerettet** (Nutzer-Auftrag „rette und übernehme"):
-  - **Gravurensystem → GDD §5.7** (aus `waffenkiste-engraving-discussion-h9m12r`): Typen, Mana-Reservierung, Slots & Energie, Verfeinerung (Tabelle an Datenstand v7 angepasst: Kupfer 1× / Eisen 2× / Stahl+ 3×), Seltenheit, Leveling, Crafting-Vorschau. **Offen:** Kostenmodell-Widerspruch im Beispiel als `[prüfen]` markiert (Basiskosten ↔ Level-Kapazitätskosten)
+  - **Gravurensystem → GDD §5.7** (aus `waffenkiste-engraving-discussion-h9m12r`): Typen, Mana-Reservierung, Slots & Energie, Verfeinerung (Tabelle an Datenstand v7 angepasst: Kupfer 1× / Eisen 2× / Stahl+ 3×), Seltenheit, Leveling, Crafting-Vorschau. Kostenmodell-Widerspruch im Beispiel entdeckt → vom Nutzer entschieden (Level-basiert, s. o.)
   - **Placeholder-Assets + GDD §10.4** (aus `game-content-roadmap-jotfhn`): `assets/placeholder/` (Tiny-RPG Soldat/Ork/Pfeil, Taverne 126 Items). Die dortigen CLAUDE.md-Workflow-Regeln (direkt-main/force) wurden bewusst NICHT übernommen (obsolet)
   - **Terrain-Tileset v1 + Godot-Skelett** (aus `isometric-map-tileset-mtfwuq`, neuester Stand HD-2D + Brücke/Furt): `assets/tiles/`, `docs/TILESET.md`, `scenes/map_demo`, `scripts/tile_ids.gd`, `tools/generate_tileset.py` + `render_preview.py`; Tileset-Specs → GDD §10.1, Projektstruktur → §10.3
   - **Yggdrasil-Skilltree-Editor** (aus `skilltree-editor-setup-iokofy`): `addons/yggdrasil/` (Editor-Plugin fürs erste Code-Projekt)
@@ -108,7 +110,7 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
 2. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensiv-/Prim.-Werte = Platzhalter; Eigenarten sind final)
 3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-4. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen steht in §5.7 — dort auch `[prüfen]`-Punkt zum Kostenmodell klären)
+4. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
 5. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1
 6. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
@@ -211,3 +213,4 @@ tactical RPG, HD pixel art style, no background, transparent
 | Krieger Σ80 | Startattribute Krieger Σ 80 (alle anderen Σ 75) ist Absicht — Tank-Fundament, Ausgleich: nur MOB 3 (§5.3) |
 | Armbrüste-Profil | Kriegs- & Repetierarmbrust bewusst identisch 1–2/3; Differenzierung über Hand/Gewicht/Eigenart (§5.3) |
 | Bogen-Reichweite (Daten) | Bogenwaffen in weapons.json mit Feldern `Reichweite optimal` (z. B. „3–4") + `Reichweite max` (z. B. 5); Anzeige-Notation `3–4/5` daraus abgeleitet |
+| Gravur-Kosten | Kapazitätskosten **rein Level-basiert**: L1=2, L2=4, L3=6, L4=8, L5=10 (L4/L5 nur Spezial/Signatur). Passender typisierter Slot halbiert; Flex/unpassender Slot = volle Kosten. Kein Typ-Basiskosten-Faktor (§5.7) |

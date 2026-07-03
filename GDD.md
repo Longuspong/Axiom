@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.11  
+**Version:** 0.12  
 **Stand:** 2026-07-03  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -887,17 +887,17 @@ Reaktive Fähigkeiten wie Gegenschlag oder Parry brauchen sowohl einen Cooldown 
 
 Jede Waffe besitzt eine **Energiekapazität** und eine Anzahl **Slots**. Slots sind entweder generisch (*Flex*) oder typisiert (Aktiv, Passiv, Reaktiv, Modifikativ, Spezial). Anzahl Slots und Kapazität hängen von der **Seltenheit** der Waffe ab (Slot-Templates in `data/weapons.json`).
 
-**Typisierter Slot = halbe Energiekosten** für passende Gravur.
+**Kostenmodell** *(entschieden 2026-07-03)*: Die Kapazitätskosten einer Gravur hängen **ausschließlich von ihrem Level** ab (Tabelle unter „Gravur-Leveling": L1 = 2 … L5 = 10) — der Gravur-Typ hat keine eigenen Basiskosten. **Typisierter Slot = halbe Kapazitätskosten** für eine passende Gravur; im nicht passenden oder generischen (*Flex*-)Slot gelten die vollen Kosten.
 
-| Belegung | Slot-Typ | Gravur-Typ | Kosten |
-|----------|----------|-----------|--------|
-| Passend | Aktiv | Aktiv-Gravur (Basiskosten 4) | **2** |
-| Nicht passend | Passiv | Reaktiv-Gravur (Basiskosten 2) | **2** |
-| Passend | Passiv | Passiv-Gravur (Basiskosten 2) | **1** |
+| Belegung | Slot-Typ | Gravur | Kosten |
+|----------|----------|--------|--------|
+| Passend | Aktiv | Aktiv-Gravur Level 2 (Kosten 4) | **2** |
+| Nicht passend | Passiv | Reaktiv-Gravur Level 1 (Kosten 2) | **2** |
+| Passend | Passiv | Passiv-Gravur Level 1 (Kosten 2) | **1** |
 
 *Beispiel-Schwert (Stahl: Kapazität 3 · 1× Aktiv-Slot · 1× Passiv-Slot):*
-- Option A: Aktiv-Gravur (4→2) + Passiv-Gravur (2→1) = **3** ✓
-- Option B: Aktiv-Gravur (2→1) + Reaktiv-Gravur im Passiv-Slot (2, kein Rabatt) = **3** ✓ — **[prüfen]** *Original rechnet hier mit Basiskosten 2 statt 4 für die Aktiv-Gravur; vermutlich sind Kosten pro Gravur-Level gemeint (L1 = 2) — Verhältnis Basiskosten ↔ Level-Kapazitätskosten klären*
+- Option A: Aktiv-Gravur L2 (4→2) + Passiv-Gravur L1 (2→1) = **3** ✓
+- Option B: Aktiv-Gravur L1 (2→1) + Reaktiv-Gravur L1 im Passiv-Slot (2, kein Rabatt) = **3** ✓
 
 #### Verfeinern (Kapazitäts-Erweiterung)
 
@@ -930,7 +930,7 @@ Alle Gravuren können von Level 1 auf maximal Level 3 aufgewertet werden. Spezia
 | 4 | 8 | Spezial/Signatur |
 | 5 | 10 | Spezial/Signatur |
 
-Höheres Level = stärkerer Effekt der Gravur.
+Höheres Level = stärkerer Effekt der Gravur. Die Kapazitätskosten sind zugleich die Einsetzkosten der Gravur in einen Slot (siehe „Slots & Energie" — passender typisierter Slot halbiert sie).
 
 #### Entfernen & Wiederverwenden
 
@@ -1238,6 +1238,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Eigenarten-Grundregel: niemals aktiv, immer passiv/reaktiv/automatisch *(2026-07-03, §5.3)* — Spruchrolle & Sammeln auf Auto-Trigger umgestellt, Windsohle-Eigenart ersetzt (*Aufwind*)
 - [x] `itemliste_v6.xlsx` → **v7** aktualisiert: Waffen-Sheet aus `weapons.json` v7 (Bogen-Notation `optimal/max`), neue Sheets Offhands (84), Kopf-/Körper-/Fußausrüstung (je 49, inkl. Köcher/Buchrolle im Körper-Slot), Referenz-Sheet Offhand- & Rüstungstypen *(2026-07-03)*
 - [x] Techstack dokumentiert (§10.3): GDScript, Audio nativ, Plugins (Dialogue Manager, Phantom Camera 2D), Game-Feel-Kernpatterns — übernommen aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn` *(2026-07-03)*
+- [x] Gravur-Kostenmodell entschieden *(2026-07-03, §5.7)*: Kapazitätskosten **rein Level-basiert** (L1=2 … L5=10), passender typisierter Slot halbiert, Flex/unpassend = volle Kosten; Typ-Basiskosten gestrichen
 - [x] Gestrandete Branch-Inhalte gerettet *(2026-07-03)*: Gravurensystem → §5.7 (Verfeinerungs-Tabelle an Datenstand angepasst), Placeholder-Assets (`assets/placeholder/`: Tiny-RPG Soldat/Ork, Taverne) + §10.4, Terrain-Tileset v1 (`assets/tiles/`, `docs/TILESET.md`) + Tileset-Specs in §10.1, Godot-Projektskelett (`project.godot`, `scenes/`, `scripts/`, `tools/`), Yggdrasil-Skilltree-Editor (`addons/yggdrasil/`), Placeholder-Sprite-Strategie (§10.4/CLAUDE.md)
 
 **Offen — Balancing & Daten:**
@@ -1251,7 +1252,6 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Waffensystem-Rest ausarbeiten (Gravuren-Katalog, Crafting-Details, Aufwertung) — Systemrahmen in §5.7
-- [ ] Gravur-Kostenmodell klären: Verhältnis Basiskosten (Aktiv 4 / Passiv 2 / Reaktiv 2) ↔ Level-Kapazitätskosten (L1=2 … L5=10), siehe **[prüfen]** in §5.7
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)
 

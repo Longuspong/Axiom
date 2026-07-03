@@ -61,23 +61,30 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, restl. Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, restl. Waffen/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
 | 9 | Hub — Bergheim | ✅ vollständig |
-| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Plattform/Struktur fehlen |
+| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Tileset-Specs ✅, Projektstruktur ✅, Placeholder-Assets (§10.4) ✅, Zielplattform fehlt |
 | 11 | Offene Punkte & ToDos | ✅ laufend gepflegt, inkl. Phasenplan & Phase-0-Abschlusskriterien |
 
 ---
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Abschlussplan & Excel v7):
+Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches):
 - **Phasenplan definiert (GDD §11)**: Phase 0 = Vorüberlegung & Design, Phase 1 = Playtest & Integration (startet mit Skilltree/Godot-MVP). Abschlusskriterien-Checkliste für Phase 0 eingetragen (Zuordnung = Vorschlag, vom Nutzer zu bestätigen); Playtest-abhängige Punkte explizit nach Phase 1 verschoben
 - **`data/itemliste_v7.xlsx` erstellt** (ersetzt v6): Waffen-Sheet aus weapons.json v7 neu aufgebaut (Bogen-Notation `optimal/max`, z. B. `3–4/5`), neue Sheets **Offhands** (84), **Kopf-/Körper-/Fußausrüstung** (je 49, Köcher/Buchrolle im Körper-Slot), Referenz-Sheet **Offhand- & Rüstungstypen** (33 Typen). Verifiziert: alle IDs deckungsgleich mit den JSONs
 - **Techstack in GDD §10.3 übernommen** (aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn`): Sprache **GDScript**, Audio nativ (AudioStreamPlayer + Bus), Plugins Dialogue Manager + Phantom Camera 2D, Game-Feel-Kernpatterns
-- **Hinweis:** Auf `claude/game-content-roadmap-jotfhn` liegen weitere nie gemergte Inhalte (GDD §10.4 Placeholder-Assets + `assets/placeholder/`-Dateien: Tiny-RPG-Soldat/Ork, Taverne); auf anderen Branches u. a. Godot-Projektskelett & isometrisches Tileset — Übernahme mit Nutzer klären
+- **Gestrandete Branch-Inhalte gerettet** (Nutzer-Auftrag „rette und übernehme"):
+  - **Gravurensystem → GDD §5.7** (aus `waffenkiste-engraving-discussion-h9m12r`): Typen, Mana-Reservierung, Slots & Energie, Verfeinerung (Tabelle an Datenstand v7 angepasst: Kupfer 1× / Eisen 2× / Stahl+ 3×), Seltenheit, Leveling, Crafting-Vorschau. **Offen:** Kostenmodell-Widerspruch im Beispiel als `[prüfen]` markiert (Basiskosten ↔ Level-Kapazitätskosten)
+  - **Placeholder-Assets + GDD §10.4** (aus `game-content-roadmap-jotfhn`): `assets/placeholder/` (Tiny-RPG Soldat/Ork/Pfeil, Taverne 126 Items). Die dortigen CLAUDE.md-Workflow-Regeln (direkt-main/force) wurden bewusst NICHT übernommen (obsolet)
+  - **Terrain-Tileset v1 + Godot-Skelett** (aus `isometric-map-tileset-mtfwuq`, neuester Stand HD-2D + Brücke/Furt): `assets/tiles/`, `docs/TILESET.md`, `scenes/map_demo`, `scripts/tile_ids.gd`, `tools/generate_tileset.py` + `render_preview.py`; Tileset-Specs → GDD §10.1, Projektstruktur → §10.3
+  - **Yggdrasil-Skilltree-Editor** (aus `skilltree-editor-setup-iokofy`): `addons/yggdrasil/` (Editor-Plugin fürs erste Code-Projekt)
+  - **`project.godot` von Hand gemergt** (Tileset-Branch + Skilltree-Branch: main_scene map_demo, Display-Settings, Yggdrasil aktiviert, Godot 4.3); `.gitignore` konsolidiert (`.uid`/`.import` werden committet)
+  - **Pixelart-/Sprite-Strategie übernommen** (aus `pixelart-generator-prompt-yyyhrv`): siehe Abschnitt „Placeholder-Sprites" unten + GDD §10.4
+  - **NICHT übernommen (überholt):** `bold-dijkstra-i0i9vs` (altes Waffensystem, komplett von v7-Daten überholt), CLAUDE.md-Workflow-Commits der Roadmap. Die geretteten Quell-Branches können nach dem Merge gelöscht werden
 
 Frühere Sitzungen:
 - **Phase-0-Audit & Widerspruchsbereinigung (2026-07-03):**
@@ -101,9 +108,9 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
 2. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensiv-/Prim.-Werte = Platzhalter; Eigenarten sind final)
 3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-4. **Restliches Waffensystem** (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
-5. **Skilltree-Struktur designen** — danach Umsetzung in Godot = Start Phase 1
-6. **Techn. Rest:** Zielplattform + Projektstruktur festlegen; Übernahme der gestrandeten Branch-Inhalte (Placeholder-Assets, Godot-Skelett, Tileset) klären
+4. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen steht in §5.7 — dort auch `[prüfen]`-Punkt zum Kostenmodell klären)
+5. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1
+6. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
 ## Dateistruktur
 
@@ -116,8 +123,50 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 | `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — Platzhalter/Entwurf |
 | `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, Platzhalter/Entwurf |
 | `data/itemliste_v7.xlsx` | Gesamt-Excel (alle Sheets/Kategorien inkl. Offhands + Kopf-/Körper-/Fußausrüstung + Typen-Referenz); JSONs sind die getrennte Coding-Datenbank |
+| `project.godot` | Godot-4.3-Projekt (main_scene: map_demo, Yggdrasil-Plugin aktiviert) |
+| `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
+| `assets/tiles/` + `docs/TILESET.md` | Terrain-Tileset v1 (prozedural generiert, Specs in GDD §10.1) |
+| `assets/placeholder/` | MVP-Placeholder (Tiny-RPG Soldat/Ork/Pfeil, Taverne) — GDD §10.4 |
+| `scenes/`, `scripts/`, `tools/` | Map-Demo, Tile-IDs, Tileset-Generator + Preview-Renderer (Python) |
 
 > **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
+
+---
+
+## Placeholder-Sprites (Stand: Sitzung 2026-06-26, gerettet 2026-07-03)
+
+### Strategie
+- **Ein grayscale Sprite** für alle Charaktertypen → Godot `modulate` für Farb-Differenzierung
+- Spieler: Blau (`Color(0.29, 0.56, 0.89)`) | Gegner: Rot (`Color(0.89, 0.29, 0.29)`)
+- Format: 4 ISO-Richtungen (S, N, O, W), Sprite-Sheet 2×2 Grid
+
+```gdscript
+# Spieler
+sprite.modulate = Color(0.29, 0.56, 0.89)
+# Gegner
+sprite.modulate = Color(0.89, 0.29, 0.29)
+```
+
+### Tools ausprobiert
+| Tool | Status | Ergebnis |
+|------|--------|----------|
+| Pixellab.ai | ❌ Tokens leer | Bestes Tool für Pixel-Sprites (8-Richtungen direkt wählbar) — für nächste Sitzung mit Tokens nutzen |
+| DALL-E / OpenAI | ⚠️ nicht getestet | Detaillierte 4-Richtungs-Prompts wurden vorbereitet |
+| LibreSprite | ⏳ geplant | Manuell; Tutorial-Links vorhanden |
+| Claude | ❌ nicht möglich | Text-LLM, kann keine Bilder generieren |
+
+### Pixellab.ai-Prompt (für nächste Sitzung)
+```
+Isometric pixel art character sprite, generic humanoid placeholder, 
+grayscale/desaturated only (no color), 32x32 or 48x48 pixels,
+top-down isometric 3/4 view, 4 directions: South (facing viewer), 
+North (facing away), East (facing right), West (facing left),
+clean simple silhouette, thick 1px black outline, suitable for 
+tactical RPG, HD pixel art style, no background, transparent
+```
+
+### Nächster Schritt Sprites
+→ Pixellab.ai mit neuen Tokens aufrufen, obigen Prompt verwenden, alle 4 Richtungen generieren → in Godot als SpriteFrames einbinden. (Übergangslösung: Tiny-RPG-Sprites aus `assets/placeholder/` mit Spiegeln + Richtungsindikator, siehe GDD §10.4)
 
 ---
 

@@ -2,7 +2,7 @@
   "meta": {
     "version": "v1.1",
     "kategorie": "Körper",
-    "status": "Befüllt — 5 Rüstungstypen × 7 Stufen (35) + 2 Körper-Zubehör (Köcher, Buchrolle, 14) = 49 Einträge. Defensivwerte/Prim.-Werte/Slot-Kapazitäten = PLATZHALTER; Stufe 7 (Stellar) offen. Zubehör = Gimmicks im Körper-Slot (keine Defensivwerte), aus offhands.json hierher verschoben. Eigenart-Effekte = Entwurf.",
+    "status": "Befüllt — 5 Rüstungstypen × 7 Stufen (35) + 2 Körper-Zubehör (Köcher, Buchrolle, 14) = 49 Einträge. Defensivwerte/Prim.-Werte/Slot-Kapazitäten = PLATZHALTER; Stufe 7 (Stellar) offen. Zubehör = Gimmicks im Körper-Slot (keine Defensivwerte), aus offhands.json hierher verschoben. Eigenart-Effekte final (abgesegnet 2026-07-03; Zahlenwerte weiterhin Balancing-Vorbehalt).",
     "quelle": "GDD §5.1 (Gewichtsklassen/Speed), §5.2 (WID/Rüstung/Resistenz), Seltenheitsstufen aus weapons.json",
     "id_präfix": "KP",
     "hinweis": "Körper-Slot verwendet den ±0,30-Speed-Index (wie Waffen). Defensivwerte: WID, Rüstung, Resistenz, VIT/LP.",
@@ -171,7 +171,7 @@
       "sek_attr": "—",
       "defensiv_fokus": "Resistenz (magisch)",
       "eigenart": "Manaweber",
-      "eigenart_effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "eigenart_effekt": "+10 % max. Mana (passiv).",
       "bauteile": "Stoffbahn + Saum",
       "affinitaet": [
         "Zauberstab",
@@ -189,7 +189,7 @@
       "sek_attr": "—",
       "defensiv_fokus": "ausgewogen leicht",
       "eigenart": "Leichtfüßig",
-      "eigenart_effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "eigenart_effekt": "+10 % Ausweichen-Chance.",
       "bauteile": "Gegerbtes Leder + Riemen",
       "affinitaet": [
         "Jagdbogen",
@@ -208,7 +208,7 @@
       "sek_attr": "—",
       "defensiv_fokus": "ausgewogen",
       "eigenart": "Robust",
-      "eigenart_effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "eigenart_effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "bauteile": "Kettengeflecht",
       "affinitaet": [
         "Breitschwert",
@@ -226,7 +226,7 @@
       "sek_attr": "—",
       "defensiv_fokus": "Rüstung (physisch)",
       "eigenart": "Trotz",
-      "eigenart_effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "eigenart_effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "bauteile": "Schuppen + Unterzeug",
       "affinitaet": [
         "Kampfaxt",
@@ -244,7 +244,7 @@
       "sek_attr": "—",
       "defensiv_fokus": "max. Rüstung + Threat",
       "eigenart": "Bollwerk",
-      "eigenart_effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "eigenart_effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "bauteile": "Brustplatte + Schnallen",
       "affinitaet": [
         "Hammer",
@@ -265,7 +265,7 @@
       "prim_attr": "GES",
       "sek_attr": "—",
       "eigenart": "Griffbereit",
-      "eigenart_effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "eigenart_effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "bauteile": "Lederköcher + Trageriemen",
       "affinitaet": [
         "Jagdbogen",
@@ -287,7 +287,7 @@
       "prim_attr": "WIL",
       "sek_attr": "—",
       "eigenart": "Spruchrolle",
-      "eigenart_effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "eigenart_effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "bauteile": "Pergament + Wickelstäbe",
       "affinitaet": [
         "Zauberstab",
@@ -428,7 +428,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -458,7 +458,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -488,7 +488,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -518,7 +518,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -549,7 +549,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -580,7 +580,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -611,7 +611,7 @@
       "Gewichtsklasse": "Schnell",
       "Speed-Mod": 0.3,
       "Eigenart": "Manaweber",
-      "Eigenart-Effekt": "+10 % max. Mana (passiv). [Entwurf — Wert beim Balancing]",
+      "Eigenart-Effekt": "+10 % max. Mana (passiv).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -642,7 +642,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -672,7 +672,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -702,7 +702,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -732,7 +732,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -763,7 +763,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -794,7 +794,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -825,7 +825,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Leichtfüßig",
-      "Eigenart-Effekt": "+10 % Ausweichen-Chance. [Entwurf]",
+      "Eigenart-Effekt": "+10 % Ausweichen-Chance.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -856,7 +856,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -886,7 +886,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -916,7 +916,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -946,7 +946,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -977,7 +977,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1008,7 +1008,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1039,7 +1039,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Robust",
-      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus. [Entwurf]",
+      "Eigenart-Effekt": "+15 % VIT/LP über den Grundwert hinaus.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1070,7 +1070,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1100,7 +1100,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1130,7 +1130,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1160,7 +1160,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1191,7 +1191,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1222,7 +1222,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1253,7 +1253,7 @@
       "Gewichtsklasse": "Bedächtig",
       "Speed-Mod": -0.15,
       "Eigenart": "Trotz",
-      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung). [Entwurf]",
+      "Eigenart-Effekt": "−10 % erlittener physischer Schaden (nach Rüstung).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1284,7 +1284,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1314,7 +1314,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1344,7 +1344,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1374,7 +1374,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1405,7 +1405,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1436,7 +1436,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1467,7 +1467,7 @@
       "Gewichtsklasse": "Träge",
       "Speed-Mod": -0.3,
       "Eigenart": "Bollwerk",
-      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3). [Entwurf]",
+      "Eigenart-Effekt": "+20 % Threat-Generierung; 25 % Chance, einen erlittenen Nahkampftreffer zu blocken (Spott-Tank, §5.3).",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1498,7 +1498,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1528,7 +1528,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1558,7 +1558,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1588,7 +1588,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1619,7 +1619,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1650,7 +1650,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1681,7 +1681,7 @@
       "Gewichtsklasse": "Wendig",
       "Speed-Mod": 0.15,
       "Eigenart": "Griffbereit",
-      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden. [Entwurf]",
+      "Eigenart-Effekt": "Erster Fernkampfangriff jeder Runde: +25 % Schaden.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1712,7 +1712,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1742,7 +1742,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1772,7 +1772,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 1,
       "Slot-Typen": [
@@ -1802,7 +1802,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1833,7 +1833,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1864,7 +1864,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [
@@ -1895,7 +1895,7 @@
       "Gewichtsklasse": "Ausgeglichen",
       "Speed-Mod": 0.0,
       "Eigenart": "Spruchrolle",
-      "Eigenart-Effekt": "Aktiv: der nächste Zauber kostet kein Mana. Cooldown 4 Züge. [Entwurf]",
+      "Eigenart-Effekt": "Automatisch alle 7 Züge: der nächste gewirkte Zauber kostet kein Mana.",
       "Theme/Set": "Pures Material",
       "Slots": 2,
       "Slot-Typen": [

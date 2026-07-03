@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "v6+korrekturen",
-    "quelle": "itemliste_v5.xlsx + itemliste_v6.xlsx + GDD-Sitzung 2026-06-29",
+    "version": "v7",
+    "quelle": "itemliste_v5.xlsx + itemliste_v6.xlsx + GDD-Sitzung 2026-06-29 + GDD-Sitzung 2026-07-03 (Reichweite optimal/max, Stichwaffen-Schlüssel)",
     "zweihand_grundwert_bonus": 0.35,
     "zweihand_grundwert_bonus_hinweis": "Die gespeicherten Prim./Sek.-Werte sind ECHTE Grundwerte. Zweihandwaffen (Hand = B) erhalten als Ausgleich fürs fehlende Offhand +35 % auf Prim. Wert und Sek. Wert — NICHT in die Daten eingerechnet, sondern beim Ausrüsten/Anzeigen aufgeschlagen. Die In-Game-Informationskarte zeigt den fertigen (geboosteten) Endwert und idealerweise den Bonus als eigene Zeile (z. B. 'Grundwert 20  +35 % Zweihand = 27'). Faktor zentral hier tunebar."
   },
@@ -237,7 +237,9 @@
       "prim": "GES",
       "sek": "WID",
       "eigenart": "Jagdinstinkt",
-      "eigenart_effekt": "Deckt unsichtbare Gegner innerhalb der Bewegungsreichweite (MOB) auf"
+      "eigenart_effekt": "Deckt unsichtbare Gegner innerhalb der Bewegungsreichweite (MOB) auf",
+      "reichweite_optimal": "3–4",
+      "reichweite_max": 5
     },
     {
       "klasse": "Bogenwaffen",
@@ -247,7 +249,9 @@
       "prim": "GES",
       "sek": "STR",
       "eigenart": "Techniker",
-      "eigenart_effekt": "Kein Angriff letzten Zug → zweiter Bolzen geladen → nächster Angriff +50 % Schaden"
+      "eigenart_effekt": "Kein Angriff letzten Zug → zweiter Bolzen geladen → nächster Angriff +50 % Schaden",
+      "reichweite_optimal": "1–2",
+      "reichweite_max": 3
     },
     {
       "klasse": "Bogenwaffen",
@@ -257,7 +261,9 @@
       "prim": "GES",
       "sek": "WID",
       "eigenart": "Heckenschütze",
-      "eigenart_effekt": "Keine Bewegung letzten Zug → +30 % Schaden diesen Zug"
+      "eigenart_effekt": "Keine Bewegung letzten Zug → +30 % Schaden diesen Zug",
+      "reichweite_optimal": "4–5",
+      "reichweite_max": 6
     },
     {
       "klasse": "Bogenwaffen",
@@ -267,7 +273,9 @@
       "prim": "GES",
       "sek": "STR",
       "eigenart": "Durchschlagskraft",
-      "eigenart_effekt": "50 % Rüstungsdurchdringung (RD)"
+      "eigenart_effekt": "50 % Rüstungsdurchdringung (RD)",
+      "reichweite_optimal": "1–2",
+      "reichweite_max": 3
     },
     {
       "klasse": "Zauberwaffen",
@@ -291,6 +299,7 @@
     }
   ],
   "stat_skalierung": {
+    "_hinweis": "Platzhalter-Werte — beim Balancing anpassen. Zahlen ändern → Waffenliste aktualisiert sich automatisch.",
     "Schwerter": {
       "prim_attr": "STR",
       "prim_werte": [
@@ -379,7 +388,7 @@
         null
       ]
     },
-    "Dolche": {
+    "Stichwaffen": {
       "prim_attr": "STR",
       "prim_werte": [
         8,
@@ -442,28 +451,6 @@
         26,
         38,
         52,
-        null
-      ]
-    },
-    "⚠  Platzhalter-Werte — beim Balancing anpassen. Zahlen ändern → Waffenliste aktualisiert sich automatisch.": {
-      "prim_attr": null,
-      "prim_werte": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "sek_attr": null,
-      "sek_werte": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
         null
       ]
     }
@@ -3171,7 +3158,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 4,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 10,
       "Verkaufs- preis": 6
@@ -3200,7 +3188,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 6,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 20,
       "Verkaufs- preis": 12
@@ -3229,7 +3218,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 9,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 40,
       "Verkaufs- preis": 24
@@ -3258,7 +3248,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 14,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 100,
       "Verkaufs- preis": 60
@@ -3287,7 +3278,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 20,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 200,
       "Verkaufs- preis": 120
@@ -3316,7 +3308,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 28,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Bogenkörper + Sehne + Kern",
       "Kaufpreis (Barren)": 500,
       "Verkaufs- preis": 300
@@ -3345,7 +3338,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 0,
       "Angriffe /Zug": 1,
-      "Reichweite": 3,
+      "Reichweite optimal": "3–4",
+      "Reichweite max": 5,
       "Bauteile": "Stellar-Kern",
       "Kaufpreis (Barren)": null,
       "Verkaufs- preis": 0
@@ -3374,7 +3368,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 4,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 10,
       "Verkaufs- preis": 6
@@ -3403,7 +3398,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 6,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 20,
       "Verkaufs- preis": 12
@@ -3432,7 +3428,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 9,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 40,
       "Verkaufs- preis": 24
@@ -3461,7 +3458,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 14,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 100,
       "Verkaufs- preis": 60
@@ -3490,7 +3488,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 20,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 200,
       "Verkaufs- preis": 120
@@ -3519,7 +3518,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 28,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne + Kern",
       "Kaufpreis (Barren)": 500,
       "Verkaufs- preis": 300
@@ -3548,7 +3548,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 0,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Stellar-Kern",
       "Kaufpreis (Barren)": null,
       "Verkaufs- preis": 0
@@ -3577,7 +3578,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 4,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 10,
       "Verkaufs- preis": 6
@@ -3606,7 +3608,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 6,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 20,
       "Verkaufs- preis": 12
@@ -3635,7 +3638,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 9,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 40,
       "Verkaufs- preis": 24
@@ -3664,7 +3668,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 14,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 100,
       "Verkaufs- preis": 60
@@ -3693,7 +3698,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 20,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 200,
       "Verkaufs- preis": 120
@@ -3722,7 +3728,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 28,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Bogenkörper + Sehne + Kern",
       "Kaufpreis (Barren)": 500,
       "Verkaufs- preis": 300
@@ -3751,7 +3758,8 @@
       "Sek. Attr.": "WID",
       "Sek. Wert": 0,
       "Angriffe /Zug": 1,
-      "Reichweite": 4,
+      "Reichweite optimal": "4–5",
+      "Reichweite max": 6,
       "Bauteile": "Stellar-Kern",
       "Kaufpreis (Barren)": null,
       "Verkaufs- preis": 0
@@ -3780,7 +3788,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 4,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 10,
       "Verkaufs- preis": 6
@@ -3809,7 +3818,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 6,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper",
       "Kaufpreis (Barren)": 20,
       "Verkaufs- preis": 12
@@ -3838,7 +3848,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 9,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 40,
       "Verkaufs- preis": 24
@@ -3867,7 +3878,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 14,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 100,
       "Verkaufs- preis": 60
@@ -3896,7 +3908,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 20,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne",
       "Kaufpreis (Barren)": 200,
       "Verkaufs- preis": 120
@@ -3925,7 +3938,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 28,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Bogenkörper + Sehne + Kern",
       "Kaufpreis (Barren)": 500,
       "Verkaufs- preis": 300
@@ -3954,7 +3968,8 @@
       "Sek. Attr.": "STR",
       "Sek. Wert": 0,
       "Angriffe /Zug": 1,
-      "Reichweite": 2,
+      "Reichweite optimal": "1–2",
+      "Reichweite max": 3,
       "Bauteile": "Stellar-Kern",
       "Kaufpreis (Barren)": null,
       "Verkaufs- preis": 0

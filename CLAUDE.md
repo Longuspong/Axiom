@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.9)
+## GDD-Stand (aktuell: v0.10)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -61,7 +61,7 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, restl. Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, restl. Waffen/Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -73,10 +73,16 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung:
-- **Modulare Ausrüstungs-/Skilltree-Philosophie** festgehalten (GDD §5.3): Jede Klasse kann alles (keine Waffen-/Attribut-Sperre nach Prolog-Wahl), ein universeller Skilltree für alle Klassen mit klassenabhängigem Einstiegspunkt statt getrennter Bäume, früh empfohlene lineare Pfade ohne Zwang. Offen: mögliche Attributsvoraussetzungen für starke Kombos bei höheren Stufen (in Evaluation)
+Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Audit & Widerspruchsbereinigung):
+- **Vollaudit aller Daten**: 112 Waffen + 84 Offhands + 147 Rüstungsteile rechnerisch gegen Skalierungstabellen geprüft — null Wertabweichungen
+- **Neue Systeme definiert (GDD §5.2)**: Trefferchance (100 % Basis; Fernkampf-Falloff = Trefferchance, −30 %/Feld, Max-Reichweite = harte Grenze; Ausweichen Basis 0 %, nur aus Quellen), Krit (5 % Basis, ×1,5 Rohschaden, keine Backstab/Flanken-Kopplung), WID **kein Cap** (Formel selbstbegrenzend), Kälte-Reaktionsmalus **−10 %/Stapel**
+- **Eigenarten-Grundregel**: niemals aktiv, immer passiv/reaktiv/automatisch. Umgestellt: Spruchrolle (auto alle 7 Züge: nächster Zauber gratis), Signalhorn „Sammeln" (auto alle 5 Züge), Windsohle neu = **„Aufwind"** (Zugbeginn ohne angrenzenden Gegner → +1 MOB); Fackel „Hetzjagd" final **+0,2 Speed**
+- **Alle 21 Rüstungs-/Zubehör-Eigenarten abgesegnet** — `[Entwurf]`-Marker entfernt (Zahlenwerte bleiben Balancing-Vorbehalt)
+- **Widersprüche bereinigt**: Bogen-Gewichtsklassen (Daten-Version gilt: Kriegsarmbrust Bedächtig, Jagdbogen Wendig, Langbogen Ausgeglichen), Krieger Σ80 = Absicht dokumentiert, Armbrüste bewusst identisches Distanzprofil, `stat_skalierung`-Schlüssel „Dolche"→„Stichwaffen", toter `rueckenausruestung`-Verweis korrigiert, Schütze-/Assassinen-Tabellen an reale Waffentypen angepasst, §11-ToDos dedupliziert & kategorisiert
+- **weapons.json v7**: Bogenwaffen tragen jetzt `Reichweite optimal` + `Reichweite max` als strukturierte Felder (28 Einträge + 4 Typdefinitionen)
 
 Frühere Sitzungen:
+- Modulare Ausrüstungs-/Skilltree-Philosophie festgehalten (GDD §5.3): Jede Klasse kann alles, ein universeller Skilltree mit klassenabhängigem Einstiegspunkt, früh empfohlene Pfade ohne Zwang. Offen: Attributsvoraussetzungen für starke Kombos (in Evaluation)
 - Einhand/Zweihand + Offhand-System definiert (GDD §5.3): Einhand = Offhand/Dualwield, Zweihand = kein Offhand, +35 % Grundwerte (mit weapons.json abzustimmen)
 - `data/offhands.json` befüllt: 12 Offhand-Typen × 7 Stufen = 84 Einträge + `offhandtypen` + Platzhalter-`stat_skalierung`. Klassen: Schild (Buckler/Turmschild), Magischer Fokus (Foliant/Energiekristall), Hilfsmittel (Kampfkette, Laterne, Fester Gürtel, Fackel, Signalhorn, Standarte, Rauchschwenker, Köderkolben). Jedes Offhand: genau 1 Hauptattribut, Eigenart fest, Gravur-Slots bis Stahl 1 / ab Titan 2
 - Zwei neue Systeme dokumentiert (GDD §5.2): Aggro/Threat (Formel, Hysterese, Decay, Taunt, Guard, Präsenz-Aggro) und Sichtsystem (3 Zustände Offenbar/Unsichtbar/Scheinbar)
@@ -86,17 +92,17 @@ Frühere Sitzungen:
 ## Was als nächstes kommt
 
 1. **Offhand-Werte kalibrieren** (Prim.-Werte/Slot-Kapazitäten = Platzhalter) + Stufe-7-Offhands
-2. **Zweihand-Ausgleich (+35 %)** mit `data/weapons.json` final abstimmen
-3. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensivwerte/Eigenarten/MOB = Platzhalter) — alle Slots befüllt
-4. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-5. **Restliches Waffensystem** (Crafting, Aufwertung, Verfeinerung)
+2. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensiv-/Prim.-Werte = Platzhalter; Eigenarten sind final)
+3. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
+4. **`itemliste_v6.xlsx` → v7 aktualisieren** (Offhands, Rüstung, Köcher/Buchrolle-Umzug fehlen in der Excel)
+5. **Restliches Waffensystem** (Gravuren im Detail, Crafting, Aufwertung, Verfeinerung)
 
 ## Dateistruktur
 
 | Datei | Inhalt |
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
-| `data/weapons.json` | Waffendaten: Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren |
+| `data/weapons.json` | Waffendaten (v7): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
 | `data/offhands.json` | Offhand-Daten: Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (Platzhalter), **84 Einträge** (12 Typen × 7 Stufen) |
 | `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, Platzhalter/Entwurf |
 | `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — Platzhalter/Entwurf |
@@ -140,3 +146,11 @@ Frühere Sitzungen:
 | Rüstungs-Attributswerte | Zwei Tiers (Prim.-Wert pro Stufe 1–6, Stufe 7/Stellar offen=0): **Primärslot Körper** = `6,10,14,20,27,35`; **Sekundärslot Kopf/Füße** = `3,5,7,10,14,18` (bewusst weniger als Körper). Defensivwerte = Basis × Archetyp-Multiplikator (Kopf/Füße ~60 % des Körpers). Alles Platzhalter-Vorschlag |
 | Aggro/Threat | Threat nur durch Aktionen (`base×coeff×proximity`); Hysterese 110/130 %, Decay 5 %, Taunt-Lock 3 Züge, Guard 50/50. Präsenz-Aggro nur über Ausrüstungs-Auren (§5.2) |
 | Sichtsystem | Kein Fog of War. 3 Zustände: Offenbar / Unsichtbar / Scheinbar (≤2 Felder von Gegner aufgedeckt). Angriff/Zauber/Treffer → Offenbar (§5.2) |
+| Trefferchance | Kein genereller Trefferwurf — 100 % Basis. Fernkampf: Falloff **ist** die Trefferchance (−30 % Treffer & Schaden pro Feld außerhalb der Optimalzone, beide Richtungen); Max-Reichweite = harte Grenze (Feld nicht anwählbar). Ausweichen: Basis 0 %, nur aus expliziten Quellen (§5.2) |
+| Krit | 5 % Basis-Kritchance, ×1,5 Rohschaden (vor Reduktion); erhöhbar nur durch Quellen; garantierte Krits = 100 %. Keine generelle Backstab/Flanken-Kopplung (§5.2) |
+| WID-Cap | **Kein Cap** — `WID/(WID+100)` begrenzt sich asymptotisch selbst; Balancing über WID-Verfügbarkeit (§5.2) |
+| Kälte | Zusätzlich zu Einfrier-Chance: **−10 % Reaktionswert pro Stapel** (10 Stapel = Reaktionen deaktiviert) (§5.2) |
+| Eigenarten-Regel | **Niemals aktiv** — immer passiv/reaktiv/automatisch (Auto-Trigger ggf. mit CD); aktivierbare Effekte nur über Gravuren. Spruchrolle: auto alle 7 Züge; Signalhorn: auto alle 5 Züge; Windsohle = „Aufwind" (Zugstart ohne angrenzenden Gegner → +1 MOB); Fackel = +0,2 Speed (§5.3) |
+| Krieger Σ80 | Startattribute Krieger Σ 80 (alle anderen Σ 75) ist Absicht — Tank-Fundament, Ausgleich: nur MOB 3 (§5.3) |
+| Armbrüste-Profil | Kriegs- & Repetierarmbrust bewusst identisch 1–2/3; Differenzierung über Hand/Gewicht/Eigenart (§5.3) |
+| Bogen-Reichweite (Daten) | Bogenwaffen in weapons.json mit Feldern `Reichweite optimal` (z. B. „3–4") + `Reichweite max` (z. B. 5); Anzeige-Notation `3–4/5` daraus abgeleitet |

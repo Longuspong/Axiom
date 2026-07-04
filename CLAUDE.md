@@ -79,8 +79,8 @@ Abgeschlossen in dieser Sitzung (2026-07-04 — Rüstungskalibrierung, Phase-0-P
 - **Rüstung kalibriert (JSONs v1.3 + Excel, alle 147 Einträge inkl. Stufe 7)**: Prim-Tiers halbiert — Körper 3/5/7/10/13/17/**23**, Kopf/Füße 2/3/4/5/7/9/**12** (gilt auch für Zubehör); Flat-Basis Körper 2/3/4/5/6/8/**10**, Kopf/Füße 1/2/2/3/4/5/**6** (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers = §5.2-Beispiel; Voll-Platte S6 = 32 Flat, unter der Nutzer-Obergrenze ~50); VIT/LP unverändert + S7 = 47/28; **WID-Defensivzeile gestrichen** (Double-Dip mit Platte-Prim — WID nur noch über Prim-Wert + Skilltree), WID-Spalte auch aus der Excel entfernt
 - **Bewusste Budget-Ausnahmen dokumentiert (§5.3)**: WID-Offhands (Turmschild/Fester Gürtel) bleiben außerhalb des 2/5-Budgets (Trade-off); Waffen-Sek-WID (bis 40) wird bei der Stufe-7-Waffen-Kalibrierung eingedampft
 - **Zweihand-Grundkapazität entschieden & eingerechnet**: +1 bis Stahl / +2 ab Titan (mehr Kapazität, nicht mehr Slots) — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 + Excel; Stufe-7-B-Waffen folgen mit der Stellar-Kalibrierung. Altlast bereinigt: `slot_templates`-Klasse Dolche→Stichwaffen (JSON + Excel)
-- **Sitzungsproblem-Ursache gefunden**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Branch beim Fix-Versuch versehentlich per Stift-Symbol in **`Main`** (großes M!) **umbenannt** — der ist weiterhin Default und weiterhin v0.6. **Noch zu tun (nur Nutzer):** Settings → General → Default branch → **⇄-Knopf** (zwei Pfeile, NICHT Stift) → `main` (klein) auswählen; danach Branch `Main` löschen (macht Claude)
-- Draft-PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`)
+- **Sitzungsproblem GELÖST**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Default-Branch auf **`main`** umgestellt und den beim ersten Fix-Versuch versehentlich entstandenen Umbenennungs-Rest `Main` (großes M, v0.6) gelöscht. **Neue Sitzungen starten ab jetzt auf dem aktuellen Stand.**
+- Draft-PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`) — enthält die komplette Sitzung, **wartet auf Merge durch den Nutzer**
 
 Frühere Sitzungen:
 - **Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches (2026-07-03):**
@@ -120,7 +120,8 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 2. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
 3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
 4. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
-5. **Repo-Fix (Nutzer):** GitHub-Default-Branch von `claude/repo-access-permissions-l4kamm` auf **`main`** umstellen (Settings → General → Default branch), danach Uralt-Branch löschen — sonst startet jede neue Sitzung veraltet
+
+> Vorab ggf.: **PR #14 mergen** (Rüstungskalibrierung + Zweihand-Kapazität, Stand dieser Sitzung). Repo-Fix (Default-Branch → `main`) ist erledigt (2026-07-04).
 
 ## Dateistruktur
 

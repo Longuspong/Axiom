@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.13)
+## GDD-Stand (aktuell: v0.14)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -73,23 +73,31 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-03 — Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches):
-- **Gravur-Kostenmodell entschieden (GDD §5.7)**: Kapazitätskosten **rein Level-basiert** (L1=2, L2=4, L3=6, L4=8, L5=10; L4/L5 nur Spezial), passender typisierter Slot halbiert, Flex/unpassender Slot = volle Kosten. Typ-Basiskosten gestrichen, `[prüfen]`-Marker aufgelöst, Beispiele korrigiert. Nutzer-Klarstellung als Beispiel ergänzt: Kapazität 1 + Aktiv-Slot → nur Aktiv-Gravur L1 passt (2→1)
-- **Offhands kalibriert (GDD §5.3, `offhands.json` v1.3)**: Prim.-Wert **3/5/7/10/14/18/24** = Sekundärslot-Tier ≈ 50 % des Zweihand-Äquivalents (Ø 0,35×(Prim+Sek) über alle Waffenklassen = 5/8/12/18/25/35) — Mehrwert liegt in Eigenart + Slots. Grundkapazität = Stufe (1–7), Max. Verfeinerung 1×/2×/3×+ analog Waffen. Stufe-7-Offhands damit ausgearbeitet; alle 84 Einträge + Excel-Sheet aktualisiert. **Phase-0-Punkt 1 erledigt**
-- **Branch-Putz**: PR #12 gemergt (main = v0.12-Stand); alle überholten Remote-Branches gelöscht (5 gerettete Quellen + gemergte/überholte, inkl. `bold-dijkstra`)
-- **Phasenplan definiert (GDD §11)**: Phase 0 = Vorüberlegung & Design, Phase 1 = Playtest & Integration (startet mit Skilltree/Godot-MVP). Abschlusskriterien-Checkliste für Phase 0 eingetragen (Zuordnung = Vorschlag, vom Nutzer zu bestätigen); Playtest-abhängige Punkte explizit nach Phase 1 verschoben
-- **`data/itemliste_v7.xlsx` erstellt** (ersetzt v6): Waffen-Sheet aus weapons.json v7 neu aufgebaut (Bogen-Notation `optimal/max`, z. B. `3–4/5`), neue Sheets **Offhands** (84), **Kopf-/Körper-/Fußausrüstung** (je 49, Köcher/Buchrolle im Körper-Slot), Referenz-Sheet **Offhand- & Rüstungstypen** (33 Typen). Verifiziert: alle IDs deckungsgleich mit den JSONs
-- **Techstack in GDD §10.3 übernommen** (aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn`): Sprache **GDScript**, Audio nativ (AudioStreamPlayer + Bus), Plugins Dialogue Manager + Phantom Camera 2D, Game-Feel-Kernpatterns
-- **Gestrandete Branch-Inhalte gerettet** (Nutzer-Auftrag „rette und übernehme"):
-  - **Gravurensystem → GDD §5.7** (aus `waffenkiste-engraving-discussion-h9m12r`): Typen, Mana-Reservierung, Slots & Energie, Verfeinerung (Tabelle an Datenstand v7 angepasst: Kupfer 1× / Eisen 2× / Stahl+ 3×), Seltenheit, Leveling, Crafting-Vorschau. Kostenmodell-Widerspruch im Beispiel entdeckt → vom Nutzer entschieden (Level-basiert, s. o.)
-  - **Placeholder-Assets + GDD §10.4** (aus `game-content-roadmap-jotfhn`): `assets/placeholder/` (Tiny-RPG Soldat/Ork/Pfeil, Taverne 126 Items). Die dortigen CLAUDE.md-Workflow-Regeln (direkt-main/force) wurden bewusst NICHT übernommen (obsolet)
-  - **Terrain-Tileset v1 + Godot-Skelett** (aus `isometric-map-tileset-mtfwuq`, neuester Stand HD-2D + Brücke/Furt): `assets/tiles/`, `docs/TILESET.md`, `scenes/map_demo`, `scripts/tile_ids.gd`, `tools/generate_tileset.py` + `render_preview.py`; Tileset-Specs → GDD §10.1, Projektstruktur → §10.3
-  - **Yggdrasil-Skilltree-Editor** (aus `skilltree-editor-setup-iokofy`): `addons/yggdrasil/` (Editor-Plugin fürs erste Code-Projekt)
-  - **`project.godot` von Hand gemergt** (Tileset-Branch + Skilltree-Branch: main_scene map_demo, Display-Settings, Yggdrasil aktiviert, Godot 4.3); `.gitignore` konsolidiert (`.uid`/`.import` werden committet)
-  - **Pixelart-/Sprite-Strategie übernommen** (aus `pixelart-generator-prompt-yyyhrv`): siehe Abschnitt „Placeholder-Sprites" unten + GDD §10.4
-  - **NICHT übernommen (überholt):** `bold-dijkstra-i0i9vs` (altes Waffensystem, komplett von v7-Daten überholt), CLAUDE.md-Workflow-Commits der Roadmap. Die geretteten Quell-Branches können nach dem Merge gelöscht werden
+Abgeschlossen in dieser Sitzung (2026-07-04 — Rüstungskalibrierung, Phase-0-Punkt „Rüstung" erledigt):
+- **Slot-Kapazitäten & Verfeinerung final**: Max. Verfeinerung in allen drei Rüstungs-JSONs war versehentlich `= Stufe` (bis 7×) → korrigiert auf **1× Kupfer / 2× Eisen / 3× ab Stahl** (wie Waffen/Offhands, 84 Einträge inkl. Zubehör); Grundkapazität = Stufe + Slots 1 bis Stahl / 2 ab Titan vom Nutzer bestätigt
+- **Attributsbudget-Prinzip entschieden (GDD §5.3)**: **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) → Voll-Set (Körper+Kopf+Füße) auf ein Attribut = **47 auf Stufe 7**
+- **Rüstung kalibriert (JSONs v1.3 + Excel, alle 147 Einträge inkl. Stufe 7)**: Prim-Tiers halbiert — Körper 3/5/7/10/13/17/**23**, Kopf/Füße 2/3/4/5/7/9/**12** (gilt auch für Zubehör); Flat-Basis Körper 2/3/4/5/6/8/**10**, Kopf/Füße 1/2/2/3/4/5/**6** (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers = §5.2-Beispiel; Voll-Platte S6 = 32 Flat, unter der Nutzer-Obergrenze ~50); VIT/LP unverändert + S7 = 47/28; **WID-Defensivzeile gestrichen** (Double-Dip mit Platte-Prim — WID nur noch über Prim-Wert + Skilltree), WID-Spalte auch aus der Excel entfernt
+- **Bewusste Budget-Ausnahmen dokumentiert (§5.3)**: WID-Offhands (Turmschild/Fester Gürtel) bleiben außerhalb des 2/5-Budgets (Trade-off); Waffen-Sek-WID (bis 40) wird bei der Stufe-7-Waffen-Kalibrierung eingedampft
+- **Zweihand-Grundkapazität entschieden & eingerechnet**: +1 bis Stahl / +2 ab Titan (mehr Kapazität, nicht mehr Slots) — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 + Excel; Stufe-7-B-Waffen folgen mit der Stellar-Kalibrierung. Altlast bereinigt: `slot_templates`-Klasse Dolche→Stichwaffen (JSON + Excel)
+- **Sitzungsproblem GELÖST**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Default-Branch auf **`main`** umgestellt und den beim ersten Fix-Versuch versehentlich entstandenen Umbenennungs-Rest `Main` (großes M, v0.6) gelöscht. **Neue Sitzungen starten ab jetzt auf dem aktuellen Stand.**
+- Draft-PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`) — enthält die komplette Sitzung, **wartet auf Merge durch den Nutzer**
 
 Frühere Sitzungen:
+- **Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches (2026-07-03):**
+  - **Gravur-Kostenmodell entschieden (GDD §5.7)**: Kapazitätskosten **rein Level-basiert** (L1=2, L2=4, L3=6, L4=8, L5=10; L4/L5 nur Spezial), passender typisierter Slot halbiert, Flex/unpassender Slot = volle Kosten. Typ-Basiskosten gestrichen, `[prüfen]`-Marker aufgelöst, Beispiele korrigiert. Nutzer-Klarstellung als Beispiel ergänzt: Kapazität 1 + Aktiv-Slot → nur Aktiv-Gravur L1 passt (2→1)
+  - **Offhands kalibriert (GDD §5.3, `offhands.json` v1.3)**: Prim.-Wert **3/5/7/10/14/18/24** = Sekundärslot-Tier ≈ 50 % des Zweihand-Äquivalents (Ø 0,35×(Prim+Sek) über alle Waffenklassen = 5/8/12/18/25/35) — Mehrwert liegt in Eigenart + Slots. Grundkapazität = Stufe (1–7), Max. Verfeinerung 1×/2×/3×+ analog Waffen. Stufe-7-Offhands damit ausgearbeitet; alle 84 Einträge + Excel-Sheet aktualisiert. **Phase-0-Punkt 1 erledigt**
+  - **Branch-Putz**: PR #12 gemergt (main = v0.12-Stand); alle überholten Remote-Branches gelöscht (5 gerettete Quellen + gemergte/überholte, inkl. `bold-dijkstra`)
+  - **Phasenplan definiert (GDD §11)**: Phase 0 = Vorüberlegung & Design, Phase 1 = Playtest & Integration (startet mit Skilltree/Godot-MVP). Abschlusskriterien-Checkliste für Phase 0 eingetragen (Zuordnung = Vorschlag, vom Nutzer zu bestätigen); Playtest-abhängige Punkte explizit nach Phase 1 verschoben
+  - **`data/itemliste_v7.xlsx` erstellt** (ersetzt v6): Waffen-Sheet aus weapons.json v7 neu aufgebaut (Bogen-Notation `optimal/max`, z. B. `3–4/5`), neue Sheets **Offhands** (84), **Kopf-/Körper-/Fußausrüstung** (je 49, Köcher/Buchrolle im Körper-Slot), Referenz-Sheet **Offhand- & Rüstungstypen** (33 Typen). Verifiziert: alle IDs deckungsgleich mit den JSONs
+  - **Techstack in GDD §10.3 übernommen** (aus dem nie gemergten Branch `claude/game-content-roadmap-jotfhn`): Sprache **GDScript**, Audio nativ (AudioStreamPlayer + Bus), Plugins Dialogue Manager + Phantom Camera 2D, Game-Feel-Kernpatterns
+  - **Gestrandete Branch-Inhalte gerettet** (Nutzer-Auftrag „rette und übernehme"):
+    - **Gravurensystem → GDD §5.7** (aus `waffenkiste-engraving-discussion-h9m12r`): Typen, Mana-Reservierung, Slots & Energie, Verfeinerung (Tabelle an Datenstand v7 angepasst: Kupfer 1× / Eisen 2× / Stahl+ 3×), Seltenheit, Leveling, Crafting-Vorschau. Kostenmodell-Widerspruch im Beispiel entdeckt → vom Nutzer entschieden (Level-basiert, s. o.)
+    - **Placeholder-Assets + GDD §10.4** (aus `game-content-roadmap-jotfhn`): `assets/placeholder/` (Tiny-RPG Soldat/Ork/Pfeil, Taverne 126 Items). Die dortigen CLAUDE.md-Workflow-Regeln (direkt-main/force) wurden bewusst NICHT übernommen (obsolet)
+    - **Terrain-Tileset v1 + Godot-Skelett** (aus `isometric-map-tileset-mtfwuq`, neuester Stand HD-2D + Brücke/Furt): `assets/tiles/`, `docs/TILESET.md`, `scenes/map_demo`, `scripts/tile_ids.gd`, `tools/generate_tileset.py` + `render_preview.py`; Tileset-Specs → GDD §10.1, Projektstruktur → §10.3
+    - **Yggdrasil-Skilltree-Editor** (aus `skilltree-editor-setup-iokofy`): `addons/yggdrasil/` (Editor-Plugin fürs erste Code-Projekt)
+    - **`project.godot` von Hand gemergt** (Tileset-Branch + Skilltree-Branch: main_scene map_demo, Display-Settings, Yggdrasil aktiviert, Godot 4.3); `.gitignore` konsolidiert (`.uid`/`.import` werden committet)
+    - **Pixelart-/Sprite-Strategie übernommen** (aus `pixelart-generator-prompt-yyyhrv`): siehe Abschnitt „Placeholder-Sprites" unten + GDD §10.4
+    - **NICHT übernommen (überholt):** `bold-dijkstra-i0i9vs` (altes Waffensystem, komplett von v7-Daten überholt), CLAUDE.md-Workflow-Commits der Roadmap. Die geretteten Quell-Branches können nach dem Merge gelöscht werden
 - **Phase-0-Audit & Widerspruchsbereinigung (2026-07-03):**
   - **Vollaudit aller Daten**: 112 Waffen + 84 Offhands + 147 Rüstungsteile rechnerisch gegen Skalierungstabellen geprüft — null Wertabweichungen
   - **Neue Systeme definiert (GDD §5.2)**: Trefferchance (100 % Basis; Fernkampf-Falloff = Trefferchance, −30 %/Feld, Max-Reichweite = harte Grenze; Ausweichen Basis 0 %, nur aus Quellen), Krit (5 % Basis, ×1,5 Rohschaden, keine Backstab/Flanken-Kopplung), WID **kein Cap** (Formel selbstbegrenzend), Kälte-Reaktionsmalus **−10 %/Stapel**
@@ -108,22 +116,23 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Rüstung kalibrieren** (Körper/Kopf/Füße: Defensiv-/Prim.-Werte = Platzhalter; Eigenarten sind final)
-2. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`)
-3. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
-4. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1
-5. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+1. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`) — dabei Sek-WID aufs 2/5-Budget eindampfen + Zweihand-Kapazitätsbonus (+1/+2, Regel steht) auf die Stufe-7-B-Waffen anwenden
+2. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
+3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
+4. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+
+> Vorab ggf.: **PR #14 mergen** (Rüstungskalibrierung + Zweihand-Kapazität, Stand dieser Sitzung). Repo-Fix (Default-Branch → `main`) ist erledigt (2026-07-04).
 
 ## Dateistruktur
 
 | Datei | Inhalt |
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
-| `data/weapons.json` | Waffendaten (v7): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
+| `data/weapons.json` | Waffendaten (v7.1, **Zweihand-Kapazitätsbonus eingerechnet**): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
 | `data/offhands.json` | Offhand-Daten (v1.3, **kalibriert**): Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (3/5/7/10/14/18/24), **84 Einträge** (12 Typen × 7 Stufen, inkl. Stellar) |
-| `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, Platzhalter/Entwurf |
-| `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — Platzhalter/Entwurf |
-| `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, Platzhalter/Entwurf |
+| `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, **v1.3 kalibriert** (2026-07-04) |
+| `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — **v1.3 kalibriert** (2026-07-04) |
+| `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, **v1.3 kalibriert** (2026-07-04) |
 | `data/itemliste_v7.xlsx` | Gesamt-Excel (alle Sheets/Kategorien inkl. Offhands + Kopf-/Körper-/Fußausrüstung + Typen-Referenz); JSONs sind die getrennte Coding-Datenbank |
 | `project.godot` | Godot-4.3-Projekt (main_scene: map_demo, Yggdrasil-Plugin aktiviert) |
 | `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
@@ -199,10 +208,11 @@ tactical RPG, HD pixel art style, no background, transparent
 | Rohschaden Fernkampf | GES×0,75 + STR×0,25 (alle Quellen summiert) |
 | Mana | Standard 100; Regen 10/Zug (INT 10 Standard); aktive Gravur-Skills kosten Mana; passive Gravuren reservieren Mana in der Homezone |
 | VIT/LP | 1 VIT = 6 LP (Faktor modellierbar) |
-| Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf Grundwerte. **Festgelegt:** nicht in weapons.json eingerechnet, sondern globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`); Infokarte zeigt Endwert + Bonus-Zeile |
+| Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf Grundwerte **+ Grundkapazität +1 bis Stahl / +2 ab Titan (entschieden 2026-07-04, in weapons.json v7.1 eingerechnet; Slots unverändert; Ziel: E+Offhand bleibt knapp vorn)**. **Festgelegt:** nicht in weapons.json eingerechnet, sondern globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`); Infokarte zeigt Endwert + Bonus-Zeile |
 | Offhands | Klasse+Typ wie Waffen, aber KEINE Waffen (Gimmicks). Genau 1 Hauptattribut, Eigenart fest = Identität, Gravuren modular. Gravur-Slots: bis Stahl 1, ab Titan 2. Daten: `data/offhands.json` (84 Einträge, 12 Typen). Affinitäten = Empfehlung, frei kombinierbar. Köcher & Buchrolle liegen im **Körper-Slot** (`koerperausruestung.json`), nicht als Offhand — funktionieren so auch mit Zweihandwaffen. **Bewusster Trade-off:** Zubehör und Körperrüstung teilen sich einen Slot (entweder/oder) |
 | Item-Namensregel | Reine Metallgegenstände: „`<Material> <Typ>`" (z. B. „Kupfer Buckler"). Nicht-Metall-Items (Pergament/Leder/Kristall/Holz) werden mit dem Seltenheits-Metall **beschlagen**/**bearbeitet**: „stahlbeschlagener Foliant", „kupferbearbeiteter Köcher". Adjektiv-Endung nach Genus (Nom.): m=-er, f=-e, n=-es. Steuerfelder pro Typ: `material_form` (pur\|beschlagen\|bearbeitet) + `genus` |
-| Rüstungs-Attributswerte | Zwei Tiers (Prim.-Wert pro Stufe 1–6, Stufe 7/Stellar offen=0): **Primärslot Körper** = `6,10,14,20,27,35`; **Sekundärslot Kopf/Füße** = `3,5,7,10,14,18` (bewusst weniger als Körper). Defensivwerte = Basis × Archetyp-Multiplikator (Kopf/Füße ~60 % des Körpers). Alles Platzhalter-Vorschlag |
+| Attributs-Split | **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) — Voll-Set (Körper+Kopf+Füße) auf ein Attribut = 47 auf Stufe 7. Bewusste Ausnahmen: WID-Offhands (Turmschild/Fester Gürtel) außerhalb des Budgets; Waffen-Sek-WID wird bei Stellar-Kalibrierung eingedampft (§5.3) |
+| Rüstungskalibrierung | **Final (2026-07-04, §5.3):** Prim-Tiers Körper `3,5,7,10,13,17,23` / Kopf+Füße `2,3,4,5,7,9,12` (auch Zubehör); Flat-Basis (Rüstung=Resistenz) Körper `2,3,4,5,6,8,10` / Kopf+Füße `1,2,2,3,4,5,6` × Archetyp-Multiplikator (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers; S6-Set = 32 Flat < Obergrenze ~50); VIT/LP `6…47` / `4…28`; **WID-Defensivzeile gestrichen** (WID nur über Prim + Skilltree); Kapazität = Stufe, Slots 1 bis Stahl / 2 ab Titan, Verfeinerung 1×/2×/3× |
 | Aggro/Threat | Threat nur durch Aktionen (`base×coeff×proximity`); Hysterese 110/130 %, Decay 5 %, Taunt-Lock 3 Züge, Guard 50/50. Präsenz-Aggro nur über Ausrüstungs-Auren (§5.2) |
 | Sichtsystem | Kein Fog of War. 3 Zustände: Offenbar / Unsichtbar / Scheinbar (≤2 Felder von Gegner aufgedeckt). Angriff/Zauber/Treffer → Offenbar (§5.2) |
 | Trefferchance | Kein genereller Trefferwurf — 100 % Basis. Fernkampf: Falloff **ist** die Trefferchance (−30 % Treffer & Schaden pro Feld außerhalb der Optimalzone, beide Richtungen); Max-Reichweite = harte Grenze (Feld nicht anwählbar). Ausweichen: Basis 0 %, nur aus expliziten Quellen (§5.2) |

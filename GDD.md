@@ -1227,7 +1227,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Phase 0 gilt als abgeschlossen, wenn:** *(Zuordnungs-Vorschlag — vom Nutzer zu bestätigen)*
 
 - [x] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet *(2026-07-03)*
-- [ ] Rüstungswerte Kopf/Körper/Füße kalibriert (Defensiv-/Prim.-Werte & Slot-Kapazitäten)
+- [ ] Rüstungswerte Kopf/Körper/Füße kalibriert — **Slot-Kapazitäten & Verfeinerung final** *(2026-07-04: Grundkapazität = Stufe, Slots 1 bis Stahl / 2 ab Titan, Max. Verfeinerung 1×/2×/3× ab Stahl — wie Waffen/Offhands)*; Defensiv-/Prim.-Werte offen (Vorschlag liegt vor, gekoppelt an Attributs-Split 2/5 Rüstung : 3/5 Skilltree)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
 - [ ] Waffensystem-Rest designt (Gravuren-Katalog, Crafting-Details, Aufwertung) — Gravurensystem-Rahmen steht (§5.7), Verfeinerung definiert
@@ -1257,7 +1257,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Offen — Balancing & Daten:**
 
-- [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte & Slot-Kapazitäten = Platzhalter)
+- [ ] Rüstungswerte Kopf/Körper/Füße kalibrieren (Defensiv-/Prim.-Werte = Platzhalter; Slot-Kapazitäten & Verfeinerung seit 2026-07-04 final)
 - [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter)
 - [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*
 

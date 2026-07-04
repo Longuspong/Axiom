@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.15  
+**Version:** 0.16  
 **Stand:** 2026-07-04  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -52,6 +52,7 @@
     - 10.2 [Speichersystem](#102-speichersystem)
     - 10.3 [Engine & Projektstruktur](#103-engine--projektstruktur)
     - 10.4 [Placeholder-Assets (MVP)](#104-placeholder-assets-mvp)
+    - 10.5 [Zielplattform & Plattform-Strategie](#105-zielplattform--plattform-strategie-entschieden-2026-07-04)
 11. [Offene Punkte & ToDos](#11-offene-punkte--todos)
 
 ---
@@ -1260,7 +1261,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - **Engine:** Godot 4
 - **Sprache:** GDScript
-- **Zielplattform:** *(folgt — vermutlich PC/Desktop)*
+- **Zielplattform:** PC/Steam primär, Android als geplanter Post-Release-Port — Details in **§10.5**
 - **Projektstruktur (angelegt):** `addons/` (Editor-Plugins, u. a. Yggdrasil-Skilltree-Editor), `assets/` (Grafiken, TileSets; `assets/placeholder/` für MVP-Assets), `data/` (Item-JSONs, Coding-Datenbank), `scenes/` (Szenen + zugehörige Scripts), `scripts/` (geteilte Scripts/Autoloads), `tools/` (Generator-/Hilfsskripte, Python), `docs/` (interne Doku)
 - **Audio:** AudioStreamPlayer + Audio Bus (nativ in Godot)
 
@@ -1308,6 +1309,24 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Placeholder-Sprite-Strategie (Charaktere, geplant):** Ein Grayscale-Sprite für alle Charaktertypen, Farb-Differenzierung über Godot `modulate` (Spieler Blau `Color(0.29, 0.56, 0.89)`, Gegner Rot `Color(0.89, 0.29, 0.29)`); Format 4 ISO-Richtungen (S/N/O/W) als 2×2-Sprite-Sheet. Tool der Wahl: Pixellab.ai (Prompt in CLAUDE.md hinterlegt).
 
+### 10.5 Zielplattform & Plattform-Strategie *(entschieden 2026-07-04)*
+
+**Primäre Zielplattform (Release):** **PC via Steam — Windows + Linux**, mit **Steam Deck** als explizitem Ziel (Steam-Deck-verified anstreben).
+
+- **Referenzauflösung:** 1920×1080 (16:9); UI muss auf **1280×800 / 7 Zoll** (Steam Deck, 16:10) lesbar bleiben → Mindest-Schriftgrößen, Item-Karten nicht zu textlastig; **Integer-Scaling** für die Pixel Art
+- **Input:** Maus/Tastatur first; **Controller als gleichwertiges Schema ab dem Godot-MVP** (Phase 1) — Grid-Cursor-Logik statt reiner Mauszeiger-Logik (bei Tile-Spiel ohnehin natürlich)
+- **macOS:** technisch mit Godot machbar (Signing/Notarization = Zusatzaufwand) — **später evaluieren**, kein Release-Ziel
+
+**Geplanter Post-Release-Port: Android.** Rundenbasiert + Grid passt gut zu Touch und das Genre hat dort eine große Zielgruppe — aber der Android-Markt ist zu ~95 % F2P, Premium-Titel verkaufen sich dort ohne bestehende PC-Reputation schlecht. Erfolgsmuster im Genre (Slay the Spire, XCOM & Co.): PC-first, Mobile-Port später mit Zugkraft des Namens. Kein Launch-Ziel, aber fest eingeplant.
+
+**Verbindliche Design-Regeln fürs Phase-1-UI** (halten den Android-Port billig, kosten jetzt fast nichts):
+
+1. **Input-Abstraktion dreistufig:** Maus / Controller / Touch als drei Consumer derselben Grid-Cursor-Logik (Controller wird für Steam Deck ohnehin gebaut; Touch ist danach der kleinste Schritt)
+2. **Keine Information nur hinter Hover:** jeder Tooltip/jede Detailinfo auch per Klick/Taste aufrufbar (lässt sich später kaum nachrüsten)
+3. **UI-Skalierungsfaktor von Anfang an** + flexibles Auflösungs-/Seitenverhältnis-Setup im Godot-Projekt (16:9 und 16:10 testen)
+
+**Ausdrücklich kein Ziel:** Konsolen (mit Godot nur über Porting-Partner wie W4 Games — frühestens nach Release evaluieren); Web-Export nur ggf. für Demos (in Godot 4.3 die schwächste Export-Säule). Das Speichersystem (encrypted JSON via `FileAccess`, §10.2) ist bereits plattformportabel. ✓
+
 ---
 
 ## 11. Offene Punkte & ToDos
@@ -1325,7 +1344,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
 - [ ] Waffensystem-Rest designt (Gravuren-Katalog, Crafting-Details, Aufwertung) — Gravurensystem-Rahmen steht (§5.7), Verfeinerung definiert
 - [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
-- [ ] Technische Specs vervollständigt (Zielplattform) — Projektstruktur ist angelegt (§10.3)
+- [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 
@@ -1376,7 +1395,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Offen — Technik:**
 
-- [ ] Technische Specs vervollständigen (Zielplattform) — Sprache (GDScript), Audio & Projektstruktur sind festgelegt (§10.3)
+- [x] Technische Specs vervollständigt *(2026-07-04)*: Zielplattform entschieden (§10.5 — PC/Steam + Steam Deck primär, Android-Port geplant); Sprache (GDScript), Audio & Projektstruktur waren bereits festgelegt (§10.3)
 - [x] Tileset-Specs definiert & Terrain-Tileset v1 umgesetzt (siehe §10.1, `docs/TILESET.md`) *(gerettet 2026-07-03)*
 - [ ] Sprite-Specs für Charaktere definieren (Auflösung, Größen, Palette) — Strategie in §10.4, Umsetzung via Pixellab.ai ausstehend
 - [ ] Tileset ausbauen: Klippen-Rampen, Winter-Biom, animiertes Wasser, Bergheim-Gebäude

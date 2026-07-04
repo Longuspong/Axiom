@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.15)
+## GDD-Stand (aktuell: v0.16)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -66,7 +66,7 @@ git push -u origin <feature-branch>
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
 | 9 | Hub — Bergheim | ✅ vollständig |
-| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Tileset-Specs ✅, Projektstruktur ✅, Placeholder-Assets (§10.4) ✅, Zielplattform fehlt |
+| 10 | Technische Spezifikationen | ✅ Art Style, GDScript, Plugins, Game Feel, Tileset-Specs, Projektstruktur, Placeholder-Assets (§10.4), Zielplattform (§10.5, 2026-07-04) |
 | 11 | Offene Punkte & ToDos | ✅ laufend gepflegt, inkl. Phasenplan & Phase-0-Abschlusskriterien |
 
 ---
@@ -80,6 +80,8 @@ Abgeschlossen in dieser Sitzung (2026-07-04 — **Stellar-Kalibrierung**, Phase-
 - **Sek-WID eingedampft** (Budget-Ausnahme aufgelöst, rückwirkend S1–7): **Jagdbogen & Langbogen Sek WID→STR** (Nutzer-Entscheidung: alle Bogenwaffen = GES/STR, Werte-Reihe unverändert); **Hammer** als einzige WID-Waffe auf Körper-Rüstungs-Tier **3/5/7/10/13/17/23** (statt 6…40), als `sek_wid_werte` hinterlegt
 - **Zepter → Zweihand (B)** (Nutzer-Entscheidung; GDD sagte schon B, Einträge standen auf E): alle 7 Stufen Hand=B, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/**11**
 - Excel-Altlast bereinigt: Stat-Skalierung-Sheet Zeile „Dolche"→„Stichwaffen"; Waffentypen-Sheet um Stellar-Eigenart-Spalten ergänzt; Kriegsgeräte-Sek als „typabhängig" + eigene WID-Zeile
+- **Zielplattform entschieden (GDD §10.5)**: **PC/Steam primär (Windows + Linux), Steam Deck als explizites Ziel** (verified anstreben); Referenz 1920×1080, UI lesbar auf 1280×800, Integer-Scaling; Controller gleichwertig ab Godot-MVP. **Android = fest geplanter Post-Release-Port** (Genre passt zu Touch, aber Markt ~95 % F2P → PC-first wie Genre-Vorbilder) mit 3 verbindlichen Phase-1-UI-Regeln: Input-Abstraktion Maus/Controller/Touch über eine Grid-Cursor-Logik, keine Info nur hinter Hover, UI-Skalierung + flexible Auflösung von Anfang an. Kein Ziel: Konsolen (nur via Porting-Partner, später), Web nur für Demos. **Phase-0-Punkt „Zielplattform" erledigt**
+- Draft-PR **#15** (`claude/next-steps-planning-9xa685`) — Stellar-Kalibrierung + Zielplattform, **wartet auf Merge durch den Nutzer**
 
 Frühere Sitzungen:
 - **Rüstungskalibrierung (2026-07-04, PR #14 gemergt — Phase-0-Punkt „Rüstung" erledigt):**
@@ -126,9 +128,9 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
 1. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
 2. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
-3. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+3. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
-> Vorab ggf.: **Stellar-PR mergen** (Stellar-Kalibrierung, Branch `claude/next-steps-planning-9xa685`, Stand dieser Sitzung). Damit sind von den Phase-0-Kriterien nur noch Gravuren-Katalog/Crafting, Skilltree-Struktur und Zielplattform offen.
+> Vorab: **PR #15 mergen** (Stellar-Kalibrierung + Zielplattform, Branch `claude/next-steps-planning-9xa685`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog/Crafting** und **Skilltree-Struktur** offen.
 
 ## Dateistruktur
 
@@ -236,3 +238,4 @@ tactical RPG, HD pixel art style, no background, transparent
 | Bogen-Sekundärattribut | **Alle Bogenwaffen GES (prim) / STR (sek)** (2026-07-04): Jagd- & Langbogen von WID auf STR umgestellt (Werte-Reihe unverändert) — passt zur Fernkampfformel GES×0,75 + STR×0,25 |
 | Waffen-Sek-WID | **Eingedampft (2026-07-04):** nur noch der Hammer trägt Sek-WID, Reihe = Körper-Rüstungs-Tier 3/5/7/10/13/17/23 (statt 6…40) — `sek_wid_werte` in weapons.json; Budget-Ausnahme aus §5.3 damit aufgelöst |
 | Zepter | **Zweihand (B), alle 7 Stufen** (2026-07-04): +35 %-Anzeige-Bonus greift, Grundkapazität 2/3/4/7/8/9/11 (Dateneinträge standen vorher fälschlich auf E; GDD sagte schon immer B) |
+| Zielplattform | **PC/Steam primär: Windows + Linux, Steam Deck explizit** (verified anstreben); Referenz 1080p, UI lesbar auf 1280×800, Integer-Scaling, Controller gleichwertig ab MVP. **Android = geplanter Post-Release-Port** mit 3 Pflicht-UI-Regeln (Input-Abstraktion Maus/Controller/Touch, keine Hover-only-Infos, UI-Skalierung von Anfang an). Konsolen/Web kein Ziel (§10.5) |

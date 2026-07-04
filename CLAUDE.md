@@ -78,8 +78,8 @@ Abgeschlossen in dieser Sitzung (2026-07-04 — Rüstungskalibrierung, Phase-0-P
 - **Attributsbudget-Prinzip entschieden (GDD §5.3)**: **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) → Voll-Set (Körper+Kopf+Füße) auf ein Attribut = **47 auf Stufe 7**
 - **Rüstung kalibriert (JSONs v1.3 + Excel, alle 147 Einträge inkl. Stufe 7)**: Prim-Tiers halbiert — Körper 3/5/7/10/13/17/**23**, Kopf/Füße 2/3/4/5/7/9/**12** (gilt auch für Zubehör); Flat-Basis Körper 2/3/4/5/6/8/**10**, Kopf/Füße 1/2/2/3/4/5/**6** (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers = §5.2-Beispiel; Voll-Platte S6 = 32 Flat, unter der Nutzer-Obergrenze ~50); VIT/LP unverändert + S7 = 47/28; **WID-Defensivzeile gestrichen** (Double-Dip mit Platte-Prim — WID nur noch über Prim-Wert + Skilltree), WID-Spalte auch aus der Excel entfernt
 - **Bewusste Budget-Ausnahmen dokumentiert (§5.3)**: WID-Offhands (Turmschild/Fester Gürtel) bleiben außerhalb des 2/5-Budgets (Trade-off); Waffen-Sek-WID (bis 40) wird bei der Stufe-7-Waffen-Kalibrierung eingedampft
-- **Zweihand-Grundkapazität**: Konzept vom Nutzer bejaht („mehr Kapazität, nicht mehr Slots"); konkrete Regel (Vorschlag: +1 bis Stahl / +2 ab Titan) noch zu bestätigen → §11
-- **Sitzungsproblem-Ursache gefunden**: GitHub-**Default-Branch** des Repos ist der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startet jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldet die main-History als „neu". **Fix (nur Nutzer kann das):** GitHub → Settings → General → Default branch → auf `main` umstellen; danach den Uralt-Branch löschen
+- **Zweihand-Grundkapazität entschieden & eingerechnet**: +1 bis Stahl / +2 ab Titan (mehr Kapazität, nicht mehr Slots) — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 + Excel; Stufe-7-B-Waffen folgen mit der Stellar-Kalibrierung. Altlast bereinigt: `slot_templates`-Klasse Dolche→Stichwaffen (JSON + Excel)
+- **Sitzungsproblem-Ursache gefunden**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Branch beim Fix-Versuch versehentlich per Stift-Symbol in **`Main`** (großes M!) **umbenannt** — der ist weiterhin Default und weiterhin v0.6. **Noch zu tun (nur Nutzer):** Settings → General → Default branch → **⇄-Knopf** (zwei Pfeile, NICHT Stift) → `main` (klein) auswählen; danach Branch `Main` löschen (macht Claude)
 - Draft-PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`)
 
 Frühere Sitzungen:
@@ -116,7 +116,7 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`) — dabei Sek-WID aufs 2/5-Budget eindampfen + Zweihand-Grundkapazität festlegen (Vorschlag +1 bis Stahl / +2 ab Titan liegt vor, §11)
+1. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`) — dabei Sek-WID aufs 2/5-Budget eindampfen + Zweihand-Kapazitätsbonus (+1/+2, Regel steht) auf die Stufe-7-B-Waffen anwenden
 2. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
 3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
 4. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
@@ -127,7 +127,7 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 | Datei | Inhalt |
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
-| `data/weapons.json` | Waffendaten (v7): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
+| `data/weapons.json` | Waffendaten (v7.1, **Zweihand-Kapazitätsbonus eingerechnet**): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
 | `data/offhands.json` | Offhand-Daten (v1.3, **kalibriert**): Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (3/5/7/10/14/18/24), **84 Einträge** (12 Typen × 7 Stufen, inkl. Stellar) |
 | `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, **v1.3 kalibriert** (2026-07-04) |
 | `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — **v1.3 kalibriert** (2026-07-04) |
@@ -207,7 +207,7 @@ tactical RPG, HD pixel art style, no background, transparent
 | Rohschaden Fernkampf | GES×0,75 + STR×0,25 (alle Quellen summiert) |
 | Mana | Standard 100; Regen 10/Zug (INT 10 Standard); aktive Gravur-Skills kosten Mana; passive Gravuren reservieren Mana in der Homezone |
 | VIT/LP | 1 VIT = 6 LP (Faktor modellierbar) |
-| Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf Grundwerte. **Festgelegt:** nicht in weapons.json eingerechnet, sondern globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`); Infokarte zeigt Endwert + Bonus-Zeile |
+| Einhand/Zweihand | Einhand (E): Offhand ODER Dualwield; Zweihand (B): kein Offhand, dafür +35 % auf Grundwerte **+ Grundkapazität +1 bis Stahl / +2 ab Titan (entschieden 2026-07-04, in weapons.json v7.1 eingerechnet; Slots unverändert; Ziel: E+Offhand bleibt knapp vorn)**. **Festgelegt:** nicht in weapons.json eingerechnet, sondern globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`); Infokarte zeigt Endwert + Bonus-Zeile |
 | Offhands | Klasse+Typ wie Waffen, aber KEINE Waffen (Gimmicks). Genau 1 Hauptattribut, Eigenart fest = Identität, Gravuren modular. Gravur-Slots: bis Stahl 1, ab Titan 2. Daten: `data/offhands.json` (84 Einträge, 12 Typen). Affinitäten = Empfehlung, frei kombinierbar. Köcher & Buchrolle liegen im **Körper-Slot** (`koerperausruestung.json`), nicht als Offhand — funktionieren so auch mit Zweihandwaffen. **Bewusster Trade-off:** Zubehör und Körperrüstung teilen sich einen Slot (entweder/oder) |
 | Item-Namensregel | Reine Metallgegenstände: „`<Material> <Typ>`" (z. B. „Kupfer Buckler"). Nicht-Metall-Items (Pergament/Leder/Kristall/Holz) werden mit dem Seltenheits-Metall **beschlagen**/**bearbeitet**: „stahlbeschlagener Foliant", „kupferbearbeiteter Köcher". Adjektiv-Endung nach Genus (Nom.): m=-er, f=-e, n=-es. Steuerfelder pro Typ: `material_form` (pur\|beschlagen\|bearbeitet) + `genus` |
 | Attributs-Split | **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) — Voll-Set (Körper+Kopf+Füße) auf ein Attribut = 47 auf Stufe 7. Bewusste Ausnahmen: WID-Offhands (Turmschild/Fester Gürtel) außerhalb des Budgets; Waffen-Sek-WID wird bei Stellar-Kalibrierung eingedampft (§5.3) |

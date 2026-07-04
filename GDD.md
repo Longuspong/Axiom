@@ -794,9 +794,10 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | Waffentyp | Zweite Hand | Ausgleich |
 |-----------|-------------|-----------|
 | **Einhand (E)** | Offhand **oder** zweite Einhandwaffe (Dualwielding) | — |
-| **Zweihand (B)** | belegt, kein Offhand | **+35 % auf die Grundwerte** der Waffe |
+| **Zweihand (B)** | belegt, kein Offhand | **+35 % auf die Grundwerte** + **Grundkapazität +1 (bis Stahl) / +2 (ab Titan)** |
 
 - **Zweihand-Ausgleich:** Da Zweihänder kein Offhand führen können, erhalten sie **+35 %** auf ihre Grundwerte (Prim./Sek. Wert).
+- **Zweihand-Kapazitätsbonus** *(entschieden 2026-07-04)*: zusätzlich **+1 Grundkapazität bis Stufe 3 (Stahl), +2 ab Stufe 4 (Titan)** — mehr Kapazität, **nicht** mehr Slots. Ziel-Balance: Einhand allein < Zweihand < Einhand+Offhand (E+O bleibt bewusst „ein kleines bisschen" vorn — das Offhand bringt Kapazität = Stufe, eigene Slots und die Eigenart). Anders als der %-Bonus **direkt in die B-Einträge** von `data/weapons.json` eingerechnet (dokumentiert in `meta.zweihand_kapazitaet_bonus`; `slot_templates` bleiben die Einhand-Basis). Stufe-7-B-Waffen erhalten den Bonus mit der Stellar-Kalibrierung.
 - **Implementierung (festgelegt):** Die Werte in `data/weapons.json` bleiben **echte Grundwerte**; der +35 %-Aufschlag wird **nicht eingerechnet**, sondern **beim Ausrüsten/Anzeigen** als globaler, an einer Stelle tunebarer Faktor (`meta.zweihand_grundwert_bonus`) aufgeschlagen.
   - **Informationskarte:** zeigt für Zweihänder den **fertigen Endwert** und den Bonus als eigene Zeile — z. B. *„Schaden 27 (Grundwert 20 +35 % Zweihand)"*. So bleibt die Datenquelle ehrlich und der Bonus für den Spieler sichtbar.
   - **Begründung:** Die Waffenwerte werden zentral aus `stat_skalierung` abgeleitet (Balancing-Tabelle). Ein eingerechneter Bonus würde beim nächsten Balancing-Pass überschrieben oder mit der Klassen-Flavor-Differenz vermischt; ein globaler Faktor bleibt sauber und an einer Stelle änderbar.
@@ -1263,7 +1264,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [x] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet *(2026-07-03)*
 - [x] Rüstungswerte Kopf/Körper/Füße kalibriert *(2026-07-04)*: Slot-Kapazitäten & Verfeinerung final (Grundkapazität = Stufe, Slots 1/2, Verfeinerung 1×/2×/3×); Prim-Tiers Körper 3/5/7/10/13/17/23 + Kopf/Füße 2/3/4/5/7/9/12 (2/5-Rüstung-zu-3/5-Skilltree-Budget); Flat-Basis Körper 2/3/4/5/6/8/10 + Kopf/Füße 1/2/2/3/4/5/6; WID-Defensivzeile gestrichen; Stufe 7 befüllt (§5.3)
-- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet — dabei: Sekundär-WID-Werte der Waffen aufs 2/5-Budget eindampfen (§5.3) und Zweihand-Grundkapazität festlegen (Vorschlag: +1 bis Stahl / +2 ab Titan, Slots unverändert — Konzept vom Nutzer bejaht, konkrete Regel zu bestätigen)
+- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet — dabei: Sekundär-WID-Werte der Waffen aufs 2/5-Budget eindampfen (§5.3) und den Zweihand-Kapazitätsbonus auf die Stufe-7-B-Waffen anwenden (Regel **+1 bis Stahl / +2 ab Titan** entschieden 2026-07-04, Stufe 1–6 bereits eingerechnet)
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
 - [ ] Waffensystem-Rest designt (Gravuren-Katalog, Crafting-Details, Aufwertung) — Gravurensystem-Rahmen steht (§5.7), Verfeinerung definiert
 - [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
@@ -1293,7 +1294,8 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Balancing & Daten:**
 
 - [x] Rüstungswerte Kopf/Körper/Füße kalibrieren *(2026-07-04, §5.3 — JSONs v1.3 + Excel aktualisiert)*
-- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter) — inkl. Sek-WID-Eindampfung + Zweihand-Kapazitätsregel (s. o.)
+- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter) — inkl. Sek-WID-Eindampfung + Zweihand-Kapazitätsbonus für Stufe-7-B-Waffen (Regel steht, §5.3)
+- [x] Zweihand-Grundkapazität entschieden & eingerechnet *(2026-07-04)*: +1 bis Stahl / +2 ab Titan, Slots unverändert — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 (+ Excel); dabei Altlast bereinigt: `slot_templates`-Klasse „Dolche" → „Stichwaffen"
 - [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*
 
 **Offen — Systeme:**

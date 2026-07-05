@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.14)
+## GDD-Stand (aktuell: v0.16)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -61,28 +61,38 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, restl. Waffen/Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, restl. Waffensystem (Gravuren-Katalog/Crafting) + Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
 | 9 | Hub — Bergheim | ✅ vollständig |
-| 10 | Technische Spezifikationen | ⚠️ Art Style ✅, GDScript ✅, Plugins ✅, Game Feel ✅, Tileset-Specs ✅, Projektstruktur ✅, Placeholder-Assets (§10.4) ✅, Zielplattform fehlt |
+| 10 | Technische Spezifikationen | ✅ Art Style, GDScript, Plugins, Game Feel, Tileset-Specs, Projektstruktur, Placeholder-Assets (§10.4), Zielplattform (§10.5, 2026-07-04) |
 | 11 | Offene Punkte & ToDos | ✅ laufend gepflegt, inkl. Phasenplan & Phase-0-Abschlusskriterien |
 
 ---
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-04 — Rüstungskalibrierung, Phase-0-Punkt „Rüstung" erledigt):
-- **Slot-Kapazitäten & Verfeinerung final**: Max. Verfeinerung in allen drei Rüstungs-JSONs war versehentlich `= Stufe` (bis 7×) → korrigiert auf **1× Kupfer / 2× Eisen / 3× ab Stahl** (wie Waffen/Offhands, 84 Einträge inkl. Zubehör); Grundkapazität = Stufe + Slots 1 bis Stahl / 2 ab Titan vom Nutzer bestätigt
-- **Attributsbudget-Prinzip entschieden (GDD §5.3)**: **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) → Voll-Set (Körper+Kopf+Füße) auf ein Attribut = **47 auf Stufe 7**
-- **Rüstung kalibriert (JSONs v1.3 + Excel, alle 147 Einträge inkl. Stufe 7)**: Prim-Tiers halbiert — Körper 3/5/7/10/13/17/**23**, Kopf/Füße 2/3/4/5/7/9/**12** (gilt auch für Zubehör); Flat-Basis Körper 2/3/4/5/6/8/**10**, Kopf/Füße 1/2/2/3/4/5/**6** (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers = §5.2-Beispiel; Voll-Platte S6 = 32 Flat, unter der Nutzer-Obergrenze ~50); VIT/LP unverändert + S7 = 47/28; **WID-Defensivzeile gestrichen** (Double-Dip mit Platte-Prim — WID nur noch über Prim-Wert + Skilltree), WID-Spalte auch aus der Excel entfernt
-- **Bewusste Budget-Ausnahmen dokumentiert (§5.3)**: WID-Offhands (Turmschild/Fester Gürtel) bleiben außerhalb des 2/5-Budgets (Trade-off); Waffen-Sek-WID (bis 40) wird bei der Stufe-7-Waffen-Kalibrierung eingedampft
-- **Zweihand-Grundkapazität entschieden & eingerechnet**: +1 bis Stahl / +2 ab Titan (mehr Kapazität, nicht mehr Slots) — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 + Excel; Stufe-7-B-Waffen folgen mit der Stellar-Kalibrierung. Altlast bereinigt: `slot_templates`-Klasse Dolche→Stichwaffen (JSON + Excel)
-- **Sitzungsproblem GELÖST**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Default-Branch auf **`main`** umgestellt und den beim ersten Fix-Versuch versehentlich entstandenen Umbenennungs-Rest `Main` (großes M, v0.6) gelöscht. **Neue Sitzungen starten ab jetzt auf dem aktuellen Stand.**
-- Draft-PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`) — enthält die komplette Sitzung, **wartet auf Merge durch den Nutzer**
+Abgeschlossen in dieser Sitzung (2026-07-04 — **Stellar-Kalibrierung**, Phase-0-Punkt „Stufe-7-Waffen" erledigt):
+- **Stufe-7-Waffen (Stellar) kalibriert** (`weapons.json` **v8** + Excel, GDD §5.3 „Waffensystem — Stellar-Stufe"): Prim-Reihen fortgeschrieben ~×1,35 (62→**84**, 74→**100**, 52→**70**; Sek analog 38→52, 28→38, 40→54, 52→70); Slots = 5 wie Diamant, **Grundkapazität +2 über Diamant** (Basis 9/11/12 je Klassengruppe — der Stellar-Unlock für L4/L5-Signatur-Gravuren), Verfeinerung 3×; Verkauf 1000, kein Kaufpreis (nur Loot/Craft)
+- **Stellar-Eigenarten ✦**: Typ-Eigenart bleibt, verstärkt (z. B. Frontmann +15→25 %, Dopplereffekt 2×65→2×80 %, Kriegsarmbrust 50→75 % RD; volle Tabelle §5.3); in `waffentypen` als `stellar_eigenart`/`stellar_eigenart_effekt`, Zahlen Balancing-Vorbehalt
+- **Lichtresonanz** (verstecktes Story-Flag): alle S7-Waffen tragen `Lichtresonanz: true` — Stellar-Licht durchdringt die Schattenrüstung der Endfraktion; NICHT auf der Item-Karte, Interaktionsregel folgt beim Story-/Endfraktions-Design (Phase 1); Erklärung in `meta.lichtresonanz`
+- **Sek-WID eingedampft** (Budget-Ausnahme aufgelöst, rückwirkend S1–7): **Jagdbogen & Langbogen Sek WID→STR** (Nutzer-Entscheidung: alle Bogenwaffen = GES/STR, Werte-Reihe unverändert); **Hammer** als einzige WID-Waffe auf Körper-Rüstungs-Tier **3/5/7/10/13/17/23** (statt 6…40), als `sek_wid_werte` hinterlegt
+- **Zepter → Zweihand (B)** (Nutzer-Entscheidung; GDD sagte schon B, Einträge standen auf E): alle 7 Stufen Hand=B, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/**11**
+- Excel-Altlast bereinigt: Stat-Skalierung-Sheet Zeile „Dolche"→„Stichwaffen"; Waffentypen-Sheet um Stellar-Eigenart-Spalten ergänzt; Kriegsgeräte-Sek als „typabhängig" + eigene WID-Zeile
+- **Zielplattform entschieden (GDD §10.5)**: **PC/Steam primär (Windows + Linux), Steam Deck als explizites Ziel** (verified anstreben); Referenz 1920×1080, UI lesbar auf 1280×800, Integer-Scaling; Controller gleichwertig ab Godot-MVP. **Android = fest geplanter Post-Release-Port** (Genre passt zu Touch, aber Markt ~95 % F2P → PC-first wie Genre-Vorbilder) mit 3 verbindlichen Phase-1-UI-Regeln: Input-Abstraktion Maus/Controller/Touch über eine Grid-Cursor-Logik, keine Info nur hinter Hover, UI-Skalierung + flexible Auflösung von Anfang an. Kein Ziel: Konsolen (nur via Porting-Partner, später), Web nur für Demos. **Phase-0-Punkt „Zielplattform" erledigt**
+- Draft-PR **#15** (`claude/next-steps-planning-9xa685`) — Stellar-Kalibrierung + Zielplattform, **wartet auf Merge durch den Nutzer**
 
 Frühere Sitzungen:
+- **Rüstungskalibrierung (2026-07-04, PR #14 gemergt — Phase-0-Punkt „Rüstung" erledigt):**
+  - **Slot-Kapazitäten & Verfeinerung final**: Max. Verfeinerung in allen drei Rüstungs-JSONs war versehentlich `= Stufe` (bis 7×) → korrigiert auf **1× Kupfer / 2× Eisen / 3× ab Stahl** (wie Waffen/Offhands, 84 Einträge inkl. Zubehör); Grundkapazität = Stufe + Slots 1 bis Stahl / 2 ab Titan vom Nutzer bestätigt
+  - **Attributsbudget-Prinzip entschieden (GDD §5.3)**: **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) → Voll-Set (Körper+Kopf+Füße) auf ein Attribut = **47 auf Stufe 7**
+  - **Rüstung kalibriert (JSONs v1.3 + Excel, alle 147 Einträge inkl. Stufe 7)**: Prim-Tiers halbiert — Körper 3/5/7/10/13/17/**23**, Kopf/Füße 2/3/4/5/7/9/**12** (gilt auch für Zubehör); Flat-Basis Körper 2/3/4/5/6/8/**10**, Kopf/Füße 1/2/2/3/4/5/**6** (Anker: Voll-Platte ≈ 25 % eines gleichstufigen Einzeltreffers = §5.2-Beispiel; Voll-Platte S6 = 32 Flat, unter der Nutzer-Obergrenze ~50); VIT/LP unverändert + S7 = 47/28; **WID-Defensivzeile gestrichen** (Double-Dip mit Platte-Prim — WID nur noch über Prim-Wert + Skilltree), WID-Spalte auch aus der Excel entfernt
+  - **Bewusste Budget-Ausnahmen dokumentiert (§5.3)**: WID-Offhands (Turmschild/Fester Gürtel) bleiben außerhalb des 2/5-Budgets (Trade-off); Waffen-Sek-WID (bis 40) wird bei der Stufe-7-Waffen-Kalibrierung eingedampft
+  - **Zweihand-Grundkapazität entschieden & eingerechnet**: +1 bis Stahl / +2 ab Titan (mehr Kapazität, nicht mehr Slots) — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 + Excel; Stufe-7-B-Waffen folgen mit der Stellar-Kalibrierung. Altlast bereinigt: `slot_templates`-Klasse Dolche→Stichwaffen (JSON + Excel)
+  - **Sitzungsproblem GELÖST**: GitHub-**Default-Branch** des Repos war der Uralt-Branch `claude/repo-access-permissions-l4kamm` (GDD-v0.6-Stand) — deshalb startete jede neue Claude-Code-Sitzung veraltet und der Stop-Hook meldete die main-History als „neu". Nutzer hat den Default-Branch auf **`main`** umgestellt und den beim ersten Fix-Versuch versehentlich entstandenen Umbenennungs-Rest `Main` (großes M, v0.6) gelöscht. **Neue Sitzungen starten ab jetzt auf dem aktuellen Stand.**
+  - PR **#14** (`claude/phase-0-armor-calibration-2tyhyf`) — **gemergt** (2026-07-04)
+
 - **Phase-0-Abschlussplan, Excel v7 & Rettung gestrandeter Branches (2026-07-03):**
   - **Gravur-Kostenmodell entschieden (GDD §5.7)**: Kapazitätskosten **rein Level-basiert** (L1=2, L2=4, L3=6, L4=8, L5=10; L4/L5 nur Spezial), passender typisierter Slot halbiert, Flex/unpassender Slot = volle Kosten. Typ-Basiskosten gestrichen, `[prüfen]`-Marker aufgelöst, Beispiele korrigiert. Nutzer-Klarstellung als Beispiel ergänzt: Kapazität 1 + Aktiv-Slot → nur Aktiv-Gravur L1 passt (2→1)
   - **Offhands kalibriert (GDD §5.3, `offhands.json` v1.3)**: Prim.-Wert **3/5/7/10/14/18/24** = Sekundärslot-Tier ≈ 50 % des Zweihand-Äquivalents (Ø 0,35×(Prim+Sek) über alle Waffenklassen = 5/8/12/18/25/35) — Mehrwert liegt in Eigenart + Slots. Grundkapazität = Stufe (1–7), Max. Verfeinerung 1×/2×/3×+ analog Waffen. Stufe-7-Offhands damit ausgearbeitet; alle 84 Einträge + Excel-Sheet aktualisiert. **Phase-0-Punkt 1 erledigt**
@@ -116,19 +126,18 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Stufe-7 (Stellar) Waffenwerte** ausarbeiten (aktuell Platzhalter `0`) — dabei Sek-WID aufs 2/5-Budget eindampfen + Zweihand-Kapazitätsbonus (+1/+2, Regel steht) auf die Stufe-7-B-Waffen anwenden
-2. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
-3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
-4. **Techn. Rest:** Zielplattform festlegen; Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+1. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
+2. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
+3. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
-> Vorab ggf.: **PR #14 mergen** (Rüstungskalibrierung + Zweihand-Kapazität, Stand dieser Sitzung). Repo-Fix (Default-Branch → `main`) ist erledigt (2026-07-04).
+> Vorab: **PR #15 mergen** (Stellar-Kalibrierung + Zielplattform, Branch `claude/next-steps-planning-9xa685`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog/Crafting** und **Skilltree-Struktur** offen.
 
 ## Dateistruktur
 
 | Datei | Inhalt |
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
-| `data/weapons.json` | Waffendaten (v7.1, **Zweihand-Kapazitätsbonus eingerechnet**): Seltenheitsstufen, Klassen, Typen+Eigenarten, Stat-Skalierung, Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max` |
+| `data/weapons.json` | Waffendaten (**v8, vollständig kalibriert inkl. Stufe 7/Stellar**): Seltenheitsstufen, Klassen, Typen+Eigenarten (inkl. `stellar_eigenart`/`stellar_eigenart_effekt`), Stat-Skalierung (S7 befüllt, `sek_wid_werte` für Hammer), Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen, S7 mit `Lichtresonanz: true`), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max`, alle Bögen GES/STR, Zepter = B |
 | `data/offhands.json` | Offhand-Daten (v1.3, **kalibriert**): Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (3/5/7/10/14/18/24), **84 Einträge** (12 Typen × 7 Stufen, inkl. Stellar) |
 | `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, **v1.3 kalibriert** (2026-07-04) |
 | `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — **v1.3 kalibriert** (2026-07-04) |
@@ -225,3 +234,8 @@ tactical RPG, HD pixel art style, no background, transparent
 | Bogen-Reichweite (Daten) | Bogenwaffen in weapons.json mit Feldern `Reichweite optimal` (z. B. „3–4") + `Reichweite max` (z. B. 5); Anzeige-Notation `3–4/5` daraus abgeleitet |
 | Gravur-Kosten | Kapazitätskosten **rein Level-basiert**: L1=2, L2=4, L3=6, L4=8, L5=10 (L4/L5 nur Spezial/Signatur). Passender typisierter Slot halbiert; Flex/unpassender Slot = volle Kosten. Kein Typ-Basiskosten-Faktor (§5.7) |
 | Offhand-Werte | **Kalibriert:** Prim.-Wert 3/5/7/10/14/18/24 (= Sekundärslot-Tier, ≈ 50 % des Zweihand-Äquivalents), Grundkapazität = Stufe (1–7), Max. Verfeinerung 1×/2×/3× (Stahl+ = 3×), Slots 1 bis Stahl / 2 ab Titan (§5.3) |
+| Stellar-Waffen (S7) | **Kalibriert (2026-07-04, §5.3 „Stellar-Stufe"):** Prim 84 (62er-Reihe) / 100 (Kampfaxt) / 70 (52er-Reihe), Sek analog (52/38/54/70); 5 Slots wie Diamant, **Grundkapazität +2 über Diamant** (Basis 9/11/12 je Klassengruppe = Unlock für L4/L5-Signatur-Gravuren), B-Waffen nochmal +2; Verfeinerung 3×; **Stellar-Eigenart ✦** = verstärkte Typ-Eigenart (Tabelle §5.3); verstecktes Flag `Lichtresonanz: true` — durchdringt Schattenrüstung der Endfraktion, nicht auf Item-Karte, Regel folgt beim Story-Design (Phase 1); kein Kaufpreis (nur Loot/Craft), Verkauf 1000 |
+| Bogen-Sekundärattribut | **Alle Bogenwaffen GES (prim) / STR (sek)** (2026-07-04): Jagd- & Langbogen von WID auf STR umgestellt (Werte-Reihe unverändert) — passt zur Fernkampfformel GES×0,75 + STR×0,25 |
+| Waffen-Sek-WID | **Eingedampft (2026-07-04):** nur noch der Hammer trägt Sek-WID, Reihe = Körper-Rüstungs-Tier 3/5/7/10/13/17/23 (statt 6…40) — `sek_wid_werte` in weapons.json; Budget-Ausnahme aus §5.3 damit aufgelöst |
+| Zepter | **Zweihand (B), alle 7 Stufen** (2026-07-04): +35 %-Anzeige-Bonus greift, Grundkapazität 2/3/4/7/8/9/11 (Dateneinträge standen vorher fälschlich auf E; GDD sagte schon immer B) |
+| Zielplattform | **PC/Steam primär: Windows + Linux, Steam Deck explizit** (verified anstreben); Referenz 1080p, UI lesbar auf 1280×800, Integer-Scaling, Controller gleichwertig ab MVP. **Android = geplanter Post-Release-Port** mit 3 Pflicht-UI-Regeln (Input-Abstraktion Maus/Controller/Touch, keine Hover-only-Infos, UI-Skalierung von Anfang an). Konsolen/Web kein Ziel (§10.5) |

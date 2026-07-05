@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.14  
+**Version:** 0.16  
 **Stand:** 2026-07-04  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -52,6 +52,7 @@
     - 10.2 [Speichersystem](#102-speichersystem)
     - 10.3 [Engine & Projektstruktur](#103-engine--projektstruktur)
     - 10.4 [Placeholder-Assets (MVP)](#104-placeholder-assets-mvp)
+    - 10.5 [Zielplattform & Plattform-Strategie](#105-zielplattform--plattform-strategie-entschieden-2026-07-04)
 11. [Offene Punkte & ToDos](#11-offene-punkte--todos)
 
 ---
@@ -742,6 +743,63 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 | Zauberwaffen | Zauberstab | E | Wendig | **Energiefaser** | Erhält die Einheit **zwei Züge lang keinen Schaden**, entsteht ein **Energieschild (Schutz)** in Höhe des **maximalen Mana-Pools**. |
 | Zauberwaffen | Energiesphäre | E | Wendig | **Segnung** | Heilungen dieser Einheit wirken zu **Beginn des nächsten Zuges erneut**, aber nur zu **20 % des ursprünglichen Wertes**. |
 
+> **Sekundärattribut-Umstellung Bogenwaffen** *(Nutzer-Entscheidung 2026-07-04)*: Jagdbogen & Langbogen tragen als Sekundärattribut **STR statt WID** — damit sind **alle Bogenwaffen GES (prim) / STR (sek)**, passend zur Fernkampf-Rohschadensformel (GES×0,75 + STR×0,25). Die Werte-Reihe blieb unverändert. Waffen-Sek-WID existiert nur noch beim Hammer (eingedampft, s. u.).  
+> **Zepter → Zweihand** *(2026-07-04)*: Das Zepter ist **beidhändig (B)** — die Dateneinträge in `data/weapons.json` (vorher fälschlich E) wurden angeglichen: +35 %-Anzeige-Bonus greift, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/11.
+
+---
+
+#### Waffensystem — Stellar-Stufe (Stufe 7) *(kalibriert 2026-07-04)*
+
+Stellar-Waffen sind die **Legendaries**: Endgame-Waffen mit verstärkter Typ-Eigenart, mehr Kapazität und Attributswerten als Diamant — und einem versteckten Story-Zweck. Optisch stechen sie deutlich hervor (Partikel-/Shader-Effekte in Godot, macht der Nutzer später selbst).
+
+**Attributswerte Stufe 7** — Fortschreibung der bestehenden Reihen (~×1,35, analog Rüstung 17→23):
+
+| Reihe (S1–S6) | S7 Stellar | betrifft |
+|---|---|---|
+| 10/15/22/32/45/62 | **84** | Prim: Breitschwert, Falchion, Hammer, Rammbock, Zepter, alle Bogenwaffen, Zauberstab, Energiesphäre |
+| 12/18/26/38/54/74 | **100** | Prim: Kampfaxt |
+| 8/12/18/26/38/52 | **70** | Prim: Pike, Dolchpaar, Rapier, Stilett; Sek: Stichwaffen & Zauberwaffen |
+| 6/9/14/20/28/40 | **54** | Sek: Rammbock (VIT), Zepter (INT), Pike (STR) |
+| 5/8/12/18/26/38 | **52** | Sek: Schwerter (GES) |
+| 4/6/9/14/20/28 | **38** | Sek: Kampfaxt (VIT), alle Bogenwaffen (STR) |
+
+**Sek-WID-Eindampfung** *(rückwirkend Stufe 1–7, löst die Budget-Ausnahme unten auf)*: Nach der Bogen-Umstellung trägt nur noch der **Hammer** Sek-WID. Seine WID-Reihe wurde von 6…40 auf den **Körper-Rüstungs-Prim-Tier 3/5/7/10/13/17/23** eingedampft — eine Waffe gibt damit maximal so viel WID wie ein Körper-Rüstungsteil (2/5-Budget-konform). In `data/weapons.json` als `sek_wid_werte` unter Kriegsgeräte hinterlegt.
+
+**Slots & Kapazität**: 5 Slots wie Diamant (Aktiv/Passiv/Reaktiv/Mod./Spezial), aber **Grundkapazität +2 über Diamant** — das ist der eigentliche Stellar-Unlock: Erst damit werden **L4/L5-Signatur-Gravuren** (Kosten 8/10, im passenden Slot 4/5, §5.7) realistisch spielbar. Max. Verfeinerung 3×. Zweihänder erhalten regelkonform nochmal +2:
+
+| Basis-Kapazität S7 | E-Waffe | B-Waffe (+2) |
+|---|---|---|
+| Schwerter / Äxte / Kriegsgeräte / Stabwaffen: **9** | Breitschwert, Falchion, Hammer, Pike: 9 | Kampfaxt, Rammbock, Zepter: 11 |
+| Stichwaffen / Bogenwaffen: **11** | Rapier, Stilett, Repetierarmbrust: 11 | Dolchpaar, Jagdbogen, Langbogen, Kriegsarmbrust: 13 |
+| Zauberwaffen: **12** | Zauberstab, Energiesphäre: 12 | — |
+
+→ E+Offhand bleibt vorn (z. B. Rapier 11 + Offhand 7 = 18 vs. Dolchpaar 13). ✓
+
+**Stellar-Eigenarten ✦** — die Typ-Eigenart bleibt, wird aber verstärkt (Kennzeichnung „✦"; Zahlenwerte Balancing-Vorbehalt):
+
+| Typ | Basis-Effekt | Stellar-Effekt ✦ |
+|---|---|---|
+| Breitschwert | +15 % Rohschaden frontal | **+25 %** |
+| Falchion | Opfer-Mal: +20 % Schaden / 20 % Blutung | **+30 % / 30 %** |
+| Kampfaxt | Nachbarn +30 % Zusatzschaden | **+50 %** |
+| Hammer | Ziel −1 MOB | **−2 MOB** |
+| Rammbock | Push 1 Feld; Kollision 10 % max-LP + Straucheln | **Push 2 Felder; 15 % max-LP** |
+| Zepter | 20 % Schaden als Mana zurück | **35 %** |
+| Pike | Nach Treffer 2 Felder Gratis-Bewegung | **3 Felder** |
+| Dolchpaar | 2 Stiche à 65 % | **2 × 80 %** |
+| Rapier | Parieren triggert Gegenschlag; +20 % Parieren | **+35 % Parieren** |
+| Stilett | Backstab: immer Blutung, +50 % Schaden | **+80 % Schaden** |
+| Jagdbogen | Deckt Unsichtbare in MOB-Reichweite auf | **MOB + 2 Felder** |
+| Repetierarmbrust | Pause-Zug → nächster Schuss +50 % | **+75 %** |
+| Langbogen | Stand-Zug → +30 % Schaden | **+50 %** |
+| Kriegsarmbrust | 50 % RD | **75 % RD** |
+| Zauberstab | 2 Züge ohne Schadenstreffer → Schutz = max. Mana | **schon nach 1 Zug** |
+| Energiesphäre | Nachheilung 20 % im Folgezug | **35 %** |
+
+**Lichtresonanz** *(verstecktes Story-Flag)*: Alle Stellar-Waffen tragen in `data/weapons.json` das unsichtbare Feld `Lichtresonanz: true` — Stellar-Licht durchdringt die **Schattenrüstung/Schattenschilde der Endfraktion**. Erscheint **nicht** auf der Item-Karte und ist kein Attribut; die konkrete Interaktionsregel wird beim Endfraktions-/Story-Design definiert und in der Story erklärt (Phase 1).
+
+**Preise**: Kaufpreis — (nicht im Handel, nur Loot/Craft), Verkaufspreis 1000 Barren (Seltenheitstabelle).
+
 ---
 
 #### Waffensystem — Fernkampfwaffen: Bögen (drei Distanzprofile)
@@ -797,7 +855,7 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | **Zweihand (B)** | belegt, kein Offhand | **+35 % auf die Grundwerte** + **Grundkapazität +1 (bis Stahl) / +2 (ab Titan)** |
 
 - **Zweihand-Ausgleich:** Da Zweihänder kein Offhand führen können, erhalten sie **+35 %** auf ihre Grundwerte (Prim./Sek. Wert).
-- **Zweihand-Kapazitätsbonus** *(entschieden 2026-07-04)*: zusätzlich **+1 Grundkapazität bis Stufe 3 (Stahl), +2 ab Stufe 4 (Titan)** — mehr Kapazität, **nicht** mehr Slots. Ziel-Balance: Einhand allein < Zweihand < Einhand+Offhand (E+O bleibt bewusst „ein kleines bisschen" vorn — das Offhand bringt Kapazität = Stufe, eigene Slots und die Eigenart). Anders als der %-Bonus **direkt in die B-Einträge** von `data/weapons.json` eingerechnet (dokumentiert in `meta.zweihand_kapazitaet_bonus`; `slot_templates` bleiben die Einhand-Basis). Stufe-7-B-Waffen erhalten den Bonus mit der Stellar-Kalibrierung.
+- **Zweihand-Kapazitätsbonus** *(entschieden 2026-07-04)*: zusätzlich **+1 Grundkapazität bis Stufe 3 (Stahl), +2 ab Stufe 4 (Titan)** — mehr Kapazität, **nicht** mehr Slots. Ziel-Balance: Einhand allein < Zweihand < Einhand+Offhand (E+O bleibt bewusst „ein kleines bisschen" vorn — das Offhand bringt Kapazität = Stufe, eigene Slots und die Eigenart). Anders als der %-Bonus **direkt in die B-Einträge** von `data/weapons.json` eingerechnet (dokumentiert in `meta.zweihand_kapazitaet_bonus`; `slot_templates` bleiben die Einhand-Basis). Seit der Stellar-Kalibrierung *(2026-07-04)* in allen Stufen 1–7 eingerechnet.
 - **Implementierung (festgelegt):** Die Werte in `data/weapons.json` bleiben **echte Grundwerte**; der +35 %-Aufschlag wird **nicht eingerechnet**, sondern **beim Ausrüsten/Anzeigen** als globaler, an einer Stelle tunebarer Faktor (`meta.zweihand_grundwert_bonus`) aufgeschlagen.
   - **Informationskarte:** zeigt für Zweihänder den **fertigen Endwert** und den Bonus als eigene Zeile — z. B. *„Schaden 27 (Grundwert 20 +35 % Zweihand)"*. So bleibt die Datenquelle ehrlich und der Bonus für den Spieler sichtbar.
   - **Begründung:** Die Waffenwerte werden zentral aus `stat_skalierung` abgeleitet (Balancing-Tabelle). Ein eingerechneter Bonus würde beim nächsten Balancing-Pass überschrieben oder mit der Klassen-Flavor-Differenz vermischt; ein globaler Faktor bleibt sauber und an einer Stelle änderbar.
@@ -869,7 +927,7 @@ Attribute kommen zu **2/5 aus der Rüstung** (Körper+Kopf+Füße zusammen) und 
 
 **Bewusste Budget-Ausnahmen** *(dokumentiert, Prüfung in Phase 1)*:
 - **WID-Offhands** (Turmschild, Fester Gürtel: Prim bis 24) liegen außerhalb des 2/5-Budgets — wer sie wählt, verzichtet dafür auf Dualwield/Fokus-Offhands. Bewusster Trade-off.
-- **Waffen-Sekundär-WID** (z. B. Kriegsgeräte: Sek-WID bis 40 auf Stufe 6) ist die größte verbleibende WID-Quelle → bei der Stufe-7-Waffen-Kalibrierung aufs Budget eindampfen (offener Punkt, §11).
+- **Waffen-Sekundär-WID** — ✅ **eingedampft** *(2026-07-04, Stellar-Kalibrierung)*: Jagdbogen & Langbogen von Sek-WID auf STR umgestellt; der Hammer als einzige verbleibende WID-Waffe nutzt jetzt den Körper-Rüstungs-Tier 3/5/7/10/13/17/23 statt 6…40 (→ „Waffensystem — Stellar-Stufe").
 
 ---
 
@@ -1203,7 +1261,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - **Engine:** Godot 4
 - **Sprache:** GDScript
-- **Zielplattform:** *(folgt — vermutlich PC/Desktop)*
+- **Zielplattform:** PC/Steam primär, Android als geplanter Post-Release-Port — Details in **§10.5**
 - **Projektstruktur (angelegt):** `addons/` (Editor-Plugins, u. a. Yggdrasil-Skilltree-Editor), `assets/` (Grafiken, TileSets; `assets/placeholder/` für MVP-Assets), `data/` (Item-JSONs, Coding-Datenbank), `scenes/` (Szenen + zugehörige Scripts), `scripts/` (geteilte Scripts/Autoloads), `tools/` (Generator-/Hilfsskripte, Python), `docs/` (interne Doku)
 - **Audio:** AudioStreamPlayer + Audio Bus (nativ in Godot)
 
@@ -1251,6 +1309,24 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Placeholder-Sprite-Strategie (Charaktere, geplant):** Ein Grayscale-Sprite für alle Charaktertypen, Farb-Differenzierung über Godot `modulate` (Spieler Blau `Color(0.29, 0.56, 0.89)`, Gegner Rot `Color(0.89, 0.29, 0.29)`); Format 4 ISO-Richtungen (S/N/O/W) als 2×2-Sprite-Sheet. Tool der Wahl: Pixellab.ai (Prompt in CLAUDE.md hinterlegt).
 
+### 10.5 Zielplattform & Plattform-Strategie *(entschieden 2026-07-04)*
+
+**Primäre Zielplattform (Release):** **PC via Steam — Windows + Linux**, mit **Steam Deck** als explizitem Ziel (Steam-Deck-verified anstreben).
+
+- **Referenzauflösung:** 1920×1080 (16:9); UI muss auf **1280×800 / 7 Zoll** (Steam Deck, 16:10) lesbar bleiben → Mindest-Schriftgrößen, Item-Karten nicht zu textlastig; **Integer-Scaling** für die Pixel Art
+- **Input:** Maus/Tastatur first; **Controller als gleichwertiges Schema ab dem Godot-MVP** (Phase 1) — Grid-Cursor-Logik statt reiner Mauszeiger-Logik (bei Tile-Spiel ohnehin natürlich)
+- **macOS:** technisch mit Godot machbar (Signing/Notarization = Zusatzaufwand) — **später evaluieren**, kein Release-Ziel
+
+**Geplanter Post-Release-Port: Android.** Rundenbasiert + Grid passt gut zu Touch und das Genre hat dort eine große Zielgruppe — aber der Android-Markt ist zu ~95 % F2P, Premium-Titel verkaufen sich dort ohne bestehende PC-Reputation schlecht. Erfolgsmuster im Genre (Slay the Spire, XCOM & Co.): PC-first, Mobile-Port später mit Zugkraft des Namens. Kein Launch-Ziel, aber fest eingeplant.
+
+**Verbindliche Design-Regeln fürs Phase-1-UI** (halten den Android-Port billig, kosten jetzt fast nichts):
+
+1. **Input-Abstraktion dreistufig:** Maus / Controller / Touch als drei Consumer derselben Grid-Cursor-Logik (Controller wird für Steam Deck ohnehin gebaut; Touch ist danach der kleinste Schritt)
+2. **Keine Information nur hinter Hover:** jeder Tooltip/jede Detailinfo auch per Klick/Taste aufrufbar (lässt sich später kaum nachrüsten)
+3. **UI-Skalierungsfaktor von Anfang an** + flexibles Auflösungs-/Seitenverhältnis-Setup im Godot-Projekt (16:9 und 16:10 testen)
+
+**Ausdrücklich kein Ziel:** Konsolen (mit Godot nur über Porting-Partner wie W4 Games — frühestens nach Release evaluieren); Web-Export nur ggf. für Demos (in Godot 4.3 die schwächste Export-Säule). Das Speichersystem (encrypted JSON via `FileAccess`, §10.2) ist bereits plattformportabel. ✓
+
 ---
 
 ## 11. Offene Punkte & ToDos
@@ -1264,11 +1340,11 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [x] Offhand Prim.-Werte & Slot-Kapazitäten kalibriert + Stufe-7-Offhands ausgearbeitet *(2026-07-03)*
 - [x] Rüstungswerte Kopf/Körper/Füße kalibriert *(2026-07-04)*: Slot-Kapazitäten & Verfeinerung final (Grundkapazität = Stufe, Slots 1/2, Verfeinerung 1×/2×/3×); Prim-Tiers Körper 3/5/7/10/13/17/23 + Kopf/Füße 2/3/4/5/7/9/12 (2/5-Rüstung-zu-3/5-Skilltree-Budget); Flat-Basis Körper 2/3/4/5/6/8/10 + Kopf/Füße 1/2/2/3/4/5/6; WID-Defensivzeile gestrichen; Stufe 7 befüllt (§5.3)
-- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet — dabei: Sekundär-WID-Werte der Waffen aufs 2/5-Budget eindampfen (§5.3) und den Zweihand-Kapazitätsbonus auf die Stufe-7-B-Waffen anwenden (Regel **+1 bis Stahl / +2 ab Titan** entschieden 2026-07-04, Stufe 1–6 bereits eingerechnet)
+- [x] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet *(2026-07-04, §5.3 „Stellar-Stufe")*: Prim 84/100/70, Kapazität +2 über Diamant (L4/L5-Signatur-Unlock), Verfeinerung 3×, Stellar-Eigenarten ✦, Lichtresonanz-Flag; Sek-WID eingedampft (Hammer → Körper-Tier, Jagd-/Langbogen → Sek STR); Zweihand-Kapazitätsbonus auf S7-B-Waffen angewandt; Zepter → B
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
 - [ ] Waffensystem-Rest designt (Gravuren-Katalog, Crafting-Details, Aufwertung) — Gravurensystem-Rahmen steht (§5.7), Verfeinerung definiert
 - [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
-- [ ] Technische Specs vervollständigt (Zielplattform) — Projektstruktur ist angelegt (§10.3)
+- [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 
@@ -1294,7 +1370,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Balancing & Daten:**
 
 - [x] Rüstungswerte Kopf/Körper/Füße kalibrieren *(2026-07-04, §5.3 — JSONs v1.3 + Excel aktualisiert)*
-- [ ] Stufe-7-Waffen (Stellar) Werte/Slots ausarbeiten (aktuell Platzhalter) — inkl. Sek-WID-Eindampfung + Zweihand-Kapazitätsbonus für Stufe-7-B-Waffen (Regel steht, §5.3)
+- [x] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet *(2026-07-04, §5.3 — weapons.json v8 + Excel)*: inkl. Sek-WID-Eindampfung (Hammer → Körper-Tier; Jagd-/Langbogen → Sek STR), Zweihand-Kapazitätsbonus für S7-B-Waffen, Zepter → B (alle Stufen), Stellar-Eigenarten ✦ + verstecktes Lichtresonanz-Flag
 - [x] Zweihand-Grundkapazität entschieden & eingerechnet *(2026-07-04)*: +1 bis Stahl / +2 ab Titan, Slots unverändert — 36 B-Waffen Stufe 1–6 in `weapons.json` v7.1 (+ Excel); dabei Altlast bereinigt: `slot_templates`-Klasse „Dolche" → „Stichwaffen"
 - [ ] Aggro/Threat- und Sicht-Detailwerte final tunen (§5.2) *(→ Phase 1, braucht Playtests)*
 
@@ -1319,7 +1395,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Offen — Technik:**
 
-- [ ] Technische Specs vervollständigen (Zielplattform) — Sprache (GDScript), Audio & Projektstruktur sind festgelegt (§10.3)
+- [x] Technische Specs vervollständigt *(2026-07-04)*: Zielplattform entschieden (§10.5 — PC/Steam + Steam Deck primär, Android-Port geplant); Sprache (GDScript), Audio & Projektstruktur waren bereits festgelegt (§10.3)
 - [x] Tileset-Specs definiert & Terrain-Tileset v1 umgesetzt (siehe §10.1, `docs/TILESET.md`) *(gerettet 2026-07-03)*
 - [ ] Sprite-Specs für Charaktere definieren (Auflösung, Größen, Palette) — Strategie in §10.4, Umsetzung via Pixellab.ai ausstehend
 - [ ] Tileset ausbauen: Klippen-Rampen, Winter-Biom, animiertes Wasser, Bergheim-Gebäude

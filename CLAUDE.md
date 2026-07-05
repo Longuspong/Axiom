@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.16)
+## GDD-Stand (aktuell: v0.17)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -61,7 +61,7 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, restl. Waffensystem (Gravuren-Katalog/Crafting) + Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅, Gravuren-Katalog + Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
@@ -73,17 +73,25 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-04 — **Stellar-Kalibrierung**, Phase-0-Punkt „Stufe-7-Waffen" erledigt):
-- **Stufe-7-Waffen (Stellar) kalibriert** (`weapons.json` **v8** + Excel, GDD §5.3 „Waffensystem — Stellar-Stufe"): Prim-Reihen fortgeschrieben ~×1,35 (62→**84**, 74→**100**, 52→**70**; Sek analog 38→52, 28→38, 40→54, 52→70); Slots = 5 wie Diamant, **Grundkapazität +2 über Diamant** (Basis 9/11/12 je Klassengruppe — der Stellar-Unlock für L4/L5-Signatur-Gravuren), Verfeinerung 3×; Verkauf 1000, kein Kaufpreis (nur Loot/Craft)
-- **Stellar-Eigenarten ✦**: Typ-Eigenart bleibt, verstärkt (z. B. Frontmann +15→25 %, Dopplereffekt 2×65→2×80 %, Kriegsarmbrust 50→75 % RD; volle Tabelle §5.3); in `waffentypen` als `stellar_eigenart`/`stellar_eigenart_effekt`, Zahlen Balancing-Vorbehalt
-- **Lichtresonanz** (verstecktes Story-Flag): alle S7-Waffen tragen `Lichtresonanz: true` — Stellar-Licht durchdringt die Schattenrüstung der Endfraktion; NICHT auf der Item-Karte, Interaktionsregel folgt beim Story-/Endfraktions-Design (Phase 1); Erklärung in `meta.lichtresonanz`
-- **Sek-WID eingedampft** (Budget-Ausnahme aufgelöst, rückwirkend S1–7): **Jagdbogen & Langbogen Sek WID→STR** (Nutzer-Entscheidung: alle Bogenwaffen = GES/STR, Werte-Reihe unverändert); **Hammer** als einzige WID-Waffe auf Körper-Rüstungs-Tier **3/5/7/10/13/17/23** (statt 6…40), als `sek_wid_werte` hinterlegt
-- **Zepter → Zweihand (B)** (Nutzer-Entscheidung; GDD sagte schon B, Einträge standen auf E): alle 7 Stufen Hand=B, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/**11**
-- Excel-Altlast bereinigt: Stat-Skalierung-Sheet Zeile „Dolche"→„Stichwaffen"; Waffentypen-Sheet um Stellar-Eigenart-Spalten ergänzt; Kriegsgeräte-Sek als „typabhängig" + eigene WID-Zeile
-- **Zielplattform entschieden (GDD §10.5)**: **PC/Steam primär (Windows + Linux), Steam Deck als explizites Ziel** (verified anstreben); Referenz 1920×1080, UI lesbar auf 1280×800, Integer-Scaling; Controller gleichwertig ab Godot-MVP. **Android = fest geplanter Post-Release-Port** (Genre passt zu Touch, aber Markt ~95 % F2P → PC-first wie Genre-Vorbilder) mit 3 verbindlichen Phase-1-UI-Regeln: Input-Abstraktion Maus/Controller/Touch über eine Grid-Cursor-Logik, keine Info nur hinter Hover, UI-Skalierung + flexible Auflösung von Anfang an. Kein Ziel: Konsolen (nur via Porting-Partner, später), Web nur für Demos. **Phase-0-Punkt „Zielplattform" erledigt**
-- Draft-PR **#15** (`claude/next-steps-planning-9xa685`) — Stellar-Kalibrierung + Zielplattform, **wartet auf Merge durch den Nutzer**
+Abgeschlossen in dieser Sitzung (2026-07-05 — **Crafting-System „Resonanz-Matrix"**, Phase-0-Punkt „Crafting-Details" erledigt):
+- **Crafting-System komplett designt (GDD §5.8)**: nicht-deterministisch, Grid-basiert — „man kauft eine Verteilung, kein Item". Kernelemente: **Zerlegen** → Barren (Materialstufe) + Aspektsplitter (Waffen-/Gravurtyp) + Essenzen (Elemente); **Umwandlung 3:1** pro Sorte (schließt Doppel-RNG, nötig wegen regionsgebundener Loot-Pools); **Aufstufung 7:1** (endet bei Adamant — Kosmiumbarren nur aus zerlegten Kosmium-Items); **3×3-Grid** an der Schmiede (Start: Ecken gesperrt/Plus-Form, Schmiede-Ausbau schaltet frei), Mitte = Bauteil/Prägung bestimmt Output, Randfelder lenken über 3 Achsen (Element/Typ/Stufe), gegenüberliegende Paare = Resonanz ×2, voller Ring = Chance +1 Seltenheit; **Lenkungs-Deckelung ~75 %**; **Live-Verteilungs-Vorschau = PFLICHT** (keine versteckten Quoten); **Pity** über Duplikat-Zerfall (Duplikate → Splitter + Kategorie-Zähler, nach X garantiert neue Gravur) + Untergewichtung besessener (×0,5) + Resonanzladung (pro Kategorie × Seltenheitsstufe); **Verbessern** = einziger deterministischer Vorgang (+1 Stufe, max. 1×/Item, Kosmium ausgenommen, Kosten: Barren Zielstufe + Bauteil, gilt auch Rüstung/Offhands); **craftbar:** komplette Waffen (ohne Gravuren) + Gravuren (nur L1) + Verfeinerungskerne + Bauteile; **nie craftbar:** Stellar & Spezial-/Signatur-Gravuren; Umschmieden von Eigenarten bewusst gestrichen (ggf. Phase 1+)
+- **Bauteil-Namen entschieden**: Griff (Schwerter), Stichklinge (Stichwaffen), Axtblatt (Äxte), Schlagkopf (Kriegsgeräte), Schaft (Stabwaffen), **Stave** (Bogenwaffen), Fokuskern (Zauberwaffen), **Geschirr** (Rüstung, alle 3 Slots), **Prägung** (Gravur-Rohling) — Benennung nach Item-Namensregel („Stahl-Griff", „Kosmium-Prägung")
+- **Diamant → Kosmium umbenannt** (Stufe-6-Material; „Diamantbarren" funktioniert nicht, Kosmium schlägt Brücke zu Stellar): alle 5 Daten-JSONs (weapons v8.1, offhands + 3× Rüstung v1.4), Excel (107 Zellen), GDD, CLAUDE.md
+- **Stellar-Verfeinerung = 3×** entschieden (Platzhalter in §5.7 aufgelöst, deckt sich mit Datenstand)
+- Offene Crafting-Detailfragen in §11: Rüstungs-Craft von Grund auf bestätigen, Offhand-Bauteil benennen, Essenzen-Quellen final
+- Draft-PR auf Branch `claude/crafting-system-review-dpwywf` — **wartet auf Merge durch den Nutzer**
 
 Frühere Sitzungen:
+- **Stellar-Kalibrierung (2026-07-04, PR #15 gemergt — Phase-0-Punkt „Stufe-7-Waffen" erledigt):**
+  - **Stufe-7-Waffen (Stellar) kalibriert** (`weapons.json` **v8** + Excel, GDD §5.3 „Waffensystem — Stellar-Stufe"): Prim-Reihen fortgeschrieben ~×1,35 (62→**84**, 74→**100**, 52→**70**; Sek analog 38→52, 28→38, 40→54, 52→70); Slots = 5 wie Kosmium, **Grundkapazität +2 über Kosmium** (Basis 9/11/12 je Klassengruppe — der Stellar-Unlock für L4/L5-Signatur-Gravuren), Verfeinerung 3×; Verkauf 1000, kein Kaufpreis (nur Loot/Craft)
+  - **Stellar-Eigenarten ✦**: Typ-Eigenart bleibt, verstärkt (z. B. Frontmann +15→25 %, Dopplereffekt 2×65→2×80 %, Kriegsarmbrust 50→75 % RD; volle Tabelle §5.3); in `waffentypen` als `stellar_eigenart`/`stellar_eigenart_effekt`, Zahlen Balancing-Vorbehalt
+  - **Lichtresonanz** (verstecktes Story-Flag): alle S7-Waffen tragen `Lichtresonanz: true` — Stellar-Licht durchdringt die Schattenrüstung der Endfraktion; NICHT auf der Item-Karte, Interaktionsregel folgt beim Story-/Endfraktions-Design (Phase 1); Erklärung in `meta.lichtresonanz`
+  - **Sek-WID eingedampft** (Budget-Ausnahme aufgelöst, rückwirkend S1–7): **Jagdbogen & Langbogen Sek WID→STR** (Nutzer-Entscheidung: alle Bogenwaffen = GES/STR, Werte-Reihe unverändert); **Hammer** als einzige WID-Waffe auf Körper-Rüstungs-Tier **3/5/7/10/13/17/23** (statt 6…40), als `sek_wid_werte` hinterlegt
+  - **Zepter → Zweihand (B)** (Nutzer-Entscheidung; GDD sagte schon B, Einträge standen auf E): alle 7 Stufen Hand=B, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/**11**
+  - Excel-Altlast bereinigt: Stat-Skalierung-Sheet Zeile „Dolche"→„Stichwaffen"; Waffentypen-Sheet um Stellar-Eigenart-Spalten ergänzt; Kriegsgeräte-Sek als „typabhängig" + eigene WID-Zeile
+  - **Zielplattform entschieden (GDD §10.5)**: **PC/Steam primär (Windows + Linux), Steam Deck als explizites Ziel** (verified anstreben); Referenz 1920×1080, UI lesbar auf 1280×800, Integer-Scaling; Controller gleichwertig ab Godot-MVP. **Android = fest geplanter Post-Release-Port** (Genre passt zu Touch, aber Markt ~95 % F2P → PC-first wie Genre-Vorbilder) mit 3 verbindlichen Phase-1-UI-Regeln: Input-Abstraktion Maus/Controller/Touch über eine Grid-Cursor-Logik, keine Info nur hinter Hover, UI-Skalierung + flexible Auflösung von Anfang an. Kein Ziel: Konsolen (nur via Porting-Partner, später), Web nur für Demos. **Phase-0-Punkt „Zielplattform" erledigt**
+  - Draft-PR **#15** (`claude/next-steps-planning-9xa685`) — Stellar-Kalibrierung + Zielplattform, **gemergt** (2026-07-04)
+
 - **Rüstungskalibrierung (2026-07-04, PR #14 gemergt — Phase-0-Punkt „Rüstung" erledigt):**
   - **Slot-Kapazitäten & Verfeinerung final**: Max. Verfeinerung in allen drei Rüstungs-JSONs war versehentlich `= Stufe` (bis 7×) → korrigiert auf **1× Kupfer / 2× Eisen / 3× ab Stahl** (wie Waffen/Offhands, 84 Einträge inkl. Zubehör); Grundkapazität = Stufe + Slots 1 bis Stahl / 2 ab Titan vom Nutzer bestätigt
   - **Attributsbudget-Prinzip entschieden (GDD §5.3)**: **2/5 aus Rüstung : 3/5 aus Skilltree** (Annahme ~70 Punkte pro fokussiertem Attribut über Attributsnodes) → Voll-Set (Körper+Kopf+Füße) auf ein Attribut = **47 auf Stufe 7**
@@ -126,22 +134,22 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Restliches Waffensystem** (Gravuren-Katalog, Crafting-Details, Aufwertung; Systemrahmen + Kostenmodell stehen in §5.7)
+1. **Gravuren-Katalog** (konkrete Gravuren pro Typ — Systemrahmen §5.7 + Crafting §5.8 stehen); dabei die offenen Crafting-Detailfragen klären (Rüstungs-Craft von Grund auf, Offhand-Bauteil, Essenzen-Quellen)
 2. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
 3. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
-> Vorab: **PR #15 mergen** (Stellar-Kalibrierung + Zielplattform, Branch `claude/next-steps-planning-9xa685`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog/Crafting** und **Skilltree-Struktur** offen.
+> Vorab: **Crafting-PR mergen** (Resonanz-Matrix §5.8 + Kosmium-Umbenennung, Branch `claude/crafting-system-review-dpwywf`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog** und **Skilltree-Struktur** offen.
 
 ## Dateistruktur
 
 | Datei | Inhalt |
 |-------|--------|
 | `GDD.md` | Einziges Designdokument |
-| `data/weapons.json` | Waffendaten (**v8, vollständig kalibriert inkl. Stufe 7/Stellar**): Seltenheitsstufen, Klassen, Typen+Eigenarten (inkl. `stellar_eigenart`/`stellar_eigenart_effekt`), Stat-Skalierung (S7 befüllt, `sek_wid_werte` für Hammer), Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen, S7 mit `Lichtresonanz: true`), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max`, alle Bögen GES/STR, Zepter = B |
-| `data/offhands.json` | Offhand-Daten (v1.3, **kalibriert**): Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (3/5/7/10/14/18/24), **84 Einträge** (12 Typen × 7 Stufen, inkl. Stellar) |
-| `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, **v1.3 kalibriert** (2026-07-04) |
-| `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — **v1.3 kalibriert** (2026-07-04) |
-| `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, **v1.3 kalibriert** (2026-07-04) |
+| `data/weapons.json` | Waffendaten (**v8.1, vollständig kalibriert inkl. Stufe 7/Stellar; Diamant→Kosmium 2026-07-05**): Seltenheitsstufen, Klassen, Typen+Eigenarten (inkl. `stellar_eigenart`/`stellar_eigenart_effekt`), Stat-Skalierung (S7 befüllt, `sek_wid_werte` für Hammer), Slot-Templates, 112 Einzelwaffen (7 Stufen × 16 Typen, S7 mit `Lichtresonanz: true`), Gravuren; Bogenwaffen mit `Reichweite optimal`/`Reichweite max`, alle Bögen GES/STR, Zepter = B |
+| `data/offhands.json` | Offhand-Daten (v1.4, **kalibriert**, Kosmium-Umbenennung): Seltenheit, Gewichtsklassen, Gravuren, `offhandtypen` (12, inkl. `material_form`/`genus`), `stat_skalierung` (3/5/7/10/14/18/24), **84 Einträge** (12 Typen × 7 Stufen, inkl. Stellar) |
+| `data/kopfausruestung.json` | Kopf-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Zielvisier, Diadem), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, **v1.4 kalibriert** (Kosmium-Umbenennung 2026-07-05) |
+| `data/koerperausruestung.json` | Körper-Slot: `ruestungstypen` (5 Rüstungs-Archetypen) + `zubehoer_typen` (2: Köcher, Buchrolle = Gimmicks ohne Defensivwerte), **49 Einträge** (35 Rüstung + 14 Zubehör) — **v1.4 kalibriert** (Kosmium-Umbenennung 2026-07-05) |
+| `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, **v1.4 kalibriert** (Kosmium-Umbenennung 2026-07-05) |
 | `data/itemliste_v7.xlsx` | Gesamt-Excel (alle Sheets/Kategorien inkl. Offhands + Kopf-/Körper-/Fußausrüstung + Typen-Referenz); JSONs sind die getrennte Coding-Datenbank |
 | `project.godot` | Godot-4.3-Projekt (main_scene: map_demo, Yggdrasil-Plugin aktiviert) |
 | `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
@@ -234,8 +242,13 @@ tactical RPG, HD pixel art style, no background, transparent
 | Bogen-Reichweite (Daten) | Bogenwaffen in weapons.json mit Feldern `Reichweite optimal` (z. B. „3–4") + `Reichweite max` (z. B. 5); Anzeige-Notation `3–4/5` daraus abgeleitet |
 | Gravur-Kosten | Kapazitätskosten **rein Level-basiert**: L1=2, L2=4, L3=6, L4=8, L5=10 (L4/L5 nur Spezial/Signatur). Passender typisierter Slot halbiert; Flex/unpassender Slot = volle Kosten. Kein Typ-Basiskosten-Faktor (§5.7) |
 | Offhand-Werte | **Kalibriert:** Prim.-Wert 3/5/7/10/14/18/24 (= Sekundärslot-Tier, ≈ 50 % des Zweihand-Äquivalents), Grundkapazität = Stufe (1–7), Max. Verfeinerung 1×/2×/3× (Stahl+ = 3×), Slots 1 bis Stahl / 2 ab Titan (§5.3) |
-| Stellar-Waffen (S7) | **Kalibriert (2026-07-04, §5.3 „Stellar-Stufe"):** Prim 84 (62er-Reihe) / 100 (Kampfaxt) / 70 (52er-Reihe), Sek analog (52/38/54/70); 5 Slots wie Diamant, **Grundkapazität +2 über Diamant** (Basis 9/11/12 je Klassengruppe = Unlock für L4/L5-Signatur-Gravuren), B-Waffen nochmal +2; Verfeinerung 3×; **Stellar-Eigenart ✦** = verstärkte Typ-Eigenart (Tabelle §5.3); verstecktes Flag `Lichtresonanz: true` — durchdringt Schattenrüstung der Endfraktion, nicht auf Item-Karte, Regel folgt beim Story-Design (Phase 1); kein Kaufpreis (nur Loot/Craft), Verkauf 1000 |
+| Stellar-Waffen (S7) | **Kalibriert (2026-07-04, §5.3 „Stellar-Stufe"):** Prim 84 (62er-Reihe) / 100 (Kampfaxt) / 70 (52er-Reihe), Sek analog (52/38/54/70); 5 Slots wie Kosmium, **Grundkapazität +2 über Kosmium** (Basis 9/11/12 je Klassengruppe = Unlock für L4/L5-Signatur-Gravuren), B-Waffen nochmal +2; Verfeinerung 3×; **Stellar-Eigenart ✦** = verstärkte Typ-Eigenart (Tabelle §5.3); verstecktes Flag `Lichtresonanz: true` — durchdringt Schattenrüstung der Endfraktion, nicht auf Item-Karte, Regel folgt beim Story-Design (Phase 1); kein Kaufpreis (nur Loot/Craft), Verkauf 1000 |
 | Bogen-Sekundärattribut | **Alle Bogenwaffen GES (prim) / STR (sek)** (2026-07-04): Jagd- & Langbogen von WID auf STR umgestellt (Werte-Reihe unverändert) — passt zur Fernkampfformel GES×0,75 + STR×0,25 |
 | Waffen-Sek-WID | **Eingedampft (2026-07-04):** nur noch der Hammer trägt Sek-WID, Reihe = Körper-Rüstungs-Tier 3/5/7/10/13/17/23 (statt 6…40) — `sek_wid_werte` in weapons.json; Budget-Ausnahme aus §5.3 damit aufgelöst |
 | Zepter | **Zweihand (B), alle 7 Stufen** (2026-07-04): +35 %-Anzeige-Bonus greift, Grundkapazität 2/3/4/7/8/9/11 (Dateneinträge standen vorher fälschlich auf E; GDD sagte schon immer B) |
 | Zielplattform | **PC/Steam primär: Windows + Linux, Steam Deck explizit** (verified anstreben); Referenz 1080p, UI lesbar auf 1280×800, Integer-Scaling, Controller gleichwertig ab MVP. **Android = geplanter Post-Release-Port** mit 3 Pflicht-UI-Regeln (Input-Abstraktion Maus/Controller/Touch, keine Hover-only-Infos, UI-Skalierung von Anfang an). Konsolen/Web kein Ziel (§10.5) |
+| Kosmium | **Stufe-6-Material heißt Kosmium** (2026-07-05, vorher „Diamant") — umbenannt, weil Material-Ressourcen als **Barren** vorliegen („Diamantbarren" geht nicht); schlägt thematisch die Brücke zu Stellar. In allen JSONs + Excel + GDD durchgezogen |
+| Crafting (§5.8) | **Resonanz-Matrix** (2026-07-05): nie deterministisch (einzige Ausnahme: Verbessern) — „man kauft eine Verteilung, kein Item". Zerlegen → **Barren** (Stufe) / **Aspektsplitter** (Typ) / **Essenzen** (Element); Umwandlung 3:1 pro Sorte; Aufstufung Barren 7:1, endet bei Adamant (Kosmiumbarren nur aus Kosmium-Loot). 3×3-Grid an der Schmiede: Mitte = Bauteil/Prägung (Output-Kategorie), Rand = Lenkzutaten, gegenüberliegende Paare = Resonanz ×2, voller Ring = Chance +1 Stufe; Start Plus-Form (Ecken via Schmiede-Ausbau); Lenkung gedeckelt ~75 %; **Live-Verteilungs-Vorschau = PFLICHT**. Pity: Duplikat-Zerfall + Kategorie-Zähler + Resonanzladung (pro Kategorie × Stufe). Craftbar: Waffen (ohne Gravuren), Gravuren (nur L1), Verfeinerungskerne, Bauteile; nie: Stellar, Spezial-/Signatur-Gravuren |
+| Bauteile & Prägungen | Griff (Schwerter), Stichklinge (Stichwaffen), Axtblatt (Äxte), Schlagkopf (Kriegsgeräte), Schaft (Stabwaffen), **Stave** (Bogenwaffen), Fokuskern (Zauberwaffen), **Geschirr** (Rüstung alle 3 Slots), **Prägung** (Gravur-Rohling); Benennung nach Item-Namensregel („Stahl-Griff", „Kosmium-Prägung") |
+| Verbessern | Einziger deterministischer Crafting-Vorgang: +1 Materialstufe, **max. 1× pro Item**, Kosmium nicht verbesserbar (danach käme nur nicht craftbares Stellar); Kosten = Barren der Zielstufe + passendes Bauteil; gilt für Waffen, Rüstungen, Offhands (Offhand-Bauteil offen) |
+| Stellar-Verfeinerung | **3×** (2026-07-05) — Platzhalter in §5.7 aufgelöst, wie alle Materialien ab Stahl |

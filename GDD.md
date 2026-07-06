@@ -41,6 +41,7 @@
    - 8.2 [Spielstand-Verwaltung](#82-spielstand-verwaltung)
    - 8.3 [Einstellungen](#83-einstellungen)
    - 8.4 [Credits](#84-credits)
+   - 8.5 [Lex Tactica — Kompendium](#85-lex-tactica--kompendium)
 9. [Hub — Bergheim](#9-hub--bergheim)
    - 9.1 [Visuelles Konzept](#91-visuelles-konzept)
    - 9.2 [Hub-Menüs](#92-hub-menüs)
@@ -1140,9 +1141,23 @@ Pro Ausrüstungskategorie ein craftbares Kernbauteil; Benennung nach der Item-Na
 - Kosten: **Barren der Zielstufe + passendes Bauteil** (Beispiel: Breitschwert Eisen→Stahl braucht Stahlbarren + Stahl-Griff; Turmschild Titan→Adamant braucht Adamantbarren + Adamant-Beschlag).
 - Gilt für **Waffen, Rüstungen und Offhands** — alle mit ihrem jeweiligen Bauteil (s. Tabelle oben).
 
-#### Offener Punkt: Materialherkunft & Essenzen `[Phase-0-Abschluss]`
+#### Drop & Herkunft *(entschieden 2026-07-06)*
 
-*(2026-07-06)* Woher welches Material in welcher Menge kommt (Drop vs. Farm vs. reine Zerlegungsressource), die Drop-Chancen und der RNG-Anteil dabei sind **noch nicht entschieden** — siehe Diskussionsvorschlag & Materialübersicht in §11.
+Die drei Ressourcen-Ebenen unterscheiden sich bewusst im RNG-Grad — Farmen fühlt sich anders an als Glück haben:
+
+| Ressource | RNG-Grad | Herkunft |
+|-----------|----------|----------|
+| **Barren** | Niedrig — überwiegend farmbar | Droppt von **jedem Gegner** (stufenabhängige Chance) **und** garantiert aus Zerlegen (jedes Item liefert mind. 1 Barren seiner Stufe) |
+| **Aspektsplitter** | Mittel | Bestimmte Einheiten droppen sie zusätzlich; aus Zerlegen kommt **immer garantiert** einer. *(Offen: teilweise auch im Shop erwerbbar? → Phase 1, sobald das Shop-System ansteht.)* |
+| **Essenzen** | Hoch — bewusst selten | Geringe Drop-Chance von Elite-/Boss-Gegnern; der verlässliche Grundstrom kommt über die 3:1-Umwandlung aus zerlegten Element-Gravuren. Essenzen lenken sehr spezifisch (Element/Set) — in Region 1 (Orks) unwichtig, da die Ork-Strategie auf rohem Schaden/Resistenz statt Elementen/Sets basiert (deckt sich mit „kein Magie-Loot", §9.6) |
+
+**Drop-Skalierung**: nach **Gegner-Stufe** (höhere Stufe → höherstufige Barren/Splitter wahrscheinlicher) **und Archetyp** (z. B. Bogenschützen-Gegner droppen bevorzugt Materialien/Splitter, die Bogenschützen-Ausrüstung begünstigen).
+
+**Kein zusätzliches Pity auf Drop-Ebene**: Die garantierte Loot-Truhe am Levelende (§9.4 — „zumindest etwas Loot" bei jeder Wiederholung) deckt das bereits ab; ein separater Drop-Pity-Mechanismus ist nicht nötig.
+
+#### Offener Punkt: Element- & Materialliste `[Phase-0-Abschluss]`
+
+*(2026-07-06)* Herkunfts-Prinzipien stehen (s. o.), aber die **konkrete Elementliste** (fest, z. B. Feuer/Eis/Blitz/Gift/…) und eine **vollständige Materialliste** „mit allem drum und dran" (alle Barren/Aspektsplitter/Essenzen inkl. Drop-Zuordnung nach Stufe & Archetyp) fehlen noch. Beides ist Grundlage für **Lex Tactica** (§8.5) — siehe §11.
 
 ---
 
@@ -1249,6 +1264,12 @@ Listet alle genutzten externen Ressourcen:
 - Free Assets (Grafik, Audio, Fonts)
 - Tools & Plugins
 - *(Inhalt wird laufend gepflegt)*
+
+### 8.5 Lex Tactica — Kompendium
+
+*(neu 2026-07-06)* **Lex Tactica** ist das große Buch des Protagonisten — narrativ sein persönliches Nachschlagewerk, funktional das **interne Wiki/Kompendium des Spiels**. Es wächst mit dem Spielfortschritt und soll perspektivisch alles Wissenswerte bündeln: vollständige Material- & Elementliste (Barren/Aspektsplitter/Essenzen, §5.8), Item-/Gravuren-Katalog, Bestiarium, Lore-Einträge.
+
+**Noch offen** *(Struktur, Freischalt-Logik — automatisch vs. Entdeckung —, UI-Darstellung; s. §11)*: Die konkrete Ausgestaltung folgt, sobald die zugrunde liegenden Datensätze (Element-/Materialliste, Gravuren-Katalog) stehen.
 
 ---
 
@@ -1443,6 +1464,10 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 
+**Ideen für Phase 1 vorgemerkt** *(2026-07-06)*:
+- **Ressourcen-Minispiel/Gamemodus (Idee)**: Kupfer-/Eisen-/Stahl-„Golems" als Gegnertyp in einer eigenen Minenregion, die gezielt zum Ressourcenfarmen aufgesucht wird; alternativ/ergänzend ein Warframe-artiges **Expeditions-System** — einen Trupp für eine festgelegte Zeit in Region X aussenden, danach Ressourcen-Ertrag abholen. Noch unentschieden, ob eigener Gamemodus oder Hub-Feature.
+- **Aspektsplitter im Shop kaufbar?** — Frage, ob Aspektsplitter (teilweise) käuflich erwerbbar sein sollen; wird im Rahmen des noch zu designenden Shop-Systems mitbesprochen.
+
 ---
 
 **Erledigt (Referenz):**
@@ -1450,6 +1475,8 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
 - [x] Crafting-Detailfragen entschieden *(2026-07-06, §5.8)*: **alle Ausrüstungskategorien craftbar** (Waffen, Rüstung, Offhands — symmetrisch, Zielslot bei Rüstung via Slot-Aspektsplitter); Bauteil-Tabelle verfeinert — **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße), **Beschlag** (Offhands, alle 12 Typen). Offen bleibt nur noch Materialherkunft/Essenzen (s. u.)
+- [x] Drop & Herkunft entschieden *(2026-07-06, §5.8)*: Barren farmbar (jeder Gegner) + garantiert aus Zerlegen; Aspektsplitter zusätzlich von bestimmten Einheiten + garantiert aus Zerlegen (Shop-Kauf offen, → Phase 1); Essenzen selten/elite-gebunden, Region 1 (Orks) bewusst ohne Elementfokus (deckt sich mit §9.6); Skalierung nach Gegner-Stufe **und** Archetyp; kein zusätzliches Drop-Pity nötig (Level-Ende-Truhe reicht, §9.4)
+- [x] **Lex Tactica** als neues Konzept eingeführt *(2026-07-06, §8.5)*: das große Buch des Protagonisten, funktional das interne Spiel-Wiki (Material-/Elementliste, Item-/Gravuren-Katalog, Bestiarium, Lore); Struktur/Freischalt-Logik/UI noch zu designen (§11)
 - [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
 - [x] Zweihand-Ausgleich (+35 %) festgelegt: globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`), Grundwerte bleiben echt; Infokarte zeigt Endwert + Bonus-Zeile
 - [x] Rüstungs-Items Kopf/Körper/Füße designt und befüllt (`data/kopf-/koerper-/fussausruestung.json`, je 49 Einträge); Eigenarten abgesegnet *(2026-07-03, Werte weiterhin Platzhalter)*
@@ -1476,7 +1503,8 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
-- [ ] **Materialherkunft & Essenzen final festlegen** *(§5.8, Phase-0-Abschlusskriterium)*: Welches Material kommt wo als Drop, als Farm-Ressource oder rein aus Zerlegung; Drop-Chancen; wie viel RNG dabei greift. Materialübersicht + Diskussionsvorschlag liegen vor *(2026-07-06)* — Entscheidung mit dem Nutzer noch offen
+- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht) — es fehlt noch die **konkrete, feste Elementliste** und die **vollständige Materialliste** „mit allem drum und dran" als Grundlage für **Lex Tactica** (§8.5)
+- [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

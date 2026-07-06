@@ -61,10 +61,10 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅, Gravuren-Katalog + Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅ inkl. Drop & Herkunft, Gravuren-Katalog + Element-/Materialliste + Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
-| 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits |
+| 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits; ⚠️ Lex Tactica (§8.5) als Konzept eingeführt, Struktur/UI noch offen |
 | 9 | Hub — Bergheim | ✅ vollständig |
 | 10 | Technische Spezifikationen | ✅ Art Style, GDScript, Plugins, Game Feel, Tileset-Specs, Projektstruktur, Placeholder-Assets (§10.4), Zielplattform (§10.5, 2026-07-04) |
 | 11 | Offene Punkte & ToDos | ✅ laufend gepflegt, inkl. Phasenplan & Phase-0-Abschlusskriterien |
@@ -76,8 +76,11 @@ git push -u origin <feature-branch>
 Abgeschlossen in dieser Sitzung (2026-07-06 — **Crafting-Feinschliff**, PR #16 offen):
 - **Alle Ausrüstungskategorien craftbar** (Nutzer-Entscheidung, §5.8): Waffen, Rüstung und Offhands symmetrisch von Grund auf craftbar (ohne Gravuren, Stufe durch Barren gedeckelt); Zielslot bei Rüstung über einen Slot-Aspektsplitter im Grid gewählt
 - **Bauteil-Tabelle verfeinert**: Rüstung nicht mehr eine gemeinsame Zeile, sondern **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße); dazu **Beschlag** für alle 12 Offhand-Typen. Waffen-Bauteile (Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern) und Prägung (Gravur) unverändert
-- **Neuer offener Punkt (§11, Phase-0-Abschlusskriterium): Materialherkunft & Essenzen.** Drop vs. Farm-Ressource vs. reine Zerlegungsressource, Drop-Chancen und RNG-Anteil sind noch nicht entschieden — Materialübersicht + Diskussionsvorschlag wurden erarbeitet, Entscheidung mit dem Nutzer steht noch aus
-- PR #16 (`claude/crafting-system-review-dpwywf`) aktualisiert und gepusht — **wartet auf Merge durch den Nutzer**; PR-Aktivität wird beobachtet (Sub­scription aktiv), stündlicher Selbst-Check eingerichtet
+- **Drop & Herkunft entschieden (§5.8)**: **Barren** farmbar (jeder Gegner, stufenabhängig) + garantiert aus Zerlegen; **Aspektsplitter** zusätzlich von bestimmten Einheiten + garantiert aus Zerlegen (Shop-Kauf offen → Phase 1); **Essenzen** selten/elite-/boss-gebunden (Region 1/Orks bewusst ohne Elementfokus, deckt sich mit §9.6 „kein Magie-Loot"); Skalierung nach **Gegner-Stufe und Archetyp** (z. B. Bogenschützen droppen bogenrelevante Materialien); **kein zusätzliches Drop-Pity** nötig — die garantierte Level-Ende-Loot-Truhe (§9.4) reicht aus
+- **Neues Konzept: Lex Tactica (§8.5)** — das große Buch des Protagonisten, funktional das interne Spiel-Wiki (Material-/Elementliste, Item-/Gravuren-Katalog, Bestiarium, Lore); Struktur/Freischalt-Logik/UI noch offen
+- **Verbleibender Phase-0-Abschlusspunkt**: konkrete **Elementliste** + vollständige **Materialliste** ausarbeiten (Grundlage für Lex Tactica) — Herkunfts-Prinzipien stehen, Inhalte fehlen noch
+- **Zwei Ideen für Phase 1 vorgemerkt**: Ressourcen-Minispiel/Gamemodus (Material-Golems in Minenregion bzw. Warframe-artiges Trupp-Expeditionssystem); Frage ob Aspektsplitter im Shop kaufbar sind (→ Shop-System-Design)
+- PR #16 (`claude/crafting-system-review-dpwywf`) aktualisiert und gepusht — **wartet auf Merge durch den Nutzer**; PR-Aktivität wird beobachtet (Subscription aktiv), stündlicher Selbst-Check eingerichtet
 
 Vorherige Sitzung (2026-07-05 — **Crafting-System „Resonanz-Matrix"**, Phase-0-Punkt „Crafting-Details" erledigt):
 - **Crafting-System komplett designt (GDD §5.8)**: nicht-deterministisch, Grid-basiert — „man kauft eine Verteilung, kein Item". Kernelemente: **Zerlegen** → Barren (Materialstufe) + Aspektsplitter (Waffen-/Gravurtyp) + Essenzen (Elemente); **Umwandlung 3:1** pro Sorte (schließt Doppel-RNG, nötig wegen regionsgebundener Loot-Pools); **Aufstufung 7:1** (endet bei Adamant — Kosmiumbarren nur aus zerlegten Kosmium-Items); **3×3-Grid** an der Schmiede (Start: Ecken gesperrt/Plus-Form, Schmiede-Ausbau schaltet frei), Mitte = Bauteil/Prägung bestimmt Output, Randfelder lenken über 3 Achsen (Element/Typ/Stufe), gegenüberliegende Paare = Resonanz ×2, voller Ring = Chance +1 Seltenheit; **Lenkungs-Deckelung ~75 %**; **Live-Verteilungs-Vorschau = PFLICHT** (keine versteckten Quoten); **Pity** über Duplikat-Zerfall (Duplikate → Splitter + Kategorie-Zähler, nach X garantiert neue Gravur) + Untergewichtung besessener (×0,5) + Resonanzladung (pro Kategorie × Seltenheitsstufe); **Verbessern** = einziger deterministischer Vorgang (+1 Stufe, max. 1×/Item, Kosmium ausgenommen, Kosten: Barren Zielstufe + Bauteil, gilt auch Rüstung/Offhands); **craftbar:** komplette Waffen (ohne Gravuren) + Gravuren (nur L1) + Verfeinerungskerne + Bauteile; **nie craftbar:** Stellar & Spezial-/Signatur-Gravuren; Umschmieden von Eigenarten bewusst gestrichen (ggf. Phase 1+)
@@ -140,11 +143,12 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Gravuren-Katalog** (konkrete Gravuren pro Typ — Systemrahmen §5.7 + Crafting §5.8 stehen); dabei die offenen Crafting-Detailfragen klären (Rüstungs-Craft von Grund auf, Offhand-Bauteil, Essenzen-Quellen)
-2. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
-3. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+1. **Gravuren-Katalog** (konkrete Gravuren pro Typ — Systemrahmen §5.7 + Crafting §5.8 stehen)
+2. **Element- & Materialliste ausarbeiten** (§5.8/§8.5) — Herkunfts-Prinzipien stehen, Inhalte (feste Elementliste, vollständige Materialliste) fehlen noch; Grundlage für Lex Tactica
+3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
+4. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
-> Vorab: **Crafting-PR mergen** (Resonanz-Matrix §5.8 + Kosmium-Umbenennung, Branch `claude/crafting-system-review-dpwywf`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog** und **Skilltree-Struktur** offen.
+> Vorab: **Crafting-PR mergen** (Resonanz-Matrix §5.8 + Kosmium-Umbenennung, Branch `claude/crafting-system-review-dpwywf`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog**, **Element-/Materialliste** und **Skilltree-Struktur** offen.
 
 ## Dateistruktur
 

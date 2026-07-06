@@ -1097,16 +1097,17 @@ Jedes unerwünschte Item kann zerlegt werden und liefert:
 | Craftbar | Nicht craftbar (Loot-exklusiv) |
 |----------|-------------------------------|
 | **Komplette Waffen** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt | Alles **Stellar** (Waffen, Barren, Ressourcen) |
-| **Gravuren** — nur Level 1; höhere Level nur über Aufwertung | **Spezial-/Signatur-Gravuren** |
+| **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über Slot-Aspektsplitter gewählt) | **Spezial-/Signatur-Gravuren** |
+| **Gravuren** — nur Level 1; höhere Level nur über Aufwertung | |
 | **Verfeinerungskerne** (für die Kapazitäts-+1-Verfeinerung, §5.7) | |
 | **Bauteile & Prägungen** (Grid-Basen, s. Tabelle) | |
 | **Kosmium-Gravuren** — nur mit Kosmiumbarren (die nur aus zerlegten Kosmium-Items stammen → limitiert sich selbst) | |
 
-*(Rüstungs-Craft von Grund auf: naheliegend analog über das Geschirr — noch nicht final entschieden, s. offene Punkte §11.)*
+*(2026-07-06 entschieden: Ausnahmslos alle Ausrüstungskategorien sind von Grund auf craftbar — symmetrisch zu Waffen. Einzige craftfreie Zone bleibt Stellar + Spezial-/Signatur-Gravuren.)*
 
 #### Bauteile & Prägungen (Grid-Basen)
 
-Pro Waffenklasse ein craftbares Kernbauteil; Benennung nach der Item-Namensregel (§5.3): „Stahl-Griff", „Kosmium-Prägung", „titanbeschlagener Stave" (`material_form`/`genus` pro Bauteil in den Daten zu hinterlegen).
+Pro Ausrüstungskategorie ein craftbares Kernbauteil; Benennung nach der Item-Namensregel (§5.3): „Stahl-Griff", „Kosmium-Prägung", „titanbeschlagener Stave" (`material_form`/`genus` pro Bauteil in den Daten zu hinterlegen).
 
 | Kategorie | Bauteil |
 |-----------|---------|
@@ -1117,7 +1118,10 @@ Pro Waffenklasse ein craftbares Kernbauteil; Benennung nach der Item-Namensregel
 | Stabwaffen | **Schaft** |
 | Bogenwaffen | **Stave** |
 | Zauberwaffen | **Fokuskern** |
-| Rüstung (alle 3 Slots) | **Geschirr** |
+| Rüstung — Körper | **Geschirr** |
+| Rüstung — Kopf | **Haube** |
+| Rüstung — Füße | **Riemen** |
+| Offhands (alle 12 Typen) | **Beschlag** |
 | Gravur-Rohling | **Prägung** |
 
 #### Pity-System (Anti-Frust ohne Determinismus)
@@ -1133,8 +1137,12 @@ Pro Waffenklasse ein craftbares Kernbauteil; Benennung nach der Item-Namensregel
 - Hebt ein Item um **+1 Materialstufe** (Werte auf die Reihe der neuen Stufe).
 - **Maximal 1× pro Item.**
 - **Kosmium-Items sind nicht verbesserbar** (danach käme nur das nicht craftbare Stellar).
-- Kosten: **Barren der Zielstufe + passendes Bauteil** (Beispiel: Breitschwert Eisen→Stahl braucht Stahlbarren + Stahl-Griff).
-- Gilt für **Waffen, Rüstungen und Offhands** *(Offhand-Bauteil noch offen, §11)*.
+- Kosten: **Barren der Zielstufe + passendes Bauteil** (Beispiel: Breitschwert Eisen→Stahl braucht Stahlbarren + Stahl-Griff; Turmschild Titan→Adamant braucht Adamantbarren + Adamant-Beschlag).
+- Gilt für **Waffen, Rüstungen und Offhands** — alle mit ihrem jeweiligen Bauteil (s. Tabelle oben).
+
+#### Offener Punkt: Materialherkunft & Essenzen `[Phase-0-Abschluss]`
+
+*(2026-07-06)* Woher welches Material in welcher Menge kommt (Drop vs. Farm vs. reine Zerlegungsressource), die Drop-Chancen und der RNG-Anteil dabei sind **noch nicht entschieden** — siehe Diskussionsvorschlag & Materialübersicht in §11.
 
 ---
 
@@ -1429,7 +1437,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Rüstungswerte Kopf/Körper/Füße kalibriert *(2026-07-04)*: Slot-Kapazitäten & Verfeinerung final (Grundkapazität = Stufe, Slots 1/2, Verfeinerung 1×/2×/3×); Prim-Tiers Körper 3/5/7/10/13/17/23 + Kopf/Füße 2/3/4/5/7/9/12 (2/5-Rüstung-zu-3/5-Skilltree-Budget); Flat-Basis Körper 2/3/4/5/6/8/10 + Kopf/Füße 1/2/2/3/4/5/6; WID-Defensivzeile gestrichen; Stufe 7 befüllt (§5.3)
 - [x] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet *(2026-07-04, §5.3 „Stellar-Stufe")*: Prim 84/100/70, Kapazität +2 über Kosmium (L4/L5-Signatur-Unlock), Verfeinerung 3×, Stellar-Eigenarten ✦, Lichtresonanz-Flag; Sek-WID eingedampft (Hammer → Körper-Tier, Jagd-/Langbogen → Sek STR); Zweihand-Kapazitätsbonus auf S7-B-Waffen angewandt; Zepter → B
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
-- [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **offen nur noch: Gravuren-Katalog**
+- [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05/06, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen inkl. Geschirr/Haube/Riemen/Beschlag, alle Ausrüstungskategorien craftbar, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **offen nur noch: Gravuren-Katalog + Materialherkunft/Essenzen (s. u.)**
 - [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
 - [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 
@@ -1441,6 +1449,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
+- [x] Crafting-Detailfragen entschieden *(2026-07-06, §5.8)*: **alle Ausrüstungskategorien craftbar** (Waffen, Rüstung, Offhands — symmetrisch, Zielslot bei Rüstung via Slot-Aspektsplitter); Bauteil-Tabelle verfeinert — **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße), **Beschlag** (Offhands, alle 12 Typen). Offen bleibt nur noch Materialherkunft/Essenzen (s. u.)
 - [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
 - [x] Zweihand-Ausgleich (+35 %) festgelegt: globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`), Grundwerte bleiben echt; Infokarte zeigt Endwert + Bonus-Zeile
 - [x] Rüstungs-Items Kopf/Körper/Füße designt und befüllt (`data/kopf-/koerper-/fussausruestung.json`, je 49 Einträge); Eigenarten abgesegnet *(2026-07-03, Werte weiterhin Platzhalter)*
@@ -1467,7 +1476,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
-- [ ] Crafting-Detailfragen (§5.8): Rüstungs-Craft von Grund auf (analog Geschirr?) bestätigen; Offhand-Bauteil benennen; Essenzen-Quellen final festlegen
+- [ ] **Materialherkunft & Essenzen final festlegen** *(§5.8, Phase-0-Abschlusskriterium)*: Welches Material kommt wo als Drop, als Farm-Ressource oder rein aus Zerlegung; Drop-Chancen; wie viel RNG dabei greift. Materialübersicht + Diskussionsvorschlag liegen vor *(2026-07-06)* — Entscheidung mit dem Nutzer noch offen
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.17  
-**Stand:** 2026-07-05  
+**Version:** 0.18  
+**Stand:** 2026-07-06  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -268,12 +268,13 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 ### 5.2 Kampfsystem
 
 - **Schadens-/Angriffsarten:** Nahkampfangriff, Fernkampfangriff, Zauber, Fähigkeit
-- **Schadenstypen:** Physisch, Magisch
+- **Schadenstypen:** Physisch, Magisch, **Elementar** *(→ Details „Schadenstyp Elementarschaden" unten)*
 - **Defensive Werte:**
   - **Rüstung** — flacher Abzug gegen *physischen* Schaden (pro Treffer)
   - **Resistenz** — flacher Abzug gegen *magischen* Schaden (pro Treffer)
+  - **Elementarbann** — **kein** eigener Abzug, sondern **verstärkt die WID-Wirkung** gegen den jeweiligen Elementarschaden (pro Element: Feuerbann, Eisbann, Terrabann, Donnerbann; → Formel unten). Elementarschaden ignoriert Rüstung und Resistenz vollständig.
   - *(„Block" ist kein Wert mehr, sondern eine Reaktion → siehe Reaktionen)*
-- **Schadensreduktion (Attribut):** **WID** liefert die **prozentuale** Reduktion (physisch **und** magisch); **WIL** bleibt rein offensiv (magischer Schaden).
+- **Schadensreduktion (Attribut):** **WID** liefert die **prozentuale** Reduktion (physisch, magisch **und** elementar); **WIL** bleibt rein offensiv (magischer Schaden). Elementarschaden wird **ausschließlich** über WID reduziert (kein Flat-Abzug); **Elementarbann** hebelt die WID-Wirkung gegen den passenden Elementaranteil zusätzlich hoch.
   - *Design-Entscheidung: Prozent-Reduktion konsolidiert auf WID (kein Split auf INT/WIL). Der physisch/magisch-Split lebt über die flachen Werte Rüstung vs. Resistenz bzw. die Ausrüstung.*
 
 ---
@@ -386,6 +387,67 @@ EHP-Faktor = 1 / (1 − R%) = (WID + 100) / 100 = 1 + WID/100
 → Jede **100 WID = +1 volle Lebensleiste effektiv**. Konsequenz: **keine verschwendeten späten Punkte** (Stacking lohnt konstant), aber auch **kein kaputtes Stacking** (man nähert sich nie 100 % Immunität). Der gefühlte abnehmende %-Ertrag ist genau das Self-Balancing, das einen Tank nicht unkillbar werden lässt.
 
 **WID-Cap — Entscheidung: kein Cap** *(2026-07-03)*: Die Formel begrenzt sich selbst — sie nähert sich 100 % nur asymptotisch (WID 100 = 50 %, WID 200 = 66,7 %), jeder weitere Punkt bringt prozentual weniger. Ein künstlicher Deckel ist damit überflüssig; das Balancing läuft über die **Verfügbarkeit** von WID (Items, Skilltree-Nodes, Buffs), nicht über eine Sonderregel.
+
+---
+
+#### Schadenstyp Elementarschaden *(2026-07-06)*
+
+**Dritter Schadenstyp** neben Physisch und Magisch — mit bewusst anderem Verhalten in der Reduktions-Pipeline:
+
+- **Ignoriert Rüstung und Resistenz** (beide Flat-Werte) vollständig — Elementarschaden „geht durch die Panzerung durch".
+- **Nur WID reduziert ihn** (prozentual, gleiche Formel `WID/(WID+100)`).
+- **Wird aus dem Gesamt-Rohschaden herausgeschnitten, nicht addiert:** Trägt ein Angriff einen Element-Anteil (z. B. Bogen „20 % Hitze"), sind das 20 % **des ohnehin berechneten Rohschadens**, die als Elementarschaden zählen — der Rest bleibt physisch bzw. magisch. Ein 50-Roh-Treffer mit 20 % Hitze = **10 Elementar + 40 konventionell**, nicht 60.
+
+**Die vier Elemente** *(Element ≠ Schadensart — die Schadensart ist bewusst anders benannt, damit sie nicht mit den gleichnamigen Statuseffekten kollidiert, z. B. Brennen zum Feuer)*:
+
+| Element | Schadensart |
+|---|---|
+| **Feuer** | Hitzeschaden |
+| **Eis** | Kälteschaden |
+| **Natur** | Terraschaden |
+| **Donner** | Elektroschaden |
+
+**Defensiv: Elementarbann** *(pro Element: Feuerbann, Eisbann, Terrabann, Donnerbann)* — **kein eigener Schadensabzug**, sondern ein **Verstärker der WID-Wirkung** gegen genau den Anteil des passenden Elements. Wer keinen WID hat, profitiert auch nicht vom Bann (bewusst: WID bleibt das defensive Rückgrat, Bann ist die Spezialisierung obendrauf). *Namenswahl: „Bann" statt „Widerstand", um Verwechslung mit dem Attribut **Widerstandskraft (WID)** und dem Flat-Wert **Resistenz** zu vermeiden.*
+
+**Formel** *(baut auf der WID-Formel oben auf):*
+
+```
+Roh_elem  = Anteil × Roh_gesamt           (z. B. 20 % × 50 = 10)
+Roh_konv  = Roh_gesamt − Roh_elem          (Rest: physisch ODER magisch)
+
+# Konventioneller Teil — normale Pipeline (Flat-Abzug + WID)
+R%           = WID / (WID + 100)
+Schaden_konv = max( ⌈Roh_konv × (1 − R%)⌉ − eff_Rüstung , 1 )
+
+# Elementarer Teil — KEIN Flat-Abzug; WID, durch Bann verstärkt
+WID_eff      = WID × (1 + Bann%)           (Bann des getroffenen Elements)
+R%_elem      = WID_eff / (WID_eff + 100)
+Schaden_elem = ⌈ Roh_elem × (1 − R%_elem) ⌉
+
+Schaden_gesamt = Schaden_konv + Schaden_elem
+```
+
+**Beispiel** — Bogen trifft für **50 Roh, davon 20 % Hitze** → **10 Hitze / 40 physisch**:
+
+| Ziel | konv. Teil (40 phys.) | elem. Teil (10 Hitze) | Gesamt |
+|---|---|---|---|
+| **Platte** (WID 80, Rüstung 12, Feuerbann 0) | ⌈40×0,56⌉−12 = 23−12 = **11** | WID_eff 80 → 44 % → ⌈10×0,56⌉ = **6** | **17** |
+| **Platte + Feuerbann 100 %** (WID 80, Rüstung 12) | **11** | WID_eff 160 → 61,5 % → ⌈10×0,385⌉ = **4** | **15** |
+| **Schwerpanzer, wenig WID** (WID 30, Rüstung 40, Bann 0) | ⌈40×0,77⌉−40 = 31−40 → **1** | WID_eff 30 → 23 % → ⌈10×0,77⌉ = **8** | **9** |
+
+> **Lesart:** Gegen die Platte bringt der Element-Anteil nur wenig extra (17 statt 16 bei rein physisch), aber **Feuerbann 100 % drückt genau diesen Anteil** wieder (6 → 4). Gegen den **Schwerpanzer mit wenig WID** zeigt sich der Kern: ein reiner 50-Physisch-Treffer versickert fast komplett an der Rüstung (→ 1), der Hitze-Anteil segelt daran vorbei und trifft für 8 — **Elementarschaden ist der Konter gegen hohe Flat-Rüstung, WID + Bann ist der Konter gegen Elementarschaden.**
+
+**Design-Rollen (Stein-Schere-Papier):**
+
+- **Hohe Flat-Rüstung/Resistenz** (Platte/Kette) ist stark gegen konventionell, **schwach gegen Elementar**.
+- **WID + Elementarbann** ist die Antwort auf Elementar; da Bann ein reiner WID-Multiplikator ist, lohnt Elementar-Verteidigung nur zusammen mit WID-Investment.
+- **Quellen für Elementarschaden** *(Phase 1 zu befüllen)*: Waffen-/Gravuren-„X % Element"-Anteile, Elementarzauber, Element-Gravuren — bindet direkt an die **Essenzen** des Crafting-Systems (Feuer-Essenz usw., §5.8).
+
+**Offene Punkte** *(→ §11)*:
+
+- **Bann additiv statt multiplikativ?** Aktuell `WID × (1 + Bann%)` (0 WID → Bann wirkungslos). Falls Squishy-Builds gegen Elementar zu nackt sind, ist `WID + Bann` (additiver Sockel) die Alternativ-Stellschraube.
+- **Statuseffekt-Harmonisierung:** Brennen zählt heute als *physischer*, Gift als *magischer* Schaden (§5.2). Ob die vier Elemente eigene bzw. umtypisierte Statuseffekte bekommen (Hitze↔Brennen, Kälte↔Gefroren existiert bereits), ist offen.
+- **Bann-Skala & Herkunft** (Ausrüstung/Skilltree) und ob es zusätzlich zu den vier Einzel-Bännen einen **globalen Elementarbann** (wirkt auf alle vier) gibt.
 
 ---
 
@@ -1503,7 +1565,8 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
-- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht) — es fehlt noch die **konkrete, feste Elementliste** und die **vollständige Materialliste** „mit allem drum und dran" als Grundlage für **Lex Tactica** (§8.5)
+- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen inkl. Bann-Skala & -Herkunft) als Grundlage für **Lex Tactica** (§8.5)
+- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06)*: Bann additiv vs. multiplikativ final entscheiden; Statuseffekt-Harmonisierung (Brennen/Gift-Typisierung ↔ Elemente); globaler Elementarbann ja/nein; konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
 - [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)

@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.17)
+## GDD-Stand (aktuell: v0.18)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -61,7 +61,7 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅ inkl. Drop & Herkunft, Gravuren-Katalog + Element-/Materialliste + Skills ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+Speed+MOB ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, **Schadenstyp Elementarschaden+Elementardiffusion (§5.2) ✅**, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, Gravurensystem-Rahmen (§5.7) ✅, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅ inkl. Drop & Herkunft; **4 Elemente stehen**, Gravuren-Katalog + Materialliste + Skills ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits; ⚠️ Lex Tactica (§8.5) als Konzept eingeführt, Struktur/UI noch offen |
@@ -73,7 +73,16 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-06 — **Crafting-Feinschliff**, PR #16 offen):
+Abgeschlossen in dieser Sitzung (2026-07-07 — **Schadenstyp Elementarschaden + Elementardiffusion**, PR #17 **GEMERGT**, GDD v0.18):
+- **Dritter Schadenstyp Elementar eingeführt (§5.2)**, voll symmetrisch zu physisch/magisch: eigener Flat-Wert **Elementardiffusion** (wie Rüstung/Resistenz) + gemeinsame WID-%. **Vier Elemente**: Feuer→Hitzeschaden, Eis→Kälteschaden, Natur→Terraschaden, Donner→Elektroschaden (Element ≠ Schadensart, um Kollision mit Statuseffekten wie Brennen zu vermeiden); **ein globaler Diffusion-Wert** gegen alle vier
+- **WID-Multiplikator-Ansatz („Elementarbann") verworfen**: erst als WID-Verstärker designt, nach Durchrechnen (Squishy/Tank-Beispiele, 70 Roh = 40 elem + 30 phys) auf **Flat-Symmetrie** umgestellt — konsistenter, für Spieler intuitiver, kein 0-WID-Degenerat
+- **Abgrenzung magisch ↔ elementar** über bestehende Zauberschulen (§5.3): Chaos = magisch, Elementar = elementar — löst die Grenzfrage ohne Graubereich
+- **Itemisierung / Tank-Vision (Nutzer-Entscheidung)**: „Pures Material"-Rüstung bleibt Rüstung/Resistenz-only (**kein JSON-Umbau**, alle Einträge Diffusion-frei); Elementardiffusion kommt über eine künftige **Element-/Themen-Set-Ausrüstung** — Stacking einer Achse (Platte→Rüstung, Robe-Set→Resistenz, Element-Set→Diffusion) = Spezial-Tank, bewusster Gear-Trade-off
+- **Altlasten-Branches**: 17 alte Remote-Branches als gefahrlos löschbar identifiziert (alle gemergt ODER Inhalt nachweislich in `main` gerettet), aber Löschen scheitert an Proxy-403 + fehlendem Branch-Delete-MCP-Tool → **Nutzer muss die alten Branches manuell auf GitHub löschen**
+- **Offen (§11)**: Element-/Themen-Set-Ausrüstung designen (Diffusion-Skala, Mischverhältnis, Drop/Craft-Herkunft); Elementar-Durchdringung (RD-Pendant) ja/nein; Statuseffekt-Harmonisierung (Blutung=phys, Brennen↔Hitze, Gift↔Terra, + Chaos-DoT für magisch — reine Politur)
+- PR #17 (`claude/status-update-next-steps-my5ko4`) **gemergt** — Branch nach Merge frisch von `main` neu aufgesetzt für diese Sitzungsende-Notiz
+
+Vorherige Sitzung (2026-07-06 — **Crafting-Feinschliff**, PR #16 gemergt):
 - **Alle Ausrüstungskategorien craftbar** (Nutzer-Entscheidung, §5.8): Waffen, Rüstung und Offhands symmetrisch von Grund auf craftbar (ohne Gravuren, Stufe durch Barren gedeckelt); Zielslot bei Rüstung über einen Slot-Aspektsplitter im Grid gewählt
 - **Bauteil-Tabelle verfeinert**: Rüstung nicht mehr eine gemeinsame Zeile, sondern **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße); dazu **Beschlag** für alle 12 Offhand-Typen. Waffen-Bauteile (Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern) und Prägung (Gravur) unverändert
 - **Drop & Herkunft entschieden (§5.8)**: **Barren** farmbar (jeder Gegner, stufenabhängig) + garantiert aus Zerlegen; **Aspektsplitter** zusätzlich von bestimmten Einheiten + garantiert aus Zerlegen (Shop-Kauf offen → Phase 1); **Essenzen** selten/elite-/boss-gebunden (Region 1/Orks bewusst ohne Elementfokus, deckt sich mit §9.6 „kein Magie-Loot"); Skalierung nach **Gegner-Stufe und Archetyp** (z. B. Bogenschützen droppen bogenrelevante Materialien); **kein zusätzliches Drop-Pity** nötig — die garantierte Level-Ende-Loot-Truhe (§9.4) reicht aus
@@ -143,12 +152,14 @@ Frühere Sitzungen:
 
 Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 
-1. **Gravuren-Katalog** (konkrete Gravuren pro Typ — Systemrahmen §5.7 + Crafting §5.8 stehen)
-2. **Element- & Materialliste ausarbeiten** (§5.8/§8.5) — Herkunfts-Prinzipien stehen, Inhalte (feste Elementliste, vollständige Materialliste) fehlen noch; Grundlage für Lex Tactica
-3. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
-4. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
+1. **Gravur-Regelgerüst fertig festzurren** — Nutzer-Modell „Gravur hat **Klasse · Typ · Eigenschaft · Schadenstyp**". Stand: **Schadenstyp ✅** (physisch/magisch/elementar), **Typ ✅** (Aktiv/Passiv/Reaktiv/Modifikativ/Spezial, §5.7); **offen: Klasse + Eigenschaft**. Erst das Schema, dann der Katalog.
+2. **Gravuren-Katalog** (konkrete Gravuren pro Typ — Systemrahmen §5.7 + Crafting §5.8 stehen)
+3. **Vollständige Materialliste ausarbeiten** (§5.8/§8.5) — die **4 Elemente stehen** (§5.2); es fehlt die volle Barren-/Aspektsplitter-/Essenzen-Liste als Grundlage für Lex Tactica
+4. **Element-/Themen-Set-Ausrüstung designen** (§5.2) — einzige Quelle für Elementardiffusion: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft
+5. **Skilltree-Struktur designen** — danach Umsetzung in Godot (Yggdrasil-Editor liegt bereit) = Start Phase 1. Muss die Annahme **~70 Punkte pro fokussiertem Attribut** einlösen (Rüstungskalibrierung hängt daran, §5.3)
+6. **Nebenbei:** Charakter-Sprites generieren (Pixellab.ai-Prompt unten)
 
-> Vorab: **Crafting-PR mergen** (Resonanz-Matrix §5.8 + Kosmium-Umbenennung, Branch `claude/crafting-system-review-dpwywf`). Von den Phase-0-Kriterien sind danach nur noch **Gravuren-Katalog**, **Element-/Materialliste** und **Skilltree-Struktur** offen.
+> **Aufräum-ToDo für den Nutzer:** 17 alte Remote-Branches sind gefahrlos löschbar (alle gemergt oder Inhalt in `main` gerettet), aber Claude kann sie nicht löschen (Proxy-403 + kein Branch-Delete-Tool) — bitte manuell auf GitHub entfernen.
 
 ## Dateistruktur
 

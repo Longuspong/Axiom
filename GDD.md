@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.18  
+**Version:** 0.19  
 **Stand:** 2026-07-07  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -310,12 +310,14 @@ Der Rohschaden wird **vor** der Schadensreduktion (WID, Rüstung/Resistenz) bere
 Rohschaden = STR (Einheit) + STR (Waffe) + Buffs/Debuffs
 ```
 
-**Nahkampf — Magisch:**
+**Magischer Angriff (Nah- & Fernkampf):**
 ```
 Rohschaden = WIL (Einheit) + WIL (Waffe) + Buffs/Debuffs
 ```
 
 > STR und WIL kumulieren aus allen Quellen (Basisattribut + Waffe + Ausrüstung + Buffs).
+
+> **Reichweitenunabhängig, interim** *(2026-07-07)*: Diese Formel gilt für **jeden** Zauber-/Magieangriff, unabhängig von der Waffenreichweite — sie deckt also auch Zauberstab und Energiesphäre ab (beide `Reichweite 3`), nicht nur echten Nahkampf. Es gibt bewusst **keine separate Fernkampf-Magisch-Formel**: Zauber-Angriffe auf Distanz sind seltener als Schützen-Angriffe (Mana-Kosten, geringere Angriffe/Zug), daher ist die geteilte Formel vorerst unproblematisch. **Bewusst als Platzhalter markiert** — wird ausführlicher besprochen, sobald die übrigen Schadenstyp-Punkte (Kriegsgeräte-Neuordnung, Statuseffekt-Elementartypen) geklärt sind (→ §11).
 
 **Fernkampf (Schützen-Skalierung):**
 ```
@@ -452,11 +454,14 @@ Schaden_gesamt = Schaden_konv + Schaden_elem
 
 **Design-Rollen (Stein-Schere-Papier):** Reine physische Panzerung (Platte) ist stark gegen physisch, aber **nackt gegen Elementar**, solange sie keine Elementardiffusion mitbringt — Elementarschaden bleibt der Konter gegen einseitige Panzer-Stacker, ohne dass der Schadenstyp strukturell unblockbar sein muss. **Quellen für Elementarschaden** *(Phase 1 zu befüllen)*: Waffen-/Gravuren-„X % Element"-Anteile, Elementarzauber, Element-Gravuren — bindet an die **Essenzen** des Crafting-Systems (Feuer-Essenz usw., §5.8).
 
+**Begriff „Zauberschaden"** *(geklärt 2026-07-07)*: Boni wie „+X % Zauberschaden" (z. B. Offhand Foliant/Energiekristall, §5.3) beziehen sich auf den **Rohschaden an sich** — also auf `Roh_gesamt`, **bevor** der Elementar-Anteil herausgeschnitten wird (siehe Formel oben). Ein „+30 % Zauberschaden"-Bonus erhöht also automatisch **beide** Teile eines gemischten Treffers (elementar **und** konventionell-magisch) gleichermaßen, unabhängig vom Element-Anteil des jeweiligen Zaubers. Kein separater Elementar-spezifischer Schadensbonus-Begriff nötig.
+
+**Statuseffekt-Harmonisierung** *(entschieden 2026-07-07)*: **Brennen** (Einheiten-Statuseffekt) und **„In Brand gesteckt"** (Feld-Statuseffekt) verursachen jetzt **Hitzeschaden** (Feuer-Element) statt physisch. **Vergiftet/Gift** und **Giftnebel** verursachen jetzt **Terraschaden** (Natur-Element) statt magisch. Beide DoTs bleiben in ihrer Mechanik unverändert (feste % von max. Leben bzw. fehlendem Leben, keine Reduktions-Pipeline) — nur der Schadenstyp-Tag ändert sich, was sie ab sofort für **Elementardiffusion**-Ausrüstung (nicht Rüstung/Resistenz) relevant macht, sobald DoTs regulär reduziert werden. **Blutung** bleibt bewusst unangetastet (weiterhin hälftig physisch/magisch) — sie ist an physische Waffen gebunden, nicht an ein Element. Umgesetzt in §5.2 „Statuseffekte" unten.
+
 **Offene Punkte** *(→ §11)*:
 
 - **Element-/Themen-Set-Ausrüstung designen** (die einzige Diffusion-Quelle): Werteskala für Elementardiffusion, Mischverhältnis mit Rüstung/Resistenz, wie sie droppt/craftbar ist.
 - **Elementar-Durchdringung?** Physisch/magisch haben RD (senkt den Flat-Wert vor der Rechnung); ob es ein Diffusion-durchdringendes Pendant für elementale Angriffe gibt, ist offen.
-- **Statuseffekt-Harmonisierung:** Brennen zählt heute als *physischer*, Gift als *magischer* Schaden (§5.2). Ob die vier Elemente eigene bzw. umtypisierte Statuseffekte/DoTs bekommen (Blutung = physisch, Brennen↔Hitze, Gift↔Terra, + ein Chaos-DoT für magisch), ist offen — reine Politur, blockiert nichts.
 
 ---
 
@@ -548,7 +553,7 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 
 ##### Einheiten-Statuseffekte
 
-- **Brennen** *(negativ, stapelbar bis 3)*: Beim Stapeln wird die Dauer auf 3 Züge zurückgesetzt; jede weitere Applikation setzt die Dauer erneut auf 3. Eine brennende Einheit erleidet **am Ende ihres Zuges physischen Schaden i. H. v. 6 % des max. Lebens pro Stapel**.
+- **Brennen** *(negativ, stapelbar bis 3)*: Beim Stapeln wird die Dauer auf 3 Züge zurückgesetzt; jede weitere Applikation setzt die Dauer erneut auf 3. Eine brennende Einheit erleidet **am Ende ihres Zuges Hitzeschaden i. H. v. 6 % des max. Lebens pro Stapel** *(Elementar/Feuer, umgetypt 2026-07-07 — vorher physisch)*.
 - **Kälte** *(negativ, stapelbar bis 10)*: Die Figur verliert pro Zug einen Stapel. Jeder Stapel hat eine **5 % Chance, die Figur einzufrieren (→ Gefroren)** und mindert den Wert/die Chance jeder **Reaktion** (Gegenschlag, Parieren/Block, Zauberblock, Konter — → Reaktionen, §5.2) um **fix 10 % pro Stapel** (bei vollen 10 Stapeln sind Reaktionen also komplett deaktiviert). **Bei vollen 10 Stapeln** löst der nächste Treffer (Fähigkeit o. Ä.) **sofort Gefroren** aus.
 - **Gefroren** *(negativ)*: Die Einheit kann sich weder bewegen noch angreifen. Der **nächste erlittene Schaden wird um 50 % verringert und löst Gefroren auf**. Dauer max. 2 Züge (Zug 1 = Applikationszug).
 - **Festgehalten** *(negativ)*: Die Figur kann sich nicht bewegen, aber weiterhin angreifen und Fähigkeiten wirken. **Keine Standarddauer.**
@@ -557,7 +562,7 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 - **Schwächen** *(negativ, stapelbar)*: Erhöht die Anfälligkeit für **physischen** Schaden; die Höhe hängt vom Anwender ab. Jeder Stapel = 1 Zug Dauer. Ein Stapel wird **mit einem Angriff verbraucht**; zusätzlich verliert die Figur am Zugende einen Stapel (falls vorhanden).
 - **Verwirren** *(negativ, stapelbar)*: Wie Schwächen, aber für **magischen** Schaden. Jeder Stapel = 1 Zug; ein Stapel wird mit einem Angriff verbraucht; zusätzlich −1 Stapel am Zugende.
 - **Blutung** *(negativ)*: Kann nach der Schadensberechnung physischer Waffen auftreten (waffen-/passivabhängig). Verursacht **30 % des verursachten Schadens, verteilt über 3 Züge** (10 % pro Tick), beginnend mit dem Applikationszug. Der Tick-Schaden wird **hälftig in physisch und magisch** aufgeteilt und dann **nach Reduktion durch WID** abgezogen.
-- **Vergiftet / Gift** *(negativ, stapelbar & verlängernd, sofern nicht anders beschrieben)*: Ein Stapel wird **am Zugende** verbraucht und fügt **10 % des fehlenden Lebens als magischen Schaden** zu (mind. 1). Ein Stapel = 1 Runde Dauer; 3 Stapel = 3 Runden.
+- **Vergiftet / Gift** *(negativ, stapelbar & verlängernd, sofern nicht anders beschrieben)*: Ein Stapel wird **am Zugende** verbraucht und fügt **10 % des fehlenden Lebens als Terraschaden** zu (mind. 1) *(Elementar/Natur, umgetypt 2026-07-07 — vorher magisch)*. Ein Stapel = 1 Runde Dauer; 3 Stapel = 3 Runden.
 - **Instabil** *(negativ, stapelbar)*: Jeder Stapel hebt die Exekutionsschwelle um **2 % des max. Lebens**. Bei Erreichen der Schwelle wird die Figur beim Erhalt **irgendeines Schadens sofort exekutiert**. 1 Stapel = 2 %, 2 = 4 %, … 10 = 20 %.
 - **Entwaffnet** *(negativ)*: Schadenverursachende Effekte, Fähigkeiten oder Angriffe können **nicht** benutzt werden. Bewegen, Heilen, **Schutz geben** und Buffen bleibt normal möglich. **Keine Standarddauer.**
 - **Verstummt / Verstummen** *(negativ)*: Verhindert das Einsetzen von Fähigkeiten, Spells oder Skills. **Keine Standarddauer.**
@@ -565,9 +570,9 @@ Definiert über die **Ausrichtung** (Blickrichtung) von Angreifer und Verteidige
 
 ##### Feld-Statuseffekte
 
-- **In Brand gesteckt**: Auf brennenden Feldern können Einheiten **weder Kälte noch Gefroren** haben/erleiden. Am Zugende erleidet die Figur **Brandschaden (physisch) i. H. v. 6 % des max. Lebens**. Stapelt nicht; hält nur, solange die Einheit auf dem Feld steht.
+- **In Brand gesteckt**: Auf brennenden Feldern können Einheiten **weder Kälte noch Gefroren** haben/erleiden. Am Zugende erleidet die Figur **Hitzeschaden i. H. v. 6 % des max. Lebens** *(Elementar/Feuer, umgetypt 2026-07-07 — vorher physisch)*. Stapelt nicht; hält nur, solange die Einheit auf dem Feld steht.
 - **Vereist**: **Pull- und Push-Fähigkeiten sind doppelt so effektiv.** Wird eine Figur auf einem vereisten Feld gefroren, verlängert sich Gefroren **auf unbestimmte Zeit** — bis zur Auflösung durch Schaden.
-- **Giftnebel**: Appliziert der darauf stehenden Figur **einen Stapel Gift beim Betreten** und **zu Rundenbeginn** (normaler Giftschaden, magisch).
+- **Giftnebel**: Appliziert der darauf stehenden Figur **einen Stapel Gift beim Betreten** und **zu Rundenbeginn** (normaler Giftschaden, jetzt Terra) *(umgetypt 2026-07-07 — vorher magisch)*.
 - **Nagelbett**: Jede Aktion (Angriff, Fähigkeit, Bewegung) kostet **10 % des max. Lebens**. Wird eine Figur auf ein Nagelbett-Feld gepusht/gepullt, kostet auch das **Betreten** 10 %. Dieser Schaden ist **total und nicht reduzierbar**.
 - **Dichter Nebel**: Eine Figur darauf sieht nur **2 Felder weit**; ohne Sichtlinie kein Angriff möglich. Durch dichten Nebel kann man **nicht hindurchsehen**.
 - **Blockiert**: Per Fähigkeit blockierte Felder sind für die Dauer des Effekts **nicht begehbar** und zählen als nicht begehbares Terrain — **Verbündete können sie normal betreten**.
@@ -816,7 +821,7 @@ Jede Waffe besitzt eine **Eigenart** — eine passive oder reaktive Sondermechan
 | Zauberwaffen | Zauberstab | E | Wendig | **Energiefaser** | Erhält die Einheit **zwei Züge lang keinen Schaden**, entsteht ein **Energieschild (Schutz)** in Höhe des **maximalen Mana-Pools**. |
 | Zauberwaffen | Energiesphäre | E | Wendig | **Segnung** | Heilungen dieser Einheit wirken zu **Beginn des nächsten Zuges erneut**, aber nur zu **20 % des ursprünglichen Wertes**. |
 
-> **Sekundärattribut-Umstellung Bogenwaffen** *(Nutzer-Entscheidung 2026-07-04)*: Jagdbogen & Langbogen tragen als Sekundärattribut **STR statt WID** — damit sind **alle Bogenwaffen GES (prim) / STR (sek)**, passend zur Fernkampf-Rohschadensformel (GES×0,75 + STR×0,25). Die Werte-Reihe blieb unverändert. Waffen-Sek-WID existiert nur noch beim Hammer (eingedampft, s. u.).  
+> **Sekundärattribut-Umstellung Bogenwaffen** *(Nutzer-Entscheidung 2026-07-04)*: Jagdbogen & Langbogen tragen als Sekundärattribut **STR statt WID** — damit sind **alle Bogenwaffen GES (prim) / STR (sek)**, passend zur Fernkampf-Rohschadensformel (GES×0,75 + STR×0,25). Die Werte-Reihe blieb unverändert. Waffen-WID kommt seit der Kriegsgeräte-Neuordnung (2026-07-07, s. u.) von **Hammer & Rammbock (Prim)** sowie **Zepter (Sek)**.  
 > **Zepter → Zweihand** *(2026-07-04)*: Das Zepter ist **beidhändig (B)** — die Dateneinträge in `data/weapons.json` (vorher fälschlich E) wurden angeglichen: +35 %-Anzeige-Bonus greift, Grundkapazität mit Zweihand-Bonus = 2/3/4/7/8/9/11.
 
 ---
@@ -829,14 +834,15 @@ Stellar-Waffen sind die **Legendaries**: Endgame-Waffen mit verstärkter Typ-Eig
 
 | Reihe (S1–S6) | S7 Stellar | betrifft |
 |---|---|---|
-| 10/15/22/32/45/62 | **84** | Prim: Breitschwert, Falchion, Hammer, Rammbock, Zepter, alle Bogenwaffen, Zauberstab, Energiesphäre |
+| 10/15/22/32/45/62 | **84** | Prim: Breitschwert, Falchion, Zepter, alle Bogenwaffen, Zauberstab, Energiesphäre |
 | 12/18/26/38/54/74 | **100** | Prim: Kampfaxt |
 | 8/12/18/26/38/52 | **70** | Prim: Pike, Dolchpaar, Rapier, Stilett; Sek: Stichwaffen & Zauberwaffen |
-| 6/9/14/20/28/40 | **54** | Sek: Rammbock (VIT), Zepter (INT), Pike (STR) |
+| 6/9/14/20/28/40 | **54** | Sek: Hammer (STR), Rammbock (STR), Pike (STR) |
 | 5/8/12/18/26/38 | **52** | Sek: Schwerter (GES) |
 | 4/6/9/14/20/28 | **38** | Sek: Kampfaxt (VIT), alle Bogenwaffen (STR) |
+| 3/5/7/10/13/17 | **23** | Prim: Hammer, Rammbock (WID); Sek: Zepter (WID) |
 
-**Sek-WID-Eindampfung** *(rückwirkend Stufe 1–7, löst die Budget-Ausnahme unten auf)*: Nach der Bogen-Umstellung trägt nur noch der **Hammer** Sek-WID. Seine WID-Reihe wurde von 6…40 auf den **Körper-Rüstungs-Prim-Tier 3/5/7/10/13/17/23** eingedampft — eine Waffe gibt damit maximal so viel WID wie ein Körper-Rüstungsteil (2/5-Budget-konform). In `data/weapons.json` als `sek_wid_werte` unter Kriegsgeräte hinterlegt.
+**Kriegsgeräte-Neuordnung** *(2026-07-07, ersetzt die frühere „Sek-WID-Eindampfung")*: Hammer & Rammbock werden zu **physischen Zäh-Bruisern** — Primärattribut **WID** (statt STR), Sekundär **STR** (statt WID/VIT). Das Zepter bleibt der **Magie-Nahkämpfer** — Primärattribut bleibt **WIL** (zählt weiterhin voll in die Magisch-Nahkampf-Formel, WIL+WIL), nur das Sekundärattribut wechselt von INT auf **WID**. Ergebnis: Zepter tauscht Mana-Effizienz gegen Zähigkeit und bleibt voller Schadensträger — in Kombination mit der Eigenart **Manavampir** entsteht ein eigenständiges „Battlemage"-Archetyp, klar unterschieden von Zauberstab (reine Glaskanone) und Energiesphäre (Support/DoT). Die WID-Reihe ist überall **3/5/7/10/13/17/23** (= Körper-Rüstungs-Prim-Tier, 2/5-Budget-konform) — unabhängig davon, ob sie bei Hammer/Rammbock als Prim oder beim Zepter als Sek eingesetzt wird. In `data/weapons.json` unter `stat_skalierung.Kriegsgeräte` hinterlegt.
 
 **Slots & Kapazität**: 5 Slots wie Kosmium (Aktiv/Passiv/Reaktiv/Mod./Spezial), aber **Grundkapazität +2 über Kosmium** — das ist der eigentliche Stellar-Unlock: Erst damit werden **L4/L5-Signatur-Gravuren** (Kosten 8/10, im passenden Slot 4/5, §5.7) realistisch spielbar. Max. Verfeinerung 3×. Zweihänder erhalten regelkonform nochmal +2:
 
@@ -1000,7 +1006,7 @@ Attribute kommen zu **2/5 aus der Rüstung** (Körper+Kopf+Füße zusammen) und 
 
 **Bewusste Budget-Ausnahmen** *(dokumentiert, Prüfung in Phase 1)*:
 - **WID-Offhands** (Turmschild, Fester Gürtel: Prim bis 24) liegen außerhalb des 2/5-Budgets — wer sie wählt, verzichtet dafür auf Dualwield/Fokus-Offhands. Bewusster Trade-off.
-- **Waffen-Sekundär-WID** — ✅ **eingedampft** *(2026-07-04, Stellar-Kalibrierung)*: Jagdbogen & Langbogen von Sek-WID auf STR umgestellt; der Hammer als einzige verbleibende WID-Waffe nutzt jetzt den Körper-Rüstungs-Tier 3/5/7/10/13/17/23 statt 6…40 (→ „Waffensystem — Stellar-Stufe").
+- **Waffen-WID** — ✅ **budget-konform** *(2026-07-04 Stellar-Kalibrierung, 2026-07-07 Kriegsgeräte-Neuordnung)*: Jagdbogen & Langbogen von Sek-WID auf STR umgestellt. WID-tragende Waffen sind jetzt Hammer & Rammbock (**Prim**) sowie Zepter (**Sek**) — alle nutzen den Körper-Rüstungs-Tier 3/5/7/10/13/17/23 statt einer eigenen, unkontrollierten Reihe (→ „Waffensystem — Stellar-Stufe" & „Kriegsgeräte-Neuordnung").
 
 ---
 
@@ -1543,6 +1549,9 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Erledigt (Referenz):**
 
+- [x] **Kriegsgeräte-Neuordnung entschieden** *(2026-07-07, §5.3)*: Hammer & Rammbock → Prim **WID** / Sek **STR** (physische Zäh-Bruiser); Zepter → Prim **WIL** (unverändert) / Sek **WID** (statt INT) — bleibt voller Magie-Schadensträger + wird zäher („Battlemage"). WID-Reihe überall 3/5/7/10/13/17/23 (Rüstungs-Prim-Tier, 2/5-Budget-konform). Löst zugleich die Metadaten-Inkonsistenz in `stat_skalierung.Kriegsgeräte` (Klassen-Default deckte Zepters echtes Prim/Sek nicht ab)
+- [x] **Rohschaden-Formel Magisch geklärt** *(2026-07-07, §5.2)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie — bewusst kein separates Fernkampf-Magisch, da Zauber-Fernangriffe seltener sind als Schützen-Angriffe. Als Platzhalter markiert, tiefere Diskussion folgt später
+- [x] **Statuseffekt-Harmonisierung entschieden** *(2026-07-07, §5.2)*: Brennen + „In Brand gesteckt" → **Hitzeschaden** (Feuer); Vergiftet/Gift + Giftnebel → **Terraschaden** (Natur); Blutung bleibt hälftig physisch/magisch (an physische Waffen gebunden, kein Element). Zudem geklärt: „Zauberschaden"-Boni (Foliant/Energiekristall) wirken auf den **Rohschaden vor dem Elementar-Split** — treffen also automatisch beide Anteile eines gemischten Zaubertreffers
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
 - [x] Crafting-Detailfragen entschieden *(2026-07-06, §5.8)*: **alle Ausrüstungskategorien craftbar** (Waffen, Rüstung, Offhands — symmetrisch, Zielslot bei Rüstung via Slot-Aspektsplitter); Bauteil-Tabelle verfeinert — **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße), **Beschlag** (Offhands, alle 12 Typen). Offen bleibt nur noch Materialherkunft/Essenzen (s. u.)
@@ -1576,7 +1585,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
-- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: Elementar-Durchdringung ja/nein (RD-Pendant); Statuseffekt-Harmonisierung (Blutung = physisch, Brennen↔Hitze, Gift↔Terra, + Chaos-DoT für magisch — reine Politur); konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
+- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: Elementar-Durchdringung ja/nein (RD-Pendant); konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
 - [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)

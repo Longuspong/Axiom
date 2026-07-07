@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.17  
-**Stand:** 2026-07-05  
+**Version:** 0.18  
+**Stand:** 2026-07-07  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -268,12 +268,13 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 ### 5.2 Kampfsystem
 
 - **Schadens-/Angriffsarten:** Nahkampfangriff, Fernkampfangriff, Zauber, Fähigkeit
-- **Schadenstypen:** Physisch, Magisch
+- **Schadenstypen:** Physisch, Magisch, **Elementar** *(→ Details „Schadenstyp Elementarschaden" unten)*
 - **Defensive Werte:**
   - **Rüstung** — flacher Abzug gegen *physischen* Schaden (pro Treffer)
   - **Resistenz** — flacher Abzug gegen *magischen* Schaden (pro Treffer)
+  - **Elementardiffusion** — flacher Abzug gegen *elementaren* Schaden (pro Treffer), ein globaler Wert gegen alle vier Elemente (→ „Schadenstyp Elementarschaden" unten). Symmetrisch zu Rüstung/Resistenz; greift nur gegen Elementarschaden.
   - *(„Block" ist kein Wert mehr, sondern eine Reaktion → siehe Reaktionen)*
-- **Schadensreduktion (Attribut):** **WID** liefert die **prozentuale** Reduktion (physisch **und** magisch); **WIL** bleibt rein offensiv (magischer Schaden).
+- **Schadensreduktion (Attribut):** **WID** liefert die **prozentuale** Reduktion für alle drei Typen (physisch, magisch **und** elementar); **WIL** bleibt rein offensiv (magischer Schaden). Der Flat-Abzug läuft typ-getrennt über Rüstung (phys.), Resistenz (mag.) und Elementardiffusion (elem.).
   - *Design-Entscheidung: Prozent-Reduktion konsolidiert auf WID (kein Split auf INT/WIL). Der physisch/magisch-Split lebt über die flachen Werte Rüstung vs. Resistenz bzw. die Ausrüstung.*
 
 ---
@@ -337,7 +338,7 @@ R%  = WID / (WID + 100)    (abnehmender Ertrag, nie 100 %)
 **Die drei getrennten Hebel:**
 
 - **WID → prozentuale Reduktion** (beide Schadenstypen), abnehmender Ertrag (Halbwert bei WID = 100). Das ist die *allgemeine Zähigkeit*.
-- **Rüstung (physisch) / Resistenz (magisch) → flacher Abzug pro Treffer.** Das ist *Panzerung* — eine Eigenschaft schwerer Rüstung; Squishy-Builds haben **≈ 0**.
+- **Rüstung (physisch) / Resistenz (magisch) / Elementardiffusion (elementar) → flacher Abzug pro Treffer.** Das ist *Panzerung* — pro Schadenstyp genau ein Flat-Wert; Squishy-Builds haben **≈ 0**. (Elementardiffusion nur über Element-/Themen-Set-Ausrüstung, → §5.2 „Elementarschaden".)
 - **Rüstungsdurchdringung (RD) → prozentual**, senkt die Rüstung/Resistenz des Ziels **vor** der Berechnung. Wirkt **nur auf den Flat-Wert, nicht auf die WID-Prozentreduktion** — RD kontert Panzerung, nicht allgemeine Zähigkeit.
 
 **Zwei Designregeln, die das System tragen:**
@@ -386,6 +387,76 @@ EHP-Faktor = 1 / (1 − R%) = (WID + 100) / 100 = 1 + WID/100
 → Jede **100 WID = +1 volle Lebensleiste effektiv**. Konsequenz: **keine verschwendeten späten Punkte** (Stacking lohnt konstant), aber auch **kein kaputtes Stacking** (man nähert sich nie 100 % Immunität). Der gefühlte abnehmende %-Ertrag ist genau das Self-Balancing, das einen Tank nicht unkillbar werden lässt.
 
 **WID-Cap — Entscheidung: kein Cap** *(2026-07-03)*: Die Formel begrenzt sich selbst — sie nähert sich 100 % nur asymptotisch (WID 100 = 50 %, WID 200 = 66,7 %), jeder weitere Punkt bringt prozentual weniger. Ein künstlicher Deckel ist damit überflüssig; das Balancing läuft über die **Verfügbarkeit** von WID (Items, Skilltree-Nodes, Buffs), nicht über eine Sonderregel.
+
+---
+
+#### Schadenstyp Elementarschaden *(2026-07-06, Diffusion-Modell 2026-07-07)*
+
+**Dritter Schadenstyp** neben Physisch und Magisch — **strukturell vollkommen symmetrisch** zu den beiden bestehenden: eigener Flat-Wert + dieselbe WID-Prozentreduktion. Keine Sonderregel, kein „ignoriert die Panzerung"-Sonderfall mehr.
+
+- **Eigener Flat-Wert: Elementardiffusion** — reduziert Elementarschaden flach pro Treffer, genau wie **Rüstung** den physischen und **Resistenz** den magischen Schaden reduziert.
+- **Rüstung und Resistenz greifen NICHT gegen Elementarschaden** (und umgekehrt Elementardiffusion nicht gegen physisch/magisch) — jeder Typ hat exakt einen zugehörigen Flat-Wert.
+- **WID reduziert alle drei Typen gleich** (prozentual, `WID/(WID+100)`) — die allgemeine Zähigkeit ist typ-neutral.
+- **Wird aus dem Gesamt-Rohschaden herausgeschnitten, nicht addiert:** Trägt ein Angriff einen Element-Anteil (z. B. Bogen „20 % Hitze"), sind das 20 % **des ohnehin berechneten Rohschadens** — der Rest bleibt physisch bzw. magisch. Ein 50-Roh-Treffer mit 20 % Hitze = **10 Elementar + 40 konventionell**, nicht 60.
+
+**Die drei Reduktions-Achsen (symmetrisch):**
+
+| Schadenstyp | Flat-Wert (pro Treffer) | %-Wert |
+|---|---|---|
+| Physisch | **Rüstung** | WID |
+| Magisch | **Resistenz** | WID |
+| Elementar | **Elementardiffusion** | WID |
+
+**Die vier Elemente** *(Element ≠ Schadensart — die Schadensart ist bewusst anders benannt, damit sie nicht mit den gleichnamigen Statuseffekten kollidiert, z. B. Brennen zum Feuer)*:
+
+| Element | Schadensart |
+|---|---|
+| **Feuer** | Hitzeschaden |
+| **Eis** | Kälteschaden |
+| **Natur** | Terraschaden |
+| **Donner** | Elektroschaden |
+
+Ein Wert Elementardiffusion wirkt gegen **alle vier** Elemente gleich (ein globaler Flat-Wert, keine Feuer-/Eis-Einzelwerte). *Namenswahl: „Diffusion" statt „Widerstand", um Verwechslung mit dem Attribut **Widerstandskraft (WID)** und dem physisch/magisch-Flat-Wert **Resistenz** zu vermeiden.*
+
+**Abgrenzung magisch ↔ elementar** *(löst die Grenzfrage über bestehende Lore, §5.3)*: **Elementarschaden** stammt aus der **Elementar-Zauberschule** und aus elementalen Anteilen auf Waffen/Gravuren (die vier Elemente). **Magischer Schaden** ist das *nicht-elementale* arkane Zeug der **Chaos-Zauberschule** (roher Willens-/Fluch-/Schattenschaden). Zwei Magieschulen → zwei Schadenstypen, kein Überlappungs-Graubereich.
+
+**Formel** *(identische Pipeline für alle drei Typen — nur der Flat-Wert unterscheidet sich):*
+
+```
+Roh_elem  = Anteil × Roh_gesamt           (z. B. 20 % × 50 = 10)
+Roh_konv  = Roh_gesamt − Roh_elem          (Rest: physisch ODER magisch)
+
+R%           = WID / (WID + 100)           (gilt für alle drei Typen)
+Schaden_konv = max( ⌈Roh_konv × (1 − R%)⌉ − Rüstung/Resistenz , 1 )
+Schaden_elem = max( ⌈Roh_elem × (1 − R%)⌉ − Elementardiffusion , 1 )
+
+Schaden_gesamt = Schaden_konv + Schaden_elem
+```
+
+**Beispiel** — Treffer für **70 Roh = 40 Hitze + 30 physisch**. „Diffusion" hier = Flat-Wert 12 (z. B. aus einem Element-/Themen-Set):
+
+| Ziel | phys. Teil (30) | elem. Teil (40 Hitze) | Gesamt |
+|---|---|---|---|
+| **Squishy** (WID 30, Rüstung 0, Diff 0) | ⌈30×0,77⌉−0 = **24** | ⌈40×0,77⌉−0 = **31** | **55** |
+| **Squishy** (WID 30, Rüstung 0, **Diff 12**) | **24** | 31−12 = **19** | **43** |
+| **Tank** (WID 80, Rüstung 12, Diff 0) | ⌈30×0,56⌉−12 = 17−12 = **5** | ⌈40×0,56⌉−0 = **23** | **28** |
+| **Tank** (WID 80, Rüstung 12, **Diff 12**) | **5** | 23−12 = **11** | **16** |
+
+> **Lesart:** Elementardiffusion zieht flach vom Elementarteil ab — genau wie Rüstung vom physischen (12 → −12 auf den Elementartreffer). Ohne Diffusion frisst der Tank fast seinen ganzen Schaden über den Elementaranteil (23 von 28 = 82 %, weil seine Rüstung nur den physischen Teil abfängt); mit 12 Diffusion halbiert er ihn (23 → 11). Der Konter ist jetzt ein **normaler Verteidigungswert**, kein Sonderfall.
+
+**Itemisierung — so werden Tanks abgestuft** *(Nutzer-Entscheidung 2026-07-07)*:
+
+- **Pures Material** (`Theme/Set: "Pures Material"`, alle heutigen Einträge) trägt **nur Rüstung und/oder Resistenz** — **keine** Elementardiffusion. Damit ist **jeder** Tank in Rohmaterial-Rüstung grundsätzlich gegen physisch/magisch wirksam (Status quo unverändert).
+- **Element-/Themen-/Set-Ausrüstung** (künftige Kategorie) kann **Elementardiffusion** tragen — gegebenenfalls gemischt mit einem Anteil Rüstung/Resistenz.
+- **Spezialisierung:** Wer eine Achse stackt (Voll-Platte → Rüstung, Robe-Set → Resistenz, Element-Set → Elementardiffusion), wird in **dieser** Kategorie besonders zäh. Das ist ein bewusster Gear-**Trade-off** analog zum Attributsbudget (§5.3) — Diffusion konkurriert um Slots/Budget mit Rüstung/Resistenz, ist also kein Free Lunch.
+
+**Design-Rollen (Stein-Schere-Papier):** Reine physische Panzerung (Platte) ist stark gegen physisch, aber **nackt gegen Elementar**, solange sie keine Elementardiffusion mitbringt — Elementarschaden bleibt der Konter gegen einseitige Panzer-Stacker, ohne dass der Schadenstyp strukturell unblockbar sein muss. **Quellen für Elementarschaden** *(Phase 1 zu befüllen)*: Waffen-/Gravuren-„X % Element"-Anteile, Elementarzauber, Element-Gravuren — bindet an die **Essenzen** des Crafting-Systems (Feuer-Essenz usw., §5.8).
+
+**Offene Punkte** *(→ §11)*:
+
+- **Element-/Themen-Set-Ausrüstung designen** (die einzige Diffusion-Quelle): Werteskala für Elementardiffusion, Mischverhältnis mit Rüstung/Resistenz, wie sie droppt/craftbar ist.
+- **Elementar-Durchdringung?** Physisch/magisch haben RD (senkt den Flat-Wert vor der Rechnung); ob es ein Diffusion-durchdringendes Pendant für elementale Angriffe gibt, ist offen.
+- **Statuseffekt-Harmonisierung:** Brennen zählt heute als *physischer*, Gift als *magischer* Schaden (§5.2). Ob die vier Elemente eigene bzw. umtypisierte Statuseffekte/DoTs bekommen (Blutung = physisch, Brennen↔Hitze, Gift↔Terra, + ein Chaos-DoT für magisch), ist offen — reine Politur, blockiert nichts.
 
 ---
 
@@ -958,7 +1029,7 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 | WIL | Willenskraft | Magischer Schaden; Voraussetzung für Top-Ausrüstung |
 | INT | Intelligenz | Mana-Pool/-Effizienz; Heilungs- und Schutzskalierung; Buff-Dauer |
 | VIT | Vitalität | HP-Pool; Skalierung von beschworenen Einheiten |
-| WID | Widerstandskraft | Prozentuale Schadensreduktion (physisch + magisch) — Formel in §5.2; flache Reduktion läuft über Rüstung/Resistenz |
+| WID | Widerstandskraft | Prozentuale Schadensreduktion (physisch, magisch + elementar) — Formel in §5.2; flache Reduktion läuft typ-getrennt über Rüstung/Resistenz/Elementardiffusion |
 | STR | Stärke | Physischer Schaden (Abkürzung STR statt STÄ) |
 | GES | Geschicklichkeit | Bewegung, Ausweichen, Schütze-Skalierung |
 | *(weitere folgen)* | | |
@@ -1503,7 +1574,9 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
-- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht) — es fehlt noch die **konkrete, feste Elementliste** und die **vollständige Materialliste** „mit allem drum und dran" als Grundlage für **Lex Tactica** (§8.5)
+- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
+- [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
+- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: Elementar-Durchdringung ja/nein (RD-Pendant); Statuseffekt-Harmonisierung (Blutung = physisch, Brennen↔Hitze, Gift↔Terra, + Chaos-DoT für magisch — reine Politur); konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
 - [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)

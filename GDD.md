@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.19  
+**Version:** 0.20  
 **Stand:** 2026-07-07  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -1012,11 +1012,23 @@ Attribute kommen zu **2/5 aus der Rüstung** (Körper+Kopf+Füße zusammen) und 
 
 ### 5.4 Skill- & Fähigkeitssystem
 
-- Jede Klasse hat einen eigenen Skilltree mit mehreren Spezialisierungspfaden
+- **Ein einziger, universeller Skilltree** mit klassenabhängigem Einstiegspunkt — kein separater Baum pro Klasse (siehe §5.3, „Modulare Ausrüstungs-/Skilltree-Philosophie")
 - Synergien zwischen Klassen sind zentral für taktische Tiefe
 - Erste Synergien werden im Prolog-Tutorial eingeführt
 - Klassen-Arks (→ §9.5) schalten besondere Aufträge per klassenspezifischer Herausforderung frei
-- **Details (Skilltree-Struktur, Punkte, Respec):** *(folgt)*
+
+**Skilltree-Struktur (Grundlage, 2026-07-07):**
+
+- **Form:** Radialer Baum mit **6 Sektoren**, einer pro Attribut (STR, GES, WIL, INT, VIT, WID), angeordnet wie ein Rad. Jede Klasse hat einen festen **Einstiegspunkt** im Sektor ihres Identitätsattributs (Krieger→STR/WID-Grenze, Schütze→GES, Magier→WIL, Mystiker→INT, Assassine→GES/STR-Grenze). Von dort führen Pfade **radial nach außen** (Spezialisierung im eigenen Attribut) und **tangential zu Nachbarsektoren** (Hybridisierung) — bildet „Jede Klasse kann alles" ab, ohne dass der Baum strukturlos wird: die Entfernung zum Einstiegspunkt ist die natürliche Bremse gegen unbalancierte Chaos-Builds.
+- **Node-Typen:**
+  - **Attributsnodes** (klein, günstig): +1 bis +3 auf ein Attribut; Dichte so kalibriert, dass ein reiner Pfad in den eigenen Sektor bei ~Level 25 die **~70 Punkte** erreicht, die das Rüstungsbudget 2/5:3/5 voraussetzt (§5.3)
+  - **Notable-Nodes** (mittel, an Sektorgrenzen/Knotenpunkten): konkrete Boni (Mana-Pool, MOB, Krit-Chance-Quelle, Ausweichen-Quelle)
+  - **Keystone-Nodes** (selten, an Pfad-Enden): build-definierend, entsprechen den Spezialisierungspfaden aus §5.3 (z. B. Magier-Chaos-Build „Fähigkeiten kosten HP statt Mana", Mystiker-DoT-Build)
+- **Punkte-Ökonomie:** 1 Punkt/Level = 50 Punkte total, aber nicht linear ausgebbar — Wegkosten (Attributsnodes zum Durchqueren) skalieren mit der Entfernung vom Sektor-Zentrum und erzeugen dadurch von selbst die in §5.3 festgelegte Kurve (linear bis ~25, strafft sich ab 35). Level 46–50 = 5 Bonuspunkte, ausschließlich für die letzten Keystones — natürlicher Ort für die in §5.3 vorgesehene Klassen-Prüfung/den Herausforderungsmodus als Freischaltbedingung.
+- **Frühgame-Führung:** Die ersten ~10 Punkte ab dem Einstiegspunkt liegen auf einem einzigen, optisch hervorgehobenen Pfad (kein Fork) — reine Führung für neue Spieler, jederzeit verlassbar, keine Sperre (§5.3, „lineare, empfohlene Pfade").
+- **Attributsvoraussetzungen für starke Kombos** (löst die in §5.3 offene Evaluationsfrage): keine harten Zahlenschranken, sondern **weiche Gates über Keystone-Kosten** — ein Hybrid-Keystone (z. B. Fernkampf-GES + magischer Schaden) kostet mehr Punkte UND sitzt an einer Stelle, die nur über Wegkosten durch beide Sektoren erreichbar ist. Reguliert starke Kombos über Investitionsaufwand statt einer separaten Sonderregel.
+- **Respec:** frei bis Level 15 (Experimentierphase, deckt sich mit dem linearen Frühgame), danach kostenpflichtig über eine Bergheim-Einrichtung (Ressourcenkosten, skalierend mit investierten Punkten).
+- **Offen:** konkrete Notable-/Keystone-Listen pro Klasse, exakte Attributsnode-Dichte/-Kosten-Tabelle, Godot-Umsetzung im Yggdrasil-Editor (→ §11)
 
 ### 5.5 Fraktionsboni
 
@@ -1536,7 +1548,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet *(2026-07-04, §5.3 „Stellar-Stufe")*: Prim 84/100/70, Kapazität +2 über Kosmium (L4/L5-Signatur-Unlock), Verfeinerung 3×, Stellar-Eigenarten ✦, Lichtresonanz-Flag; Sek-WID eingedampft (Hammer → Körper-Tier, Jagd-/Langbogen → Sek STR); Zweihand-Kapazitätsbonus auf S7-B-Waffen angewandt; Zepter → B
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
 - [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05/06, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen inkl. Geschirr/Haube/Riemen/Beschlag, alle Ausrüstungskategorien craftbar, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **offen nur noch: Gravuren-Katalog + Materialherkunft/Essenzen (s. u.)**
-- [ ] Skilltree-Struktur designt (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — die *Umsetzung* in Godot ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
+- [x] Skilltree-Struktur designt *(2026-07-07, §5.4)*: radialer Baum mit 6 Attribut-Sektoren, klassenabhängige Einstiegspunkte, Attributs-/Notable-/Keystone-Nodes, Punkte-Ökonomie (1/Level, Wegkosten erzeugen die §5.3-Kurve), Frühgame-Führungspfad, weiche Kombo-Gates über Keystone-Kosten, Respec (frei bis Level 15, danach kostenpflichtig). Offen bleiben Notable-/Keystone-Listen pro Klasse + die *Umsetzung* in Godot — das ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
 - [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
@@ -1581,7 +1593,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Offen — Systeme:**
 
-- [ ] Skilltree ausarbeiten (universeller Baum, Einstiegspunkte, Punkte pro Level, Respec) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
+- [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)

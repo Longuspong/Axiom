@@ -226,7 +226,8 @@ tactical RPG, HD pixel art style, no background, transparent
 | Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
 | Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |
 | Attribute | WIL, INT, VIT, WID, STR, GES — alle 3 Buchstaben Caps |
-| Schadensreduktion | 3 Hebel: **WID** = prozentual (`WID/(WID+100)`, beide Typen), **Rüstung/Resistenz** = flacher Abzug pro Treffer (physisch/magisch, Squishy≈0), **RD** = Rüstungsdurchdringung (prozentual, senkt nur den Flat-Wert). WIL bleibt rein offensiv. Multi-Hit = höherer Gesamt-Rohschaden |
+| Schadensreduktion | 3 Hebel: **WID** = prozentual (`WID/(WID+100)`, alle 3 Typen), **Rüstung/Resistenz/Elementardiffusion** = flacher Abzug pro Treffer (physisch/magisch/elementar, Squishy≈0), **RD** = Rüstungsdurchdringung (prozentual, senkt nur den Flat-Wert). WIL bleibt rein offensiv. Multi-Hit = höherer Gesamt-Rohschaden |
+| Schadenstyp Elementar | **3. Schadenstyp** (§5.2, 2026-07-07), voll symmetrisch: eigener Flat-Wert **Elementardiffusion** (wie Rüstung/Resistenz) + gemeinsame WID-%. 4 Elemente: Feuer→Hitze, Eis→Kälte, Natur→Terra, Donner→Elektro (ein globaler Diffusion-Wert gegen alle 4). Abgrenzung: elementar = Elementarschule/Element-Anteile, magisch = Chaosschule. **Diffusion nur über künftige Element-/Themen-Set-Ausrüstung** — „Pures Material"-Rüstung bleibt Rüstung/Resistenz-only (kein JSON-Umbau). WID-Multiplikator-Ansatz („Elementarbann") verworfen zugunsten Flat-Symmetrie |
 | Bögen-Reichweite | Notation `optimal/max` (z. B. 3–4/5); −30 % Schaden & Trefferchance pro Feld außerhalb der Optimalzone; Adlerauge +1 auf beide Grenzen |
 | Armbrüste | Repetierarmbrust = E (einhändig, leicht); Kriegsarmbrust = B (beidhändig, schwer); beide 1–2 Felder optimal |
 | Speed-System | Basiswert 1,0; Gewichtsklassen Schnell/Wendig/Ausgeglichen/Bedächtig/Träge; Waffe+Körper ±0,30; Kopf+Füße ±0,20; Max Bonus/Malus ±1,0 |

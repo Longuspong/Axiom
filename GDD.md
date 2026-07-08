@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.20  
-**Stand:** 2026-07-07  
+**Version:** 0.21  
+**Stand:** 2026-07-08  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -317,7 +317,7 @@ Rohschaden = WIL (Einheit) + WIL (Waffe) + Buffs/Debuffs
 
 > STR und WIL kumulieren aus allen Quellen (Basisattribut + Waffe + Ausrüstung + Buffs).
 
-> **Reichweitenunabhängig, interim** *(2026-07-07)*: Diese Formel gilt für **jeden** Zauber-/Magieangriff, unabhängig von der Waffenreichweite — sie deckt also auch Zauberstab und Energiesphäre ab (beide `Reichweite 3`), nicht nur echten Nahkampf. Es gibt bewusst **keine separate Fernkampf-Magisch-Formel**: Zauber-Angriffe auf Distanz sind seltener als Schützen-Angriffe (Mana-Kosten, geringere Angriffe/Zug), daher ist die geteilte Formel vorerst unproblematisch. **Bewusst als Platzhalter markiert** — wird ausführlicher besprochen, sobald die übrigen Schadenstyp-Punkte (Kriegsgeräte-Neuordnung, Statuseffekt-Elementartypen) geklärt sind (→ §11).
+> **Reichweitenunabhängig — final** *(entschieden 2026-07-08, löst die am 2026-07-07 vertagte tiefere Diskussion ab)*: Diese Formel gilt für **jeden** Zauber-/Magieangriff, unabhängig von der Waffenreichweite — sie deckt also auch Zauberstab und Energiesphäre ab (beide `Reichweite 3`), nicht nur echten Nahkampf. Es gibt bewusst **keine separate Fernkampf-Magisch-Formel und keinen Trefferchance-Falloff** wie bei Bögen: Zauber-Fernangriffe sind seltener als Schützen-Angriffe (Mana-Kosten, geringere Angriffe/Zug), und Zauberwaffen bekommen bewusst **keine größere Reichweite** — wer aus der Backline zaubern will, muss näher ran (Reichweite bleibt bei 3). Der Ausgleich zwischen Fernkampf- und Frontline-Magier läuft über den Skilltree-Pfad (WIL+WID = zäher, aber exponierter, §5.4), nicht über eine eigene Formel. Feintuning bei Bedarf über die Reichweiten-Zahl selbst, nicht über eine neue Mechanik — Playtests (Phase 1) zeigen, ob das reicht.
 
 **Fernkampf (Schützen-Skalierung):**
 ```
@@ -341,7 +341,7 @@ R%  = WID / (WID + 100)    (abnehmender Ertrag, nie 100 %)
 
 - **WID → prozentuale Reduktion** (beide Schadenstypen), abnehmender Ertrag (Halbwert bei WID = 100). Das ist die *allgemeine Zähigkeit*.
 - **Rüstung (physisch) / Resistenz (magisch) / Elementardiffusion (elementar) → flacher Abzug pro Treffer.** Das ist *Panzerung* — pro Schadenstyp genau ein Flat-Wert; Squishy-Builds haben **≈ 0**. (Elementardiffusion nur über Element-/Themen-Set-Ausrüstung, → §5.2 „Elementarschaden".)
-- **Rüstungsdurchdringung (RD) → prozentual**, senkt die Rüstung/Resistenz des Ziels **vor** der Berechnung. Wirkt **nur auf den Flat-Wert, nicht auf die WID-Prozentreduktion** — RD kontert Panzerung, nicht allgemeine Zähigkeit.
+- **Rüstungsdurchdringung (RD) → prozentual**, senkt **den zum Treffer passenden Flat-Wert** des Ziels **vor** der Berechnung — Rüstung bei physisch, Resistenz bei magisch, **Elementardiffusion bei elementar** *(generalisiert 2026-07-08 — „Elementar-Durchdringung" ist kein eigener Stat, sondern derselbe RD-Wert, angewendet auf den elementaren Flat-Wert, spiegelbildlich zu WID: eine Durchdringung, drei Ziele)*. Wirkt **nur auf den Flat-Wert, nicht auf die WID-Prozentreduktion** — RD kontert Panzerung, nicht allgemeine Zähigkeit.
 
 **Zwei Designregeln, die das System tragen:**
 
@@ -458,10 +458,11 @@ Schaden_gesamt = Schaden_konv + Schaden_elem
 
 **Statuseffekt-Harmonisierung** *(entschieden 2026-07-07)*: **Brennen** (Einheiten-Statuseffekt) und **„In Brand gesteckt"** (Feld-Statuseffekt) verursachen jetzt **Hitzeschaden** (Feuer-Element) statt physisch. **Vergiftet/Gift** und **Giftnebel** verursachen jetzt **Terraschaden** (Natur-Element) statt magisch. Beide DoTs bleiben in ihrer Mechanik unverändert (feste % von max. Leben bzw. fehlendem Leben, keine Reduktions-Pipeline) — nur der Schadenstyp-Tag ändert sich, was sie ab sofort für **Elementardiffusion**-Ausrüstung (nicht Rüstung/Resistenz) relevant macht, sobald DoTs regulär reduziert werden. **Blutung** bleibt bewusst unangetastet (weiterhin hälftig physisch/magisch) — sie ist an physische Waffen gebunden, nicht an ein Element. Umgesetzt in §5.2 „Statuseffekte" unten.
 
+**Elementar-Durchdringung — entschieden** *(2026-07-08)*: Kein eigener Stat. RD ist bereits generisch (→ „Schadensreduktion — WID-Formel" oben) und wirkt auf **Elementardiffusion genauso wie auf Rüstung/Resistenz**. Ein **dedizierter** Elementar-Piercing-Waffentyp (analog zur Kriegsarmbrust als physischer „Plattenknacker") ist bewusst vertagt, bis die Element-/Themen-Set-Ausrüstung existiert und Elementar-Tank-Stacking überhaupt zum Balancing-Thema wird.
+
 **Offene Punkte** *(→ §11)*:
 
 - **Element-/Themen-Set-Ausrüstung designen** (die einzige Diffusion-Quelle): Werteskala für Elementardiffusion, Mischverhältnis mit Rüstung/Resistenz, wie sie droppt/craftbar ist.
-- **Elementar-Durchdringung?** Physisch/magisch haben RD (senkt den Flat-Wert vor der Rechnung); ob es ein Diffusion-durchdringendes Pendant für elementale Angriffe gibt, ist offen.
 
 ---
 
@@ -1556,13 +1557,16 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Ideen für Phase 1 vorgemerkt** *(2026-07-06)*:
 - **Ressourcen-Minispiel/Gamemodus (Idee)**: Kupfer-/Eisen-/Stahl-„Golems" als Gegnertyp in einer eigenen Minenregion, die gezielt zum Ressourcenfarmen aufgesucht wird; alternativ/ergänzend ein Warframe-artiges **Expeditions-System** — einen Trupp für eine festgelegte Zeit in Region X aussenden, danach Ressourcen-Ertrag abholen. Noch unentschieden, ob eigener Gamemodus oder Hub-Feature.
 - **Aspektsplitter im Shop kaufbar?** — Frage, ob Aspektsplitter (teilweise) käuflich erwerbbar sein sollen; wird im Rahmen des noch zu designenden Shop-Systems mitbesprochen.
+- **Elementar-Zusatzeffekte pro Schadensart (Idee, 2026-07-08)**: Jede Elementarschadensart soll einen kleinen, **kein**-Statuseffekt-artigen Kampf-Gimmick bekommen — bewusst schwächer als Statuseffekte/Eigenarten, aber spürbar. Angedacht: **Kälte → Slow** (Bewegungs-/Positions-Malus, einmalig, kein Stack), **Elektro → Kettenblitz** (springt auf ein benachbartes Ziel über). Feuer- und Terra-Pendant noch offen — Diskussion nicht abgeschlossen, konkrete Werte/Trigger-Chancen fehlen komplett.
+- **Elementar-Reaktionssystem — Genshin-artig? (Idee, 2026-07-08)**: Frage, ob das Kombinieren zweier Elemente auf demselben Ziel einen Bonuseffekt auslösen soll (Nutzer-Idee). Thematisch reizvoll für Trupp-Tactics (mehrere Einheiten setzen gezielt unterschiedliche Elemente hintereinander), aber zwei offene Risiken: **Schadenseskalation** (selbst genannt) und **Namenskollision** mit dem bestehenden „Reaktionen"-Begriff (Gegenschlag/Parieren/Zauberblock/Konter, §5.2) — bräuchte einen eigenen Namen. Noch nicht evaluiert; frühestens sinnvoll nach den Elementar-Zusatzeffekten (s. o.) und einer echten Element-Itemisierung (Element-Sets).
 
 ---
 
 **Erledigt (Referenz):**
 
 - [x] **Kriegsgeräte-Neuordnung entschieden** *(2026-07-07, §5.3)*: Hammer & Rammbock → Prim **WID** / Sek **STR** (physische Zäh-Bruiser); Zepter → Prim **WIL** (unverändert) / Sek **WID** (statt INT) — bleibt voller Magie-Schadensträger + wird zäher („Battlemage"). WID-Reihe überall 3/5/7/10/13/17/23 (Rüstungs-Prim-Tier, 2/5-Budget-konform). Löst zugleich die Metadaten-Inkonsistenz in `stat_skalierung.Kriegsgeräte` (Klassen-Default deckte Zepters echtes Prim/Sek nicht ab)
-- [x] **Rohschaden-Formel Magisch geklärt** *(2026-07-07, §5.2)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie — bewusst kein separates Fernkampf-Magisch, da Zauber-Fernangriffe seltener sind als Schützen-Angriffe. Als Platzhalter markiert, tiefere Diskussion folgt später
+- [x] **Rohschaden-Formel Magisch final entschieden** *(2026-07-08, §5.2, löst die am 2026-07-07 vertagte Diskussion ab)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie, kein Falloff, Zauberwaffen-Reichweite bleibt bei 3 — wer aus der Backline zaubern will, muss näher ran. Ausgleich Fernkampf-/Frontline-Magier läuft über den Skilltree-Pfad, nicht über eine eigene Formel; Feintuning bei Bedarf über die Reichweiten-Zahl (Playtests Phase 1)
+- [x] **Elementar-Durchdringung entschieden** *(2026-07-08, §5.2)*: kein eigener Stat — RD ist bereits generisch und wirkt auf Rüstung/Resistenz/**Elementardiffusion** gleichermaßen. Dedizierter Elementar-Piercing-Waffentyp bewusst vertagt, bis Element-/Themen-Set-Ausrüstung existiert
 - [x] **Statuseffekt-Harmonisierung entschieden** *(2026-07-07, §5.2)*: Brennen + „In Brand gesteckt" → **Hitzeschaden** (Feuer); Vergiftet/Gift + Giftnebel → **Terraschaden** (Natur); Blutung bleibt hälftig physisch/magisch (an physische Waffen gebunden, kein Element). Zudem geklärt: „Zauberschaden"-Boni (Foliant/Energiekristall) wirken auf den **Rohschaden vor dem Elementar-Split** — treffen also automatisch beide Anteile eines gemischten Zaubertreffers
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
@@ -1597,7 +1601,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
-- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: Elementar-Durchdringung ja/nein (RD-Pendant); konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
+- [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
 - [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)

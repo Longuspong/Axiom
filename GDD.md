@@ -1387,9 +1387,88 @@ Listet alle genutzten externen Ressourcen:
 
 ### 8.5 Lex Tactica — Kompendium
 
-*(neu 2026-07-06)* **Lex Tactica** ist das große Buch des Protagonisten — narrativ sein persönliches Nachschlagewerk, funktional das **interne Wiki/Kompendium des Spiels**. Es wächst mit dem Spielfortschritt und soll perspektivisch alles Wissenswerte bündeln: vollständige Material- & Elementliste (Barren/Aspektsplitter/Essenzen, §5.8), Item-/Gravuren-Katalog, Bestiarium, Lore-Einträge.
+*(neu 2026-07-06; Struktur & erster Grundstock 2026-07-09)* **Lex Tactica** ist das große Buch des Protagonisten — narrativ sein persönliches Nachschlagewerk, funktional das **interne Wiki/Kompendium des Spiels**. Es wächst mit dem Spielfortschritt und bündelt perspektivisch alles Wissenswerte: Material- & Elementliste (Barren/Aspektsplitter/Essenzen, §5.8), Item-/Gravuren-Katalog, Bestiarium, Kampfregeln, Lore.
 
-**Noch offen** *(Struktur, Freischalt-Logik — automatisch vs. Entdeckung —, UI-Darstellung; s. §11)*: Die konkrete Ausgestaltung folgt, sobald die zugrunde liegenden Datensätze (Element-/Materialliste, Gravuren-Katalog) stehen.
+#### Aufbau — Rubriken (Kapitel)
+
+| Rubrik | Inhalt | Stand |
+|---|---|---|
+| **1. Materialien** | Barren-Stufen, Aspektsplitter, Essenzen (§5.8) | Grundstock befüllt (s. u.) |
+| **2. Bauteile & Prägungen** | die 12 Crafting-Rohlinge (§5.8) | befüllt (s. u.) |
+| **3. Ausrüstung** | Waffen, Rüstung, Offhands — Katalog aus den Daten-JSONs | Platzhalter (Daten stehen, Einzug folgt) |
+| **4. Gravuren** | Gravuren-Katalog nach Typ (§5.7) | Platzhalter (Katalog offen, §11) |
+| **5. Bestiarium** | Gegnertypen mit Schaden / Resistenzen / Schwächen | Platzhalter (Gegner-Design offen) |
+| **6. Kampf-Kodex** | Schadenstypen ↔ Resistenzen, Statuseffekte, Kernregeln | spiegelt §5.2 (s. u.) |
+| **7. Welt & Lore** | Regionen, Fraktionen, Story-Kodex | Platzhalter (aus §2–§4) |
+
+#### Eintrags-Template & Freischaltung
+
+- **Knappe Wiki-Card:** Jeder Eintrag folgt demselben schlanken Schema — **Name · Kategorie (Stufe/Typ) · Herkunft** (wo bekomme ich es) **· Verwendung** (wofür) **· ein Satz Flavor**. Bewusst kompakt, damit hunderte Item-/Material-Einträge pflegbar bleiben; längere Lore lebt in Rubrik 7, nicht in jeder Card.
+- **Freischaltung „Entdeckung":** Ein Eintrag füllt sich **automatisch bei der ersten Begegnung** (erstes Looten/Craften eines Materials, erstes Töten eines Gegnertyps, erstes Betreten einer Region). Vorher ist der Slot als **„? — unentdeckt"** sichtbar (man sieht, *dass* es etwas gibt = Sammel-/Fortschrittsanreiz), Werte bleiben verborgen. Deckt sich mit „wächst mit dem Spielfortschritt", braucht kein eigenes Kauf-/Forschungssystem.
+- **Bestiarium-Sonderfall (progressiv):** Erst-*Sichtung* schaltet Name/Bild frei; die **Schwächen/Resistenzen** eines Gegnertyps werden erst nach einigen Kämpfen (oder per Scout-Fähigkeit) sichtbar — belohnt Wiederbegegnung und macht Aufklärung taktisch wertvoll.
+
+#### Rubrik 1 — Materialien *(Grundstock)*
+
+**Barren (Materialstufen)** — die Fortschritts-Achse der Ausrüstung; jede Stufe hebt Werte-Tier & Slot-Kapazität. Beschaffung: **von jedem Gegner farmbar** (Stufe skaliert mit Gegner-Stufe) **+ garantiert aus dem Zerlegen** gleichstufiger Items; Aufstufung im Crafting **7:1**, endet bei Adamant (§5.8).
+
+| Stufe | Barren | Beschaffung | Flavor |
+|---|---|---|---|
+| 1 | **Kupfer** | frühe Regionen, jeder Standard-Gegner | *(folgt)* |
+| 2 | **Eisen** | breit farmbar | *(folgt)* |
+| 3 | **Stahl** | mittlere Regionen | *(folgt)* |
+| 4 | **Titan** | spätere Regionen / stärkere Gegner | *(folgt)* |
+| 5 | **Adamant** | höchste farm- & aufstufbare Stufe | *(folgt)* |
+| 6 | **Kosmium** | **nur aus zerlegten Kosmium-Items** (nicht aufstufbar) | *(folgt)* |
+| ✦ | **Stellar** | **nicht craftbar** — ausschließlich Loot/Drop (§5.3) | *(folgt)* |
+
+**Aspektsplitter** — bestimmen im Crafting den **Typ** des Outputs (ein Splitter je Waffentyp, je Gravurtyp und je Rüstungsslot). Beschaffung: von bestimmten Einheiten + garantiert aus dem Zerlegen; Umwandlung 3:1 (§5.8). *(Vollständige Splitter-Liste = Ableitung aus den 16 Waffentypen + Gravurtypen + 3 Rüstungsslots; wird mit dem Item-Einzug in Rubrik 3 gefüllt.)*
+
+**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2):
+
+| Essenz | Element / Schadensart | Beschaffung |
+|---|---|---|
+| **Feuer-Essenz** | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
+| **Eis-Essenz** | Eis / Kälteschaden | selten, elite-/boss-gebunden |
+| **Natur-Essenz** | Natur / Terraschaden | selten, elite-/boss-gebunden |
+| **Donner-Essenz** | Donner / Elektroschaden | selten, elite-/boss-gebunden |
+
+> Region 1 (Orks) bleibt **bewusst ohne Elementfokus** — dort droppen keine Essenzen (deckt sich mit §9.6 „kein Magie-Loot"). Essenzen kommen erst mit späteren, elementaffinen Regionen/Gegnern.
+
+#### Rubrik 2 — Bauteile & Prägungen *(befüllt)*
+
+Die 12 Crafting-Rohlinge (§5.8). Beschaffung: aus dem Zerlegen bzw. craftbar; Verwendung: als **Grid-Mitte** bestimmen sie die Output-Kategorie. Benennung nach Item-Namensregel („Stahl-Griff", „Kosmium-Prägung").
+
+| Rohling | Output-Kategorie |
+|---|---|
+| **Griff** | Schwerter |
+| **Stichklinge** | Stichwaffen |
+| **Axtblatt** | Äxte |
+| **Schlagkopf** | Kriegsgeräte |
+| **Schaft** | Stabwaffen |
+| **Stave** | Bogenwaffen |
+| **Fokuskern** | Zauberwaffen |
+| **Geschirr** | Rüstung (Körper) |
+| **Haube** | Rüstung (Kopf) |
+| **Riemen** | Rüstung (Füße) |
+| **Beschlag** | Offhands (alle 12 Typen) |
+| **Prägung** | Gravur-Rohling |
+
+#### Rubrik 6 — Kampf-Kodex *(spiegelt §5.2)*
+
+Übernimmt die **Schadenstyp-↔-Resistenz-Matrix** und die Statuseffekt-Liste direkt aus §5.2 — **Single Source of Truth bleibt §5.2**, Lex spiegelt nur:
+
+| Schadenstyp | Herkunft (Beispiel) | Zusatzeffekt | Flat-Resistenz | %-Reduktion |
+|---|---|---|---|---|
+| Physisch | Nahkampf (STR+STR), Bögen/Armbrüste | Krit ×1,5 | **Rüstung** | WID |
+| Magisch | Chaos-Schule (WIL+WIL), Fluch/Schatten | — | **Resistenz** | WID |
+| Feuer (Hitze) | Feuer-Essenz, Elementarzauber | jeder 3. Treffer → 1 Stapel Brennen | **Elementardiffusion** | WID |
+| Eis (Kälte) | Eis-Essenz | jeder 3. → Initiative −1 Platz | **Elementardiffusion** | WID |
+| Natur (Terra) | Natur-Essenz, Gift | jeder 3. → Verankerung 1 Zug | **Elementardiffusion** | WID |
+| Donner (Elektro) | Donner-Essenz | jeder 3. → Sprung ~25 % (2 Felder) | **Elementardiffusion** | WID |
+
+*Ergänzt in Lex: RD senkt den Flat-Wert aller drei Typen; Blutung = hälftig physisch/magisch. Statuseffekt-Elementzuordnung (Brennen→Feuer, Gift→Natur) s. §5.2.*
+
+**Noch offen** *(→ §11)*: Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design); Flavor-Texte je Eintrag; UI-Darstellung des Buchs (Blätter-/Register-Metapher).
 
 ---
 
@@ -1632,7 +1711,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
-- [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
+- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, Aspektsplitter-Prinzip, 4 Essenzen), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

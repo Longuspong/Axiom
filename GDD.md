@@ -1089,6 +1089,34 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 
 Gravuren sind Waffenmodifikatoren, die in freie Slots einer Waffe eingesetzt werden. Das System orientiert sich an PoE-Ability-Gems, mit eigenem Energie- und Mana-Management. Die maschinenlesbaren Grunddaten (Typen, Leveling, Seltenheit, Slot-Templates) liegen in `data/weapons.json`.
 
+#### Gravur-Schema — die vier Achsen *(Vorschlag 2026-07-09)*
+
+Jede Gravur ist über **vier Achsen** eindeutig eingeordnet — das ist zugleich das Ordnungsraster für den Katalog (folgt), die Crafting-Filter und die Lex-Tactica-Rubrik 4:
+
+| Achse | Wertebereich | Bestimmt | Stand |
+|---|---|---|---|
+| **Typ** | Aktiv · Passiv · Reaktiv · Modifikativ · Spezial | *wie* die Gravur wirkt (Mana-Mechanik, Slot-Typ) | ✅ (s. u.) |
+| **Klasse** | STR · GES · WIL · INT · VIT · WID (die 6 Attribute) | thematische **Attribut-Sphäre** (PoE-Gem-Farbe-Analogon, spiegelt die 6 Skilltree-Sektoren §5.4) | Vorschlag |
+| **Eigenschaft** | Wirkkategorie (Liste unten) | *was* die Gravur inhaltlich tut | Vorschlag |
+| **Schadenstyp** | physisch · magisch · elementar (+ Element) | welche Schadens-/Resistenz-Achse betroffen ist (§5.2); bei nicht-schadenden Gravuren „—" | ✅ |
+
+**Achse „Klasse" (Attribut-Sphäre):** Analog zu den PoE-Gem-Farben trägt jede Gravur ein **Heimat-Attribut** (STR/GES/WIL/INT/VIT/WID). Das ist **keine harte Klassensperre** — jede Charakterklasse kann jede Gravur nutzen (§5.3 „Jede Klasse kann alles") —, sondern eine thematische Zuordnung: attributsnahe Builds finden ihre Gravuren gebündelt, und Aspektsplitter/Skilltree-Sektor (§5.4) teilen sich dieselbe 6er-Achse. Beispiele: *Wuchtschlag* → STR, *Präzisionsschuss* → GES, *Feuerlanze* → WIL, *Manabrunnen* → INT, *Zäher Wall* → WID, *Lebensband* → VIT.
+
+**Achse „Eigenschaft" (Wirkkategorie):** Kontrolliertes Vokabular, das den Effekt einordnet — die Haupt-Sortierung des Katalogs. Eine Gravur trägt genau **eine** primäre Eigenschaft (Modifikativ-Gravuren wirken auf die Eigenschaft *anderer* Gravuren):
+
+| Eigenschaft | Beispiel-Wirkung |
+|---|---|
+| **Schaden** | direkter Bonus-Schaden, Nuke-Fähigkeit, Krit, Durchdringung (RD) |
+| **Anhaltend (DoT)** | Brennen/Gift/Blutung applizieren & verstärken |
+| **Verteidigung** | Schild/Schutz, Flat-Reduktion, Heilung, Regeneration |
+| **Kontrolle** | Statuseffekte, Verankerung, Initiative-Manipulation, Slow |
+| **Mobilität** | Bewegung, Sprung, Repositionierung, MOB |
+| **Ressource** | Mana-/Leben-Ökonomie, Kostensenkung, Manavampir |
+| **Präsenz/Aura** | Team-Buffs, Aggro/Threat-Steuerung (§5.2) |
+| **Beschwörung** | temporäre Einheiten (VIT-skaliert) |
+
+> **Zweck & Offenes:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Zu bestätigen:** ob „Klasse" die 6 Attribute (dieser Vorschlag) oder die 5 Charakterklassen abbildet — danach folgt der konkrete Gravuren-Katalog (§11).
+
 #### Gravurtypen
 
 | Typ | Funktion | Mana-Mechanik |
@@ -1434,10 +1462,10 @@ Listet alle genutzten externen Ressourcen:
 
 | Essenz (Lex-Name) | Herkunft des Namens | Element / Schadensart | Beschaffung |
 |---|---|---|---|
-| **Ignis-Essenz** | lat. *ignis* = Feuer | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
-| **Glacies-Essenz** | lat. *glacies* = Eis | Eis / Kälteschaden | selten, elite-/boss-gebunden |
-| **Silva-Essenz** | lat. *silva* = Wald/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
-| **Fulmen-Essenz** | lat. *fulmen* = Blitz/Donnerkeil | Donner / Elektroschaden | selten, elite-/boss-gebunden |
+| **Pyros-Essenz** | gr. *pyr/pyros* = Feuer | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
+| **Kryos-Essenz** | gr. *kryos* = Eis/Kälte | Eis / Kälteschaden | selten, elite-/boss-gebunden |
+| **Gaios-Essenz** | gr. *gaia* = Erde/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
+| **Fulguros-Essenz** | lat. *fulgur* = Blitz (Fantasy-Form) | Donner / Elektroschaden | selten, elite-/boss-gebunden |
 
 > Region 1 (Orks) bleibt **bewusst ohne Elementfokus** — dort droppen keine Essenzen (deckt sich mit §9.6 „kein Magie-Loot"). Essenzen kommen erst mit späteren, elementaffinen Regionen/Gegnern.
 
@@ -1714,11 +1742,11 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
+- [~] Gravuren-Katalog — **4-Achsen-Schema als Vorschlag steht** *(2026-07-09, §5.7)*: Klasse = 6 Attribute (STR/GES/WIL/INT/VIT/WID), Eigenschaft = 8 Wirkkategorien, dazu Typ ✅ + Schadenstyp ✅. **Offen:** Klasse-Achse bestätigen (6 Attribute vs. 5 Charakterklassen), dann konkrete Gravuren pro (Klasse × Eigenschaft) ausarbeiten
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
-- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen mit lat. Namen Ignis/Glacies/Silva/Fulmen), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
+- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen: Pyros/Kryos/Gaios/Fulguros), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

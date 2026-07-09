@@ -1218,7 +1218,7 @@ Jedes unerwünschte Item kann zerlegt werden und liefert:
 | Craftbar | Nicht craftbar (Loot-exklusiv) |
 |----------|-------------------------------|
 | **Komplette Waffen** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt | Alles **Stellar** (Waffen, Barren, Ressourcen) |
-| **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über Slot-Aspektsplitter gewählt) | **Spezial-/Signatur-Gravuren** |
+| **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über das Basis-Bauteil Geschirr/Haube/Riemen, Archetyp über den Aspektsplitter) | **Spezial-/Signatur-Gravuren** |
 | **Gravuren** — nur Level 1; höhere Level nur über Aufwertung | |
 | **Verfeinerungskerne** (für die Kapazitäts-+1-Verfeinerung, §5.7) | |
 | **Bauteile & Prägungen** (Grid-Basen, s. Tabelle) | |
@@ -1421,16 +1421,23 @@ Listet alle genutzten externen Ressourcen:
 | 6 | **Kosmium** | **nur aus zerlegten Kosmium-Items** (nicht aufstufbar) | *(folgt)* |
 | ✦ | **Stellar** | **nicht craftbar** — ausschließlich Loot/Drop (§5.3) | *(folgt)* |
 
-**Aspektsplitter** — bestimmen im Crafting den **Typ** des Outputs (ein Splitter je Waffentyp, je Gravurtyp und je Rüstungsslot). Beschaffung: von bestimmten Einheiten + garantiert aus dem Zerlegen; Umwandlung 3:1 (§5.8). *(Vollständige Splitter-Liste = Ableitung aus den 16 Waffentypen + Gravurtypen + 3 Rüstungsslots; wird mit dem Item-Einzug in Rubrik 3 gefüllt.)*
+**Aspektsplitter** — bestimmen im Crafting den **Typ / die Identität** des Outputs auf der Typ-Achse (Grid-Randfeld, §5.8). **Namensregel: Item-Identität + „Aspektsplitter"** (z. B. „Falchion-Aspektsplitter", „Plattenaspekt-Splitter"). Beschaffung: von bestimmten Einheiten + garantiert aus dem Zerlegen des passenden Item-Typs; Umwandlung 3:1 (§5.8).
 
-**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2):
+- **Waffen (16 — je Waffentyp):** Breitschwert-, Falchion-, Dolchpaar-, Stilett-, Rapier-, Kampfaxt-, Pike-, Hammer-, Rammbock-, Zepter-, Jagdbogen-, Langbogen-, Kriegsarmbrust-, Repetierarmbrust-, Zauberstab-, Energiesphäre-Aspektsplitter.
+- **Offhands (12 — je Offhand-Typ):** Buckler-, Turmschild-, Foliant-, Energiekristall-, Kampfkette-, Laterne-, Fester-Gürtel-, Fackel-, Signalhorn-, Standarte-, Rauchschwenker-, Köderkolben-Aspektsplitter.
+- **Rüstung (5 — je Archetyp-Familie):** Stoffaspekt-, Lederaspekt-, Kettenaspekt-, Schuppenaspekt-, Plattenaspekt-Splitter. *(Der Ziel-**Slot** kommt beim Rüstungs-Craft vom Basis-Bauteil Geschirr/Haube/Riemen, der **Archetyp** vom Aspektsplitter — §5.8.)*
+- **Gravuren (5 — je Gravurtyp, §5.7):** Aktiv-, Passiv-, Reaktiv-, Modifikativ-, Spezial-Aspektsplitter. *(Konkreter Gravuren-Katalog noch offen → Platzhalter, §11.)*
 
-| Essenz | Element / Schadensart | Beschaffung |
-|---|---|---|
-| **Feuer-Essenz** | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
-| **Eis-Essenz** | Eis / Kälteschaden | selten, elite-/boss-gebunden |
-| **Natur-Essenz** | Natur / Terraschaden | selten, elite-/boss-gebunden |
-| **Donner-Essenz** | Donner / Elektroschaden | selten, elite-/boss-gebunden |
+> **Zubehör** (Köcher, Buchrolle, Zielvisier, Diadem, Steigeisen, Windsohle): eigene Aspektsplitter erst, sobald die Craftbarkeit von Zubehör entschieden ist (§5.8 nennt bislang nur Waffen/Rüstung/Offhands) — offen (§11).
+
+**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2). **In-World-/Lex-Name lateinisch** (Flavor); der schlichte „&lt;Element&gt;-Essenz"-Begriff bleibt als Synonym gültig:
+
+| Essenz (Lex-Name) | Herkunft des Namens | Element / Schadensart | Beschaffung |
+|---|---|---|---|
+| **Ignis-Essenz** | lat. *ignis* = Feuer | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
+| **Glacies-Essenz** | lat. *glacies* = Eis | Eis / Kälteschaden | selten, elite-/boss-gebunden |
+| **Silva-Essenz** | lat. *silva* = Wald/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
+| **Fulmen-Essenz** | lat. *fulmen* = Blitz/Donnerkeil | Donner / Elektroschaden | selten, elite-/boss-gebunden |
 
 > Region 1 (Orks) bleibt **bewusst ohne Elementfokus** — dort droppen keine Essenzen (deckt sich mit §9.6 „kein Magie-Loot"). Essenzen kommen erst mit späteren, elementaffinen Regionen/Gegnern.
 
@@ -1711,7 +1718,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
-- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, Aspektsplitter-Prinzip, 4 Essenzen), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
+- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen mit lat. Namen Ignis/Glacies/Silva/Fulmen), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

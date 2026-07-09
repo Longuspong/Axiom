@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "version": "v0.1",
+    "zweck": "Gravuren-Katalog (self-contained Coding-DB). Schema-Rahmen: GDD §5.7 (4 Achsen Klasse·Typ·Eigenschaft·Schadenstyp; visuelle Kodierung Form=Typ / Farbe=Klasse). Kostenmodell & Slots: §5.7; Crafting: §5.8.",
+    "quelle": "GDD-Sitzung 2026-07-09 (Gravur-Schema bestätigt: Klasse = 6 Attribute; Muster-Attribut STR vollständig ausgearbeitet)",
+    "stand": "Muster-Attribut STR vollständig (Vorlage). GES/WIL/INT/VIT/WID folgen nach Freigabe der Vorlage.",
+    "balancing_hinweis": "Alle Zahlenwerte (Wirkung, Mana, Cooldown, Reservierung) stehen unter Balancing-Vorbehalt (Phase 1). Namen sind Arbeitstitel."
+  },
+  "attribut_klassen": [
+    { "kuerzel": "STR", "name": "Stärke",          "farbe": "#C0392B", "farbname": "Rot" },
+    { "kuerzel": "VIT", "name": "Vitalität",       "farbe": "#E8A13A", "farbname": "Bernstein/Gold" },
+    { "kuerzel": "GES", "name": "Geschicklichkeit", "farbe": "#2E9E5B", "farbname": "Grün" },
+    { "kuerzel": "WID", "name": "Widerstandskraft", "farbe": "#1FA8A0", "farbname": "Türkis/Teal" },
+    { "kuerzel": "INT", "name": "Intelligenz",      "farbe": "#2E6FD6", "farbname": "Blau" },
+    { "kuerzel": "WIL", "name": "Willenskraft",     "farbe": "#8E44AD", "farbname": "Violett" }
+  ],
+  "gravur_typen": [
+    { "typ": "Passiv",      "form": "Dreieck",          "min_level": 1, "max_level": 3, "mana_mechanik": "Reserviert Mana dauerhaft (in der Homezone, §5.2)", "slot": "Passiv" },
+    { "typ": "Aktiv",       "form": "Raute",            "min_level": 1, "max_level": 3, "mana_mechanik": "Mana-Verbrauch beim Einsatz der Fähigkeit",          "slot": "Aktiv" },
+    { "typ": "Modifikativ", "form": "Pentagon",         "min_level": 1, "max_level": 3, "mana_mechanik": "Erhöht Mana-Kosten/-Reservierung der modifizierten Gravuren", "slot": "Modifikativ" },
+    { "typ": "Reaktiv",     "form": "Schild-Trapez",    "min_level": 1, "max_level": 3, "mana_mechanik": "—", "slot": "Reaktiv", "deckelung": "Cooldown + max. 3 Auslösungen/Zug (TBD, §5.7)" },
+    { "typ": "Spezial",     "form": "Kreis",            "min_level": 1, "max_level": 5, "mana_mechanik": "Sehr variabel je Gravur", "slot": "Spezial", "hinweis": "Signatur — nicht craftbar (§5.8)" }
+  ],
+  "flex_slot": { "form": "Hexagon", "hinweis": "Generischer Slot, nimmt jede Gravur auf; volle Kapazitätskosten (§5.7)." },
+  "eigenschaften": [
+    { "name": "Schaden",        "beschreibung": "Direkter Bonus-Schaden, Nuke-Fähigkeit, Krit, Durchdringung (RD)." },
+    { "name": "Anhaltend",      "beschreibung": "DoT: Brennen/Gift/Blutung applizieren & verstärken." },
+    { "name": "Verteidigung",   "beschreibung": "Schild/Schutz, Flat-Reduktion, Heilung, Regeneration." },
+    { "name": "Kontrolle",      "beschreibung": "Statuseffekte, Verankerung, Initiative-Manipulation, Slow." },
+    { "name": "Mobilität",      "beschreibung": "Bewegung, Sprung, Repositionierung, MOB." },
+    { "name": "Ressource",      "beschreibung": "Mana-/Leben-Ökonomie, Kostensenkung, Manavampir." },
+    { "name": "Präsenz",        "beschreibung": "Team-Buffs (Aura), Aggro/Threat-Steuerung (§5.2)." },
+    { "name": "Beschwörung",    "beschreibung": "Temporäre Einheiten (VIT-skaliert). Inhärent Aktiv." }
+  ],
+  "seltenheit": [
+    { "material": "Stahl",   "einordnung": "Basis" },
+    { "material": "Titan",   "einordnung": "Mittel" },
+    { "material": "Kosmium", "einordnung": "Selten" }
+  ],
+  "item_schema": {
+    "id": "GR-<KLASSE>-<lfd>",
+    "name": "Arbeitstitel der Gravur",
+    "klasse": "Attribut-Zugehörigkeit (STR|GES|WIL|INT|VIT|WID) — bestimmt die Farbe",
+    "typ": "Aktiv|Passiv|Reaktiv|Modifikativ|Spezial — bestimmt die Form & Mana-Mechanik",
+    "eigenschaft": "Wirkkategorie (s. eigenschaften)",
+    "schadenstyp": "physisch|magisch|elementar|— (bei nicht-schadenden Gravuren)",
+    "form": "abgeleitet aus typ (Redundanz für schnelle UI-Nutzung)",
+    "farbe": "abgeleitet aus klasse (Redundanz für schnelle UI-Nutzung)",
+    "beschreibung": "Kurzbeschreibung des Effekts",
+    "wirkung": "Level-Skalierung L1/L2/L3 (Spezial bis L5)",
+    "mana": "Verbrauch (Aktiv) oder Reservierung (Passiv) je Level",
+    "cooldown_deckelung": "nur Reaktiv/Aktiv relevant"
+  },
+  "gravuren": [
+    {
+      "id": "GR-STR-001", "name": "Wuchtschlag", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Schaden", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Ein konzentrierter, wuchtiger Schlag auf ein Einzelziel.",
+      "wirkung": { "L1": "+40 % Waffen-Rohschaden auf ein Ziel", "L2": "+60 %", "L3": "+85 %" },
+      "mana": { "L1": 20, "L2": 24, "L3": 28 }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-002", "name": "Klingensturm", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Schaden", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Ein Wirbelangriff, der alle angrenzenden Gegner trifft.",
+      "wirkung": { "L1": "70 % Waffen-Rohschaden an alle angrenzenden Felder", "L2": "90 %", "L3": "115 %" },
+      "mana": { "L1": 28, "L2": 33, "L3": 38 }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-003", "name": "Aufreißen", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Anhaltend", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Ein reißender Hieb, der das Ziel bluten lässt (Blutung, §5.2 — hälftig physisch/magisch, an physische Waffen gebunden).",
+      "wirkung": { "L1": "Angriff + 2 Stapel Blutung", "L2": "Angriff + 3 Stapel Blutung", "L3": "Angriff + 4 Stapel Blutung, +25 % Blutungsschaden" },
+      "mana": { "L1": 18, "L2": 22, "L3": 26 }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-004", "name": "Sturmangriff", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Mobilität", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Stürmt auf ein Ziel zu und trifft es mit Schwung; stößt es zurück.",
+      "wirkung": { "L1": "Anlauf bis 3 Felder, +30 % Rohschaden, 1 Feld Rückstoß", "L2": "Anlauf bis 4 Felder, +45 % Rohschaden, 1 Feld Rückstoß", "L3": "Anlauf bis 4 Felder, +60 % Rohschaden, 2 Felder Rückstoß" },
+      "mana": { "L1": 22, "L2": 26, "L3": 30 }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-005", "name": "Erschütternder Hieb", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Kontrolle", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Ein wuchtiger Schlag, der das Ziel aus dem Tritt bringt (deterministisch, kein Proc — §5.2).",
+      "wirkung": { "L1": "+20 % Rohschaden, verschiebt Ziel-Initiative um 2 Plätze", "L2": "+20 % Rohschaden, Betäubt 1 Zug", "L3": "+25 % Rohschaden, Betäubt 1 Zug, erschüttert auch angrenzende Gegner (Initiative −1)" },
+      "mana": { "L1": 24, "L2": 28, "L3": 34 }, "cooldown_deckelung": "Cooldown 2 Züge"
+    },
+    {
+      "id": "GR-STR-006", "name": "Rohe Kraft", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Schaden", "schadenstyp": "physisch", "form": "Dreieck", "farbe": "#C0392B",
+      "beschreibung": "Reserviert Mana. Erhöht den physischen Rohschaden dauerhaft.",
+      "wirkung": { "L1": "+8 % physischer Rohschaden", "L2": "+12 %", "L3": "+18 %" },
+      "mana": { "L1": "Reserviert 40", "L2": "Reserviert 40", "L3": "Reserviert 40" }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-007", "name": "Eiserne Haltung", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Verteidigung", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "beschreibung": "Reserviert Mana. Solange die Einheit sich in ihrem Zug nicht bewegt, erhält sie erhöhte Rüstung.",
+      "wirkung": { "L1": "+6 Rüstung bei Stillstand", "L2": "+10 Rüstung", "L3": "+15 Rüstung" },
+      "mana": { "L1": "Reserviert 30", "L2": "Reserviert 30", "L3": "Reserviert 30" }, "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-008", "name": "Konterhaltung", "klasse": "STR", "typ": "Reaktiv", "eigenschaft": "Verteidigung", "schadenstyp": "physisch", "form": "Schild-Trapez", "farbe": "#C0392B",
+      "beschreibung": "Trigger: erlittener Nahkampfangriff → Chance auf Gegenschlag mit einem Normalangriff (§5.2 Reaktionen). Triggert nicht bei Backstab.",
+      "wirkung": { "L1": "25 % Chance auf Gegenschlag", "L2": "40 % Chance", "L3": "60 % Chance" },
+      "mana": "—", "cooldown_deckelung": "Cooldown 2 Züge · max. 3 Auslösungen/Zug (TBD)"
+    },
+    {
+      "id": "GR-STR-009", "name": "Kriegsschrei", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Präsenz", "schadenstyp": "—", "form": "Raute", "farbe": "#C0392B",
+      "beschreibung": "Ein Schrei, der nahe Gegner auf die Einheit fixiert (Taunt, §5.2 Aggro) und Verbündete kurz stärkt.",
+      "wirkung": { "L1": "Taunt 2 Felder für 2 Züge, Verbündete +5 % Rohschaden (1 Zug)", "L2": "Taunt 3 Felder für 2 Züge, +8 %", "L3": "Taunt 3 Felder für 3 Züge, +12 %" },
+      "mana": { "L1": 26, "L2": 30, "L3": 34 }, "cooldown_deckelung": "Cooldown 4 Züge"
+    },
+    {
+      "id": "GR-STR-010", "name": "Brachialverstärkung", "klasse": "STR", "typ": "Modifikativ", "eigenschaft": "Schaden", "schadenstyp": "—", "form": "Pentagon", "farbe": "#C0392B",
+      "beschreibung": "Modifiziert alle STR-Gravuren auf der Waffe: erhöht ihre Wirkung, aber auch ihre Mana-Kosten/-Reservierung (§5.7).",
+      "wirkung": { "L1": "+15 % Wirkung aller STR-Gravuren, +20 % deren Mana-Kosten", "L2": "+22 % Wirkung, +25 % Mana", "L3": "+30 % Wirkung, +30 % Mana" },
+      "mana": "Erhöht die Kosten/Reservierung der modifizierten Gravuren", "cooldown_deckelung": "—"
+    },
+    {
+      "id": "GR-STR-011", "name": "Berserkerherz", "klasse": "STR", "typ": "Spezial", "eigenschaft": "Schaden", "schadenstyp": "physisch", "form": "Kreis", "farbe": "#C0392B",
+      "beschreibung": "Signatur. Verwandelt fehlendes Leben in Angriffskraft: je niedriger das eigene Leben, desto höher der physische Rohschaden. Nicht craftbar (§5.8).",
+      "wirkung": { "L1": "+1 % Rohschaden je 5 % fehlendem Leben (max +10 %)", "L2": "je 5 % fehlend +1 % (max +16 %)", "L3": "je 5 % fehlend +1,5 % (max +24 %)", "L4": "je 5 % fehlend +1,5 % (max +32 %)", "L5": "je 5 % fehlend +2 % (max +40 %) + 10 % Lebensraub auf physischen Schaden" },
+      "mana": "Passiv-Reservierung, variabel", "cooldown_deckelung": "—", "max_level": 5
+    }
+  ]
+}

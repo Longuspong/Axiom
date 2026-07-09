@@ -1227,7 +1227,29 @@ Gravuren können jederzeit aus einer Waffe entfernt und in eine andere eingesetz
 
 #### Crafting
 
-Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. Grundsatz bleibt: Zutaten lenken Wahrscheinlichkeiten, ohne den RNG-Faktor zu eliminieren — Loot behält seine Rolle, garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen. *(Konkreter Gravuren-Katalog → folgt)*
+Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. Grundsatz bleibt: Zutaten lenken Wahrscheinlichkeiten, ohne den RNG-Faktor zu eliminieren — Loot behält seine Rolle, garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen.
+
+#### Gravuren-Katalog (Daten) *(2026-07-09)*
+
+Die konkreten Gravuren liegen als self-contained Coding-DB in **`data/engravings.json`** (eigene Datei analog zu `offhands.json`; enthält Attribut-Farben, Typ-Formen, Eigenschafts-Cluster, Seltenheit, `item_schema` + die Einträge). Der Katalog wird **attributweise** ausgebaut.
+
+**Stand: Muster-Attribut STR vollständig** (Vorlage — GES/WIL/INT/VIT/WID folgen nach Freigabe). STR deckt 6 der 8 Eigenschaften ab; **Beschwörung** (VIT-Domäne) und **Ressource/Mana** (INT-Domäne) fehlen bei STR bewusst — Demonstration des „kein Vollkreuzprodukt"-Prinzips.
+
+| Name | Typ | Eigenschaft | Schadenstyp | Kurz |
+|---|---|---|---|---|
+| Wuchtschlag | Aktiv | Schaden | physisch | Einzelziel-Burst |
+| Klingensturm | Aktiv | Schaden | physisch | AoE-Wirbel (angrenzend) |
+| Aufreißen | Aktiv | Anhaltend | physisch | Blutungs-Stapel |
+| Sturmangriff | Aktiv | Mobilität | physisch | Anlauf + Rückstoß |
+| Erschütternder Hieb | Aktiv | Kontrolle | physisch | Initiative-Verschiebung / Betäubt |
+| Rohe Kraft | Passiv | Schaden | physisch | +% physischer Rohschaden |
+| Eiserne Haltung | Passiv | Verteidigung | — | +Rüstung bei Stillstand |
+| Konterhaltung | Reaktiv | Verteidigung | physisch | Gegenschlag-Chance |
+| Kriegsschrei | Aktiv | Präsenz | — | Taunt + Verbündeten-Buff |
+| Brachialverstärkung | Modifikativ | Schaden | — | verstärkt alle STR-Gravuren |
+| Berserkerherz | Spezial | Schaden | physisch | Signatur: fehlendes Leben → Schaden (bis L5) |
+
+*Zahlenwerte (Wirkung/Mana/Cooldown) je Level stehen in `engravings.json`, alle unter Balancing-Vorbehalt (Phase 1).*
 
 ---
 
@@ -1772,7 +1794,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [~] Gravuren-Katalog — **4-Achsen-Schema bestätigt** *(2026-07-09, §5.7)*: Klasse = 6 Attribute (STR/GES/WIL/INT/VIT/WID), Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; **visuelle Kodierung** festgelegt (Form = Typ: Dreieck/Raute/Pentagon/Schild-Trapez/Kreis + Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Offen:** konkrete Gravuren pro (Klasse × Eigenschaft) ausarbeiten (kein Vollkreuzprodukt — z. B. Beschwörung nur Aktiv)
+- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json`)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **STR vollständig** (11 Gravuren über alle 5 Typen, `engravings.json` v0.1) als Vorlage. **Offen:** GES/WIL/INT/VIT/WID nach demselben Muster ausarbeiten (kein Vollkreuzprodukt — Beschwörung=VIT, Mana-Ressource=INT usw.)
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)

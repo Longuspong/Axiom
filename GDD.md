@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.22  
+**Version:** 0.23  
 **Stand:** 2026-07-09  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -1052,7 +1052,7 @@ Attribute kommen zu **2/5 aus der Rüstung** (Körper+Kopf+Füße zusammen) und 
 
 - **Form:** Radialer Baum mit **6 Sektoren**, einer pro Attribut (STR, GES, WIL, INT, VIT, WID), angeordnet wie ein Rad. Jede Klasse hat einen festen **Einstiegspunkt** im Sektor ihres Identitätsattributs (Krieger→STR/WID-Grenze, Schütze→GES, Magier→WIL, Mystiker→INT, Assassine→GES/STR-Grenze). Von dort führen Pfade **radial nach außen** (Spezialisierung im eigenen Attribut) und **tangential zu Nachbarsektoren** (Hybridisierung) — bildet „Jede Klasse kann alles" ab, ohne dass der Baum strukturlos wird: die Entfernung zum Einstiegspunkt ist die natürliche Bremse gegen unbalancierte Chaos-Builds.
 - **Node-Typen:**
-  - **Attributsnodes** (klein, günstig): +1 bis +3 auf ein Attribut; Dichte so kalibriert, dass ein reiner Pfad in den eigenen Sektor bei ~Level 25 die **~70 Punkte** erreicht, die das Rüstungsbudget 2/5:3/5 voraussetzt (§5.3)
+  - **Attributsnodes** (klein, günstig): +1 bis +3 auf ein Attribut; Dichte so kalibriert, dass ein reiner Pfad in den eigenen Sektor **bis zum Endgame** die **~70 Punkte** erreicht, die das Rüstungsbudget 2/5:3/5 voraussetzt (§5.3). Die genaue Levelmarke ist Balancing-Sache (Attributsnode-Dichte/-Kosten-Tabelle, s. u.); **Leitplanke: fokussierte Werte wachsen bewusst langsam** — insbesondere **WID** soll die 100er-Marke (= 50 % Reduktion, `WID/(WID+100)`, §5.2) erst spät überschreiten, damit Rüstung/Zähigkeit nicht zu früh überproportional wird.
   - **Notable-Nodes** (mittel, an Sektorgrenzen/Knotenpunkten): konkrete Boni (Mana-Pool, MOB, Krit-Chance-Quelle, Ausweichen-Quelle)
   - **Keystone-Nodes** (selten, an Pfad-Enden): build-definierend, entsprechen den Spezialisierungspfaden aus §5.3 (z. B. Magier-Chaos-Build „Fähigkeiten kosten HP statt Mana", Mystiker-DoT-Build)
 - **Punkte-Ökonomie:** 1 Punkt/Level = 50 Punkte total, aber nicht linear ausgebbar — Wegkosten (Attributsnodes zum Durchqueren) skalieren mit der Entfernung vom Sektor-Zentrum und erzeugen dadurch von selbst die in §5.3 festgelegte Kurve (linear bis ~25, strafft sich ab 35). Level 46–50 = 5 Bonuspunkte, ausschließlich für die letzten Keystones — natürlicher Ort für die in §5.3 vorgesehene Klassen-Prüfung/den Herausforderungsmodus als Freischaltbedingung.

@@ -1089,15 +1089,15 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 
 Gravuren sind Waffenmodifikatoren, die in freie Slots einer Waffe eingesetzt werden. Das System orientiert sich an PoE-Ability-Gems, mit eigenem Energie- und Mana-Management. Die maschinenlesbaren Grunddaten (Typen, Leveling, Seltenheit, Slot-Templates) liegen in `data/weapons.json`.
 
-#### Gravur-Schema — die vier Achsen *(Vorschlag 2026-07-09)*
+#### Gravur-Schema — die vier Achsen *(2026-07-09, Klasse & Eigenschaft bestätigt)*
 
 Jede Gravur ist über **vier Achsen** eindeutig eingeordnet — das ist zugleich das Ordnungsraster für den Katalog (folgt), die Crafting-Filter und die Lex-Tactica-Rubrik 4:
 
 | Achse | Wertebereich | Bestimmt | Stand |
 |---|---|---|---|
 | **Typ** | Aktiv · Passiv · Reaktiv · Modifikativ · Spezial | *wie* die Gravur wirkt (Mana-Mechanik, Slot-Typ) | ✅ (s. u.) |
-| **Klasse** | STR · GES · WIL · INT · VIT · WID (die 6 Attribute) | thematische **Attribut-Sphäre** (PoE-Gem-Farbe-Analogon, spiegelt die 6 Skilltree-Sektoren §5.4) | Vorschlag |
-| **Eigenschaft** | Wirkkategorie (Liste unten) | *was* die Gravur inhaltlich tut | Vorschlag |
+| **Klasse** | STR · GES · WIL · INT · VIT · WID (die 6 Attribute) | thematische **Attribut-Sphäre** (PoE-Gem-Farbe-Analogon, spiegelt die 6 Skilltree-Sektoren §5.4) | ✅ bestätigt |
+| **Eigenschaft** | Wirkkategorie (Liste unten) | *was* die Gravur inhaltlich tut | ✅ (erweiterbar) |
 | **Schadenstyp** | physisch · magisch · elementar (+ Element) | welche Schadens-/Resistenz-Achse betroffen ist (§5.2); bei nicht-schadenden Gravuren „—" | ✅ |
 
 **Achse „Klasse" (Attribut-Sphäre):** Analog zu den PoE-Gem-Farben trägt jede Gravur ein **Heimat-Attribut** (STR/GES/WIL/INT/VIT/WID). Das ist **keine harte Klassensperre** — jede Charakterklasse kann jede Gravur nutzen (§5.3 „Jede Klasse kann alles") —, sondern eine thematische Zuordnung: attributsnahe Builds finden ihre Gravuren gebündelt, und Aspektsplitter/Skilltree-Sektor (§5.4) teilen sich dieselbe 6er-Achse. Beispiele: *Wuchtschlag* → STR, *Präzisionsschuss* → GES, *Feuerlanze* → WIL, *Manabrunnen* → INT, *Zäher Wall* → WID, *Lebensband* → VIT.
@@ -1115,7 +1115,37 @@ Jede Gravur ist über **vier Achsen** eindeutig eingeordnet — das ist zugleich
 | **Präsenz/Aura** | Team-Buffs, Aggro/Threat-Steuerung (§5.2) |
 | **Beschwörung** | temporäre Einheiten (VIT-skaliert) |
 
-> **Zweck & Offenes:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Zu bestätigen:** ob „Klasse" die 6 Attribute (dieser Vorschlag) oder die 5 Charakterklassen abbildet — danach folgt der konkrete Gravuren-Katalog (§11).
+> **Zweck & Stand:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Bestätigt 2026-07-09:** Klasse = die 6 Attribute. **Kein Vollkreuzprodukt** — nicht jede Eigenschaft existiert auf jedem Typ (z. B. *Beschwörung* ist inhärent eine **Aktiv**-Wirkung, nie passiv). Das Eigenschafts-Cluster ist **bewusst erweiterbar** (weitere/andere Cluster jederzeit ergänzbar). **Nächster Schritt:** konkreter Gravuren-Katalog pro (Klasse × Eigenschaft), §11.
+
+#### Visuelle Kodierung — Form = Typ, Farbe = Klasse *(2026-07-09)*
+
+Gravuren sind auf einen Blick lesbar über **zwei Kanäle**: die **Form** kodiert den **Typ**, die **Farbe** die **Klasse (Attribut)**. Weil Form + Beschriftung die Typ-Info tragen, bleiben Gravuren auch für Farbfehlsichtige eindeutig (Farbe ist der *sekundäre* Kanal) — passt zu den UI-Regeln in §10.5.
+
+**Form = Typ** (Kern-Typen mit aufsteigender Eckenzahl 3 → 4 → 5, Sonderformen für Reaktiv/Spezial):
+
+| Typ | Form | Lesart |
+|---|---|---|
+| **Passiv** | Dreieck (3 Ecken) | ruhendes Fundament |
+| **Aktiv** | Raute / isometrisches Viereck (4 Ecken) | der Standard, „zeigt in alle Richtungen" |
+| **Modifikativ** | Pentagon (5 Ecken) | umschließt/erweitert die anderen Gravuren |
+| **Reaktiv** | schildförmiges Trapez | Trigger/Defensive — liest sich sofort als Schild |
+| **Spezial/Signatur** | (fast) Kreis | außerhalb des Polygon-Systems — einzigartig |
+| *Flex-Slot (generisch)* | **Hexagon** | *nimmt jede Gravur auf — die ursprüngliche Hexagon-Idee lebt als „passt überall"-Marker weiter* |
+
+*Raute (Aktiv) und Trapez (Reaktiv) haben beide vier Kanten → visuell klar trennen: Raute symmetrisch/spitz, Trapez flacher Schild-Umriss.*
+
+**Farbe = Klasse (Attribut)** — ein Leitfarbton je Attribut, **einheitlich** für Gravuren, Skilltree-Sektor (§5.4) und Attribut-UI (§5.6):
+
+| Attribut | Farbe | Richtwert |
+|---|---|---|
+| **STR** Stärke | Rot | `#C0392B` |
+| **VIT** Vitalität | Bernstein/Gold | `#E8A13A` |
+| **GES** Geschicklichkeit | Grün | `#2E9E5B` |
+| **WID** Widerstandskraft | Türkis/Teal | `#1FA8A0` |
+| **INT** Intelligenz | Blau | `#2E6FD6` |
+| **WIL** Willenskraft | Violett | `#8E44AD` |
+
+*(Farbwerte = Richtwert, Feinabstimmung im UI-Balancing. Die sechs Töne sind bewusst gleichmäßig über den Farbkreis verteilt = maximal unterscheidbar.)* Der **Schadenstyp** (4. Achse) wird bei Bedarf über ein sekundäres Detail markiert (z. B. Rand-/Icon-Akzent) — Ausgestaltung offen.
 
 #### Gravurtypen
 
@@ -1742,7 +1772,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [~] Gravuren-Katalog — **4-Achsen-Schema als Vorschlag steht** *(2026-07-09, §5.7)*: Klasse = 6 Attribute (STR/GES/WIL/INT/VIT/WID), Eigenschaft = 8 Wirkkategorien, dazu Typ ✅ + Schadenstyp ✅. **Offen:** Klasse-Achse bestätigen (6 Attribute vs. 5 Charakterklassen), dann konkrete Gravuren pro (Klasse × Eigenschaft) ausarbeiten
+- [~] Gravuren-Katalog — **4-Achsen-Schema bestätigt** *(2026-07-09, §5.7)*: Klasse = 6 Attribute (STR/GES/WIL/INT/VIT/WID), Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; **visuelle Kodierung** festgelegt (Form = Typ: Dreieck/Raute/Pentagon/Schild-Trapez/Kreis + Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Offen:** konkrete Gravuren pro (Klasse × Eigenschaft) ausarbeiten (kein Vollkreuzprodukt — z. B. Beschwörung nur Aktiv)
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)

@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.21  
-**Stand:** 2026-07-08  
+**Version:** 0.22  
+**Stand:** 2026-07-09  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -459,6 +459,36 @@ Schaden_gesamt = Schaden_konv + Schaden_elem
 **Statuseffekt-Harmonisierung** *(entschieden 2026-07-07)*: **Brennen** (Einheiten-Statuseffekt) und **„In Brand gesteckt"** (Feld-Statuseffekt) verursachen jetzt **Hitzeschaden** (Feuer-Element) statt physisch. **Vergiftet/Gift** und **Giftnebel** verursachen jetzt **Terraschaden** (Natur-Element) statt magisch. Beide DoTs bleiben in ihrer Mechanik unverändert (feste % von max. Leben bzw. fehlendem Leben, keine Reduktions-Pipeline) — nur der Schadenstyp-Tag ändert sich, was sie ab sofort für **Elementardiffusion**-Ausrüstung (nicht Rüstung/Resistenz) relevant macht, sobald DoTs regulär reduziert werden. **Blutung** bleibt bewusst unangetastet (weiterhin hälftig physisch/magisch) — sie ist an physische Waffen gebunden, nicht an ein Element. Umgesetzt in §5.2 „Statuseffekte" unten.
 
 **Elementar-Durchdringung — entschieden** *(2026-07-08)*: Kein eigener Stat. RD ist bereits generisch (→ „Schadensreduktion — WID-Formel" oben) und wirkt auf **Elementardiffusion genauso wie auf Rüstung/Resistenz**. Ein **dedizierter** Elementar-Piercing-Waffentyp (analog zur Kriegsarmbrust als physischer „Plattenknacker") ist bewusst vertagt, bis die Element-/Themen-Set-Ausrüstung existiert und Elementar-Tank-Stacking überhaupt zum Balancing-Thema wird.
+
+**Elementare Zusatzeffekte — Rollen & Mechanik** *(finalisiert 2026-07-09)*:
+
+Jedes Element hat einen kleinen, deterministischen Kampf-Gimmick — das macht Elementarschaden für sich genommen lohnenswert, ohne eine zusätzliche taktische Rolle oder Itemisierungs-Voraussetzung zu brauchen. Jedes Build hat Zugang (kein Hard-Gate, konsistent mit „Jede Klasse kann alles", §5.3); der Spezialisierungsgrad läuft über Skilltree/Itemisierung.
+
+*Rollen-Rahmen — zwei Achsen:*
+
+| Achse | Element | Rolle |
+|---|---|---|
+| Schaden (Fokus ↔ Streuung) | Feuer | Offensiv |
+| Schaden (Fokus ↔ Streuung) | Donner | Ausbreitung |
+| Kontrolle (Zeit ↔ Raum) | Eis | Zeitlich |
+| Kontrolle (Zeit ↔ Raum) | Natur | Räumlich |
+
+Innerhalb einer Achse ist die Trigger-Häufigkeit identisch (gleiche „Währung"), nur die Ausrichtung unterscheidet sich. Feuer/Donner sind je nach Gegnerformation unterschiedlich stark (Feuer gegen Einzelziele, Donner gegen Gruppen) — bewusste taktische Differenzierung, keine Unbalance.
+
+*Determinismus-Regel* (statt Prozent-Chance, konsistent mit der Trefferchance-Doktrin — 100 % Basis, kein Verfehlen-RNG, → „Trefferchance & Ausweichen" unten): **Jeder 3. Elementartreffer desselben Typs einer Einheit löst den Zusatzeffekt aus** (Balancing-Vorbehalt bei der „3"). Zähler läuft pro Einheit über Züge hinweg (kein Reset pro Zug), setzt sich nach Auslösung zurück — funktional dieselbe automatische Trigger-Logik wie die bestehenden Eigenarten (Spruchrolle „alle 7 Züge", Signalhorn „alle 5 Züge", §5.3): niemals aktiv auslösbar, immer automatisch.
+
+**Zählt NICHT zum Elementartreffer-Zähler:** DoT-Ticks (Brennen, Vergiftet/Gift, „In Brand gesteckt", Giftnebel) — die laufen auf einer separaten Mechanik (fester %-Wert, keine reguläre Schadens-Pipeline) und lösen automatisch am Zugende aus, nicht als Ergebnis eines Angriffs. Es zählt nur ein direkter Angriffs-/Zaubertreffer durch die reguläre Pipeline. Verhindert, dass ein bereits brennendes/vergiftetes Ziel passiv (ohne aktiven Angriff) weitere Zusatzeffekte „freischaltet".
+
+*Die vier Effekte:*
+
+- **Feuer (Offensiv):** Appliziert **1 Stapel Brennen** (nutzt die bestehende Brennen-Mechanik 1:1, → „Statuseffekte" unten — kein neues Subsystem nötig). **Bewusster Regelbruch** gegen das ursprüngliche „kein Statuseffekt"-Prinzip — akzeptiert, weil hier kein neues, mit Bestehendem kollidierendes System erfunden wird, sondern ein bereits vorhandenes über einen zusätzlichen Trigger ausgelöst wird (anders als der verworfene Eis-Slow-Ansatz, der echt mit dem Kälte-Status kollidiert hätte).
+- **Donner (Ausbreitung):** Der Schaden springt zusätzlich (~25 % des Elementaranteils, Balancing-Vorbehalt) auf ein gegnerisches Ziel **innerhalb von 2 Feldern um das ursprüngliche Ziel** — **fix, unabhängig von der Waffenreichweite des Angreifers** (sonst wäre Kettenblitz für Nahkämpfer mit Donner-Waffen praktisch tot, da ein zweiter Gegner direkt neben dem Angreifer stehen müsste). Kein Fallback, wenn kein Ziel in Reichweite ist — bewusst akzeptiert: Donner ist der Multi-Target-Spezialist und in Einzelduellen strukturell schwächer, das ist gewollt.
+- **Eis (Zeitlich):** Verschiebt das Ziel **einen Platz später in der Zugreihenfolge** (nutzt das bestehende Speed-/Initiative-System, § „Speed-System" oben). Bewusst **keine** Bewegungs- oder Reaktionswert-Wirkung — das würde mit dem bestehenden, voll ausgebauten Kälte-Status (Reaktionsmalus + Einfrier-Chance, → „Statuseffekte" unten) kollidieren. Komplett andere Systemachse, keine Überschneidung.
+- **Natur (Räumlich):** **Verankert** das Ziel für seinen **nächsten eigenen Zug** an seinem aktuellen Feld — kann weiterhin angreifen/Fähigkeiten nutzen, nur nicht bewegen. Kein Stack, läuft automatisch nach diesem einen Zug aus. Bleibt bewusst unter „Gefroren" (das zusätzlich Handeln blockiert).
+
+**Itemisierung:** Der Zusatzeffekt ist eine **Grundeigenschaft des Schadenstyps** — nicht an Element-/Themen-Set-Ausrüstung gebunden (anders als Elementardiffusion, die weiterhin ausschließlich über künftige Sets kommt). Jede Einheit, die überhaupt Elementarschaden zufügt (Waffen-/Gravuren-Anteile, Elementarzauber), hat sofort Zugriff — sonst wäre der Elementar-Pfad vor dem Endgame komplett tot, weil sowohl Diffusion als auch Zusatzeffekt an noch nicht existierende Sets hängen würden.
+
+**Idee B (Elementar-Reaktionssystem) — geparkt** *(2026-07-09)*: Ein Genshin-artiges System, bei dem das Kombinieren zweier Elemente einen Bonuseffekt auslöst, wurde diskutiert und bewusst **nicht** in die aktuelle Planung übernommen — wenn Idee A (obige Zusatzeffekte) Elementarschaden schon interessant genug macht, braucht es Idee B wahrscheinlich gar nicht. Zusätzliche Gegenargumente: eigener UI-/Tracking-Aufwand (haftende Elemente pro Gegner müssten sichtbar gemacht und über Züge verwaltet werden — passt nicht zum schlanken rundenbasierten Anspruch), Namenskollision mit dem bestehenden „Reaktionen"-Begriff (Gegenschlag/Parieren/Zauberblock/Konter), fehlende Element-Itemisierung als Grundlage. Nicht verworfen, aber nur bei Bedarf erneut aufgreifen — dann mit 1–2 generischen Reaktionstypen statt einer vollen Kombinationsmatrix.
 
 **Offene Punkte** *(→ §11)*:
 
@@ -1557,8 +1587,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Ideen für Phase 1 vorgemerkt** *(2026-07-06)*:
 - **Ressourcen-Minispiel/Gamemodus (Idee)**: Kupfer-/Eisen-/Stahl-„Golems" als Gegnertyp in einer eigenen Minenregion, die gezielt zum Ressourcenfarmen aufgesucht wird; alternativ/ergänzend ein Warframe-artiges **Expeditions-System** — einen Trupp für eine festgelegte Zeit in Region X aussenden, danach Ressourcen-Ertrag abholen. Noch unentschieden, ob eigener Gamemodus oder Hub-Feature.
 - **Aspektsplitter im Shop kaufbar?** — Frage, ob Aspektsplitter (teilweise) käuflich erwerbbar sein sollen; wird im Rahmen des noch zu designenden Shop-Systems mitbesprochen.
-- **Elementar-Zusatzeffekte pro Schadensart (Idee, 2026-07-08)**: Jede Elementarschadensart soll einen kleinen, **kein**-Statuseffekt-artigen Kampf-Gimmick bekommen — bewusst schwächer als Statuseffekte/Eigenarten, aber spürbar. Angedacht: **Kälte → Slow** (Bewegungs-/Positions-Malus, einmalig, kein Stack), **Elektro → Kettenblitz** (springt auf ein benachbartes Ziel über). Feuer- und Terra-Pendant noch offen — Diskussion nicht abgeschlossen, konkrete Werte/Trigger-Chancen fehlen komplett.
-- **Elementar-Reaktionssystem — Genshin-artig? (Idee, 2026-07-08)**: Frage, ob das Kombinieren zweier Elemente auf demselben Ziel einen Bonuseffekt auslösen soll (Nutzer-Idee). Thematisch reizvoll für Trupp-Tactics (mehrere Einheiten setzen gezielt unterschiedliche Elemente hintereinander), aber zwei offene Risiken: **Schadenseskalation** (selbst genannt) und **Namenskollision** mit dem bestehenden „Reaktionen"-Begriff (Gegenschlag/Parieren/Zauberblock/Konter, §5.2) — bräuchte einen eigenen Namen. Noch nicht evaluiert; frühestens sinnvoll nach den Elementar-Zusatzeffekten (s. o.) und einer echten Element-Itemisierung (Element-Sets).
+- **Elementar-Reaktionssystem — geparkt (2026-07-09, → §5.2)**: Genshin-artiges Kombinationssystem zweier Elemente wurde diskutiert, aber bewusst nicht in die Planung übernommen (Idee A/Zusatzeffekte reicht wahrscheinlich aus; UI-/Tracking-Aufwand, Namenskollision mit „Reaktionen", fehlende Element-Itemisierung). Nur bei Bedarf später erneut aufgreifen.
 
 ---
 
@@ -1567,6 +1596,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] **Kriegsgeräte-Neuordnung entschieden** *(2026-07-07, §5.3)*: Hammer & Rammbock → Prim **WID** / Sek **STR** (physische Zäh-Bruiser); Zepter → Prim **WIL** (unverändert) / Sek **WID** (statt INT) — bleibt voller Magie-Schadensträger + wird zäher („Battlemage"). WID-Reihe überall 3/5/7/10/13/17/23 (Rüstungs-Prim-Tier, 2/5-Budget-konform). Löst zugleich die Metadaten-Inkonsistenz in `stat_skalierung.Kriegsgeräte` (Klassen-Default deckte Zepters echtes Prim/Sek nicht ab)
 - [x] **Rohschaden-Formel Magisch final entschieden** *(2026-07-08, §5.2, löst die am 2026-07-07 vertagte Diskussion ab)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie, kein Falloff, Zauberwaffen-Reichweite bleibt bei 3 — wer aus der Backline zaubern will, muss näher ran. Ausgleich Fernkampf-/Frontline-Magier läuft über den Skilltree-Pfad, nicht über eine eigene Formel; Feintuning bei Bedarf über die Reichweiten-Zahl (Playtests Phase 1)
 - [x] **Elementar-Durchdringung entschieden** *(2026-07-08, §5.2)*: kein eigener Stat — RD ist bereits generisch und wirkt auf Rüstung/Resistenz/**Elementardiffusion** gleichermaßen. Dedizierter Elementar-Piercing-Waffentyp bewusst vertagt, bis Element-/Themen-Set-Ausrüstung existiert
+- [x] **Elementare Zusatzeffekte designt** *(2026-07-09, §5.2)*: Rollen-Rahmen (Schaden-Achse Feuer/Donner, Kontroll-Achse Eis/Natur), deterministischer Trigger „jeder 3. Elementartreffer" (kein Prozent-Proc, DoT-Ticks zählen bewusst nicht mit), vier finale Effekte — Feuer appliziert 1 Stapel Brennen (bewusster Regelbruch gegen „kein Statuseffekt", da bestehende Mechanik wiederverwendet statt neu erfunden), Donner springt fix 2 Felder um das Ziel (unabhängig von Waffenreichweite), Eis verzögert Initiative um 1 Platz, Natur verankert fürs nächste Ziel-Zug. Zusatzeffekt an Schadenstyp gekoppelt, nicht an Sets. Elementar-Reaktionssystem (Idee B) bewusst geparkt
 - [x] **Statuseffekt-Harmonisierung entschieden** *(2026-07-07, §5.2)*: Brennen + „In Brand gesteckt" → **Hitzeschaden** (Feuer); Vergiftet/Gift + Giftnebel → **Terraschaden** (Natur); Blutung bleibt hälftig physisch/magisch (an physische Waffen gebunden, kein Element). Zudem geklärt: „Zauberschaden"-Boni (Foliant/Energiekristall) wirken auf den **Rohschaden vor dem Elementar-Split** — treffen also automatisch beide Anteile eines gemischten Zaubertreffers
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)

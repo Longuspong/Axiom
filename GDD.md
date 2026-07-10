@@ -1115,7 +1115,7 @@ Jede Gravur ist über **vier Achsen** eindeutig eingeordnet — das ist zugleich
 | **Präsenz/Aura** | Team-Buffs, Aggro/Threat-Steuerung (§5.2) |
 | **Beschwörung** | temporäre Einheiten (VIT-skaliert) |
 
-> **Zweck & Stand:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Bestätigt 2026-07-09:** Klasse = die 6 Attribute. **Kein Vollkreuzprodukt** — nicht jede Eigenschaft existiert auf jedem Typ (z. B. *Beschwörung* ist inhärent eine **Aktiv**-Wirkung, nie passiv). Das Eigenschafts-Cluster ist **bewusst erweiterbar** (weitere/andere Cluster jederzeit ergänzbar). **Nächster Schritt:** konkreter Gravuren-Katalog pro (Klasse × Eigenschaft), §11.
+> **Zweck & Stand:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Bestätigt 2026-07-09:** Klasse = die 6 Attribute. **Jeder Typ kann grundsätzlich jede Eigenschaft tragen** *(Revision 2026-07-09 — der frühere „kein Vollkreuzprodukt"-Gedanke ist verworfen)*: z. B. *Beschwörung* bei STR als **Passiv** (beschworene Einheiten +Schaden) oder **Reaktiv** (stirbt eine Beschwörung, eskaliert der Schaden der übrigen). Welche Kombinationen tatsächlich gefüllt werden, ist Design-/Balancing-Entscheidung pro Attribut, kein hartes Verbot; das Eigenschafts-Cluster bleibt **erweiterbar**. **Katalog-Leitlinie:** pro Eigenschaft **zwei Kontrast-Gravuren** (bewusst entgegengesetzte Wege — Single vs. AoE, statisch vs. reaktiv, … —, damit im Playtest verschiedene Builds entstehen).
 
 #### Visuelle Kodierung — Form = Typ, Farbe = Klasse *(2026-07-09)*
 
@@ -1233,23 +1233,21 @@ Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. G
 
 Die konkreten Gravuren liegen als self-contained Coding-DB in **`data/engravings.json`** (eigene Datei analog zu `offhands.json`; enthält Attribut-Farben, Typ-Formen, Eigenschafts-Cluster, Seltenheit, `item_schema` + die Einträge). Der Katalog wird **attributweise** ausgebaut.
 
-**Stand: Muster-Attribut STR vollständig** (Vorlage — GES/WIL/INT/VIT/WID folgen nach Freigabe). STR deckt 6 der 8 Eigenschaften ab; **Beschwörung** (VIT-Domäne) und **Ressource/Mana** (INT-Domäne) fehlen bei STR bewusst — Demonstration des „kein Vollkreuzprodukt"-Prinzips.
+**Stand: Muster-Attribut STR vollständig** (Vorlage — GES/WIL/INT/VIT/WID folgen nach demselben Muster). **16 Basis-Gravuren = 8 Eigenschaften × 2 Kontrastpaare + 1 Signatur.** Typ-Verteilung bewusst ausgewogen (nicht aktiv-lastig): **6 Aktiv · 5 Passiv · 4 Reaktiv · 1 Modifikativ · 1 Signatur**.
 
-| Name | Typ | Eigenschaft | Schadenstyp | Kurz |
+| Eigenschaft | Gravur A · Rolle | Typ | Gravur B · Kontrast | Typ |
 |---|---|---|---|---|
-| Wuchtschlag | Aktiv | Schaden | physisch | Einzelziel-Burst |
-| Klingensturm | Aktiv | Schaden | physisch | AoE-Wirbel (angrenzend) |
-| Aufreißen | Aktiv | Anhaltend | physisch | Blutungs-Stapel |
-| Sturmangriff | Aktiv | Mobilität | physisch | Anlauf + Rückstoß |
-| Erschütternder Hieb | Aktiv | Kontrolle | physisch | Initiative-Verschiebung / Betäubt |
-| Rohe Kraft | Passiv | Schaden | physisch | +% physischer Rohschaden |
-| Eiserne Haltung | Passiv | Verteidigung | — | +Rüstung bei Stillstand |
-| Konterhaltung | Reaktiv | Verteidigung | physisch | Gegenschlag-Chance |
-| Kriegsschrei | Aktiv | Präsenz | — | Taunt + Verbündeten-Buff |
-| Brachialverstärkung | Modifikativ | Schaden | — | verstärkt alle STR-Gravuren |
-| Berserkerherz | Spezial | Schaden | physisch | Signatur: fehlendes Leben → Schaden (bis L5) |
+| **Schaden** | Wuchtschlag · Single-Burst | Aktiv | Drehschlag · AoE | Aktiv |
+| **Anhaltend** | Aufreißen · Blutung setzen | Aktiv | Verschleppte Wunde · Blutung verstärken | Modifikativ |
+| **Verteidigung** | Eiserne Haltung · statisch | Passiv | Abwehrreflex · reaktiv parieren | Reaktiv |
+| **Kontrolle** | Erschütternder Hieb · Initiative drücken | Aktiv | Erschütternde Vergeltung · Angreifer festnageln | Reaktiv |
+| **Mobilität** | Sturmangriff · Gap-Closer | Aktiv | Durchbruch · Kill-Momentum | Passiv |
+| **Ressource** | Zweiter Wind · stetige Regeneration | Passiv | Blutzoll · Notfall-Heilung | Reaktiv |
+| **Präsenz** | Einschüchternde Aura · Aggro ziehen | Passiv | Kriegsschrei · Verbündete stärken | Aktiv |
+| **Beschwörung** | Schlachtruf der Meute · Summons buffen | Passiv | Letztes Aufbäumen · Tod-Trigger | Reaktiv |
+| **Signatur** | Berserkerherz · fehlendes Leben → Schaden (bis L5) | Spezial | — | — |
 
-*Zahlenwerte (Wirkung/Mana/Cooldown) je Level stehen in `engravings.json`, alle unter Balancing-Vorbehalt (Phase 1).*
+*Jede Gravur hat einen **Wirkungstext mit den 3 Level-Werten inline** — Beispiel Wuchtschlag: „Bei Aktivierung wird der nächste Schlag zu einem Angriff mit **120/140/160 %** Waffen-Schaden auf ein Einzelziel." Alle Wirkungstexte, Flavor + Mana/Cooldown je Level stehen in `engravings.json` (Balancing-Vorbehalt, Phase 1).*
 
 ---
 
@@ -1794,7 +1792,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json`)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **STR vollständig** (11 Gravuren über alle 5 Typen, `engravings.json` v0.1) als Vorlage. **Offen:** GES/WIL/INT/VIT/WID nach demselben Muster ausarbeiten (kein Vollkreuzprodukt — Beschwörung=VIT, Mana-Ressource=INT usw.)
+- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR vollständig** (16 Basis + 1 Signatur = 17; 6 Aktiv / 5 Passiv / 4 Reaktiv / 1 Modifikativ / 1 Spezial) als Vorlage. **Offen:** GES/WIL/INT/VIT/WID nach demselben Muster ausarbeiten
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)

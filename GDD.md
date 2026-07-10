@@ -216,7 +216,7 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 **Speed-Wert**
 
-Jede Einheit hat einen Speed-Wert, der die Zugreihenfolge bestimmt. Basiswert ist **1,0**. Ausrüstung modifiziert diesen Wert nach oben oder unten.
+Jede Einheit hat einen Speed-Wert, der die **Füllrate ihrer Initiativeleiste** (und damit die Zugreihenfolge) bestimmt. Basiswert ist **1,0**. Ausrüstung modifiziert diesen Wert nach oben oder unten.
 
 **Gewichtsklassen (5 Stufen)**
 
@@ -246,13 +246,14 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 - Waffenklasse (z. B. „Stichwaffen")
 - Gewichtsklassen-Index (z. B. „Wendig")
 
-**Initiativereihenfolge**
+**Initiativeleiste (Zugreihenfolge)**
 
-- Die Einheit mit dem **höchsten Speed-Wert** zieht zuerst.
-- **Gleichstand:** Die Einheit, die in dieser Runde noch **nicht** gezogen hat, hat Vorrang. Haben beide noch nicht gezogen, entscheidet die längste Wartezeit.
-- **Mehrfachzüge:** Eine Einheit kann in einer Runde mehrfach ziehen, wenn ihr Speed-Wert entsprechend hoch ist. Das Spiel füllt alle Einheiten über einen gemeinsamen Initiative-Balken auf — wer zuerst den Schwellenwert erreicht, ist dran.
-  - *Beispiel: Einheit A (Speed 1) und Einheit B (Speed 2). B zieht zuerst. Dann kommt es zum Gleichstand: A hat noch nicht gezogen → A zieht. Direkt danach zieht B erneut.*
+- Jede Einheit besitzt eine **Initiativeleiste (0 → 100)**. Pro **Tick** füllt sie sich um Initiativepunkte; die **Füllrate ist der Speed-Wert** (Richtwert: Speed × 10 Punkte/Tick — Speed 1,0 = 10/Tick, also 100 nach 10 Ticks; genauer Basiswert = Balancing). **Der Speed-Status bestimmt also ausschließlich, wie schnell sich die Leiste füllt.**
+- Erreicht eine Leiste **100 Punkte**, ist die Einheit am Zug. Nach dem Zug werden **100 Punkte abgezogen** (ein Überschuss bleibt erhalten) — dadurch ziehen schnellere Einheiten häufiger.
+- **Gleichzeitig 100 erreicht:** Vorrang hat, wer in dieser Runde **noch nicht gezogen** hat; bei weiterem Gleichstand die **höhere Geschwindigkeit (Speed)**.
+  - *Beispiel: Einheit A (Speed 1) und B (Speed 2). B füllt doppelt so schnell → B zieht zuerst und füllt weiter; bald steht A bei 100 (noch nicht gezogen → Vorrang) und zieht, kurz darauf B erneut.*
 - Eine **Runde** gilt als beendet, wenn jede Einheit mindestens einmal gezogen hat.
+- **Initiative-Effekte** (Eis-Zusatzeffekt §5.2, Gravur *Erschütternder Hieb*) **ziehen feste Initiativepunkte von der Leiste ab** (z. B. −10/−20/−30) und werfen das Ziel so zurück — je näher es an 100 war, desto spürbarer die Verzögerung. Umgekehrt erhöhen Rally-Effekte (Signalhorn „Sammeln") kurzzeitig die **Füllrate (Speed)**.
 
 ---
 
@@ -483,7 +484,7 @@ Innerhalb einer Achse ist die Trigger-Häufigkeit identisch (gleiche „Währung
 
 - **Feuer (Offensiv):** Appliziert **1 Stapel Brennen** (nutzt die bestehende Brennen-Mechanik 1:1, → „Statuseffekte" unten — kein neues Subsystem nötig). **Bewusster Regelbruch** gegen das ursprüngliche „kein Statuseffekt"-Prinzip — akzeptiert, weil hier kein neues, mit Bestehendem kollidierendes System erfunden wird, sondern ein bereits vorhandenes über einen zusätzlichen Trigger ausgelöst wird (anders als der verworfene Eis-Slow-Ansatz, der echt mit dem Kälte-Status kollidiert hätte).
 - **Donner (Ausbreitung):** Der Schaden springt zusätzlich (~25 % des Elementaranteils, Balancing-Vorbehalt) auf ein gegnerisches Ziel **innerhalb von 2 Feldern um das ursprüngliche Ziel** — **fix, unabhängig von der Waffenreichweite des Angreifers** (sonst wäre Kettenblitz für Nahkämpfer mit Donner-Waffen praktisch tot, da ein zweiter Gegner direkt neben dem Angreifer stehen müsste). Kein Fallback, wenn kein Ziel in Reichweite ist — bewusst akzeptiert: Donner ist der Multi-Target-Spezialist und in Einzelduellen strukturell schwächer, das ist gewollt.
-- **Eis (Zeitlich):** Verschiebt das Ziel **einen Platz später in der Zugreihenfolge** (nutzt das bestehende Speed-/Initiative-System, § „Speed-System" oben). Bewusst **keine** Bewegungs- oder Reaktionswert-Wirkung — das würde mit dem bestehenden, voll ausgebauten Kälte-Status (Reaktionsmalus + Einfrier-Chance, → „Statuseffekte" unten) kollidieren. Komplett andere Systemachse, keine Überschneidung.
+- **Eis (Zeitlich):** Zieht dem Ziel **feste Initiativepunkte von der Initiativeleiste ab** (Richtwert **−20**, Balancing-Vorbehalt) und wirft es damit auf seiner Leiste zurück (§ „Speed & Initiative" oben). Bewusst **keine** Bewegungs- oder Reaktionswert-Wirkung — das würde mit dem bestehenden, voll ausgebauten Kälte-Status (Reaktionsmalus + Einfrier-Chance, → „Statuseffekte" unten) kollidieren. Komplett andere Systemachse, keine Überschneidung.
 - **Natur (Räumlich):** **Verankert** das Ziel für seinen **nächsten eigenen Zug** an seinem aktuellen Feld — kann weiterhin angreifen/Fähigkeiten nutzen, nur nicht bewegen. Kein Stack, läuft automatisch nach diesem einen Zug aus. Bleibt bewusst unter „Gefroren" (das zusätzlich Handeln blockiert).
 
 **Itemisierung:** Der Zusatzeffekt ist eine **Grundeigenschaft des Schadenstyps** — nicht an Element-/Themen-Set-Ausrüstung gebunden (anders als Elementardiffusion, die weiterhin ausschließlich über künftige Sets kommt). Jede Einheit, die überhaupt Elementarschaden zufügt (Waffen-/Gravuren-Anteile, Elementarzauber), hat sofort Zugriff — sonst wäre der Elementar-Pfad vor dem Endgame komplett tot, weil sowohl Diffusion als auch Zusatzeffekt an noch nicht existierende Sets hängen würden.
@@ -985,7 +986,7 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | **Hilfsmittel** | Laterne | Wendig | GES | **Erhellen** — Sicht- + Zauberreichweite je +2; deckt scheinbare/unsichtbare Gegner in 4 Feldern auf |
 | **Hilfsmittel** | Fester Gürtel | Ausgeglichen | WID | **Standhaft** — ignoriert alle Push-/Pull-Effekte |
 | **Hilfsmittel** | Fackel | Schnell | GES | **Hetzjagd** — +0,2 Speed (zusätzlich zur Gewichtsklasse) |
-| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(automatisch)* — alle 5 Züge zu Beginn des Träger-Zuges: Verbündete +10 % Initiative bis zum nächsten Zug |
+| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(automatisch)* — alle 5 Züge zu Beginn des Träger-Zuges: Verbündete +10 % Speed (Initiative-Füllrate) bis zu ihrem nächsten Zug |
 | **Hilfsmittel** | Standarte | Träge | WIL | **Heerführer** — Verbündete in 3 Feldern +10 % Schaden & +10 % Schadensreduktion |
 | **Hilfsmittel** | Rauchschwenker | Wendig | INT | **Spezereien** — vom Träger gewirkte Heilungen +20 % effektiver |
 | **Hilfsmittel** | Köderkolben | Schnell | VIT | **Achtung!** — +20 % Threat-Gen.; Threat-Aura 2 Felder (Präsenz-Aggro, §5.2) |
@@ -1547,7 +1548,7 @@ Die 12 Crafting-Rohlinge (§5.8). Beschaffung: aus dem Zerlegen bzw. craftbar; V
 | Physisch | Nahkampf (STR+STR), Bögen/Armbrüste | Krit ×1,5 | **Rüstung** | WID |
 | Magisch | Chaos-Schule (WIL+WIL), Fluch/Schatten | — | **Resistenz** | WID |
 | Feuer (Hitze) | Feuer-Essenz, Elementarzauber | jeder 3. Treffer → 1 Stapel Brennen | **Elementardiffusion** | WID |
-| Eis (Kälte) | Eis-Essenz | jeder 3. → Initiative −1 Platz | **Elementardiffusion** | WID |
+| Eis (Kälte) | Eis-Essenz | jeder 3. → −20 Initiativepunkte | **Elementardiffusion** | WID |
 | Natur (Terra) | Natur-Essenz, Gift | jeder 3. → Verankerung 1 Zug | **Elementardiffusion** | WID |
 | Donner (Elektro) | Donner-Essenz | jeder 3. → Sprung ~25 % (2 Felder) | **Elementardiffusion** | WID |
 
@@ -1760,7 +1761,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] **Kriegsgeräte-Neuordnung entschieden** *(2026-07-07, §5.3)*: Hammer & Rammbock → Prim **WID** / Sek **STR** (physische Zäh-Bruiser); Zepter → Prim **WIL** (unverändert) / Sek **WID** (statt INT) — bleibt voller Magie-Schadensträger + wird zäher („Battlemage"). WID-Reihe überall 3/5/7/10/13/17/23 (Rüstungs-Prim-Tier, 2/5-Budget-konform). Löst zugleich die Metadaten-Inkonsistenz in `stat_skalierung.Kriegsgeräte` (Klassen-Default deckte Zepters echtes Prim/Sek nicht ab)
 - [x] **Rohschaden-Formel Magisch final entschieden** *(2026-07-08, §5.2, löst die am 2026-07-07 vertagte Diskussion ab)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie, kein Falloff, Zauberwaffen-Reichweite bleibt bei 3 — wer aus der Backline zaubern will, muss näher ran. Ausgleich Fernkampf-/Frontline-Magier läuft über den Skilltree-Pfad, nicht über eine eigene Formel; Feintuning bei Bedarf über die Reichweiten-Zahl (Playtests Phase 1)
 - [x] **Elementar-Durchdringung entschieden** *(2026-07-08, §5.2)*: kein eigener Stat — RD ist bereits generisch und wirkt auf Rüstung/Resistenz/**Elementardiffusion** gleichermaßen. Dedizierter Elementar-Piercing-Waffentyp bewusst vertagt, bis Element-/Themen-Set-Ausrüstung existiert
-- [x] **Elementare Zusatzeffekte designt** *(2026-07-09, §5.2)*: Rollen-Rahmen (Schaden-Achse Feuer/Donner, Kontroll-Achse Eis/Natur), deterministischer Trigger „jeder 3. Elementartreffer" (kein Prozent-Proc, DoT-Ticks zählen bewusst nicht mit), vier finale Effekte — Feuer appliziert 1 Stapel Brennen (bewusster Regelbruch gegen „kein Statuseffekt", da bestehende Mechanik wiederverwendet statt neu erfunden), Donner springt fix 2 Felder um das Ziel (unabhängig von Waffenreichweite), Eis verzögert Initiative um 1 Platz, Natur verankert fürs nächste Ziel-Zug. Zusatzeffekt an Schadenstyp gekoppelt, nicht an Sets. Elementar-Reaktionssystem (Idee B) bewusst geparkt
+- [x] **Elementare Zusatzeffekte designt** *(2026-07-09, §5.2)*: Rollen-Rahmen (Schaden-Achse Feuer/Donner, Kontroll-Achse Eis/Natur), deterministischer Trigger „jeder 3. Elementartreffer" (kein Prozent-Proc, DoT-Ticks zählen bewusst nicht mit), vier finale Effekte — Feuer appliziert 1 Stapel Brennen (bewusster Regelbruch gegen „kein Statuseffekt", da bestehende Mechanik wiederverwendet statt neu erfunden), Donner springt fix 2 Felder um das Ziel (unabhängig von Waffenreichweite), Eis zieht dem Ziel feste Initiativepunkte ab (Richtwert −20, Punkte-Leisten-Modell §5.1), Natur verankert fürs nächste Ziel-Zug. Zusatzeffekt an Schadenstyp gekoppelt, nicht an Sets. Elementar-Reaktionssystem (Idee B) bewusst geparkt
 - [x] **Statuseffekt-Harmonisierung entschieden** *(2026-07-07, §5.2)*: Brennen + „In Brand gesteckt" → **Hitzeschaden** (Feuer); Vergiftet/Gift + Giftnebel → **Terraschaden** (Natur); Blutung bleibt hälftig physisch/magisch (an physische Waffen gebunden, kein Element). Zudem geklärt: „Zauberschaden"-Boni (Foliant/Energiekristall) wirken auf den **Rohschaden vor dem Elementar-Split** — treffen also automatisch beide Anteile eines gemischten Zaubertreffers
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)

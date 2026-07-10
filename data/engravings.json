@@ -98,7 +98,7 @@
     {
       "id": "GR-STR-007", "name": "Erschütternder Hieb", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Kontrolle", "kontrast": "proaktiv (Initiative drücken)", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
       "flavor": "Ein Schlag, der den Gegner aus dem Rhythmus wirft.",
-      "wirkung": "Der nächste Angriff trifft normal und verschiebt die Initiative des Ziels um 2/3/4 Plätze nach hinten (deterministisch, kein Proc — §5.2).",
+      "wirkung": "Der nächste Angriff trifft normal und zieht dem Ziel 10/20/30 Initiativepunkte von seiner Initiativeleiste ab (deterministisch, kein Proc — §5.1/§5.2).",
       "mana": "22/26/30", "cooldown_deckelung": "Cooldown 2 Züge", "max_level": 3
     },
     {

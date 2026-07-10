@@ -1234,7 +1234,9 @@ Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. G
 
 Die konkreten Gravuren liegen als self-contained Coding-DB in **`data/engravings.json`** (eigene Datei analog zu `offhands.json`; enthält Attribut-Farben, Typ-Formen, Eigenschafts-Cluster, Seltenheit, `item_schema` + die Einträge). Der Katalog wird **attributweise** ausgebaut.
 
-**Stand: Muster-Attribut STR vollständig** (Vorlage — GES/WIL/INT/VIT/WID folgen nach demselben Muster). **16 Basis-Gravuren = 8 Eigenschaften × 2 Kontrastpaare + 1 Signatur.** Typ-Verteilung bewusst ausgewogen (nicht aktiv-lastig): **6 Aktiv · 5 Passiv · 4 Reaktiv · 1 Modifikativ · 1 Signatur**.
+**Stand: STR + GES vollständig** (Vorlage — WIL/INT/VIT/WID folgen nach demselben Muster). Je Attribut **16 Basis-Gravuren = 8 Eigenschaften × 2 Kontrastpaare + 1 Signatur**; Typ-Verteilung bewusst ausgewogen (nicht aktiv-lastig).
+
+**STR** *(Rot, physisch/Wucht — 6 Aktiv · 5 Passiv · 4 Reaktiv · 1 Modifikativ · 1 Signatur):*
 
 | Eigenschaft | Gravur A · Rolle | Typ | Gravur B · Kontrast | Typ |
 |---|---|---|---|---|
@@ -1248,7 +1250,21 @@ Die konkreten Gravuren liegen als self-contained Coding-DB in **`data/engravings
 | **Beschwörung** | Schlachtruf der Meute · Summons buffen | Passiv | Letztes Aufbäumen · Tod-Trigger | Reaktiv |
 | **Signatur** | Berserkerherz · fehlendes Leben → Schaden (bis L5) | Spezial | — | — |
 
-*Jede Gravur hat einen **Wirkungstext mit den 3 Level-Werten inline** — Beispiel Wuchtschlag: „Bei Aktivierung wird der nächste Schlag zu einem Angriff mit **120/140/160 %** Waffen-Schaden auf ein Einzelziel." Alle Wirkungstexte, Flavor + Mana/Cooldown je Level stehen in `engravings.json` (Balancing-Vorbehalt, Phase 1).*
+**GES** *(Grün, Präzision/Finesse/Ausweichen — 6 Aktiv · 6 Passiv · 3 Reaktiv · 1 Modifikativ · 1 Signatur):*
+
+| Eigenschaft | Gravur A · Rolle | Typ | Gravur B · Kontrast | Typ |
+|---|---|---|---|---|
+| **Schaden** | Präzisionsschuss · Single (Falloff-Ignore) | Aktiv | Pfeilhagel · AoE | Aktiv |
+| **Anhaltend** | Schwachstelle · Blutung via Krit | Passiv | Nachbluten · Blutung verstärken | Modifikativ |
+| **Verteidigung** | Ausweichschritt · Dauer-Ausweichen | Passiv | Reflexausweichen · erster Angriff/Runde | Reaktiv |
+| **Kontrolle** | Fußangel · MOB-Slow (weich) | Passiv | Fesselschuss · Verwurzeln (hart) | Aktiv |
+| **Mobilität** | Ausfallschritt · reaktionsfreier Rückzug | Aktiv | Leichtfüßig · +MOB dauerhaft | Passiv |
+| **Ressource** | Windschnitt · Ausweichen → Mana | Reaktiv | Kaltblütig · Kill → Cooldown | Reaktiv |
+| **Präsenz** | Markierung · Ziel markieren (offensiv) | Aktiv | Wachsamkeit · Ausweich-Aura (defensiv) | Passiv |
+| **Beschwörung** | Jagdfalke · Pet beschwören | Aktiv | Rudeltaktik · Summons flinker | Passiv |
+| **Signatur** | Klingentanz · Dolch: +20/25/30 % GES in den Schaden (bis L5) | Spezial | — | — |
+
+*Jede Gravur hat einen **Wirkungstext mit den Level-Werten inline** — Beispiel Wuchtschlag: „Bei Aktivierung wird der nächste Schlag zu einem Angriff mit **120/140/160 %** Waffen-Schaden auf ein Einzelziel." Alle Wirkungstexte, Flavor + Mana/Cooldown je Level stehen in `data/engravings.json` (Balancing-Vorbehalt, Phase 1).*
 
 ---
 
@@ -1793,7 +1809,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR vollständig** (16 Basis + 1 Signatur = 17; 6 Aktiv / 5 Passiv / 4 Reaktiv / 1 Modifikativ / 1 Spezial) als Vorlage. **Offen:** GES/WIL/INT/VIT/WID nach demselben Muster ausarbeiten
+- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR + GES vollständig** (je 16 Basis + 1 Signatur = 17; GES-Signatur *Klingentanz* = Dolch-GES-Schadensskalierung). `engravings.json` v0.3. **Offen:** WIL/INT/VIT/WID nach demselben Muster ausarbeiten
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)

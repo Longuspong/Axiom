@@ -1,0 +1,267 @@
+{
+  "meta": {
+    "version": "v0.3",
+    "zweck": "Gravuren-Katalog (self-contained Coding-DB). Schema-Rahmen: GDD §5.7 (4 Achsen Klasse·Typ·Eigenschaft·Schadenstyp; visuelle Kodierung Form=Typ / Farbe=Klasse). Kostenmodell & Slots: §5.7; Crafting: §5.8.",
+    "quelle": "GDD-Sitzung 2026-07-09 (Gravur-Schema bestätigt; STR als Vorlage). Revision v0.2: jeder Typ kann jede Eigenschaft tragen; 2 Kontrast-Gravuren pro Eigenschaft; Wirkungstexte mit Level-Werten inline. v0.3: GES-Palette ergänzt (Signatur Klingentanz = Dolch-GES-Skalierung).",
+    "stand": "STR und GES vollständig (je 16 Basis-Gravuren = 8 Eigenschaften × 2 Kontrastpaare + 1 Signatur). WIL/INT/VIT/WID folgen nach demselben Muster.",
+    "konventionen": {
+      "wirkung": "Fließtext mit den drei Level-Werten inline als 'L1/L2/L3' (z. B. '120/140/160 % Schaden'); Spezial/Signatur mit fünf Werten (L1–L5).",
+      "schaden_prozent": "Angriffs-Schaden in % eines normalen Waffenangriffs (100 % = Normalangriff).",
+      "mana": "Aktiv = Verbrauch je Level (L1/L2/L3); Passiv = 'Reserviert X'; Reaktiv = '—' (nutzt Cooldown/Deckelung)."
+    },
+    "balancing_hinweis": "Alle Zahlenwerte stehen unter Balancing-Vorbehalt (Phase 1). Namen sind Arbeitstitel."
+  },
+  "attribut_klassen": [
+    { "kuerzel": "STR", "name": "Stärke",          "farbe": "#C0392B", "farbname": "Rot" },
+    { "kuerzel": "VIT", "name": "Vitalität",       "farbe": "#E8A13A", "farbname": "Bernstein/Gold" },
+    { "kuerzel": "GES", "name": "Geschicklichkeit", "farbe": "#2E9E5B", "farbname": "Grün" },
+    { "kuerzel": "WID", "name": "Widerstandskraft", "farbe": "#1FA8A0", "farbname": "Türkis/Teal" },
+    { "kuerzel": "INT", "name": "Intelligenz",      "farbe": "#2E6FD6", "farbname": "Blau" },
+    { "kuerzel": "WIL", "name": "Willenskraft",     "farbe": "#8E44AD", "farbname": "Violett" }
+  ],
+  "gravur_typen": [
+    { "typ": "Passiv",      "form": "Dreieck",       "min_level": 1, "max_level": 3, "mana_mechanik": "Reserviert Mana dauerhaft (in der Homezone, §5.2)", "slot": "Passiv" },
+    { "typ": "Aktiv",       "form": "Raute",         "min_level": 1, "max_level": 3, "mana_mechanik": "Mana-Verbrauch beim Einsatz der Fähigkeit",          "slot": "Aktiv" },
+    { "typ": "Modifikativ", "form": "Pentagon",      "min_level": 1, "max_level": 3, "mana_mechanik": "Erhöht Mana-Kosten/-Reservierung der modifizierten Gravuren", "slot": "Modifikativ" },
+    { "typ": "Reaktiv",     "form": "Schild-Trapez", "min_level": 1, "max_level": 3, "mana_mechanik": "—", "slot": "Reaktiv", "deckelung": "Cooldown + max. 3 Auslösungen/Zug (TBD, §5.7)" },
+    { "typ": "Spezial",     "form": "Kreis",         "min_level": 1, "max_level": 5, "mana_mechanik": "Sehr variabel je Gravur", "slot": "Spezial", "hinweis": "Signatur — nicht craftbar (§5.8)" }
+  ],
+  "flex_slot": { "form": "Hexagon", "hinweis": "Generischer Slot, nimmt jede Gravur auf; volle Kapazitätskosten (§5.7)." },
+  "eigenschaften": [
+    { "name": "Schaden",      "beschreibung": "Direkter Bonus-Schaden, Nuke-Fähigkeit, Krit, Durchdringung (RD)." },
+    { "name": "Anhaltend",    "beschreibung": "DoT: Brennen/Gift/Blutung applizieren & verstärken." },
+    { "name": "Verteidigung", "beschreibung": "Schild/Schutz, Flat-Reduktion, Heilung, Regeneration." },
+    { "name": "Kontrolle",    "beschreibung": "Statuseffekte, Verankerung, Initiative-Manipulation, Slow." },
+    { "name": "Mobilität",    "beschreibung": "Bewegung, Sprung, Repositionierung, MOB." },
+    { "name": "Ressource",    "beschreibung": "Mana-/Leben-Ökonomie, Kostensenkung, Manavampir." },
+    { "name": "Präsenz",      "beschreibung": "Team-Buffs (Aura), Aggro/Threat-Steuerung (§5.2)." },
+    { "name": "Beschwörung",  "beschreibung": "Buffs/Trigger rund um temporäre Einheiten. Jeder Typ möglich (nicht nur Aktiv) — z. B. Passiv-Buff oder Reaktiv-Trigger." }
+  ],
+  "seltenheit": [
+    { "material": "Stahl",   "einordnung": "Basis" },
+    { "material": "Titan",   "einordnung": "Mittel" },
+    { "material": "Kosmium", "einordnung": "Selten" }
+  ],
+  "item_schema": {
+    "id": "GR-<KLASSE>-<lfd>",
+    "name": "Arbeitstitel der Gravur",
+    "klasse": "Attribut-Zugehörigkeit (STR|GES|WIL|INT|VIT|WID) — bestimmt die Farbe",
+    "typ": "Aktiv|Passiv|Reaktiv|Modifikativ|Spezial — bestimmt Form & Mana-Mechanik",
+    "eigenschaft": "Wirkkategorie (s. eigenschaften)",
+    "kontrast": "Rollen-Etikett des Kontrastpaars (z. B. 'Single-Burst' vs. 'AoE') — beide Gravuren einer Eigenschaft gehen bewusst entgegengesetzte Wege",
+    "schadenstyp": "physisch|magisch|elementar|— (bei nicht-schadenden Gravuren)",
+    "form": "abgeleitet aus typ (Redundanz für schnelle UI-Nutzung)",
+    "farbe": "abgeleitet aus klasse (Redundanz für schnelle UI-Nutzung)",
+    "flavor": "kurzer Stimmungstext (Lex-Card)",
+    "wirkung": "mechanischer Effekttext mit den 3 (bzw. 5) Level-Werten inline",
+    "mana": "Verbrauch (Aktiv, L1/L2/L3) | 'Reserviert X' (Passiv) | '—' (Reaktiv)",
+    "cooldown_deckelung": "nur Reaktiv/Aktiv relevant",
+    "max_level": "3 (Standard) oder 5 (Spezial/Signatur)"
+  },
+  "gravuren": [
+    {
+      "id": "GR-STR-001", "name": "Wuchtschlag", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Schaden", "kontrast": "Single-Burst", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Alle Kraft in einen einzigen, zermalmenden Hieb.",
+      "wirkung": "Bei Aktivierung wird der nächste Schlag zu einem Angriff mit 120/140/160 % Waffen-Schaden auf ein Einzelziel.",
+      "mana": "20/24/28", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-002", "name": "Drehschlag", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Schaden", "kontrast": "AoE", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Eine ganze Drehung, die alles im Umkreis niedermäht.",
+      "wirkung": "Bei Aktivierung trifft ein Wirbelangriff alle angrenzenden Feinde einmal mit 80/95/110 % Waffen-Schaden.",
+      "mana": "26/31/36", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-003", "name": "Aufreißen", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Anhaltend", "kontrast": "Blutung setzen", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Ein reißender Hieb, der nicht mehr aufhört zu bluten.",
+      "wirkung": "Der nächste Angriff trifft normal und fügt dem Ziel zusätzlich 2/3/4 Stapel Blutung zu (§5.2).",
+      "mana": "18/22/26", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-004", "name": "Verschleppte Wunde", "klasse": "STR", "typ": "Modifikativ", "eigenschaft": "Anhaltend", "kontrast": "Blutung verstärken", "schadenstyp": "—", "form": "Pentagon", "farbe": "#C0392B",
+      "flavor": "Jede Wunde eitert länger und tiefer.",
+      "wirkung": "Modifiziert alle Blutungs-/DoT-Gravuren auf der Waffe: deren Schaden +15/25/35 % und Wirkdauer +1 Zug; erhöht deren Mana-Kosten um 20/25/30 %.",
+      "mana": "Erhöht die Kosten der modifizierten Gravuren", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-005", "name": "Eiserne Haltung", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Verteidigung", "kontrast": "statisch (Stand halten)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "flavor": "Wer nicht weicht, ist schwer zu brechen.",
+      "wirkung": "Bewegt sich die Einheit in ihrem Zug nicht, erhält sie bis zum nächsten Zug +6/+10/+15 Rüstung.",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-006", "name": "Abwehrreflex", "klasse": "STR", "typ": "Reaktiv", "eigenschaft": "Verteidigung", "kontrast": "reaktiv (blocken)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#C0392B",
+      "flavor": "Der Körper wehrt ab, bevor der Kopf es merkt.",
+      "wirkung": "Wird die Einheit im Nahkampf getroffen: 25/40/60 % Chance, den Schaden vollständig zu parieren (§5.2). Triggert nicht bei Backstab.",
+      "mana": "—", "cooldown_deckelung": "Cooldown 2 Züge · max. 3 Auslösungen/Zug (TBD)", "max_level": 3
+    },
+    {
+      "id": "GR-STR-007", "name": "Erschütternder Hieb", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Kontrolle", "kontrast": "proaktiv (Initiative drücken)", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Ein Schlag, der den Gegner aus dem Rhythmus wirft.",
+      "wirkung": "Der nächste Angriff trifft normal und zieht dem Ziel 10/20/30 Initiativepunkte von seiner Initiativeleiste ab (deterministisch, kein Proc — §5.1/§5.2).",
+      "mana": "22/26/30", "cooldown_deckelung": "Cooldown 2 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-STR-008", "name": "Erschütternde Vergeltung", "klasse": "STR", "typ": "Reaktiv", "eigenschaft": "Kontrolle", "kontrast": "reaktiv (Angreifer festnageln)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#C0392B",
+      "flavor": "Wer zuschlägt, kommt nicht mehr weg.",
+      "wirkung": "Wird die Einheit im Nahkampf getroffen, wird der Angreifer verankert (kann sich in seinem nächsten Zug nicht bewegen). Cooldown 3/2/1 Züge.",
+      "mana": "—", "cooldown_deckelung": "Cooldown 3/2/1 Züge · max. 3 Auslösungen/Zug (TBD)", "max_level": 3
+    },
+    {
+      "id": "GR-STR-009", "name": "Sturmangriff", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Mobilität", "kontrast": "Gap-Closer (hin)", "schadenstyp": "physisch", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Mit voller Wucht in die feindliche Linie.",
+      "wirkung": "Stürmt bis zu 3/4/4 Felder auf ein Ziel zu und trifft es mit 110/120/130 % Schaden; stößt es 1/1/2 Felder zurück.",
+      "mana": "22/26/30", "cooldown_deckelung": "Cooldown 2 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-STR-010", "name": "Durchbruch", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Mobilität", "kontrast": "Kill-Momentum (weiter)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "flavor": "Ein Gegner fällt — und der Weg ist frei.",
+      "wirkung": "Schaltet die Einheit einen Gegner aus, erhält sie sofort +1/+1/+2 Bewegung und läuft bis zum Zugende durch Feindfelder hindurch.",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-011", "name": "Zweiter Wind", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Ressource", "kontrast": "stetig (Regeneration)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "flavor": "Wer durchatmet, hält länger durch.",
+      "wirkung": "Erleidet die Einheit in ihrem Zug keinen Schaden, regeneriert sie am Zugende 3/5/8 % ihres maximalen Lebens.",
+      "mana": "Reserviert 35", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-012", "name": "Blutzoll", "klasse": "STR", "typ": "Reaktiv", "eigenschaft": "Ressource", "kontrast": "Notfall (Burst-Heilung)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#C0392B",
+      "flavor": "In höchster Not bäumt sich der Körper auf.",
+      "wirkung": "Fällt das Leben erstmals in einem Kampf unter 30 %, heilt sich die Einheit einmalig um 15/25/40 % ihres maximalen Lebens.",
+      "mana": "—", "cooldown_deckelung": "Einmal pro Kampf", "max_level": 3
+    },
+    {
+      "id": "GR-STR-013", "name": "Einschüchternde Aura", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Präsenz", "kontrast": "Aggro ziehen (Tank)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "flavor": "Ihre bloße Gegenwart zwingt die Blicke der Feinde auf sich.",
+      "wirkung": "Gegner innerhalb von 2 Feldern erzeugen 20/30/45 % mehr Bedrohung gegen die Einheit (zieht Aggro, §5.2).",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-014", "name": "Kriegsschrei", "klasse": "STR", "typ": "Aktiv", "eigenschaft": "Präsenz", "kontrast": "Verbündete stärken (Anführer)", "schadenstyp": "—", "form": "Raute", "farbe": "#C0392B",
+      "flavor": "Ein Ruf, der den eigenen Reihen Mut und Kraft gibt.",
+      "wirkung": "Verbündete in 2/2/3 Feldern erhalten +6/+9/+12 % Rohschaden für 2 Züge.",
+      "mana": "26/30/34", "cooldown_deckelung": "Cooldown 4 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-STR-015", "name": "Schlachtruf der Meute", "klasse": "STR", "typ": "Passiv", "eigenschaft": "Beschwörung", "kontrast": "Summons dauerhaft buffen", "schadenstyp": "—", "form": "Dreieck", "farbe": "#C0392B",
+      "flavor": "Unter ihrem Kommando schlagen die Bestien härter zu.",
+      "wirkung": "Beschworene Einheiten der Einheit verursachen +15/25/40 % Schaden.",
+      "mana": "Reserviert 35", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-STR-016", "name": "Letztes Aufbäumen", "klasse": "STR", "typ": "Reaktiv", "eigenschaft": "Beschwörung", "kontrast": "Tod-Trigger (Eskalation)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#C0392B",
+      "flavor": "Jeder gefallene Gefährte facht die Wut der Übrigen an.",
+      "wirkung": "Stirbt eine beschworene Einheit, erhalten alle noch lebenden beschworenen Einheiten +50/75/100 % Schaden bis zum Kampfende.",
+      "mana": "—", "cooldown_deckelung": "Pro Tod einer beschworenen Einheit", "max_level": 3
+    },
+    {
+      "id": "GR-STR-017", "name": "Berserkerherz", "klasse": "STR", "typ": "Spezial", "eigenschaft": "Schaden", "kontrast": "Signatur (Low-Life-Skalierung)", "schadenstyp": "physisch", "form": "Kreis", "farbe": "#C0392B",
+      "flavor": "Signatur. Je näher am Tod, desto tödlicher der Hieb.",
+      "wirkung": "Passiv: je 5 % fehlendem Leben +1/+1/+1,5/+1,5/+2 % physischer Rohschaden (max +10/+16/+24/+32/+40 %). Ab L5 zusätzlich 10 % Lebensraub auf physischen Schaden. Nicht craftbar (§5.8).",
+      "mana": "Passiv-Reservierung, variabel", "cooldown_deckelung": "—", "max_level": 5
+    },
+    {
+      "id": "GR-GES-001", "name": "Präzisionsschuss", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Schaden", "kontrast": "Single-Präzision", "schadenstyp": "physisch", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Ein Schuss, der jede Deckung findet.",
+      "wirkung": "Bei Aktivierung trifft der nächste Fernkampfangriff mit 120/140/160 % Schaden und ignoriert den Distanz-Falloff (§5.2).",
+      "mana": "20/24/28", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-002", "name": "Pfeilhagel", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Schaden", "kontrast": "AoE", "schadenstyp": "physisch", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Ein Regen aus Pfeilen über dem Schlachtfeld.",
+      "wirkung": "Bei Aktivierung prasselt ein Pfeilregen auf ein Zielfeld: alle Gegner in 1 Feld Umkreis werden mit 70/85/100 % Schaden getroffen.",
+      "mana": "26/31/36", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-003", "name": "Schwachstelle", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Anhaltend", "kontrast": "Blutung via Krit setzen", "schadenstyp": "physisch", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "Wo andere Haut sehen, sieht sie die Lücke.",
+      "wirkung": "Kritische Treffer der Einheit fügen dem Ziel zusätzlich 2/3/4 Stapel Blutung zu (§5.2).",
+      "mana": "Reserviert 35", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-004", "name": "Nachbluten", "klasse": "GES", "typ": "Modifikativ", "eigenschaft": "Anhaltend", "kontrast": "Blutung verstärken", "schadenstyp": "—", "form": "Pentagon", "farbe": "#2E9E5B",
+      "flavor": "Jeder Schnitt öffnet den nächsten weiter.",
+      "wirkung": "Modifiziert alle Blutungs-/DoT-Gravuren auf der Waffe: kritische Treffer verlängern deren Wirkdauer um 1 Zug, ihr Schaden steigt um 15/25/35 %; erhöht deren Mana-Kosten um 20/25/30 %.",
+      "mana": "Erhöht die Kosten der modifizierten Gravuren", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-005", "name": "Ausweichschritt", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Verteidigung", "kontrast": "statisch (Dauer-Ausweichen)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "Immer einen Schritt neben dem Hieb.",
+      "wirkung": "Erhöht die Ausweichchance der Einheit dauerhaft um 8/12/18 % (§5.2).",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-006", "name": "Reflexausweichen", "klasse": "GES", "typ": "Reaktiv", "eigenschaft": "Verteidigung", "kontrast": "reaktiv (erster Angriff)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#2E9E5B",
+      "flavor": "Der erste Schlag geht immer ins Leere.",
+      "wirkung": "Der erste Angriff gegen die Einheit in jeder Runde wird mit 40/60/80 % Chance vollständig ausgewichen.",
+      "mana": "—", "cooldown_deckelung": "1× pro Runde", "max_level": 3
+    },
+    {
+      "id": "GR-GES-007", "name": "Fußangel", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Kontrolle", "kontrast": "verlangsamen (weich)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "Ein gezielter Schnitt in die Sehne.",
+      "wirkung": "Angriffe der Einheit verringern die Bewegung (MOB) getroffener Ziele um 1/1/2 für deren nächsten Zug.",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-008", "name": "Fesselschuss", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Kontrolle", "kontrast": "verwurzeln (hart)", "schadenstyp": "physisch", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Ein Pfeil, der ans Erdreich nagelt.",
+      "wirkung": "Der nächste Fernkampfangriff verankert das Ziel für seinen nächsten Zug (kann sich nicht bewegen) und trifft mit 90/100/110 % Schaden.",
+      "mana": "22/26/30", "cooldown_deckelung": "Cooldown 3 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-GES-009", "name": "Ausfallschritt", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Mobilität", "kontrast": "Reposition (Rückzug)", "schadenstyp": "—", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Weg, bevor der Gegner ausholt.",
+      "wirkung": "Bewegt die Einheit bis zu 3/3/4 Felder, ohne Gegenschläge oder Reaktionen auszulösen (§5.2).",
+      "mana": "16/20/24", "cooldown_deckelung": "Cooldown 2 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-GES-010", "name": "Leichtfüßig", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Mobilität", "kontrast": "permanente Mobilität", "schadenstyp": "—", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "Der Boden hält sie nicht auf.",
+      "wirkung": "+1/+1/+2 Bewegung (MOB); die Einheit ignoriert zudem schwieriges Gelände.",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-011", "name": "Windschnitt", "klasse": "GES", "typ": "Reaktiv", "eigenschaft": "Ressource", "kontrast": "Ausweichen → Mana (defensiv)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#2E9E5B",
+      "flavor": "Jede vermiedene Klinge schenkt neuen Atem.",
+      "wirkung": "Weicht die Einheit einem Angriff aus, erhält sie 10/15/22 Mana zurück.",
+      "mana": "—", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-012", "name": "Kaltblütig", "klasse": "GES", "typ": "Reaktiv", "eigenschaft": "Ressource", "kontrast": "Kill → Cooldown (offensiv)", "schadenstyp": "—", "form": "Schild-Trapez", "farbe": "#2E9E5B",
+      "flavor": "Jeder Fall gibt neuen Schwung.",
+      "wirkung": "Schaltet die Einheit einen Gegner aus, sinkt der Cooldown einer zufälligen aktiven Gravur um 1/2/3 Züge.",
+      "mana": "—", "cooldown_deckelung": "pro Kill", "max_level": 3
+    },
+    {
+      "id": "GR-GES-013", "name": "Markierung", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Präsenz", "kontrast": "Ziel markieren (offensiv)", "schadenstyp": "—", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Ein Zeichen, das keiner übersieht.",
+      "wirkung": "Markiert ein Ziel: alle Verbündeten verursachen +8/12/18 % Schaden gegen es für 2 Züge.",
+      "mana": "20/24/28", "cooldown_deckelung": "Cooldown 3 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-GES-014", "name": "Wachsamkeit", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Präsenz", "kontrast": "Ausweich-Aura (defensiv)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "In ihrer Nähe ist jeder flinker.",
+      "wirkung": "Verbündete in 2 Feldern erhalten +5/8/12 % Ausweichchance.",
+      "mana": "Reserviert 30", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-015", "name": "Jagdfalke", "klasse": "GES", "typ": "Aktiv", "eigenschaft": "Beschwörung", "kontrast": "Pet beschwören (aktiv)", "schadenstyp": "physisch", "form": "Raute", "farbe": "#2E9E5B",
+      "flavor": "Ein gefiederter Jäger am Himmel.",
+      "wirkung": "Beschwört einen Falken (Fernkampf, skaliert mit GES), der 2/3/4 Züge an der Seite der Einheit kämpft.",
+      "mana": "28/32/36", "cooldown_deckelung": "Cooldown 5 Züge", "max_level": 3
+    },
+    {
+      "id": "GR-GES-016", "name": "Rudeltaktik", "klasse": "GES", "typ": "Passiv", "eigenschaft": "Beschwörung", "kontrast": "Summons-Mobilität (passiv)", "schadenstyp": "—", "form": "Dreieck", "farbe": "#2E9E5B",
+      "flavor": "Flink jagt es sich besser im Rudel.",
+      "wirkung": "Beschworene Einheiten der Einheit erhalten +10/15/22 % Ausweichchance und +1 Bewegung.",
+      "mana": "Reserviert 35", "cooldown_deckelung": "—", "max_level": 3
+    },
+    {
+      "id": "GR-GES-017", "name": "Klingentanz", "klasse": "GES", "typ": "Spezial", "eigenschaft": "Schaden", "kontrast": "Signatur (Dolch-GES-Skalierung)", "schadenstyp": "physisch", "form": "Kreis", "farbe": "#2E9E5B",
+      "flavor": "Signatur. In flinken Händen wird der Dolch zur Verlängerung des Willens.",
+      "wirkung": "Solange eine Stichwaffe (Dolch) geführt wird, fließen zusätzlich 20/22/25/27/30 % der GES der Einheit in die Rohschadensberechnung ein (L1/L3/L5 = 20/25/30 %). Nicht craftbar (§5.8).",
+      "mana": "Passiv-Reservierung, variabel", "cooldown_deckelung": "—", "max_level": 5
+    }
+  ]
+}

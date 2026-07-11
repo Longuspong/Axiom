@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.22  
+**Version:** 0.23  
 **Stand:** 2026-07-09  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -216,7 +216,7 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 
 **Speed-Wert**
 
-Jede Einheit hat einen Speed-Wert, der die Zugreihenfolge bestimmt. Basiswert ist **1,0**. Ausrüstung modifiziert diesen Wert nach oben oder unten.
+Jede Einheit hat einen Speed-Wert, der die **Füllrate ihrer Initiativeleiste** (und damit die Zugreihenfolge) bestimmt. Basiswert ist **1,0**. Ausrüstung modifiziert diesen Wert nach oben oder unten.
 
 **Gewichtsklassen (5 Stufen)**
 
@@ -246,13 +246,14 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 - Waffenklasse (z. B. „Stichwaffen")
 - Gewichtsklassen-Index (z. B. „Wendig")
 
-**Initiativereihenfolge**
+**Initiativeleiste (Zugreihenfolge)**
 
-- Die Einheit mit dem **höchsten Speed-Wert** zieht zuerst.
-- **Gleichstand:** Die Einheit, die in dieser Runde noch **nicht** gezogen hat, hat Vorrang. Haben beide noch nicht gezogen, entscheidet die längste Wartezeit.
-- **Mehrfachzüge:** Eine Einheit kann in einer Runde mehrfach ziehen, wenn ihr Speed-Wert entsprechend hoch ist. Das Spiel füllt alle Einheiten über einen gemeinsamen Initiative-Balken auf — wer zuerst den Schwellenwert erreicht, ist dran.
-  - *Beispiel: Einheit A (Speed 1) und Einheit B (Speed 2). B zieht zuerst. Dann kommt es zum Gleichstand: A hat noch nicht gezogen → A zieht. Direkt danach zieht B erneut.*
+- Jede Einheit besitzt eine **Initiativeleiste (0 → 100)**. Pro **Tick** füllt sie sich um Initiativepunkte; die **Füllrate ist der Speed-Wert** (Richtwert: Speed × 10 Punkte/Tick — Speed 1,0 = 10/Tick, also 100 nach 10 Ticks; genauer Basiswert = Balancing). **Der Speed-Status bestimmt also ausschließlich, wie schnell sich die Leiste füllt.**
+- Erreicht eine Leiste **100 Punkte**, ist die Einheit am Zug. Nach dem Zug werden **100 Punkte abgezogen** (ein Überschuss bleibt erhalten) — dadurch ziehen schnellere Einheiten häufiger.
+- **Gleichzeitig 100 erreicht:** Vorrang hat, wer in dieser Runde **noch nicht gezogen** hat; bei weiterem Gleichstand die **höhere Geschwindigkeit (Speed)**.
+  - *Beispiel: Einheit A (Speed 1) und B (Speed 2). B füllt doppelt so schnell → B zieht zuerst und füllt weiter; bald steht A bei 100 (noch nicht gezogen → Vorrang) und zieht, kurz darauf B erneut.*
 - Eine **Runde** gilt als beendet, wenn jede Einheit mindestens einmal gezogen hat.
+- **Initiative-Effekte** (Eis-Zusatzeffekt §5.2, Gravur *Erschütternder Hieb*) **ziehen feste Initiativepunkte von der Leiste ab** (z. B. −10/−20/−30) und werfen das Ziel so zurück — je näher es an 100 war, desto spürbarer die Verzögerung. Umgekehrt erhöhen Rally-Effekte (Signalhorn „Sammeln") kurzzeitig die **Füllrate (Speed)**.
 
 ---
 
@@ -483,7 +484,7 @@ Innerhalb einer Achse ist die Trigger-Häufigkeit identisch (gleiche „Währung
 
 - **Feuer (Offensiv):** Appliziert **1 Stapel Brennen** (nutzt die bestehende Brennen-Mechanik 1:1, → „Statuseffekte" unten — kein neues Subsystem nötig). **Bewusster Regelbruch** gegen das ursprüngliche „kein Statuseffekt"-Prinzip — akzeptiert, weil hier kein neues, mit Bestehendem kollidierendes System erfunden wird, sondern ein bereits vorhandenes über einen zusätzlichen Trigger ausgelöst wird (anders als der verworfene Eis-Slow-Ansatz, der echt mit dem Kälte-Status kollidiert hätte).
 - **Donner (Ausbreitung):** Der Schaden springt zusätzlich (~25 % des Elementaranteils, Balancing-Vorbehalt) auf ein gegnerisches Ziel **innerhalb von 2 Feldern um das ursprüngliche Ziel** — **fix, unabhängig von der Waffenreichweite des Angreifers** (sonst wäre Kettenblitz für Nahkämpfer mit Donner-Waffen praktisch tot, da ein zweiter Gegner direkt neben dem Angreifer stehen müsste). Kein Fallback, wenn kein Ziel in Reichweite ist — bewusst akzeptiert: Donner ist der Multi-Target-Spezialist und in Einzelduellen strukturell schwächer, das ist gewollt.
-- **Eis (Zeitlich):** Verschiebt das Ziel **einen Platz später in der Zugreihenfolge** (nutzt das bestehende Speed-/Initiative-System, § „Speed-System" oben). Bewusst **keine** Bewegungs- oder Reaktionswert-Wirkung — das würde mit dem bestehenden, voll ausgebauten Kälte-Status (Reaktionsmalus + Einfrier-Chance, → „Statuseffekte" unten) kollidieren. Komplett andere Systemachse, keine Überschneidung.
+- **Eis (Zeitlich):** Zieht dem Ziel **feste Initiativepunkte von der Initiativeleiste ab** (Richtwert **−20**, Balancing-Vorbehalt) und wirft es damit auf seiner Leiste zurück (§ „Speed & Initiative" oben). Bewusst **keine** Bewegungs- oder Reaktionswert-Wirkung — das würde mit dem bestehenden, voll ausgebauten Kälte-Status (Reaktionsmalus + Einfrier-Chance, → „Statuseffekte" unten) kollidieren. Komplett andere Systemachse, keine Überschneidung.
 - **Natur (Räumlich):** **Verankert** das Ziel für seinen **nächsten eigenen Zug** an seinem aktuellen Feld — kann weiterhin angreifen/Fähigkeiten nutzen, nur nicht bewegen. Kein Stack, läuft automatisch nach diesem einen Zug aus. Bleibt bewusst unter „Gefroren" (das zusätzlich Handeln blockiert).
 
 **Itemisierung:** Der Zusatzeffekt ist eine **Grundeigenschaft des Schadenstyps** — nicht an Element-/Themen-Set-Ausrüstung gebunden (anders als Elementardiffusion, die weiterhin ausschließlich über künftige Sets kommt). Jede Einheit, die überhaupt Elementarschaden zufügt (Waffen-/Gravuren-Anteile, Elementarzauber), hat sofort Zugriff — sonst wäre der Elementar-Pfad vor dem Endgame komplett tot, weil sowohl Diffusion als auch Zusatzeffekt an noch nicht existierende Sets hängen würden.
@@ -985,7 +986,7 @@ Waffen sind **Einhand (E)** oder **Zweihand (B)** — siehe `Hand (E/B)` in `dat
 | **Hilfsmittel** | Laterne | Wendig | GES | **Erhellen** — Sicht- + Zauberreichweite je +2; deckt scheinbare/unsichtbare Gegner in 4 Feldern auf |
 | **Hilfsmittel** | Fester Gürtel | Ausgeglichen | WID | **Standhaft** — ignoriert alle Push-/Pull-Effekte |
 | **Hilfsmittel** | Fackel | Schnell | GES | **Hetzjagd** — +0,2 Speed (zusätzlich zur Gewichtsklasse) |
-| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(automatisch)* — alle 5 Züge zu Beginn des Träger-Zuges: Verbündete +10 % Initiative bis zum nächsten Zug |
+| **Hilfsmittel** | Signalhorn | Wendig | WIL | **Sammeln** *(automatisch)* — alle 5 Züge zu Beginn des Träger-Zuges: Verbündete +10 % Speed (Initiative-Füllrate) bis zu ihrem nächsten Zug |
 | **Hilfsmittel** | Standarte | Träge | WIL | **Heerführer** — Verbündete in 3 Feldern +10 % Schaden & +10 % Schadensreduktion |
 | **Hilfsmittel** | Rauchschwenker | Wendig | INT | **Spezereien** — vom Träger gewirkte Heilungen +20 % effektiver |
 | **Hilfsmittel** | Köderkolben | Schnell | VIT | **Achtung!** — +20 % Threat-Gen.; Threat-Aura 2 Felder (Präsenz-Aggro, §5.2) |
@@ -1052,7 +1053,7 @@ Attribute kommen zu **2/5 aus der Rüstung** (Körper+Kopf+Füße zusammen) und 
 
 - **Form:** Radialer Baum mit **6 Sektoren**, einer pro Attribut (STR, GES, WIL, INT, VIT, WID), angeordnet wie ein Rad. Jede Klasse hat einen festen **Einstiegspunkt** im Sektor ihres Identitätsattributs (Krieger→STR/WID-Grenze, Schütze→GES, Magier→WIL, Mystiker→INT, Assassine→GES/STR-Grenze). Von dort führen Pfade **radial nach außen** (Spezialisierung im eigenen Attribut) und **tangential zu Nachbarsektoren** (Hybridisierung) — bildet „Jede Klasse kann alles" ab, ohne dass der Baum strukturlos wird: die Entfernung zum Einstiegspunkt ist die natürliche Bremse gegen unbalancierte Chaos-Builds.
 - **Node-Typen:**
-  - **Attributsnodes** (klein, günstig): +1 bis +3 auf ein Attribut; Dichte so kalibriert, dass ein reiner Pfad in den eigenen Sektor bei ~Level 25 die **~70 Punkte** erreicht, die das Rüstungsbudget 2/5:3/5 voraussetzt (§5.3)
+  - **Attributsnodes** (klein, günstig): +1 bis +3 auf ein Attribut; Dichte so kalibriert, dass ein reiner Pfad in den eigenen Sektor **bis zum Endgame** die **~70 Punkte** erreicht, die das Rüstungsbudget 2/5:3/5 voraussetzt (§5.3). Die genaue Levelmarke ist Balancing-Sache (Attributsnode-Dichte/-Kosten-Tabelle, s. u.); **Leitplanke: fokussierte Werte wachsen bewusst langsam** — insbesondere **WID** soll die 100er-Marke (= 50 % Reduktion, `WID/(WID+100)`, §5.2) erst spät überschreiten, damit Rüstung/Zähigkeit nicht zu früh überproportional wird.
   - **Notable-Nodes** (mittel, an Sektorgrenzen/Knotenpunkten): konkrete Boni (Mana-Pool, MOB, Krit-Chance-Quelle, Ausweichen-Quelle)
   - **Keystone-Nodes** (selten, an Pfad-Enden): build-definierend, entsprechen den Spezialisierungspfaden aus §5.3 (z. B. Magier-Chaos-Build „Fähigkeiten kosten HP statt Mana", Mystiker-DoT-Build)
 - **Punkte-Ökonomie:** 1 Punkt/Level = 50 Punkte total, aber nicht linear ausgebbar — Wegkosten (Attributsnodes zum Durchqueren) skalieren mit der Entfernung vom Sektor-Zentrum und erzeugen dadurch von selbst die in §5.3 festgelegte Kurve (linear bis ~25, strafft sich ab 35). Level 46–50 = 5 Bonuspunkte, ausschließlich für die letzten Keystones — natürlicher Ort für die in §5.3 vorgesehene Klassen-Prüfung/den Herausforderungsmodus als Freischaltbedingung.
@@ -1088,6 +1089,64 @@ Alle Attribute werden mit den ersten drei Buchstaben in Großbuchstaben abgekür
 *(übernommen aus dem nie gemergten Branch `claude/waffenkiste-engraving-discussion-h9m12r` (GDD-v0.7-Ära); Verfeinerungs-Tabelle an den aktuellen Datenstand `data/weapons.json` v7 angepasst — bei Abweichungen gilt die Daten-Version)*
 
 Gravuren sind Waffenmodifikatoren, die in freie Slots einer Waffe eingesetzt werden. Das System orientiert sich an PoE-Ability-Gems, mit eigenem Energie- und Mana-Management. Die maschinenlesbaren Grunddaten (Typen, Leveling, Seltenheit, Slot-Templates) liegen in `data/weapons.json`.
+
+#### Gravur-Schema — die vier Achsen *(2026-07-09, Klasse & Eigenschaft bestätigt)*
+
+Jede Gravur ist über **vier Achsen** eindeutig eingeordnet — das ist zugleich das Ordnungsraster für den Katalog (folgt), die Crafting-Filter und die Lex-Tactica-Rubrik 4:
+
+| Achse | Wertebereich | Bestimmt | Stand |
+|---|---|---|---|
+| **Typ** | Aktiv · Passiv · Reaktiv · Modifikativ · Spezial | *wie* die Gravur wirkt (Mana-Mechanik, Slot-Typ) | ✅ (s. u.) |
+| **Klasse** | STR · GES · WIL · INT · VIT · WID (die 6 Attribute) | thematische **Attribut-Sphäre** (PoE-Gem-Farbe-Analogon, spiegelt die 6 Skilltree-Sektoren §5.4) | ✅ bestätigt |
+| **Eigenschaft** | Wirkkategorie (Liste unten) | *was* die Gravur inhaltlich tut | ✅ (erweiterbar) |
+| **Schadenstyp** | physisch · magisch · elementar (+ Element) | welche Schadens-/Resistenz-Achse betroffen ist (§5.2); bei nicht-schadenden Gravuren „—" | ✅ |
+
+**Achse „Klasse" (Attribut-Sphäre):** Analog zu den PoE-Gem-Farben trägt jede Gravur ein **Heimat-Attribut** (STR/GES/WIL/INT/VIT/WID). Das ist **keine harte Klassensperre** — jede Charakterklasse kann jede Gravur nutzen (§5.3 „Jede Klasse kann alles") —, sondern eine thematische Zuordnung: attributsnahe Builds finden ihre Gravuren gebündelt, und Aspektsplitter/Skilltree-Sektor (§5.4) teilen sich dieselbe 6er-Achse. Beispiele: *Wuchtschlag* → STR, *Präzisionsschuss* → GES, *Feuerlanze* → WIL, *Manabrunnen* → INT, *Zäher Wall* → WID, *Lebensband* → VIT.
+
+**Achse „Eigenschaft" (Wirkkategorie):** Kontrolliertes Vokabular, das den Effekt einordnet — die Haupt-Sortierung des Katalogs. Eine Gravur trägt genau **eine** primäre Eigenschaft (Modifikativ-Gravuren wirken auf die Eigenschaft *anderer* Gravuren):
+
+| Eigenschaft | Beispiel-Wirkung |
+|---|---|
+| **Schaden** | direkter Bonus-Schaden, Nuke-Fähigkeit, Krit, Durchdringung (RD) |
+| **Anhaltend (DoT)** | Brennen/Gift/Blutung applizieren & verstärken |
+| **Verteidigung** | Schild/Schutz, Flat-Reduktion, Heilung, Regeneration |
+| **Kontrolle** | Statuseffekte, Verankerung, Initiative-Manipulation, Slow |
+| **Mobilität** | Bewegung, Sprung, Repositionierung, MOB |
+| **Ressource** | Mana-/Leben-Ökonomie, Kostensenkung, Manavampir |
+| **Präsenz/Aura** | Team-Buffs, Aggro/Threat-Steuerung (§5.2) |
+| **Beschwörung** | temporäre Einheiten (VIT-skaliert) |
+
+> **Zweck & Stand:** Eine konkrete Gravur = (Klasse × Typ × Eigenschaft × Schadenstyp) + Level-Skalierung (§ „Gravur-Leveling"). **Bestätigt 2026-07-09:** Klasse = die 6 Attribute. **Jeder Typ kann grundsätzlich jede Eigenschaft tragen** *(Revision 2026-07-09 — der frühere „kein Vollkreuzprodukt"-Gedanke ist verworfen)*: z. B. *Beschwörung* bei STR als **Passiv** (beschworene Einheiten +Schaden) oder **Reaktiv** (stirbt eine Beschwörung, eskaliert der Schaden der übrigen). Welche Kombinationen tatsächlich gefüllt werden, ist Design-/Balancing-Entscheidung pro Attribut, kein hartes Verbot; das Eigenschafts-Cluster bleibt **erweiterbar**. **Katalog-Leitlinie:** pro Eigenschaft **zwei Kontrast-Gravuren** (bewusst entgegengesetzte Wege — Single vs. AoE, statisch vs. reaktiv, … —, damit im Playtest verschiedene Builds entstehen).
+
+#### Visuelle Kodierung — Form = Typ, Farbe = Klasse *(2026-07-09)*
+
+Gravuren sind auf einen Blick lesbar über **zwei Kanäle**: die **Form** kodiert den **Typ**, die **Farbe** die **Klasse (Attribut)**. Weil Form + Beschriftung die Typ-Info tragen, bleiben Gravuren auch für Farbfehlsichtige eindeutig (Farbe ist der *sekundäre* Kanal) — passt zu den UI-Regeln in §10.5.
+
+**Form = Typ** (Kern-Typen mit aufsteigender Eckenzahl 3 → 4 → 5, Sonderformen für Reaktiv/Spezial):
+
+| Typ | Form | Lesart |
+|---|---|---|
+| **Passiv** | Dreieck (3 Ecken) | ruhendes Fundament |
+| **Aktiv** | Raute / isometrisches Viereck (4 Ecken) | der Standard, „zeigt in alle Richtungen" |
+| **Modifikativ** | Pentagon (5 Ecken) | umschließt/erweitert die anderen Gravuren |
+| **Reaktiv** | schildförmiges Trapez | Trigger/Defensive — liest sich sofort als Schild |
+| **Spezial/Signatur** | (fast) Kreis | außerhalb des Polygon-Systems — einzigartig |
+| *Flex-Slot (generisch)* | **Hexagon** | *nimmt jede Gravur auf — die ursprüngliche Hexagon-Idee lebt als „passt überall"-Marker weiter* |
+
+*Raute (Aktiv) und Trapez (Reaktiv) haben beide vier Kanten → visuell klar trennen: Raute symmetrisch/spitz, Trapez flacher Schild-Umriss.*
+
+**Farbe = Klasse (Attribut)** — ein Leitfarbton je Attribut, **einheitlich** für Gravuren, Skilltree-Sektor (§5.4) und Attribut-UI (§5.6):
+
+| Attribut | Farbe | Richtwert |
+|---|---|---|
+| **STR** Stärke | Rot | `#C0392B` |
+| **VIT** Vitalität | Bernstein/Gold | `#E8A13A` |
+| **GES** Geschicklichkeit | Grün | `#2E9E5B` |
+| **WID** Widerstandskraft | Türkis/Teal | `#1FA8A0` |
+| **INT** Intelligenz | Blau | `#2E6FD6` |
+| **WIL** Willenskraft | Violett | `#8E44AD` |
+
+*(Farbwerte = Richtwert, Feinabstimmung im UI-Balancing. Die sechs Töne sind bewusst gleichmäßig über den Farbkreis verteilt = maximal unterscheidbar.)* Der **Schadenstyp** (4. Achse) wird bei Bedarf über ein sekundäres Detail markiert (z. B. Rand-/Icon-Akzent) — Ausgestaltung offen.
 
 #### Gravurtypen
 
@@ -1169,7 +1228,43 @@ Gravuren können jederzeit aus einer Waffe entfernt und in eine andere eingesetz
 
 #### Crafting
 
-Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. Grundsatz bleibt: Zutaten lenken Wahrscheinlichkeiten, ohne den RNG-Faktor zu eliminieren — Loot behält seine Rolle, garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen. *(Konkreter Gravuren-Katalog → folgt)*
+Das Crafting-System (Resonanz-Matrix) ist in **§5.8** vollständig definiert. Grundsatz bleibt: Zutaten lenken Wahrscheinlichkeiten, ohne den RNG-Faktor zu eliminieren — Loot behält seine Rolle, garantiertes 100%-Crafting aller Gravuren ist nicht vorgesehen.
+
+#### Gravuren-Katalog (Daten) *(2026-07-09)*
+
+Die konkreten Gravuren liegen als self-contained Coding-DB in **`data/engravings.json`** (eigene Datei analog zu `offhands.json`; enthält Attribut-Farben, Typ-Formen, Eigenschafts-Cluster, Seltenheit, `item_schema` + die Einträge). Der Katalog wird **attributweise** ausgebaut.
+
+**Stand: STR + GES vollständig** (Vorlage — WIL/INT/VIT/WID folgen nach demselben Muster). Je Attribut **16 Basis-Gravuren = 8 Eigenschaften × 2 Kontrastpaare + 1 Signatur**; Typ-Verteilung bewusst ausgewogen (nicht aktiv-lastig).
+
+**STR** *(Rot, physisch/Wucht — 6 Aktiv · 5 Passiv · 4 Reaktiv · 1 Modifikativ · 1 Signatur):*
+
+| Eigenschaft | Gravur A · Rolle | Typ | Gravur B · Kontrast | Typ |
+|---|---|---|---|---|
+| **Schaden** | Wuchtschlag · Single-Burst | Aktiv | Drehschlag · AoE | Aktiv |
+| **Anhaltend** | Aufreißen · Blutung setzen | Aktiv | Verschleppte Wunde · Blutung verstärken | Modifikativ |
+| **Verteidigung** | Eiserne Haltung · statisch | Passiv | Abwehrreflex · reaktiv parieren | Reaktiv |
+| **Kontrolle** | Erschütternder Hieb · Initiative drücken | Aktiv | Erschütternde Vergeltung · Angreifer festnageln | Reaktiv |
+| **Mobilität** | Sturmangriff · Gap-Closer | Aktiv | Durchbruch · Kill-Momentum | Passiv |
+| **Ressource** | Zweiter Wind · stetige Regeneration | Passiv | Blutzoll · Notfall-Heilung | Reaktiv |
+| **Präsenz** | Einschüchternde Aura · Aggro ziehen | Passiv | Kriegsschrei · Verbündete stärken | Aktiv |
+| **Beschwörung** | Schlachtruf der Meute · Summons buffen | Passiv | Letztes Aufbäumen · Tod-Trigger | Reaktiv |
+| **Signatur** | Berserkerherz · fehlendes Leben → Schaden (bis L5) | Spezial | — | — |
+
+**GES** *(Grün, Präzision/Finesse/Ausweichen — 6 Aktiv · 6 Passiv · 3 Reaktiv · 1 Modifikativ · 1 Signatur):*
+
+| Eigenschaft | Gravur A · Rolle | Typ | Gravur B · Kontrast | Typ |
+|---|---|---|---|---|
+| **Schaden** | Präzisionsschuss · Single (Falloff-Ignore) | Aktiv | Pfeilhagel · AoE | Aktiv |
+| **Anhaltend** | Schwachstelle · Blutung via Krit | Passiv | Nachbluten · Blutung verstärken | Modifikativ |
+| **Verteidigung** | Ausweichschritt · Dauer-Ausweichen | Passiv | Reflexausweichen · erster Angriff/Runde | Reaktiv |
+| **Kontrolle** | Fußangel · MOB-Slow (weich) | Passiv | Fesselschuss · Verwurzeln (hart) | Aktiv |
+| **Mobilität** | Ausfallschritt · reaktionsfreier Rückzug | Aktiv | Leichtfüßig · +MOB dauerhaft | Passiv |
+| **Ressource** | Windschnitt · Ausweichen → Mana | Reaktiv | Kaltblütig · Kill → Cooldown | Reaktiv |
+| **Präsenz** | Markierung · Ziel markieren (offensiv) | Aktiv | Wachsamkeit · Ausweich-Aura (defensiv) | Passiv |
+| **Beschwörung** | Jagdfalke · Pet beschwören | Aktiv | Rudeltaktik · Summons flinker | Passiv |
+| **Signatur** | Klingentanz · Dolch: +20/25/30 % GES in den Schaden (bis L5) | Spezial | — | — |
+
+*Jede Gravur hat einen **Wirkungstext mit den Level-Werten inline** — Beispiel Wuchtschlag: „Bei Aktivierung wird der nächste Schlag zu einem Angriff mit **120/140/160 %** Waffen-Schaden auf ein Einzelziel." Alle Wirkungstexte, Flavor + Mana/Cooldown je Level stehen in `data/engravings.json` (Balancing-Vorbehalt, Phase 1).*
 
 ---
 
@@ -1218,7 +1313,7 @@ Jedes unerwünschte Item kann zerlegt werden und liefert:
 | Craftbar | Nicht craftbar (Loot-exklusiv) |
 |----------|-------------------------------|
 | **Komplette Waffen** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt | Alles **Stellar** (Waffen, Barren, Ressourcen) |
-| **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über Slot-Aspektsplitter gewählt) | **Spezial-/Signatur-Gravuren** |
+| **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über das Basis-Bauteil Geschirr/Haube/Riemen, Archetyp über den Aspektsplitter) | **Spezial-/Signatur-Gravuren** |
 | **Gravuren** — nur Level 1; höhere Level nur über Aufwertung | |
 | **Verfeinerungskerne** (für die Kapazitäts-+1-Verfeinerung, §5.7) | |
 | **Bauteile & Prägungen** (Grid-Basen, s. Tabelle) | |
@@ -1387,9 +1482,95 @@ Listet alle genutzten externen Ressourcen:
 
 ### 8.5 Lex Tactica — Kompendium
 
-*(neu 2026-07-06)* **Lex Tactica** ist das große Buch des Protagonisten — narrativ sein persönliches Nachschlagewerk, funktional das **interne Wiki/Kompendium des Spiels**. Es wächst mit dem Spielfortschritt und soll perspektivisch alles Wissenswerte bündeln: vollständige Material- & Elementliste (Barren/Aspektsplitter/Essenzen, §5.8), Item-/Gravuren-Katalog, Bestiarium, Lore-Einträge.
+*(neu 2026-07-06; Struktur & erster Grundstock 2026-07-09)* **Lex Tactica** ist das große Buch des Protagonisten — narrativ sein persönliches Nachschlagewerk, funktional das **interne Wiki/Kompendium des Spiels**. Es wächst mit dem Spielfortschritt und bündelt perspektivisch alles Wissenswerte: Material- & Elementliste (Barren/Aspektsplitter/Essenzen, §5.8), Item-/Gravuren-Katalog, Bestiarium, Kampfregeln, Lore.
 
-**Noch offen** *(Struktur, Freischalt-Logik — automatisch vs. Entdeckung —, UI-Darstellung; s. §11)*: Die konkrete Ausgestaltung folgt, sobald die zugrunde liegenden Datensätze (Element-/Materialliste, Gravuren-Katalog) stehen.
+#### Aufbau — Rubriken (Kapitel)
+
+| Rubrik | Inhalt | Stand |
+|---|---|---|
+| **1. Materialien** | Barren-Stufen, Aspektsplitter, Essenzen (§5.8) | Grundstock befüllt (s. u.) |
+| **2. Bauteile & Prägungen** | die 12 Crafting-Rohlinge (§5.8) | befüllt (s. u.) |
+| **3. Ausrüstung** | Waffen, Rüstung, Offhands — Katalog aus den Daten-JSONs | Platzhalter (Daten stehen, Einzug folgt) |
+| **4. Gravuren** | Gravuren-Katalog nach Typ (§5.7) | Platzhalter (Katalog offen, §11) |
+| **5. Bestiarium** | Gegnertypen mit Schaden / Resistenzen / Schwächen | Platzhalter (Gegner-Design offen) |
+| **6. Kampf-Kodex** | Schadenstypen ↔ Resistenzen, Statuseffekte, Kernregeln | spiegelt §5.2 (s. u.) |
+| **7. Welt & Lore** | Regionen, Fraktionen, Story-Kodex | Platzhalter (aus §2–§4) |
+
+#### Eintrags-Template & Freischaltung
+
+- **Knappe Wiki-Card:** Jeder Eintrag folgt demselben schlanken Schema — **Name · Kategorie (Stufe/Typ) · Herkunft** (wo bekomme ich es) **· Verwendung** (wofür) **· ein Satz Flavor**. Bewusst kompakt, damit hunderte Item-/Material-Einträge pflegbar bleiben; längere Lore lebt in Rubrik 7, nicht in jeder Card.
+- **Freischaltung „Entdeckung":** Ein Eintrag füllt sich **automatisch bei der ersten Begegnung** (erstes Looten/Craften eines Materials, erstes Töten eines Gegnertyps, erstes Betreten einer Region). Vorher ist der Slot als **„? — unentdeckt"** sichtbar (man sieht, *dass* es etwas gibt = Sammel-/Fortschrittsanreiz), Werte bleiben verborgen. Deckt sich mit „wächst mit dem Spielfortschritt", braucht kein eigenes Kauf-/Forschungssystem.
+- **Bestiarium-Sonderfall (progressiv):** Erst-*Sichtung* schaltet Name/Bild frei; die **Schwächen/Resistenzen** eines Gegnertyps werden erst nach einigen Kämpfen (oder per Scout-Fähigkeit) sichtbar — belohnt Wiederbegegnung und macht Aufklärung taktisch wertvoll.
+
+#### Rubrik 1 — Materialien *(Grundstock)*
+
+**Barren (Materialstufen)** — die Fortschritts-Achse der Ausrüstung; jede Stufe hebt Werte-Tier & Slot-Kapazität. Beschaffung: **von jedem Gegner farmbar** (Stufe skaliert mit Gegner-Stufe) **+ garantiert aus dem Zerlegen** gleichstufiger Items; Aufstufung im Crafting **7:1**, endet bei Adamant (§5.8).
+
+| Stufe | Barren | Beschaffung | Flavor |
+|---|---|---|---|
+| 1 | **Kupfer** | frühe Regionen, jeder Standard-Gegner | *(folgt)* |
+| 2 | **Eisen** | breit farmbar | *(folgt)* |
+| 3 | **Stahl** | mittlere Regionen | *(folgt)* |
+| 4 | **Titan** | spätere Regionen / stärkere Gegner | *(folgt)* |
+| 5 | **Adamant** | höchste farm- & aufstufbare Stufe | *(folgt)* |
+| 6 | **Kosmium** | **nur aus zerlegten Kosmium-Items** (nicht aufstufbar) | *(folgt)* |
+| ✦ | **Stellar** | **nicht craftbar** — ausschließlich Loot/Drop (§5.3) | *(folgt)* |
+
+**Aspektsplitter** — bestimmen im Crafting den **Typ / die Identität** des Outputs auf der Typ-Achse (Grid-Randfeld, §5.8). **Namensregel: Item-Identität + „Aspektsplitter"** (z. B. „Falchion-Aspektsplitter", „Plattenaspekt-Splitter"). Beschaffung: von bestimmten Einheiten + garantiert aus dem Zerlegen des passenden Item-Typs; Umwandlung 3:1 (§5.8).
+
+- **Waffen (16 — je Waffentyp):** Breitschwert-, Falchion-, Dolchpaar-, Stilett-, Rapier-, Kampfaxt-, Pike-, Hammer-, Rammbock-, Zepter-, Jagdbogen-, Langbogen-, Kriegsarmbrust-, Repetierarmbrust-, Zauberstab-, Energiesphäre-Aspektsplitter.
+- **Offhands (12 — je Offhand-Typ):** Buckler-, Turmschild-, Foliant-, Energiekristall-, Kampfkette-, Laterne-, Fester-Gürtel-, Fackel-, Signalhorn-, Standarte-, Rauchschwenker-, Köderkolben-Aspektsplitter.
+- **Rüstung (5 — je Archetyp-Familie):** Stoffaspekt-, Lederaspekt-, Kettenaspekt-, Schuppenaspekt-, Plattenaspekt-Splitter. *(Der Ziel-**Slot** kommt beim Rüstungs-Craft vom Basis-Bauteil Geschirr/Haube/Riemen, der **Archetyp** vom Aspektsplitter — §5.8.)*
+- **Gravuren (5 — je Gravurtyp, §5.7):** Aktiv-, Passiv-, Reaktiv-, Modifikativ-, Spezial-Aspektsplitter. *(Konkreter Gravuren-Katalog noch offen → Platzhalter, §11.)*
+
+> **Zubehör** (Köcher, Buchrolle, Zielvisier, Diadem, Steigeisen, Windsohle): eigene Aspektsplitter erst, sobald die Craftbarkeit von Zubehör entschieden ist (§5.8 nennt bislang nur Waffen/Rüstung/Offhands) — offen (§11).
+
+**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2). **In-World-/Lex-Name lateinisch** (Flavor); der schlichte „&lt;Element&gt;-Essenz"-Begriff bleibt als Synonym gültig:
+
+| Essenz (Lex-Name) | Herkunft des Namens | Element / Schadensart | Beschaffung |
+|---|---|---|---|
+| **Pyros-Essenz** | gr. *pyr/pyros* = Feuer | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
+| **Kryos-Essenz** | gr. *kryos* = Eis/Kälte | Eis / Kälteschaden | selten, elite-/boss-gebunden |
+| **Gaios-Essenz** | gr. *gaia* = Erde/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
+| **Fulguros-Essenz** | lat. *fulgur* = Blitz (Fantasy-Form) | Donner / Elektroschaden | selten, elite-/boss-gebunden |
+
+> Region 1 (Orks) bleibt **bewusst ohne Elementfokus** — dort droppen keine Essenzen (deckt sich mit §9.6 „kein Magie-Loot"). Essenzen kommen erst mit späteren, elementaffinen Regionen/Gegnern.
+
+#### Rubrik 2 — Bauteile & Prägungen *(befüllt)*
+
+Die 12 Crafting-Rohlinge (§5.8). Beschaffung: aus dem Zerlegen bzw. craftbar; Verwendung: als **Grid-Mitte** bestimmen sie die Output-Kategorie. Benennung nach Item-Namensregel („Stahl-Griff", „Kosmium-Prägung").
+
+| Rohling | Output-Kategorie |
+|---|---|
+| **Griff** | Schwerter |
+| **Stichklinge** | Stichwaffen |
+| **Axtblatt** | Äxte |
+| **Schlagkopf** | Kriegsgeräte |
+| **Schaft** | Stabwaffen |
+| **Stave** | Bogenwaffen |
+| **Fokuskern** | Zauberwaffen |
+| **Geschirr** | Rüstung (Körper) |
+| **Haube** | Rüstung (Kopf) |
+| **Riemen** | Rüstung (Füße) |
+| **Beschlag** | Offhands (alle 12 Typen) |
+| **Prägung** | Gravur-Rohling |
+
+#### Rubrik 6 — Kampf-Kodex *(spiegelt §5.2)*
+
+Übernimmt die **Schadenstyp-↔-Resistenz-Matrix** und die Statuseffekt-Liste direkt aus §5.2 — **Single Source of Truth bleibt §5.2**, Lex spiegelt nur:
+
+| Schadenstyp | Herkunft (Beispiel) | Zusatzeffekt | Flat-Resistenz | %-Reduktion |
+|---|---|---|---|---|
+| Physisch | Nahkampf (STR+STR), Bögen/Armbrüste | Krit ×1,5 | **Rüstung** | WID |
+| Magisch | Chaos-Schule (WIL+WIL), Fluch/Schatten | — | **Resistenz** | WID |
+| Feuer (Hitze) | Feuer-Essenz, Elementarzauber | jeder 3. Treffer → 1 Stapel Brennen | **Elementardiffusion** | WID |
+| Eis (Kälte) | Eis-Essenz | jeder 3. → −20 Initiativepunkte | **Elementardiffusion** | WID |
+| Natur (Terra) | Natur-Essenz, Gift | jeder 3. → Verankerung 1 Zug | **Elementardiffusion** | WID |
+| Donner (Elektro) | Donner-Essenz | jeder 3. → Sprung ~25 % (2 Felder) | **Elementardiffusion** | WID |
+
+*Ergänzt in Lex: RD senkt den Flat-Wert aller drei Typen; Blutung = hälftig physisch/magisch. Statuseffekt-Elementzuordnung (Brennen→Feuer, Gift→Natur) s. §5.2.*
+
+**Noch offen** *(→ §11)*: Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design); Flavor-Texte je Eintrag; UI-Darstellung des Buchs (Blätter-/Register-Metapher).
 
 ---
 
@@ -1596,7 +1777,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] **Kriegsgeräte-Neuordnung entschieden** *(2026-07-07, §5.3)*: Hammer & Rammbock → Prim **WID** / Sek **STR** (physische Zäh-Bruiser); Zepter → Prim **WIL** (unverändert) / Sek **WID** (statt INT) — bleibt voller Magie-Schadensträger + wird zäher („Battlemage"). WID-Reihe überall 3/5/7/10/13/17/23 (Rüstungs-Prim-Tier, 2/5-Budget-konform). Löst zugleich die Metadaten-Inkonsistenz in `stat_skalierung.Kriegsgeräte` (Klassen-Default deckte Zepters echtes Prim/Sek nicht ab)
 - [x] **Rohschaden-Formel Magisch final entschieden** *(2026-07-08, §5.2, löst die am 2026-07-07 vertagte Diskussion ab)*: Eine Formel (WIL+WIL) gilt für Nah- **und** Fernkampf-Magie, kein Falloff, Zauberwaffen-Reichweite bleibt bei 3 — wer aus der Backline zaubern will, muss näher ran. Ausgleich Fernkampf-/Frontline-Magier läuft über den Skilltree-Pfad, nicht über eine eigene Formel; Feintuning bei Bedarf über die Reichweiten-Zahl (Playtests Phase 1)
 - [x] **Elementar-Durchdringung entschieden** *(2026-07-08, §5.2)*: kein eigener Stat — RD ist bereits generisch und wirkt auf Rüstung/Resistenz/**Elementardiffusion** gleichermaßen. Dedizierter Elementar-Piercing-Waffentyp bewusst vertagt, bis Element-/Themen-Set-Ausrüstung existiert
-- [x] **Elementare Zusatzeffekte designt** *(2026-07-09, §5.2)*: Rollen-Rahmen (Schaden-Achse Feuer/Donner, Kontroll-Achse Eis/Natur), deterministischer Trigger „jeder 3. Elementartreffer" (kein Prozent-Proc, DoT-Ticks zählen bewusst nicht mit), vier finale Effekte — Feuer appliziert 1 Stapel Brennen (bewusster Regelbruch gegen „kein Statuseffekt", da bestehende Mechanik wiederverwendet statt neu erfunden), Donner springt fix 2 Felder um das Ziel (unabhängig von Waffenreichweite), Eis verzögert Initiative um 1 Platz, Natur verankert fürs nächste Ziel-Zug. Zusatzeffekt an Schadenstyp gekoppelt, nicht an Sets. Elementar-Reaktionssystem (Idee B) bewusst geparkt
+- [x] **Elementare Zusatzeffekte designt** *(2026-07-09, §5.2)*: Rollen-Rahmen (Schaden-Achse Feuer/Donner, Kontroll-Achse Eis/Natur), deterministischer Trigger „jeder 3. Elementartreffer" (kein Prozent-Proc, DoT-Ticks zählen bewusst nicht mit), vier finale Effekte — Feuer appliziert 1 Stapel Brennen (bewusster Regelbruch gegen „kein Statuseffekt", da bestehende Mechanik wiederverwendet statt neu erfunden), Donner springt fix 2 Felder um das Ziel (unabhängig von Waffenreichweite), Eis zieht dem Ziel feste Initiativepunkte ab (Richtwert −20, Punkte-Leisten-Modell §5.1), Natur verankert fürs nächste Ziel-Zug. Zusatzeffekt an Schadenstyp gekoppelt, nicht an Sets. Elementar-Reaktionssystem (Idee B) bewusst geparkt
 - [x] **Statuseffekt-Harmonisierung entschieden** *(2026-07-07, §5.2)*: Brennen + „In Brand gesteckt" → **Hitzeschaden** (Feuer); Vergiftet/Gift + Giftnebel → **Terraschaden** (Natur); Blutung bleibt hälftig physisch/magisch (an physische Waffen gebunden, kein Element). Zudem geklärt: „Zauberschaden"-Boni (Foliant/Energiekristall) wirken auf den **Rohschaden vor dem Elementar-Split** — treffen also automatisch beide Anteile eines gemischten Zaubertreffers
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
@@ -1628,11 +1809,11 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 **Offen — Systeme:**
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
-- [ ] Gravuren-Katalog ausarbeiten (konkrete Gravuren pro Typ) — Systemrahmen §5.7, Crafting §5.8 stehen
+- [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR + GES vollständig** (je 16 Basis + 1 Signatur = 17; GES-Signatur *Klingentanz* = Dolch-GES-Schadensskalierung). `engravings.json` v0.3. **Offen:** WIL/INT/VIT/WID nach demselben Muster ausarbeiten
 - [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
-- [ ] **Lex Tactica (§8.5) designen**: Struktur, Freischalt-Logik (automatisch vs. Entdeckung), UI-Darstellung — setzt die Element-/Materialliste (s. o.) voraus
+- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen: Pyros/Kryos/Gaios/Fulguros), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)

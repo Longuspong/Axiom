@@ -3,7 +3,7 @@
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
 **Version:** 0.23  
-**Stand:** 2026-07-09  
+**Stand:** 2026-07-11  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 

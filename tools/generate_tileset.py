@@ -786,6 +786,47 @@ TALL_TILES = [
 ]
 
 
+# ------------------------------------------------ Feld-Funktionstypen (§5.1)
+# Leitet die 8 Feld-Funktionstypen + Bewegungsdaten aus dem terrain-Tag ab.
+# WICHTIG: field_type/conceals/destructible/hp sind INTRINSISCH (pro Atlas-Tile).
+# flow_dir (Fluss-Richtung) und effect_id (Effekt-Feld-Nutzlast) sind dagegen
+# PRO ZELLE und gehören in die Map-/Chunk-Daten, nicht in den Tileset (s. §10.1).
+# Deckung/Blockade/Effekt-Feld haben in Tileset v1 noch keine eigene Kachel-Optik —
+# folgen als neue Painter/Atlas-Slots (Custom-Data-Schema steht hier bereits bereit).
+FIELD_PROPS = {
+    # terrain:    (field_type, move_cost, walkable, conceals, destructible, hp)
+    "grass":    ("boden",    1.0, True,  False, False, 0),
+    "sand":     ("boden",    1.0, True,  False, False, 0),
+    "dirt":     ("boden",    1.0, True,  False, False, 0),
+    "road":     ("pfad",     0.5, True,  False, False, 0),
+    "bridge":   ("boden",    1.0, True,  False, False, 0),
+    "ford":     ("dickicht", 1.5, True,  False, False, 0),
+    "brush":    ("dickicht", 1.5, True,  False, False, 0),
+    "water":    ("fluss",    0.0, False, False, False, 0),
+    "mountain": ("barriere", 0.0, False, False, False, 0),
+    "cliff":    ("boden",    1.0, True,  False, False, 0),
+    "boulder":  ("barriere", 0.0, False, False, False, 0),
+    "tree":     ("barriere", 0.0, False, False, False, 0),
+}
+
+
+def field_props(terrain):
+    return FIELD_PROPS.get(terrain, ("boden", 1.0, True, False, False, 0))
+
+
+def custom_data_lines(key, terrain):
+    ftype, cost, walkable, conceals, destr, hp = field_props(terrain)
+    return [
+        f'{key}/custom_data_0 = "{terrain}"',
+        f"{key}/custom_data_1 = {cost}",
+        f"{key}/custom_data_2 = {str(walkable).lower()}",
+        f'{key}/custom_data_3 = "{ftype}"',
+        f"{key}/custom_data_4 = {str(conceals).lower()}",
+        f"{key}/custom_data_5 = {str(destr).lower()}",
+        f"{key}/custom_data_6 = {hp}",
+    ]
+
+
 # ---------------------------------------------------------------- Ausgabe
 def render_atlases():
     ground = Image.new("RGBA", (GROUND_COLS * TW, GROUND_ROWS * TH), (0, 0, 0, 0))
@@ -815,9 +856,7 @@ def write_tres():
     for col, row, name, painter, terrain, cost, walkable in GROUND_TILES:
         key = f"{col}:{row}/0"
         lines.append(f"{key} = 0")
-        lines.append(f'{key}/custom_data_0 = "{terrain}"')
-        lines.append(f"{key}/custom_data_1 = {cost}")
-        lines.append(f"{key}/custom_data_2 = {str(walkable).lower()}")
+        lines.extend(custom_data_lines(key, terrain))
     lines.append("")
     lines.append('[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tall"]')
     lines.append('texture = ExtResource("2_tall")')
@@ -827,9 +866,7 @@ def write_tres():
         key = f"{col}:{row}/0"
         lines.append(f"{key} = 0")
         lines.append(f"{key}/texture_origin = Vector2i(0, {origin_y})")
-        lines.append(f'{key}/custom_data_0 = "{terrain}"')
-        lines.append(f"{key}/custom_data_1 = {cost}")
-        lines.append(f"{key}/custom_data_2 = {str(walkable).lower()}")
+        lines.extend(custom_data_lines(key, terrain))
     lines.append("")
     lines.append("[resource]")
     lines.append("tile_shape = 1")
@@ -838,9 +875,17 @@ def write_tres():
     lines.append('custom_data_layer_0/name = "terrain"')
     lines.append("custom_data_layer_0/type = 4")
     lines.append('custom_data_layer_1/name = "move_cost"')
-    lines.append("custom_data_layer_1/type = 2")
+    lines.append("custom_data_layer_1/type = 3")  # float (0,5 / 1,0 / 1,5)
     lines.append('custom_data_layer_2/name = "walkable"')
     lines.append("custom_data_layer_2/type = 1")
+    lines.append('custom_data_layer_3/name = "field_type"')
+    lines.append("custom_data_layer_3/type = 4")
+    lines.append('custom_data_layer_4/name = "conceals"')
+    lines.append("custom_data_layer_4/type = 1")
+    lines.append('custom_data_layer_5/name = "destructible"')
+    lines.append("custom_data_layer_5/type = 1")
+    lines.append('custom_data_layer_6/name = "hp"')
+    lines.append("custom_data_layer_6/type = 2")
     lines.append('sources/0 = SubResource("TileSetAtlasSource_ground")')
     lines.append('sources/1 = SubResource("TileSetAtlasSource_tall")')
     lines.append("")

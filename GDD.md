@@ -319,11 +319,11 @@ Jedes Level (Kampagnen-Level, Auftrag, Endlos-Welle) nutzt einen von drei Gefech
 
 | Gefechtstyp | Ziel | Map-Größe | Charakter |
 |---|---|---|---|
-| **Skirmish** | Alle gegnerischen Einheiten eliminieren | ~10×10 bis 12×12 | Kompakt, schnelles taktisches Gefecht |
-| **Basecamp** (Angriff/Verteidigung) | Gegnerische Basis zerstören **oder** alle Gegner eliminieren (je nach Rolle) | 20×20 | Mehr Positionierungsspielraum, Splitting möglich, Mobilität zahlt sich aus |
+| **Skirmish** | Alle gegnerischen Einheiten eliminieren | **12×12** (kompakt: 8×8) | Kompakt, schnelles taktisches Gefecht |
+| **Basecamp** (Angriff/Verteidigung) | Gegnerische Basis zerstören **oder** alle Gegner eliminieren (je nach Rolle) | **20×20** | Mehr Positionierungsspielraum, Splitting möglich, Mobilität zahlt sich aus |
 | **Flaggenraub** (*„Capture the Flag"*) | Neutralen NPC-Flaggenträger zur eigenen Zone eskortieren | wie Skirmish/Basecamp, je nach Einbettung | Eskorte-/Ablenkungstaktik statt reiner Elimination |
 
-**Map-Größen-Prinzip:** Größen sind bewusst gefechtstyp-, nicht global einheitlich — das passende Spielgefühl zählt mehr als Konsistenz. Faustregel für die isometrische Darstellung: möglichst ausgeglichene Längen/Breiten (keine stark länglichen Grids wie 12×15) — quadratisch wirkt in der isometrischen Perspektive stimmiger.
+**Map-Größen-Prinzip:** Größen sind bewusst gefechtstyp-, nicht global einheitlich — das passende Spielgefühl zählt mehr als Konsistenz. **Alle Map-Kantenlängen sind Vielfache von 4** *(Entscheidung 2026-07-12)* — damit die 4×4-Bausteine der prozeduralen Chunk-Generierung (§9.6) restlos aufgehen und über alle Gefechtstypen hinweg wiederverwendbar bleiben: Skirmish 12×12 = 3×3 Chunks (bzw. kompakt 8×8 = 2×2), Basecamp 20×20 = 5×5 Chunks. Faustregel für die isometrische Darstellung zusätzlich: möglichst ausgeglichene Längen/Breiten (keine stark länglichen Grids) — quadratisch wirkt in der isometrischen Perspektive stimmiger.
 
 **Archetypen-Verteilung:** Die Häufigkeit von Gegner-Archetypen passt sich dem Gefechtstyp an (mehr defensive/Support-Archetypen im Basecamp, mehr aggressive im Skirmish), ohne die Fraktions-Identität einer Region zu verändern (→ konkrete Umsetzung beim Gegner-Design, Phase 1).
 
@@ -1714,7 +1714,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - **Freischaltung:** Nach Abschluss von Kampagne 10 der Region Raldiguh ohk
 - **Ziel:** High Score, Ressourcen und Loot farmen
-- **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map ~10×10 bis 12×12). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
+- **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map **12×12** = 3×3 Chunks). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
 - **Loot-Pool:** Regionsgebunden, aber **nicht** auf physische Gegenstände beschränkt *(revidiert 2026-07-12 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben: die Ork-Fraktion kann auch magiekundige Einheiten enthalten, §4.2)*.
 - **Map-Auswahl:** Deterministisch-prozedural statt reiner Zufalls-Progression oder Endlos-Scroll — der Spieler **wählt** aus vorgegebenen, thematisch festen, aber intern prozedural generierten Regionsrichtungen:
   - **Einstieg:** 2 Richtungen (z. B. Nordwest = Bergminen-Region, Nordost = Ebene)
@@ -1733,7 +1733,38 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Akzeptierter Trade-off:** Spieler finden mit der Zeit einen „optimalen Pfad" durch die Regionen (z. B. immer Richtung Ebene für einen Support-Trupp) — in Endlos-Modi kaum vermeidbar, wird über die steigende Schwierigkeit abgefedert statt unterbunden.
 - **High Score:** Wird pro Spielstand gespeichert.
 
-*(Offen/Playtesting: 3-Wege-Verzweigungstiefe, Map-Größe 10×10 vs. 12×12, Event-Verteilung über 20–25 Wellen, konkrete Ork-Schadensskalierung — s. §11.)*
+#### Prozedurale Chunk-Generierung (Endlos-Maps) *(neu 2026-07-12)*
+
+Kampagnen-/Basecamp-Maps werden **von Hand** im Godot-TileMap-Editor gebaut. Die **Endlos-Maps** entstehen dagegen **deterministisch-prozedural** aus einer Bibliothek **hand-gebauter Chunks** — Handdesign-Qualität ohne jede Welle einzeln zu bauen.
+
+**Raster:** Grundbaustein ist der **4×4-Chunk**. Gewählt, weil 12 und 20 beide durch 4 teilbar sind → dieselbe Bibliothek passt auf Skirmish 12×12 (3×3 Chunks) **und** Basecamp 20×20 (5×5 Chunks). Optional größere **Vielfach-Prefabs** (4×8 = 2 Slots, 8×8 = 2×2 Slots) für Signatur-Features (Flussbiegung, zentrales Landmark, Kaverne); der Assembler setzt sie **zuerst** aufs Raster („erst die dicken Steine"), dann füllt er die Einzel-Slots.
+
+**Konnektivität (Tür-Konvention):** Jeder Chunk hält auf **jeder Kante die beiden mittleren Zellen begehbar** → jeder Chunk passt an jeden, Erreichbarkeit ist garantiert. Unbegehbares Gelände (Barriere/Blockade/Fluss) liegt nur im **Inneren**. Nach dem Zusammensetzen läuft trotzdem ein **Flood-Fill-Check** (BFS vom Spawn) als Sicherheitsnetz; scheitert er, wird neu generiert.
+
+**Positions-Rollen:** Jeder Chunk trägt eine Rolle **Innen / Rand / Ecke** (welche Seiten zum Kartenrand zeigen). Rand-/Ecken-Chunks haben ihre nach außen zeigenden Kanten **geschlossen** (glaubwürdiger Kartenrand statt unsichtbarer Wand), innen liegende Kanten behalten die Tür. **Rotation** deckt alle vier Orientierungen ab → pro Rolle genügt **je 1 Innen-/Rand-/Ecken-Chunk** gebaut. Nur „offene" und Pfad-Rollen brauchen Positions-Varianten; rein innere Rollen (Deckungscluster, Effekt-Feld) bleiben Innen-only.
+
+**Region-agnostisch bauen:** Ein Chunk wird **einmal als Funktion** (field_type, §5.1) gebaut und je Region mit anderem Atlas gerendert — also „offener Chunk", nicht „Wald-Chunk". Ein großer Kern-Satz gilt für alle Regionen; wenige Region-Flavor-Chunks bleiben thematisch gebunden.
+
+**Chunk-Rollen-Bibliothek** (fett = Minimal-Startsatz für eine spielbare 12×12):
+
+| Rolle | Inhalt |
+|---|---|
+| **Offen / Ebene** (2–3) | fast nur Boden, etwas Dickicht-Streu; „Bindegewebe", spawn-sicher, hohe Gewichtung |
+| **Pfad** (2–3) | Weg (0,5) als Gerade/Kurve/**Kreuzung**, damit Wege durchlaufen |
+| **Deckungscluster** (1–2) | Deckung + Dickicht — umkämpfte Brennpunkte |
+| **Engstelle** (1–2) | Barrieren als Teilwand mit 1–2 breiter Lücke (Tür bleibt) |
+| **Fluss** (1–2) | Fluss + `flow_dir`, **immer mit Furt/Brücke-Variante** (sonst unüberquerbar) |
+| Blockade-Tasche (1) | zerstörbare Blockaden sperren eine Abkürzung/Flanke |
+| Effekt-/Event-Feld (1–2) | trägt die Endlos-Event-Trigger; niedrige Gewichtung, tiefer im Run |
+| Sackgassen-Nische (1) | kleine Nische für Ambush/Stealth; bewusst nicht allseitig verbunden, nie Spawn |
+
+**Fairness-Leitplanken:** Gefahren-/Unbegehbar-Dichte über die ganze Karte **≤ 25–30 %** (der Assembler gewichtet die Auswahl entsprechend); keine Häufung mehrerer Barriere-Chunks (sonst unknackbare Engstelle → begünstigt die Tank-Meta, gegen die der Modus arbeitet); Spawn-Zonen an gegenüberliegenden Rändern, keine Gefahr/Hindernis auf Startzellen, Mindest-Spawn-Abstand.
+
+**Determinismus:** RNG **pro Run/Welle geseedet**, Seed im Savegame — reproduzierbare Maps für Speichern/Fortsetzen und High-Score-Integrität. Beim Rotieren von Chunks wird `flow_dir` (Fluss-Richtung) korrekt mitgedreht.
+
+**Datenformat & Umsetzung → Phase 1:** Chunks als kleine 4×4-`TileMapLayer`-Szenen (im Godot-Editor gemalt, kein Handschreiben von Daten); ein Assembler kopiert/rotiert/stitcht die Zellen + Flood-Fill-Check + Seed. Bewegungslogik liest `field_type`/`move_cost` (float) aus der Tileset-Custom-Data (§10.1).
+
+*(Offen/Playtesting: 3-Wege-Verzweigungstiefe, Event-Verteilung über 20–25 Wellen, konkrete Ork-Schadensskalierung, Chunk-Gewichtungen — s. §11.)*
 
 ---
 
@@ -1860,7 +1891,8 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 **Offen — Playtesting-Punkte aus Gefechtstyp-/Endlos-Ausbau** *(2026-07-12, → Phase 1)*:
 - [ ] Balance der begrenzten Gegner-Reserve bei Flaggenraub (genaue Nachschub-Anzahl)
-- [ ] Map-Größe Endlos-Modus final (10×10 vs. 12×12)
+- [x] Map-Größe Endlos-Modus final: **12×12** *(2026-07-12)* — Teil der Entscheidung „alle Map-Kantenlängen = Vielfache von 4" für restlose 4×4-Chunk-Wiederverwendung (§5.1/§9.6); kompakte Variante 8×8
+- [ ] Chunk-Gewichtungen / Auswahl-Verteilung final tunen (§9.6): Gefahren-Dichte-Cap (≤25–30 %), Anti-Barriere-Häufung, Spawn-Abstand, Prefab-Häufigkeit
 - [ ] Anzahl/Verteilung der Event-Typen über eine längere Wave-Progression (20–25 Wellen) — Wiederholungsgefühl vermeiden
 - [ ] Konkrete Ork-Schadensskalierungswerte zur Tank-Meta-Kontrolle im Endlos-Modus
 - [ ] **Gelände-Funktionstypen** *(2026-07-12, §5.1)* — offene Umsetzungs-/Balancing-Punkte: LP-Wert der zerstörbaren Blockade (Typ 6); UI-Darstellung von Bruch-Bewegungskosten (0,5/1,5) im Bewegungs-Overlay; weitere Regionen-Spalten der Darstellungs-Tabelle (Ebene/Schlachtfeld); Tileset-Generator + `tile_ids.gd` + Skirmish-BFS auf die 8 Typen / Float-`move_cost` erweitern (§10.1); Effekt-Feld-`effect_id`-Katalog (welche Endlos-Events §9.6 / Feld-Statuseffekte §5.2 als statische Map-Trigger vorkommen)

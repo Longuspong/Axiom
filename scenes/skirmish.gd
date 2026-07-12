@@ -22,6 +22,7 @@ const SETUP_PATH := "res://data/prototype/skirmish_setup.json"
 enum State { IDLE, ACTIVE, GAME_OVER }
 
 var board: Board
+var terrain: Terrain
 var units: Array = []
 var tracker := InitiativeTracker.new()
 var rng := RandomNumberGenerator.new()
@@ -61,6 +62,7 @@ func _ready() -> void:
 	_build_camera(data)
 	_build_hud()
 	tracker.setup(units)
+	_refresh_concealment()
 	_log("Gefecht beginnt — %d gegen %d." % [_team_count("player"), _team_count("enemy")])
 	run_battle()
 
@@ -82,6 +84,9 @@ func _build_board(data: Dictionary) -> void:
 	board = Board.new()
 	var g: Dictionary = data.get("grid", {})
 	board.grid_size = Vector2i(int(g.get("width", 12)), int(g.get("height", 12)))
+	terrain = Terrain.new()
+	terrain.setup(data.get("terrain", {}), board.grid_size)
+	board.terrain = terrain
 	add_child(board)
 
 func _build_units(data: Dictionary) -> void:
@@ -114,7 +119,7 @@ func _build_hud() -> void:
 
 	_hud_status = _make_label(layer, Vector2(16, 12), 18, Color.WHITE)
 	_hud_hint = _make_label(layer, Vector2(16, 40), 13, Color(0.82, 0.88, 1.0))
-	_hud_hint.text = "Cursor: Maus/Pfeile/Joystick  ·  Bestätigen: Klick/Enter/A  ·  Zug beenden: Button/E  ·  R: neu"
+	_hud_hint.text = "Cursor: Maus/Pfeile/Joystick  ·  Bestätigen: Klick/Enter/Leertaste  ·  Zug beenden: Button/E  ·  R: neu"
 	_hud_hover = _make_label(layer, Vector2(16, 64), 14, Color(1.0, 0.95, 0.75))
 
 	_hud_inspect = _make_label(layer, Vector2(1170, 150), 14, Color(0.9, 0.95, 1.0))
@@ -234,6 +239,9 @@ func _refresh_highlights() -> void:
 		for t in _targets_for(active):
 			t.targetable = true
 			tcells.append(t.grid_pos)
+		# Blockaden in Waffenreichweite sind ebenfalls angreifbar (§5.1 Typ 6)
+		for c in _blockade_targets(active):
+			tcells.append(c)
 	board.attack_cells = tcells
 	board.active_cell = active.grid_pos
 	board.queue_redraw()
@@ -251,7 +259,7 @@ func _confirm() -> void:
 	var cell := board.cursor_cell
 	if cell.x < 0:
 		return
-	# 1) Angriff auf markiertes Ziel
+	# 1) Angriff auf markiertes Ziel (Einheit oder Blockade)
 	if not has_attacked and board.attack_cells.has(cell):
 		var target := unit_at(cell)
 		if target != null:
@@ -259,11 +267,18 @@ func _confirm() -> void:
 			has_attacked = true
 			_after_action()
 			return
+		if terrain.is_blockade(cell):
+			_attack_blockade(active, cell)
+			has_attacked = true
+			_after_action()
+			return
 	# 2) Bewegung auf erreichbares Feld
 	if not has_moved and board.move_cells.has(cell):
 		active.grid_pos = cell
+		active.revealed = false  # neue Position → Tarnung auf Deckung wieder möglich
 		active.refresh()
 		has_moved = true
+		_refresh_concealment()
 		_after_action()
 		return
 	# 3) Sonst: inspizieren, falls dort eine Einheit steht
@@ -272,6 +287,8 @@ func _confirm() -> void:
 		_inspect(u)
 
 func _after_action() -> void:
+	if state == State.GAME_OVER:
+		return
 	if has_moved and has_attacked:
 		_finish_turn()
 	else:
@@ -362,7 +379,11 @@ func take_enemy_turn(u: Unit) -> void:
 	await get_tree().create_timer(0.35).timeout
 	if state == State.GAME_OVER:
 		return
-	var target := _nearest_opponent(u)
+	# „Scheinbar"-Einheiten (Deckung, §5.2) sind nicht anvisierbar — die KI läuft
+	# dann zur nächstgelegenen verborgenen Einheit (und deckt sie ggf. ≤2 Felder auf).
+	var target := _nearest_opponent(u, false)
+	if target == null:
+		target = _nearest_opponent(u, true)
 	if target == null:
 		return
 	var reach := int(u.weapon.get("range_max", 1))
@@ -370,21 +391,27 @@ func take_enemy_turn(u: Unit) -> void:
 		var dest := _best_step_toward(u, target)
 		if dest != u.grid_pos:
 			u.grid_pos = dest
+			u.revealed = false
 			u.refresh()
+			_refresh_concealment()
 			board.active_cell = dest
 			board.queue_redraw()
 			await get_tree().create_timer(0.30).timeout
 			if state == State.GAME_OVER:
 				return
-	if GridUtils.manhattan(u.grid_pos, target.grid_pos) <= reach:
+	if not target.concealed \
+			and GridUtils.manhattan(u.grid_pos, target.grid_pos) <= reach:
 		_do_attack(u, target)
 		await get_tree().create_timer(0.25).timeout
 
-func _nearest_opponent(u: Unit) -> Unit:
+## include_concealed=false liefert nur anvisierbare (offenbare) Gegner.
+func _nearest_opponent(u: Unit, include_concealed: bool) -> Unit:
 	var best: Unit = null
 	var best_d := 1 << 30
 	for other in units:
 		if other.team == u.team or not other.is_alive():
+			continue
+		if not include_concealed and other.concealed:
 			continue
 		var d := GridUtils.manhattan(u.grid_pos, other.grid_pos)
 		if d < best_d:
@@ -407,10 +434,12 @@ func _best_step_toward(u: Unit, target: Unit) -> Vector2i:
 # Angriffsauflösung
 # --------------------------------------------------------------------------
 func _do_attack(attacker: Unit, defender: Unit) -> void:
+	attacker.revealed = true  # Angreifen beendet die Tarnung sofort (§5.1 Deckung)
 	var dist := GridUtils.manhattan(attacker.grid_pos, defender.grid_pos)
 	var res := CombatFormulas.resolve_attack(attacker.stats, attacker.weapon,
 			defender.defense, dist, rng)
 	if not res.hit:
+		_refresh_concealment()
 		_log("%s verfehlt %s (Chance %d%%)." % [attacker.abbr, defender.abbr,
 				int(round(res.hit_chance * 100.0))])
 		return
@@ -421,6 +450,29 @@ func _do_attack(attacker: Unit, defender: Unit) -> void:
 			res.damage, crit, defender.lp, defender.max_lp])
 	if not defender.is_alive():
 		_log("» %s wurde besiegt." % defender.abbr)
+	_refresh_concealment()
+	_check_win()
+
+## Blockade (§5.1 Typ 6): trägt LP, beide Teams können sie zerschlagen;
+## zerstört → Feld wird Boden. Ohne Defensivwerte, Falloff/Krit gelten normal.
+func _attack_blockade(attacker: Unit, cell: Vector2i) -> void:
+	attacker.revealed = true
+	var dist := GridUtils.manhattan(attacker.grid_pos, cell)
+	var res := CombatFormulas.resolve_attack(attacker.stats, attacker.weapon,
+			{}, dist, rng)
+	if not res.hit:
+		_refresh_concealment()
+		_log("%s verfehlt die Blockade (Chance %d%%)." % [attacker.abbr,
+				int(round(res.hit_chance * 100.0))])
+		return
+	var destroyed := terrain.damage_blockade(cell, res.damage)
+	if destroyed:
+		_log("%s zerschlägt die Blockade — der Weg ist frei." % attacker.abbr)
+	else:
+		_log("%s trifft die Blockade für %d (LP %d/%d)." % [attacker.abbr, res.damage,
+				int(terrain.blockade_lp.get(cell, 0)), terrain.blockade_max_lp])
+	_refresh_concealment()
+	board.queue_redraw()
 
 func _spawn_floater(on_unit: Unit, amount: int, crit: bool) -> void:
 	var l := Label.new()
@@ -452,24 +504,39 @@ func in_bounds(cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.y >= 0 \
 			and cell.x < board.grid_size.x and cell.y < board.grid_size.y
 
+## Erreichbare Felder als Dijkstra über Float-Bewegungskosten (GDD §5.1):
+## MOB ist ein Bewegungspunkte-Budget, Feldkosten kommen aus der Funktionsschicht
+## (Pfad 0,5 · Boden 1,0 · Dickicht 1,5); unbegehbare Typen + Einheiten blocken.
 func _reachable_cells(u: Unit) -> Array:
+	var budget := float(u.mob)
 	var result: Array = []
-	var dist := {u.grid_pos: 0}
+	var dist := {u.grid_pos: 0.0}
 	var frontier: Array = [u.grid_pos]
 	while not frontier.is_empty():
-		var cur: Vector2i = frontier.pop_front()
-		var d: int = dist[cur]
-		if d >= u.mob:
-			continue
+		# Zelle mit den geringsten Kosten zuerst expandieren (Grid ist klein,
+		# lineare Suche statt Heap reicht hier völlig).
+		var best_i := 0
+		for i in frontier.size():
+			if dist[frontier[i]] < dist[frontier[best_i]]:
+				best_i = i
+		var cur: Vector2i = frontier.pop_at(best_i)
 		for step in GridUtils.STEP_DIRS:
 			var nxt: Vector2i = cur + step
-			if not in_bounds(nxt) or dist.has(nxt):
+			if not in_bounds(nxt) or not terrain.walkable(nxt):
 				continue
 			if unit_at(nxt) != null:
 				continue
-			dist[nxt] = d + 1
-			frontier.append(nxt)
-			result.append(nxt)
+			var nd: float = dist[cur] + terrain.cost(nxt)
+			if nd > budget + 0.001:
+				continue
+			if dist.has(nxt) and dist[nxt] <= nd:
+				continue
+			var first_visit := not dist.has(nxt)
+			dist[nxt] = nd
+			if first_visit:
+				result.append(nxt)
+			if not frontier.has(nxt):
+				frontier.append(nxt)
 	return result
 
 func _targets_for(u: Unit) -> Array:
@@ -478,9 +545,45 @@ func _targets_for(u: Unit) -> Array:
 	for other in units:
 		if other.team == u.team or not other.is_alive():
 			continue
+		if other.concealed:
+			continue  # „Scheinbar" (Deckung §5.1) = nicht anvisierbar
 		if GridUtils.manhattan(u.grid_pos, other.grid_pos) <= reach:
 			res.append(other)
 	return res
+
+func _blockade_targets(u: Unit) -> Array:
+	var res: Array = []
+	var reach := int(u.weapon.get("range_max", 1))
+	for c in terrain.blockade_lp.keys():
+		if GridUtils.manhattan(u.grid_pos, c) <= reach:
+			res.append(c)
+	return res
+
+
+# --------------------------------------------------------------------------
+# Deckung / „Scheinbar" (§5.1 Typ 8 + §5.2 Sichtsystem)
+# --------------------------------------------------------------------------
+## Scheinbar, solange die Einheit auf Deckung steht, seit dem Betreten nicht
+## angegriffen hat und kein Gegner im Umkreis von 2 Feldern (Manhattan) steht.
+func _is_concealed(u: Unit) -> bool:
+	if not terrain.conceals(u.grid_pos) or u.revealed:
+		return false
+	for other in units:
+		if other.team != u.team and other.is_alive() \
+				and GridUtils.manhattan(u.grid_pos, other.grid_pos) <= 2:
+			return false
+	return true
+
+## Nach jeder Positions-/Kampfänderung aufrufen — aktualisiert Status + Optik
+## (Scheinbar = halbtransparent; echte Unsichtbarkeit für den Gegner-Spieler
+## gibt es im PvE-Prototyp bewusst nicht, die KI ignoriert Scheinbare stattdessen).
+func _refresh_concealment() -> void:
+	for u in units:
+		var c: bool = u.is_alive() and _is_concealed(u)
+		if c != u.concealed:
+			u.concealed = c
+			u.modulate.a = 0.45 if c else 1.0
+			u.queue_redraw()
 
 
 # --------------------------------------------------------------------------
@@ -513,18 +616,25 @@ func _team_count(team_name: String) -> int:
 	return units.filter(func(u): return u.team == team_name and u.is_alive()).size()
 
 func _check_win() -> void:
+	if state == State.GAME_OVER:
+		return
 	if _team_count("enemy") == 0:
 		_end_game("SIEG — alle Gegner besiegt!")
 	elif _team_count("player") == 0:
 		_end_game("NIEDERLAGE — Trupp ausgelöscht.")
 
 func _end_game(message: String) -> void:
+	var was_player_turn := state == State.ACTIVE
 	state = State.GAME_OVER
 	_reset_ui()
 	_log(message)
 	if _hud_banner != null:
 		_hud_banner.text = message + "\n(R = neu starten)"
 		_hud_banner.visible = true
+	if was_player_turn:
+		# Ein laufender Spielerzug wartet auf turn_finished — auflösen,
+		# damit run_battle den Game-Over-Zustand sieht und sauber endet.
+		turn_finished.emit()
 
 func _update_status() -> void:
 	if active == null or _hud_status == null:
@@ -543,18 +653,36 @@ func _update_status() -> void:
 	_hud_status.text = "Am Zug: %s   ·   Verfügbar: %s\nNächste: %s" % [who, avail_str, order_str]
 
 func _update_hover() -> void:
-	if _hud_hover == null:
+	if _hud_hover == null or active == null:
 		return
-	var u := unit_at(board.cursor_cell)
+	var cell := board.cursor_cell
+	var field := _field_info(cell)
+	var u := unit_at(cell)
 	if u != null:
 		var role := ""
 		if board.attack_cells.has(u.grid_pos):
 			role = "  [Ziel — Bestätigen zum Angriff]"
 		elif u.team != active.team:
 			role = "  [außer Reichweite — Bestätigen zum Inspizieren]"
-		_hud_hover.text = "%s   LP %d/%d%s" % [u.unit_name, u.lp, u.max_lp, role]
+		var hidden := "  · Scheinbar" if u.concealed else ""
+		_hud_hover.text = "%s   LP %d/%d%s%s   ·   %s" % [u.unit_name, u.lp, u.max_lp,
+				hidden, role, field]
 	else:
-		_hud_hover.text = ""
+		_hud_hover.text = field
+
+## Feld-Kurzinfo für die Hover-Zeile: Funktionstyp + Bewegungskosten (§5.1) —
+## macht die Bruchkosten (0,5/1,5) sichtbar, finale UI-Darstellung folgt (§11).
+func _field_info(cell: Vector2i) -> String:
+	if terrain == null or not in_bounds(cell):
+		return ""
+	var ftype := terrain.type_at(cell)
+	var label: String = Terrain.LABELS.get(ftype, ftype)
+	if terrain.is_blockade(cell):
+		return "Feld: %s (LP %d/%d)" % [label,
+				int(terrain.blockade_lp.get(cell, 0)), terrain.blockade_max_lp]
+	if not terrain.walkable(cell):
+		return "Feld: %s (unbegehbar)" % label
+	return "Feld: %s (%s BP)" % [label, str(terrain.cost(cell)).replace(".", ",")]
 
 func _log(line: String) -> void:
 	_log_lines.append(line)

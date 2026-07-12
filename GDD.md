@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.25  
+**Version:** 0.26  
 **Stand:** 2026-07-12  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -270,7 +270,7 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 
 #### Gelände-/Feld-Funktionstypen *(neu 2026-07-12)*
 
-Eine Map (z. B. 10×10 Skirmish, §5.1) besteht aus Feldern zweier Schichten: einer **Funktionsschicht** (was ein Feld *tut* — regionsunabhängig, überall identisch) und einer **Darstellungsschicht** (wie es *aussieht* — pro Region ausgetauscht). Es gibt **acht Funktionstypen**:
+Eine Map (z. B. 12×12 Skirmish, §5.1) besteht aus Feldern zweier Schichten: einer **Funktionsschicht** (was ein Feld *tut* — regionsunabhängig, überall identisch) und einer **Darstellungsschicht** (wie es *aussieht* — pro Region ausgetauscht). Es gibt **acht Funktionstypen**:
 
 | # | Funktionstyp | Begehbar | Bew.-Kosten | Besonderheit |
 |---|---|---|---|---|
@@ -1786,7 +1786,7 @@ Kampagnen-/Basecamp-Maps werden **von Hand** im Godot-TileMap-Editor gebaut. Die
 - **Feld-Funktionstypen (Design v2, 2026-07-12 — noch nicht generiert):** Der Tileset-Bau folgt der **Funktions-/Darstellungs-Trennung** aus §5.1 („Gelände-/Feld-Funktionstypen"): 8 regionsunabhängige Funktionstypen (Boden · Dickicht · Pfad · Fluss · Barriere · Blockade · Effekt-Feld · Deckung), je Region eigene Tile-Bilder gleicher Funktion. Das erweitert die Custom-Data pro Tile:
   - `move_cost` wird **Float** (0,5 / 1,0 / 1,5) statt int (bisher Gestrüpp = 2)
   - neu: `field_type` (String, einer der 8 Typen), `conceals` (bool — Typ 8 → „Scheinbar"), `destructible` (bool + `hp` — Typ 6), `flow_dir` (Richtung — Typ 4), `effect_id` (String — Typ 7, verweist auf Endlos-Event §9.6 bzw. Feld-Statuseffekt §5.2)
-  - Umsetzung: `tools/generate_tileset.py` + `scripts/tile_ids.gd` erweitern; Bewegungslogik (BFS) im Skirmish-Prototyp (`scripts/combat/`, PR #24) auf Float-Kosten umstellen
+  - Umsetzung: `tools/generate_tileset.py` + `scripts/tile_ids.gd` erweitern ✅ *(2026-07-12)*; Bewegungslogik im Skirmish-Prototyp (`scripts/combat/`, PR #24) auf Float-Kosten umstellen ✅ *(2026-07-12: Dijkstra über `move_cost` in `scenes/skirmish.gd`, Funktionsschicht `scripts/combat/terrain.gd` + `terrain`-Block in `data/prototype/skirmish_setup.json`; Blockade/Deckung/Fluss/Barriere spielbar, Effekt-Feld wartet auf den `effect_id`-Katalog)*
 - **Sprite-Größen (Charaktere):** *(folgt)*
 
 ### 10.2 Speichersystem
@@ -1895,7 +1895,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] Chunk-Gewichtungen / Auswahl-Verteilung final tunen (§9.6): Gefahren-Dichte-Cap (≤25–30 %), Anti-Barriere-Häufung, Spawn-Abstand, Prefab-Häufigkeit
 - [ ] Anzahl/Verteilung der Event-Typen über eine längere Wave-Progression (20–25 Wellen) — Wiederholungsgefühl vermeiden
 - [ ] Konkrete Ork-Schadensskalierungswerte zur Tank-Meta-Kontrolle im Endlos-Modus
-- [ ] **Gelände-Funktionstypen** *(2026-07-12, §5.1)* — offene Umsetzungs-/Balancing-Punkte: LP-Wert der zerstörbaren Blockade (Typ 6); UI-Darstellung von Bruch-Bewegungskosten (0,5/1,5) im Bewegungs-Overlay; weitere Regionen-Spalten der Darstellungs-Tabelle (Ebene/Schlachtfeld); Tileset-Generator + `tile_ids.gd` + Skirmish-BFS auf die 8 Typen / Float-`move_cost` erweitern (§10.1); Effekt-Feld-`effect_id`-Katalog (welche Endlos-Events §9.6 / Feld-Statuseffekte §5.2 als statische Map-Trigger vorkommen)
+- [ ] **Gelände-Funktionstypen** *(2026-07-12, §5.1)* — offene Umsetzungs-/Balancing-Punkte: LP-Wert der zerstörbaren Blockade (Typ 6) — *Prototyp-Platzhalter 30 LP in `skirmish_setup.json`, final `[Balancing]`*; UI-Darstellung von Bruch-Bewegungskosten (0,5/1,5) im Bewegungs-Overlay — *Prototyp zeigt sie vorerst in der Hover-Zeile*; weitere Regionen-Spalten der Darstellungs-Tabelle (Ebene/Schlachtfeld); Effekt-Feld-`effect_id`-Katalog (welche Endlos-Events §9.6 / Feld-Statuseffekte §5.2 als statische Map-Trigger vorkommen). ~~Tileset-Generator + `tile_ids.gd` + Skirmish-BFS auf die 8 Typen / Float-`move_cost` erweitern~~ ✅ *(2026-07-12, §10.1 — Skirmish-Bewegung läuft jetzt als Dijkstra über die Funktionsschicht)*
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 

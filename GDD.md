@@ -2,7 +2,7 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.24  
+**Version:** 0.25  
 **Stand:** 2026-07-12  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
@@ -259,12 +259,57 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 
 #### Mobilität (MOB)
 
-- Jede Einheit hat einen **MOB-Wert**, der bestimmt, wie viele Felder sie sich pro Zug bewegen kann (Manhattan-Distanz).
-- Eine Einheit mit MOB 5 kann sich bis zu 5 Felder bewegen — in beliebig vielen Teilschritten, solange die Gesamtdistanz ≤ 5 bleibt.
+- Jede Einheit hat einen **MOB-Wert**, der ihr **Bewegungspunkte-Budget** pro Zug bestimmt (Manhattan-Distanz).
+- Eine Einheit mit MOB 5 hat **5 Bewegungspunkte** — in beliebig vielen Teilschritten, solange die Summe der **Feld-Bewegungskosten** ≤ 5 bleibt. **Standardfeld = 1 Punkt**, aber Gelände-Funktionstypen variieren die Kosten (Pfad 0,5 · Dickicht 1,5 → „Gelände-/Feld-Funktionstypen" unten). Auf reinem Standardboden entspricht MOB 5 damit weiterhin genau 5 Feldern.
 - MOB ist ein **Basiswert pro Klasse** und kann nur durch Items und spezielle Skilltree-Nodes erhöht werden. **Maximum: 5.**
 - **Traits/Eigenarten können zusätzliche Bewegung zurückgeben**, die nicht auf den MOB-Pool angerechnet wird.
   - *Beispiel: Eine Einheit mit MOB 5 und Pike-Eigenart kann nach den 5 Feldern und einem Angriff durch die Eigenart noch 2 weitere Felder laufen.*
 - Konkrete MOB-Basiswerte je Klasse → Tabelle **Klassen-Startattribute** (§5.3).
+
+---
+
+#### Gelände-/Feld-Funktionstypen *(neu 2026-07-12)*
+
+Eine Map (z. B. 10×10 Skirmish, §5.1) besteht aus Feldern zweier Schichten: einer **Funktionsschicht** (was ein Feld *tut* — regionsunabhängig, überall identisch) und einer **Darstellungsschicht** (wie es *aussieht* — pro Region ausgetauscht). Es gibt **acht Funktionstypen**:
+
+| # | Funktionstyp | Begehbar | Bew.-Kosten | Besonderheit |
+|---|---|---|---|---|
+| 1 | **Boden** (Standard) | ✓ | **1,0** | Standardfeld, keine Sonderwirkung |
+| 2 | **Dickicht** (hemmend) | ✓ | **1,5** | verlangsamt die Durchquerung |
+| 3 | **Pfad** (Weg) | ✓ | **0,5** | beschleunigt die Bewegung |
+| 4 | **Fluss** (Strömung) | ✗ | — | drückt bei Push/Pull 1 Feld in Fließrichtung (s. u.) |
+| 5 | **Barriere** (Gelände) | ✗ | — | unzerstörbares Hindernis, region-spezifisch (Berg/Felswand …) |
+| 6 | **Blockade** (zerstörbar) | ✗ → ✓ | — | hat LP; zerstört → wird zu **Boden** |
+| 7 | **Effekt-Feld** (Trigger) | ✓ | 1,0 | löst bei Betreten ein Event / einen Feld-Effekt aus (s. u.) |
+| 8 | **Deckung** (Tarnung) | ✓ | 1,0 | versetzt die darauf stehende Einheit in **„Scheinbar"** (§5.2) |
+
+**Bewegungskosten (Typen 1–3):** greifen ins MOB-Bewegungspunkte-Budget (§5.1). Pfad-Ketten (0,5) belohnen das Laufen auf Wegen, Dickicht (1,5) bestraft das Queren von Unterholz — intern als Halbe rechenbar (Pfad 1 / Boden 2 / Dickicht 3 auf einer verdoppelten Skala).
+
+**Unbegehbare Felder (Typen 4–6):**
+- **Fluss (4):** unbegehbares Hindernis mit **Fließrichtung**. Wird eine Einheit per **Push/Pull-Fähigkeit** auf oder über ein Fluss-Feld gedrückt, driftet sie zunächst **1 Feld flussabwärts** und löst dann regulär **„Straucheln"** (§5.2) aus, wenn sie in einem unbegehbaren/belegten Feld landet. Ohne Push/Pull ist der Fluss ein reines Hindernis; Querungen laufen über Brücke/Furt (§10.1).
+- **Barriere (5):** dauerhaftes, **unzerstörbares** Geländehindernis. Optisch der stärkste regionsprägende Typ (Wald: Steilhang/Felsen; Mine: Felswand) — deshalb bewusst als eigener Typ neben der Blockade.
+- **Blockade (6):** unbegehbar, aber **zerstörbar** — trägt LP `[Balancing]` und kann von **beiden Teams** durch Angriffe zerschlagen werden. Nach der Zerstörung wird das Feld zu **Boden** (begehbar, Kosten 1,0). Kein Loot-Drop. Taktisch: Wege öffnen, Sichtlinien/Engstellen verändern.
+
+**Effekt-Feld (7):** ein von der Map **fest platzierter** Trigger, der beim **Betreten** seine Nutzlast auslöst. Zwei Nutzlast-Klassen unter einem Feldtyp:
+- **Endlos-Events** (§9.6) — z. B. Golem-/Ressourcen-Encounter (Bergminen), Segensstatue/Quelle (Ebene), Sonderwaffen-Fund (Schlachtfeld).
+- **Feld-Statuseffekte** (§5.2) — z. B. *In Brand gesteckt*, *Giftnebel*, *Nagelbett* als vorplatzierte Gelände-Gefahr (Abgrenzung: die dynamisch per Fähigkeit erzeugten Feld-Statuseffekte laufen unverändert über §5.2; das Effekt-Feld ist deren **statisches, im Map-Design gesetztes** Gegenstück).
+
+**Deckung (8):** begehbares Versteck. Solange eine Einheit darauf steht, gilt sie als **„Scheinbar"** (§5.2) — halbtransparent, generell unsichtbar/nicht anvisierbar, **aber** ein Gegner im Umkreis von **2 Feldern** (Manhattan) deckt sie automatisch auf (identisch zum allgemeinen Scheinbar-Zustand, keine Sonderregel). Angreifen/Zaubern beendet die Tarnung sofort (→ Offenbar). Verlässt die Einheit das Feld, endet die Deckung. Rein visuell „verschwindet" die Figur je nach Region unterschiedlich (Wald: duckt sich ins hohe Gras; Mine: steigt in einen Minenwagen) — die Funktion bleibt identisch.
+
+**Darstellungsschicht — regionale Kategorisierung:** Jeder Funktionstyp bekommt pro Region ein eigenes Tile-Bild (gleiche Funktion, anderes Aussehen). Die konkreten Tiles/Atlanten liegen technisch in §10.1.
+
+| Funktionstyp | Wald *(Raldiguh)* | Bergminen | Ebene / Schlachtfeld |
+|---|---|---|---|
+| Boden | Gras/Blumen | Steinboden | *[folgt]* |
+| Dickicht (1,5) | Büsche/Gestrüpp | Geröllfeld | *[folgt]* |
+| Pfad (0,5) | Trampelpfad | Schienen-/Lorenweg | *[folgt]* |
+| Fluss | Waldfluss | Grubenwasser-Kanal | *[folgt]* |
+| Barriere | Felsen/Steilhang | Felswand/Erzader | *[folgt]* |
+| Blockade | Baumstamm/Palisade | Stützbalken/Loren-Wrack | *[folgt]* |
+| Effekt-Feld | Ritualkreis/Lichtung | Erzader/Bohrstelle | *[folgt]* |
+| **Deckung** | **hohes Gras / Strauch** | **Minenwagen** | *[folgt]* |
+
+*(Offen: LP-Wert der Blockade, Bewegungspunkt-Rundung im UI, weitere Regionen-Spalten — s. §11. Umsetzung im Tileset-Generator → §10.1.)*
 
 ---
 
@@ -274,11 +319,11 @@ Jedes Level (Kampagnen-Level, Auftrag, Endlos-Welle) nutzt einen von drei Gefech
 
 | Gefechtstyp | Ziel | Map-Größe | Charakter |
 |---|---|---|---|
-| **Skirmish** | Alle gegnerischen Einheiten eliminieren | ~10×10 bis 12×12 | Kompakt, schnelles taktisches Gefecht |
-| **Basecamp** (Angriff/Verteidigung) | Gegnerische Basis zerstören **oder** alle Gegner eliminieren (je nach Rolle) | 20×20 | Mehr Positionierungsspielraum, Splitting möglich, Mobilität zahlt sich aus |
+| **Skirmish** | Alle gegnerischen Einheiten eliminieren | **12×12** (kompakt: 8×8) | Kompakt, schnelles taktisches Gefecht |
+| **Basecamp** (Angriff/Verteidigung) | Gegnerische Basis zerstören **oder** alle Gegner eliminieren (je nach Rolle) | **20×20** | Mehr Positionierungsspielraum, Splitting möglich, Mobilität zahlt sich aus |
 | **Flaggenraub** (*„Capture the Flag"*) | Neutralen NPC-Flaggenträger zur eigenen Zone eskortieren | wie Skirmish/Basecamp, je nach Einbettung | Eskorte-/Ablenkungstaktik statt reiner Elimination |
 
-**Map-Größen-Prinzip:** Größen sind bewusst gefechtstyp-, nicht global einheitlich — das passende Spielgefühl zählt mehr als Konsistenz. Faustregel für die isometrische Darstellung: möglichst ausgeglichene Längen/Breiten (keine stark länglichen Grids wie 12×15) — quadratisch wirkt in der isometrischen Perspektive stimmiger.
+**Map-Größen-Prinzip:** Größen sind bewusst gefechtstyp-, nicht global einheitlich — das passende Spielgefühl zählt mehr als Konsistenz. **Alle Map-Kantenlängen sind Vielfache von 4** *(Entscheidung 2026-07-12)* — damit die 4×4-Bausteine der prozeduralen Chunk-Generierung (§9.6) restlos aufgehen und über alle Gefechtstypen hinweg wiederverwendbar bleiben: Skirmish 12×12 = 3×3 Chunks (bzw. kompakt 8×8 = 2×2), Basecamp 20×20 = 5×5 Chunks. Faustregel für die isometrische Darstellung zusätzlich: möglichst ausgeglichene Längen/Breiten (keine stark länglichen Grids) — quadratisch wirkt in der isometrischen Perspektive stimmiger.
 
 **Archetypen-Verteilung:** Die Häufigkeit von Gegner-Archetypen passt sich dem Gefechtstyp an (mehr defensive/Support-Archetypen im Basecamp, mehr aggressive im Skirmish), ohne die Fraktions-Identität einer Region zu verändern (→ konkrete Umsetzung beim Gegner-Design, Phase 1).
 
@@ -1669,7 +1714,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 - **Freischaltung:** Nach Abschluss von Kampagne 10 der Region Raldiguh ohk
 - **Ziel:** High Score, Ressourcen und Loot farmen
-- **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map ~10×10 bis 12×12). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
+- **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map **12×12** = 3×3 Chunks). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
 - **Loot-Pool:** Regionsgebunden, aber **nicht** auf physische Gegenstände beschränkt *(revidiert 2026-07-12 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben: die Ork-Fraktion kann auch magiekundige Einheiten enthalten, §4.2)*.
 - **Map-Auswahl:** Deterministisch-prozedural statt reiner Zufalls-Progression oder Endlos-Scroll — der Spieler **wählt** aus vorgegebenen, thematisch festen, aber intern prozedural generierten Regionsrichtungen:
   - **Einstieg:** 2 Richtungen (z. B. Nordwest = Bergminen-Region, Nordost = Ebene)
@@ -1688,7 +1733,38 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Akzeptierter Trade-off:** Spieler finden mit der Zeit einen „optimalen Pfad" durch die Regionen (z. B. immer Richtung Ebene für einen Support-Trupp) — in Endlos-Modi kaum vermeidbar, wird über die steigende Schwierigkeit abgefedert statt unterbunden.
 - **High Score:** Wird pro Spielstand gespeichert.
 
-*(Offen/Playtesting: 3-Wege-Verzweigungstiefe, Map-Größe 10×10 vs. 12×12, Event-Verteilung über 20–25 Wellen, konkrete Ork-Schadensskalierung — s. §11.)*
+#### Prozedurale Chunk-Generierung (Endlos-Maps) *(neu 2026-07-12)*
+
+Kampagnen-/Basecamp-Maps werden **von Hand** im Godot-TileMap-Editor gebaut. Die **Endlos-Maps** entstehen dagegen **deterministisch-prozedural** aus einer Bibliothek **hand-gebauter Chunks** — Handdesign-Qualität ohne jede Welle einzeln zu bauen.
+
+**Raster:** Grundbaustein ist der **4×4-Chunk**. Gewählt, weil 12 und 20 beide durch 4 teilbar sind → dieselbe Bibliothek passt auf Skirmish 12×12 (3×3 Chunks) **und** Basecamp 20×20 (5×5 Chunks). Optional größere **Vielfach-Prefabs** (4×8 = 2 Slots, 8×8 = 2×2 Slots) für Signatur-Features (Flussbiegung, zentrales Landmark, Kaverne); der Assembler setzt sie **zuerst** aufs Raster („erst die dicken Steine"), dann füllt er die Einzel-Slots.
+
+**Konnektivität (Tür-Konvention):** Jeder Chunk hält auf **jeder Kante die beiden mittleren Zellen begehbar** → jeder Chunk passt an jeden, Erreichbarkeit ist garantiert. Unbegehbares Gelände (Barriere/Blockade/Fluss) liegt nur im **Inneren**. Nach dem Zusammensetzen läuft trotzdem ein **Flood-Fill-Check** (BFS vom Spawn) als Sicherheitsnetz; scheitert er, wird neu generiert.
+
+**Positions-Rollen:** Jeder Chunk trägt eine Rolle **Innen / Rand / Ecke** (welche Seiten zum Kartenrand zeigen). Rand-/Ecken-Chunks haben ihre nach außen zeigenden Kanten **geschlossen** (glaubwürdiger Kartenrand statt unsichtbarer Wand), innen liegende Kanten behalten die Tür. **Rotation** deckt alle vier Orientierungen ab → pro Rolle genügt **je 1 Innen-/Rand-/Ecken-Chunk** gebaut. Nur „offene" und Pfad-Rollen brauchen Positions-Varianten; rein innere Rollen (Deckungscluster, Effekt-Feld) bleiben Innen-only.
+
+**Region-agnostisch bauen:** Ein Chunk wird **einmal als Funktion** (field_type, §5.1) gebaut und je Region mit anderem Atlas gerendert — also „offener Chunk", nicht „Wald-Chunk". Ein großer Kern-Satz gilt für alle Regionen; wenige Region-Flavor-Chunks bleiben thematisch gebunden.
+
+**Chunk-Rollen-Bibliothek** (fett = Minimal-Startsatz für eine spielbare 12×12):
+
+| Rolle | Inhalt |
+|---|---|
+| **Offen / Ebene** (2–3) | fast nur Boden, etwas Dickicht-Streu; „Bindegewebe", spawn-sicher, hohe Gewichtung |
+| **Pfad** (2–3) | Weg (0,5) als Gerade/Kurve/**Kreuzung**, damit Wege durchlaufen |
+| **Deckungscluster** (1–2) | Deckung + Dickicht — umkämpfte Brennpunkte |
+| **Engstelle** (1–2) | Barrieren als Teilwand mit 1–2 breiter Lücke (Tür bleibt) |
+| **Fluss** (1–2) | Fluss + `flow_dir`, **immer mit Furt/Brücke-Variante** (sonst unüberquerbar) |
+| Blockade-Tasche (1) | zerstörbare Blockaden sperren eine Abkürzung/Flanke |
+| Effekt-/Event-Feld (1–2) | trägt die Endlos-Event-Trigger; niedrige Gewichtung, tiefer im Run |
+| Sackgassen-Nische (1) | kleine Nische für Ambush/Stealth; bewusst nicht allseitig verbunden, nie Spawn |
+
+**Fairness-Leitplanken:** Gefahren-/Unbegehbar-Dichte über die ganze Karte **≤ 25–30 %** (der Assembler gewichtet die Auswahl entsprechend); keine Häufung mehrerer Barriere-Chunks (sonst unknackbare Engstelle → begünstigt die Tank-Meta, gegen die der Modus arbeitet); Spawn-Zonen an gegenüberliegenden Rändern, keine Gefahr/Hindernis auf Startzellen, Mindest-Spawn-Abstand.
+
+**Determinismus:** RNG **pro Run/Welle geseedet**, Seed im Savegame — reproduzierbare Maps für Speichern/Fortsetzen und High-Score-Integrität. Beim Rotieren von Chunks wird `flow_dir` (Fluss-Richtung) korrekt mitgedreht.
+
+**Datenformat & Umsetzung → Phase 1:** Chunks als kleine 4×4-`TileMapLayer`-Szenen (im Godot-Editor gemalt, kein Handschreiben von Daten); ein Assembler kopiert/rotiert/stitcht die Zellen + Flood-Fill-Check + Seed. Bewegungslogik liest `field_type`/`move_cost` (float) aus der Tileset-Custom-Data (§10.1).
+
+*(Offen/Playtesting: 3-Wege-Verzweigungstiefe, Event-Verteilung über 20–25 Wellen, konkrete Ork-Schadensskalierung, Chunk-Gewichtungen — s. §11.)*
 
 ---
 
@@ -1707,6 +1783,10 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
   - Terrain-Umfang v1: Gras (+Blumen), Fluss & See (16 Verbindungen + 13 Ufer-Übergänge), Straße (16 Verbindungen), Brücke & Furt (je 2 Ausrichtungen), Berge (+Schneevariante), dichtes Gestrüpp, Klippen-Plateau, Sand, Acker, Bäume, Findling
   - Jedes Tile trägt Custom-Data fürs Taktik-Grid: `terrain` (String), `move_cost` (int), `walkable` (bool)
   - Quelle: prozeduraler Generator `tools/generate_tileset.py` (Platzhalter-Qualität, später durch handgemalte Assets ersetzbar — gleiche Maße/Slots). Details: `docs/TILESET.md`
+- **Feld-Funktionstypen (Design v2, 2026-07-12 — noch nicht generiert):** Der Tileset-Bau folgt der **Funktions-/Darstellungs-Trennung** aus §5.1 („Gelände-/Feld-Funktionstypen"): 8 regionsunabhängige Funktionstypen (Boden · Dickicht · Pfad · Fluss · Barriere · Blockade · Effekt-Feld · Deckung), je Region eigene Tile-Bilder gleicher Funktion. Das erweitert die Custom-Data pro Tile:
+  - `move_cost` wird **Float** (0,5 / 1,0 / 1,5) statt int (bisher Gestrüpp = 2)
+  - neu: `field_type` (String, einer der 8 Typen), `conceals` (bool — Typ 8 → „Scheinbar"), `destructible` (bool + `hp` — Typ 6), `flow_dir` (Richtung — Typ 4), `effect_id` (String — Typ 7, verweist auf Endlos-Event §9.6 bzw. Feld-Statuseffekt §5.2)
+  - Umsetzung: `tools/generate_tileset.py` + `scripts/tile_ids.gd` erweitern; Bewegungslogik (BFS) im Skirmish-Prototyp (`scripts/combat/`, PR #24) auf Float-Kosten umstellen
 - **Sprite-Größen (Charaktere):** *(folgt)*
 
 ### 10.2 Speichersystem
@@ -1807,11 +1887,15 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 - [x] **Gefechtstypen & Map-Größen definiert** *(2026-07-12, §5.1)*: Skirmish/Basecamp/Flaggenraub als PvE-Missionsziel-Vorlagen (kein PvP), Map-Größen pro Typ, Archetypen-Verteilungsprinzip; **Endlos-Modus ausgebaut** (§9.6): Wellen-Struktur (min. 5), Regionswahl-Verzweigung (Bergminen/Ebene/Schlachtfeld) mit variablen Events, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung gegen Tank-Meta; Roguelike-Perk-System bewusst verworfen. **Dabei revidiert:** „Orks droppen keine Magie" ist aufgehoben — Magie-Loot in Region 1 nicht mehr grundsätzlich ausgeschlossen (§4.2/§5.8/§8.5 nachgezogen)
 
+- [x] **Gelände-/Feld-Funktionstypen definiert** *(2026-07-12, §5.1 + §10.1)*: 8 regionsunabhängige Funktionstypen (Boden · Dickicht 1,5 · Pfad 0,5 · Fluss · Barriere · Blockade · Effekt-Feld · Deckung) mit Trennung Funktions-/Darstellungsschicht (gleiche Funktion, region-spezifisches Bild); MOB als Bewegungspunkte-Budget präzisiert; Fluss-Push nur bei Push/Pull (Drift + Straucheln); Deckung = „Scheinbar" (§5.2); Effekt-Feld als statischer Map-Trigger für Endlos-Events (§9.6)/Feld-Statuseffekte (§5.2). Custom-Data-Erweiterung + Generator-/BFS-Umsetzung → Phase 1
+
 **Offen — Playtesting-Punkte aus Gefechtstyp-/Endlos-Ausbau** *(2026-07-12, → Phase 1)*:
 - [ ] Balance der begrenzten Gegner-Reserve bei Flaggenraub (genaue Nachschub-Anzahl)
-- [ ] Map-Größe Endlos-Modus final (10×10 vs. 12×12)
+- [x] Map-Größe Endlos-Modus final: **12×12** *(2026-07-12)* — Teil der Entscheidung „alle Map-Kantenlängen = Vielfache von 4" für restlose 4×4-Chunk-Wiederverwendung (§5.1/§9.6); kompakte Variante 8×8
+- [ ] Chunk-Gewichtungen / Auswahl-Verteilung final tunen (§9.6): Gefahren-Dichte-Cap (≤25–30 %), Anti-Barriere-Häufung, Spawn-Abstand, Prefab-Häufigkeit
 - [ ] Anzahl/Verteilung der Event-Typen über eine längere Wave-Progression (20–25 Wellen) — Wiederholungsgefühl vermeiden
 - [ ] Konkrete Ork-Schadensskalierungswerte zur Tank-Meta-Kontrolle im Endlos-Modus
+- [ ] **Gelände-Funktionstypen** *(2026-07-12, §5.1)* — offene Umsetzungs-/Balancing-Punkte: LP-Wert der zerstörbaren Blockade (Typ 6); UI-Darstellung von Bruch-Bewegungskosten (0,5/1,5) im Bewegungs-Overlay; weitere Regionen-Spalten der Darstellungs-Tabelle (Ebene/Schlachtfeld); Tileset-Generator + `tile_ids.gd` + Skirmish-BFS auf die 8 Typen / Float-`move_cost` erweitern (§10.1); Effekt-Feld-`effect_id`-Katalog (welche Endlos-Events §9.6 / Feld-Statuseffekte §5.2 als statische Map-Trigger vorkommen)
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 

@@ -75,19 +75,34 @@ Die Benennung gibt die **Weg-Richtung** an. In `map_demo.gd` steht `=` für eine
 
 ## Custom-Data (fürs Taktik-Grid)
 
-Jedes Tile trägt drei Custom-Data-Felder:
+Jedes Tile trägt sieben Custom-Data-Felder. `terrain` bleibt das Optik-/Debug-Tag,
+`field_type` ist die **Funktions-Kategorie** (GDD §5.1 „Gelände-/Feld-Funktionstypen"):
 
 | Feld | Typ | Bedeutung |
 |------|-----|-----------|
-| `terrain` | String | `grass`, `water`, `road`, `bridge`, `ford`, `sand`, `dirt`, `brush`, `mountain`, `cliff`, `tree`, `boulder` |
-| `move_cost` | int | Bewegungskosten (Gestrüpp = 2) |
+| `terrain` | String | Optik-Tag: `grass`, `water`, `road`, `bridge`, `ford`, `sand`, `dirt`, `brush`, `mountain`, `cliff`, `tree`, `boulder` |
+| `move_cost` | **float** | Bewegungskosten ins MOB-Budget: Pfad `0.5`, Boden `1.0`, Dickicht `1.5`, unbegehbar `0.0` |
 | `walkable` | bool | Wasser, Berge, Bäume, Findlinge = `false` |
+| `field_type` | String | Funktionstyp: `boden` · `dickicht` · `pfad` · `fluss` · `barriere` · `blockade` · `effekt` · `deckung` |
+| `conceals` | bool | `true` → Einheit darauf wird „Scheinbar" (Deckung, §5.2) |
+| `destructible` | bool | `true` → zerstörbare Blockade (wird nach Zerstörung zu `boden`) |
+| `hp` | int | LP der Blockade (0 = n/a) |
 
 ```gdscript
 var data := ground.get_cell_tile_data(pos)
 if data and data.get_custom_data("walkable"):
-    var cost: int = data.get_custom_data("move_cost")
+    var cost: float = data.get_custom_data("move_cost")  # jetzt float!
+    var ftype: String = data.get_custom_data("field_type")
 ```
+
+**Pro-Zelle statt pro-Tile:** `flow_dir` (Fließrichtung eines Fluss-Feldes) und
+`effect_id` (welches Endlos-Event §9.6 / welchen Feld-Statuseffekt §5.2 ein Effekt-Feld
+auslöst) hängen von der **Platzierung** ab, nicht vom Atlas-Tile — sie liegen deshalb in
+den **Map-/Chunk-Daten**, nicht in dieser Custom-Data-Tabelle.
+
+**Noch ohne eigene Optik (Tileset v1):** `blockade`, `effekt` und `deckung` haben noch
+keine eigene Kachel — das Custom-Data-**Schema** steht bereits, die Painter/Atlas-Slots
+folgen (dann tragen die neuen Tiles `field_type`/`conceals`/`destructible`/`hp` direkt).
 
 ## Maps bauen (Editor-Workflow)
 

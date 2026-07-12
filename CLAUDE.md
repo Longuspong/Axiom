@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.23)
+## GDD-Stand (aktuell: v0.24)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -61,7 +61,7 @@ git push -u origin <feature-branch>
 | 2 | Welt & Lore | ⚠️ Regionen-Tabelle unvollständig |
 | 3 | Story-Struktur / Prolog | ✅ vollständig |
 | 4 | Fraktionen | ⚠️ Orks & weitere fehlen noch |
-| 5 | Gameplay-Systeme | ⚠️ Grid+**Initiative-Leisten-Modell (§5.1)** ✅, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, **Schadenstyp Elementarschaden+Elementardiffusion+Elementar-Durchdringung+Elementare Zusatzeffekte (§5.2) ✅**, Magisch-Fernkampf-Formel final ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, **Gravur-Schema (4 Achsen) + visuelle Kodierung (§5.7) ✅**, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅ inkl. Drop & Herkunft, **Skilltree-Struktur-Grundlage (§5.4) ✅**; **4 Elemente stehen**, **Gravuren-Katalog in Arbeit** (STR/GES fertig, alle-6-Paletten-Vorschlag `docs/gravuren_vorschlag.md` wartet auf Nutzer-Review) + Materialliste + Skilltree-Notable/Keystone-Listen ausstehend |
+| 5 | Gameplay-Systeme | ⚠️ Grid+**Initiative-Leisten-Modell (§5.1)** ✅, **Gefechtstypen & Map-Größen (§5.1) ✅**, Kampfsystem+Rohschaden+Mana+Statuseffekte ✅, Trefferchance+Krit+Ausweichen ✅, **Schadenstyp Elementarschaden+Elementardiffusion+Elementar-Durchdringung+Elementare Zusatzeffekte (§5.2) ✅**, Magisch-Fernkampf-Formel final ✅, Aggro/Threat ✅, Sichtsystem ✅, Klassen ✅, Attribute ✅, Bögen+Armbrüste ✅, Einhand/Zweihand+Offhands ✅, **Gravur-Schema (4 Achsen) + visuelle Kodierung (§5.7) ✅**, Stellar-Waffen (Stufe 7) ✅, Crafting/Resonanz-Matrix (§5.8) ✅ inkl. Drop & Herkunft, **Skilltree-Struktur-Grundlage (§5.4) ✅**; **4 Elemente stehen**, **Gravuren-Katalog in Arbeit** (STR/GES fertig, alle-6-Paletten-Vorschlag `docs/gravuren_vorschlag.md` wartet auf Nutzer-Review) + Materialliste (Vorschlag `docs/materialliste_vorschlag.md` wartet auf Review) + Skilltree-Notable/Keystone-Listen ausstehend |
 | 6 | Charaktere | ⚠️ Arathos ✅, weitere ausstehend |
 | 7 | Bergheim (Verweis auf §9) | ✅ |
 | 8 | UI & UX | ✅ Hauptmenü, Slots, Einstellungen, Credits; ⚠️ **Lex Tactica (§8.5) Struktur + Grundstock ✅** (7 Rubriken, Wiki-Card, Entdeckungs-Freischaltung, Materialien/Rohlinge/Kampf-Kodex befüllt), Rubriken 3–5/7 + UI noch offen |
@@ -73,7 +73,17 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Abgeschlossen in dieser Sitzung (2026-07-11 — **Review-Nacharbeit + Lex-Ausbau + Gravuren-System/-Katalog + Initiative-Modell**, PR **#21** offen `claude/sonnet-review-improvements-lqb5io`):
+Abgeschlossen in dieser Sitzung (2026-07-12 — **Materialliste-Vorschlag + Gefechtstypen/Map-Design + Endlos-Modus-Ausbau**, PR **#23** offen `claude/phase-0-planning-3qnda3`):
+- **Materialliste-Vorschlag erstellt** (`docs/materialliste_vorschlag.md`, PR #23, gleiches Review-Muster wie der Gravuren-Vorschlag): Drop-Leitprinzip „Der Drop spiegelt den Träger", Flavor-Texte für alle 7 Barren + 38 Aspektsplitter + 4 Essenzen + 12 Bauteile, Gegner-Level-Bänder pro Barren-Stufe, Drop-Matrix nach Gegner-Archetyp (Standard/Schütze/Zauberkundig/Bruiser/Elite/Boss), Entscheidungsvorlage Zubehör-Aspektsplitter (Option A = craftbar, +6 Splitter, empfohlen) — **wartet auf Nutzer-Review**, danach Übertrag in §8.5/§5.8 + `data/materials.json`
+- **Nutzer-Brainstorming „Game Modi & Map-Design" geprüft und eingearbeitet** (hochgeladenes Dokument, vorab auf Widersprüche zum GDD-Stand geprüft, drei Klärungsfragen gestellt und vom Nutzer beantwortet):
+  - **Gefechtstypen & Map-Größen neu definiert (§5.1)**: Skirmish (~10×10–12×12, Elimination), Basecamp (20×20, Angriff/Verteidigung), Flaggenraub/„Capture the Flag" (NPC-Flaggenträger + begrenzte gegnerische Nachschub-Reserve statt Respawn, Zeitbonus). **Klärung nötig, weil das Brainstorming Basecamp/Skirmish fälschlich als „bestehende Modi" bezeichnete** — Nutzer bestätigt: alle drei sind **reines PvE** (Gefechtstyp-Bausteine für Kampagnen/Aufträge/Endlos-Modus), kein eigener PvP-Modus
+  - **Endlos-Modus ausgebaut (§9.6)**: Wellen-Struktur (min. 5 zum Abschluss, Abbruch ohne Loot-Mitnahme), Regionswahl-Verzweigung (2 Richtungen am Anfang → 3 ab Tiefe X: Bergminen/Ebene/Schlachtfeld) mit variabler Event-Häufigkeit pro Region, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung als Tank-Meta-Bremse. Roguelike-Perk-Auswahl bewusst verworfen (Buff-Pool-Balance-Problem)
+  - **Speed-Werte im Brainstorming wichen von §5.1 ab** (dort „Speed 1 = 1 Pkt/Tick, Minimum 0,5" vs. GDD „Speed×10 Pkt/Tick, kein harter Floor) — Nutzer bestätigt §5.1 bleibt Single Source of Truth, keine Änderung an den Speed-Formeln
+  - **Wichtige Revision:** Die bisherige Endlos-Modus-Regel „Orks droppen keine Magie" (physischer Loot-Pool) ist **aufgehoben** — Nutzer-Klarstellung: Loot soll generell auch magische Gegenstände enthalten, „Orks haben keine Magier" wurde verworfen. Nachgezogen in §9.6, §5.8 (Crafting-Umwandlung-Begründung + Essenzen-Drop-Zeile), §8.5 (Lex-Rubrik-1-Essenzen-Hinweis)
+- **GDD → v0.24**
+- PR **#23** (`claude/phase-0-planning-3qnda3`) gepusht — wartet auf Merge durch den Nutzer; PR-Aktivität wird beobachtet (Subscription aktiv)
+
+Sitzung davor (2026-07-11 — **Review-Nacharbeit + Lex-Ausbau + Gravuren-System/-Katalog + Initiative-Modell**, PR **#21** offen `claude/sonnet-review-improvements-lqb5io`):
 - **Review des Sonnet-Stands** (PRs #17–#20): Design & Daten geprüft — konsistent (Kriegsgeräte-WID-Tier, Datei-Versionen, §5.2/§5.4-Verweise). **§5.4 geglättet**: „~Level 25"-Marke für Attributsnodes entkoppelt (mathematisch inkonsistent mit „1 Punkt/Level"), stattdessen Leitplanke **WID soll die 100er-Marke (50 % Reduktion) erst spät überschreiten**. **GDD → v0.23**
 - **Lex Tactica (§8.5) von Konzept zu Struktur+Grundstock ausgebaut**: 7 Rubriken (Materialien · Bauteile & Prägungen · Ausrüstung · Gravuren · Bestiarium · Kampf-Kodex · Welt & Lore), knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung; Bestiarium progressiv). Befüllt: Barren-Stufen, **vollständige Aspektsplitter-Liste** (16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen; Zubehör offen; Namensregel „Item-Identität + Aspektsplitter"), **4 Essenzen mit Namen** (Pyros/Kryos/Gaios/Fulguros — gr./lat., Nutzer-Wahl), 12 Crafting-Rohlinge, Kampf-Kodex (spiegelt §5.2). §5.8 präzisiert: Rüstungs-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen), Archetyp vom Aspektsplitter (nicht „Slot-Aspektsplitter")
 - **Gravur-Schema (§5.7) komplett festgezurrt**: 4 Achsen **Klasse · Typ · Eigenschaft · Schadenstyp**. **Klasse = die 6 Attribute** (STR/GES/WIL/INT/VIT/WID, PoE-Gem-Analogon, deckt sich mit Skilltree-Sektoren §5.4). **Eigenschaft = 8 Wirkkategorien** (Schaden/Anhaltend/Verteidigung/Kontrolle/Mobilität/Ressource/Präsenz/Beschwörung, erweiterbar). **Revision:** jeder Typ kann jede Eigenschaft tragen (früherer „kein Vollkreuzprodukt"-Gedanke verworfen). **Visuelle Kodierung:** Form = Typ (Dreieck=Passiv, Raute=Aktiv, Pentagon=Modifikativ, Schild-Trapez=Reaktiv, Kreis=Spezial, **Hexagon=Flex-Slot**), Farbe = Attribut (6er-Palette, Richtwerte hinterlegt)
@@ -204,6 +214,7 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 | `data/fussausruestung.json` | Fuß-Slot: `ruestungstypen` (5) + `zubehoer_typen` (2: Steigeisen, Windsohle), **49 Einträge** (35 Rüstung + 14 Zubehör) — ±0,20-Speed, `MOB-Bonus`-Feld, **v1.4 kalibriert** (Kosmium-Umbenennung 2026-07-05) |
 | `data/engravings.json` | **Gravuren-Katalog (v0.3, self-contained Coding-DB)**: `attribut_klassen` (6, mit Farben), `gravur_typen` (5, mit Formen) + `flex_slot` (Hexagon), `eigenschaften` (8), `seltenheit`, `item_schema` + `gravuren`. **STR + GES vollständig** (je 16 Basis + 1 Signatur nach altem 17er-Muster). **Achtung:** wird auf das neue 13er-Schema (3/3/3/3 + 1 Signatur) umgestellt, sobald `docs/gravuren_vorschlag.md` freigegeben ist |
 | `docs/gravuren_vorschlag.md` | **Arbeitsvorschlag** aller 6 Gravur-Paletten (13 je Attribut = 3 Aktiv/3 Passiv/3 Reaktiv/3 Modifikativ + 1 Signatur, 78 gesamt) — **wartet auf Nutzer-Review**; danach Übertrag in `engravings.json` + Lex-Rubrik 4 |
+| `docs/materialliste_vorschlag.md` | **Arbeitsvorschlag** vollständige Materialliste (2026-07-11): Flavor für 7 Barren + 38 Aspektsplitter + 4 Essenzen + 12 Bauteile, Drop-Leitprinzip „Der Drop spiegelt den Träger", Level-Bänder, Drop-Matrix nach Gegner-Archetyp, **Entscheidungsvorlage Zubehör-Aspektsplitter** (Option A = craftbar, +6 Splitter, empfohlen) — **wartet auf Nutzer-Review**; danach Übertrag in GDD §8.5/§5.8 + `data/materials.json` |
 | `data/itemliste_v7.xlsx` | Gesamt-Excel (alle Sheets/Kategorien inkl. Offhands + Kopf-/Körper-/Fußausrüstung + Typen-Referenz); JSONs sind die getrennte Coding-Datenbank |
 | `project.godot` | Godot-4.3-Projekt (main_scene: map_demo, Yggdrasil-Plugin aktiviert) |
 | `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
@@ -265,7 +276,8 @@ tactical RPG, HD pixel art style, no background, transparent
 | Fraktionsbonus Menschen | „Gemeinschaft" — Regen pro Mensch auf dem Feld |
 | Kampagnen-Loot | Einmal-Reward bei Erstabschluss, danach random; Zwischenlevel ohne fixen Reward |
 | Aufträge | 3 Typen: vorgegeben, generisch, freischaltbar (Klassen-Arks) |
-| Endlos-Modus | Ab Kampagne 10, physischer Loot-Pool, kein Magie-Loot |
+| Endlos-Modus | **Ausgebaut (2026-07-12, §9.6):** Ab Kampagne 10, Wellen-basiert (min. 5), Skirmish-Gefechtstyp; Regionswahl-Verzweigung Bergminen/Ebene/Schlachtfeld mit variablen Events, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung gegen Tank-Meta. Loot-Pool regionsgebunden, aber **nicht mehr auf physisch beschränkt** — „Orks droppen keine Magie" wurde revidiert |
+| Gefechtstypen | **Neu (2026-07-12, §5.1):** Skirmish (Elimination, ~10×10–12×12), Basecamp (Angriff/Verteidigung, 20×20), Flaggenraub (NPC-Eskorte, begrenzte Gegner-Nachschub-Reserve statt Respawn) — alle drei reines PvE, Bausteine für Kampagnen/Aufträge/Endlos statt eigener Modus |
 | Trupp-Größe | Standard: 3 Einheiten |
 | Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
 | Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |

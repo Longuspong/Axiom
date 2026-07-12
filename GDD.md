@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.23  
-**Stand:** 2026-07-11  
+**Version:** 0.24  
+**Stand:** 2026-07-12  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -265,6 +265,30 @@ Jede Waffe hat eine Waffenkarte, die beim Anklicken des Waffensymbols aufgeht:
 - **Traits/Eigenarten können zusätzliche Bewegung zurückgeben**, die nicht auf den MOB-Pool angerechnet wird.
   - *Beispiel: Eine Einheit mit MOB 5 und Pike-Eigenart kann nach den 5 Feldern und einem Angriff durch die Eigenart noch 2 weitere Felder laufen.*
 - Konkrete MOB-Basiswerte je Klasse → Tabelle **Klassen-Startattribute** (§5.3).
+
+---
+
+#### Gefechtstypen & Map-Größen *(neu 2026-07-12)*
+
+Jedes Level (Kampagnen-Level, Auftrag, Endlos-Welle) nutzt einen von drei Gefechtstypen als Missionsziel-Vorlage. **Alle drei sind reine PvE-Gefechte gegen KI-Gegner** — kein Spieler-vs-Spieler, kein eigener Modus in der Missionskarte (§9.3), sondern allgemeine Bausteine, die Kampagnen/Aufträge/Endlos-Modus beim Level-Design einsetzen.
+
+| Gefechtstyp | Ziel | Map-Größe | Charakter |
+|---|---|---|---|
+| **Skirmish** | Alle gegnerischen Einheiten eliminieren | ~10×10 bis 12×12 | Kompakt, schnelles taktisches Gefecht |
+| **Basecamp** (Angriff/Verteidigung) | Gegnerische Basis zerstören **oder** alle Gegner eliminieren (je nach Rolle) | 20×20 | Mehr Positionierungsspielraum, Splitting möglich, Mobilität zahlt sich aus |
+| **Flaggenraub** (*„Capture the Flag"*) | Neutralen NPC-Flaggenträger zur eigenen Zone eskortieren | wie Skirmish/Basecamp, je nach Einbettung | Eskorte-/Ablenkungstaktik statt reiner Elimination |
+
+**Map-Größen-Prinzip:** Größen sind bewusst gefechtstyp-, nicht global einheitlich — das passende Spielgefühl zählt mehr als Konsistenz. Faustregel für die isometrische Darstellung: möglichst ausgeglichene Längen/Breiten (keine stark länglichen Grids wie 12×15) — quadratisch wirkt in der isometrischen Perspektive stimmiger.
+
+**Archetypen-Verteilung:** Die Häufigkeit von Gegner-Archetypen passt sich dem Gefechtstyp an (mehr defensive/Support-Archetypen im Basecamp, mehr aggressive im Skirmish), ohne die Fraktions-Identität einer Region zu verändern (→ konkrete Umsetzung beim Gegner-Design, Phase 1).
+
+**Flaggenraub — Detail:**
+- **Kein klassisches Respawn-System** (passt nicht zum deterministischen, respawnfreien Kampfdesign) — stattdessen eine **begrenzte gegnerische Nachschub-Reserve** (Richtwert 3–4 Einheiten `[Balancing]`). Ist sie aufgebraucht, wird der Flaggentransport spürbar leichter — klarer taktischer Fokus „Nachschub eliminieren → Flagge sichern", statt unbegrenzt nachrückender Gegner.
+- **Der Flaggenträger ist ein NPC**, kein Spieler-Charakter — vermeidet Ungleichgewichte durch Speed-/Attributs-Boni auf den Träger selbst.
+- **Taktische Eskorte-Optionen:** klassischer Shield-/Buff-Support in Trägernähe, Stealth-Begleitung, oder Ablenkungstaktik (Aggro auf der gegnerischen Feldseite binden, um den Trägerweg freizuhalten — nutzt das bestehende Aggro/Threat-System, §5.2).
+- **Zeitbonus:** Weniger benötigte Züge = größere Belohnung — verhindert, dass „erst alles clearen, dann gemütlich holen" die einzig sinnvolle Strategie ist.
+
+*(Offen/Playtesting: exakte Balance der Nachschub-Reserve bei Flaggenraub — s. §11.)*
 
 ### 5.2 Kampfsystem
 
@@ -1284,7 +1308,7 @@ Jedes unerwünschte Item kann zerlegt werden und liefert:
 | **Aspektsplitter** | Waffentyp / Gravurtyp (z. B. Breitschwert-Aspekt, Aktiv-Aspekt) | Was das zerlegte Item war |
 | **Essenzen** | Element (z. B. Feuer-Essenz) | Zerlegte Element-Gravuren + seltene Direktdrops |
 
-**Umwandlung** *(schließt den Doppel-RNG-Kanal)*: **3 beliebige → 1 gewählte** Ressource derselben Sorte und Stufe (3 Splitter → 1 gewählter Splitter, 3 Essenzen → 1 gewählte Essenz). Damit konvergiert auch „falscher" Loot in endlicher Zeit zur gewünschten Lenkung — nur langsamer, was den Loot-Motor intakt lässt. *Notwendig auch wegen Regionsbindung der Loot-Pools: Die Ork-Region droppt keinen Magie-Loot (§9.6) — ohne Umwandlung wären magische Lenkzutaten im Endlos-Modus nicht erspielbar.*
+**Umwandlung** *(schließt den Doppel-RNG-Kanal)*: **3 beliebige → 1 gewählte** Ressource derselben Sorte und Stufe (3 Splitter → 1 gewählter Splitter, 3 Essenzen → 1 gewählte Essenz). Damit konvergiert auch „falscher" Loot in endlicher Zeit zur gewünschten Lenkung — nur langsamer, was den Loot-Motor intakt lässt. *Notwendig auch wegen Regionsbindung der Loot-Pools: Einzelne Regionen droppen bestimmte Ressourcentypen seltener (z. B. elementaffine Essenzen erst in späteren, elementaffinen Regionen, §8.5) — ohne Umwandlung wären manche Lenkzutaten in frühen Regionen kaum erspielbar.*
 
 **Aufstufung**: **7× Barren Stufe N → 1× Barren Stufe N+1** *(Zahl Balancing-Vorbehalt)* — verhindert, dass Kupferbarren ab Midgame toter Ballast sind. **Ausnahmen: endet bei Adamant.** Kosmiumbarren entstehen ausschließlich aus zerlegten Kosmium-Items (Kosmium-Ressourcen bleiben ein reiner Loot-Beweis); zu Stellar stuft nichts auf.
 
@@ -1364,7 +1388,7 @@ Die drei Ressourcen-Ebenen unterscheiden sich bewusst im RNG-Grad — Farmen fü
 |-----------|----------|----------|
 | **Barren** | Niedrig — überwiegend farmbar | Droppt von **jedem Gegner** (stufenabhängige Chance) **und** garantiert aus Zerlegen (jedes Item liefert mind. 1 Barren seiner Stufe) |
 | **Aspektsplitter** | Mittel | Bestimmte Einheiten droppen sie zusätzlich; aus Zerlegen kommt **immer garantiert** einer. *(Offen: teilweise auch im Shop erwerbbar? → Phase 1, sobald das Shop-System ansteht.)* |
-| **Essenzen** | Hoch — bewusst selten | Geringe Drop-Chance von Elite-/Boss-Gegnern; der verlässliche Grundstrom kommt über die 3:1-Umwandlung aus zerlegten Element-Gravuren. Essenzen lenken sehr spezifisch (Element/Set) — in Region 1 (Orks) unwichtig, da die Ork-Strategie auf rohem Schaden/Resistenz statt Elementen/Sets basiert (deckt sich mit „kein Magie-Loot", §9.6) |
+| **Essenzen** | Hoch — bewusst selten | Geringe Drop-Chance von Elite-/Boss-Gegnern; der verlässliche Grundstrom kommt über die 3:1-Umwandlung aus zerlegten Element-Gravuren. Essenzen lenken sehr spezifisch (Element/Set) — in Region 1 (Orks) weiterhin selten, da es dort noch kein dediziertes elementaffines Gegnerdesign gibt; Magie-Loot generell ist in Region 1 aber **nicht** ausgeschlossen (revidiert 2026-07-12, §9.6) |
 
 **Drop-Skalierung**: nach **Gegner-Stufe** (höhere Stufe → höherstufige Barren/Splitter wahrscheinlicher) **und Archetyp** (z. B. Bogenschützen-Gegner droppen bevorzugt Materialien/Splitter, die Bogenschützen-Ausrüstung begünstigen).
 
@@ -1534,7 +1558,7 @@ Listet alle genutzten externen Ressourcen:
 | **Gaios-Essenz** | gr. *gaia* = Erde/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
 | **Fulguros-Essenz** | lat. *fulgur* = Blitz (Fantasy-Form) | Donner / Elektroschaden | selten, elite-/boss-gebunden |
 
-> Region 1 (Orks) bleibt **bewusst ohne Elementfokus** — dort droppen keine Essenzen (deckt sich mit §9.6 „kein Magie-Loot"). Essenzen kommen erst mit späteren, elementaffinen Regionen/Gegnern.
+> Region 1 (Orks) bleibt **bewusst ohne dediziertes Elementfokus-Gegnerdesign** — Essenzen dort daher weiterhin selten. Magie-Loot generell ist in Region 1 **nicht** ausgeschlossen (revidiert 2026-07-12, §9.6 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben). Essenzen häufen sich erst mit späteren, elementaffinen Regionen/Gegnern.
 
 #### Rubrik 2 — Bauteile & Prägungen *(befüllt)*
 
@@ -1641,11 +1665,30 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 
 ### 9.6 Endlos-Modus
 
+*(Struktur erweitert 2026-07-12 — Regionswahl, Wellen-Ablauf, Events)*
+
 - **Freischaltung:** Nach Abschluss von Kampagne 10 der Region Raldiguh ohk
 - **Ziel:** High Score, Ressourcen und Loot farmen
-- **Loot-Pool:** Vollständig zufällig, aber gebunden an die Ork-Region
-- **Einschränkung:** Keine außerordentlichen magischen Gegenstände — Orks sind thematisch physisch, ihr Loot-Pool spiegelt das wider
-- **High Score:** Wird pro Spielstand gespeichert
+- **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map ~10×10 bis 12×12). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
+- **Loot-Pool:** Regionsgebunden, aber **nicht** auf physische Gegenstände beschränkt *(revidiert 2026-07-12 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben: die Ork-Fraktion kann auch magiekundige Einheiten enthalten, §4.2)*.
+- **Map-Auswahl:** Deterministisch-prozedural statt reiner Zufalls-Progression oder Endlos-Scroll — der Spieler **wählt** aus vorgegebenen, thematisch festen, aber intern prozedural generierten Regionsrichtungen:
+  - **Einstieg:** 2 Richtungen (z. B. Nordwest = Bergminen-Region, Nordost = Ebene)
+  - **Ab einer bestimmten Tiefe** `[Balancing]`: 3 Richtungen (Ebene / Schlachtfeld / Bergminen)
+- **Regionale Events** (variable statt starre Häufigkeit, z. B. Welle 2 oder 3, dann 5, dann 7 oder 11, dann 15 `[Balancing]`):
+
+  | Region | Event-Flavor |
+  |---|---|
+  | **Bergminen** | Ressourcen-Encounter (bekämpfbare Golems für Materialien), seltener heiße Quellen |
+  | **Schlachtfeld** | Zufällige Verbündete/Unterstützer, Sonderwaffen-Fundstücke |
+  | **Ebene** | Support-/Heal-Encounter (Fountains, Segens-Statuen) |
+
+- **Meta-Progression:** Ab Welle 5 kann der Run verlassen werden, um gesammelte Ressourcen sofort in bessere Ausrüstung zu craften (§5.8), statt weiterzulaufen.
+- **Schwierigkeitskurve als Steuerungsinstrument:** Gegnerschaden skaliert mit der Wellentiefe (Beispiel Orks als physische Angreifer) — verhindert, dass eine reine Tank-Strategie unbegrenzt trägt, ohne den Modus grundlegend umzubauen.
+- **Bewusst verworfen:** klassisches Roguelike-Perk-System (zufällige Buff-Auswahl je Welle) — ein zu großer Pool streut Frust (falsche Buffs für die gewählte Trupp-Strategie), ein zu kleiner langweilt (immer derselbe optimale Pick).
+- **Akzeptierter Trade-off:** Spieler finden mit der Zeit einen „optimalen Pfad" durch die Regionen (z. B. immer Richtung Ebene für einen Support-Trupp) — in Endlos-Modi kaum vermeidbar, wird über die steigende Schwierigkeit abgefedert statt unterbunden.
+- **High Score:** Wird pro Spielstand gespeichert.
+
+*(Offen/Playtesting: 3-Wege-Verzweigungstiefe, Map-Größe 10×10 vs. 12×12, Event-Verteilung über 20–25 Wellen, konkrete Ork-Schadensskalierung — s. §11.)*
 
 ---
 
@@ -1762,6 +1805,13 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05/06, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen inkl. Geschirr/Haube/Riemen/Beschlag, alle Ausrüstungskategorien craftbar, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **offen nur noch: Gravuren-Katalog + Materialherkunft/Essenzen (s. u.)**
 - [x] Skilltree-Struktur designt *(2026-07-07, §5.4)*: radialer Baum mit 6 Attribut-Sektoren, klassenabhängige Einstiegspunkte, Attributs-/Notable-/Keystone-Nodes, Punkte-Ökonomie (1/Level, Wegkosten erzeugen die §5.3-Kurve), Frühgame-Führungspfad, weiche Kombo-Gates über Keystone-Kosten, Respec (frei bis Level 15, danach kostenpflichtig). Offen bleiben Notable-/Keystone-Listen pro Klasse + die *Umsetzung* in Godot — das ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
 - [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
+- [x] **Gefechtstypen & Map-Größen definiert** *(2026-07-12, §5.1)*: Skirmish/Basecamp/Flaggenraub als PvE-Missionsziel-Vorlagen (kein PvP), Map-Größen pro Typ, Archetypen-Verteilungsprinzip; **Endlos-Modus ausgebaut** (§9.6): Wellen-Struktur (min. 5), Regionswahl-Verzweigung (Bergminen/Ebene/Schlachtfeld) mit variablen Events, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung gegen Tank-Meta; Roguelike-Perk-System bewusst verworfen. **Dabei revidiert:** „Orks droppen keine Magie" ist aufgehoben — Magie-Loot in Region 1 nicht mehr grundsätzlich ausgeschlossen (§4.2/§5.8/§8.5 nachgezogen)
+
+**Offen — Playtesting-Punkte aus Gefechtstyp-/Endlos-Ausbau** *(2026-07-12, → Phase 1)*:
+- [ ] Balance der begrenzten Gegner-Reserve bei Flaggenraub (genaue Nachschub-Anzahl)
+- [ ] Map-Größe Endlos-Modus final (10×10 vs. 12×12)
+- [ ] Anzahl/Verteilung der Event-Typen über eine längere Wave-Progression (20–25 Wellen) — Wiederholungsgefühl vermeiden
+- [ ] Konkrete Ork-Schadensskalierungswerte zur Tank-Meta-Kontrolle im Endlos-Modus
 
 **Bewusst nach Phase 1 verschoben** (braucht Playtests oder blockiert den Code-Start nicht): Aggro/Threat- & Sicht-Feintuning, Reaktiv-Gravur-Deckelung, Menschen-Fraktionsbonus-Werte, Klassen-Arks, Ork-Klassen/KI/Fraktionsbonus, weitere Regionen, Hub-Logik & -Progression, Rekrutierungs-Taverne, Charakter-Erstellung, Arathos-Backstory, Tileset-/Sprite-Specs, Credits, Audio-Konzept.
 
@@ -1810,7 +1860,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR + GES vollständig** (je 16 Basis + 1 Signatur = 17; GES-Signatur *Klingentanz* = Dolch-GES-Schadensskalierung). `engravings.json` v0.3. **Offen:** WIL/INT/VIT/WID nach demselben Muster ausarbeiten
-- [ ] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen jetzt** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)* — es fehlt noch die **vollständige Materialliste** „mit allem drum und dran" (Barren/Aspektsplitter/Essenzen) als Grundlage für **Lex Tactica** (§8.5)
+- [~] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)*. **Vollständiger Materiallisten-Vorschlag liegt vor** *(2026-07-11)*: `docs/materialliste_vorschlag.md` — Flavor-Texte für alle Barren/Aspektsplitter/Essenzen + Bauteile, Drop-Leitprinzip „Der Drop spiegelt den Träger", Level-Bänder, Drop-Matrix nach Gegner-Archetyp, Entscheidungsvorlage Zubehör-Aspektsplitter (Option A = craftbar empfohlen) — **wartet auf Nutzer-Review**, danach Übertrag in §8.5/§5.8 + `data/materials.json`
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
 - [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen: Pyros/Kryos/Gaios/Fulguros), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung

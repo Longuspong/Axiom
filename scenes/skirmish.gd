@@ -1,18 +1,25 @@
 extends Node2D
 ## Skirmish-Kampfkern (Phase-1-Prototyp, Gefechtstyp „Elimination", GDD §5.1).
 ##
-## Steuerung nach dem EINEN Grid-Cursor-Modell (§10.5, touch-/controller-/maus-fähig):
-##   • Wessen Zug ist, bestimmt die Initiative — über der aktiven Einheit öffnet
-##     automatisch ein Aktionsmenü (Bewegen / Angriff bzw. Zauber / Warten).
-##   • Cursor bewegen: Maus, Pfeiltasten/WASD oder virtueller Joystick (Touch).
-##   • Bestätigen: Linksklick · Enter/Leertaste · Button „Bestätigen" (Touch).
-##   • Zurück:     Rechtsklick · Esc/Backspace · Button „Zurück" (Touch).
-##   • Bewegen = freier Cursor über erreichbare Felder; Angriff = Ziele durchschalten.
-##   • R = Gefecht neu starten.
+## Zug-Modell (Nutzer-Vorgabe): Wer dran ist, ist einfach dran — KEIN Aktionsmenü.
+##   • Sofort werden alle begehbaren Felder blau markiert (Bewegung bis MOB,
+##     Pfad wird automatisch als günstigster Weg gewählt).
+##   • Angreifbare Gegner (in Waffenreichweite) tragen ein rotes Ziel-Symbol
+##     über dem Kopf und werden rot markiert.
+##   • Pro Zug: einmal bewegen + einmal angreifen (Reihenfolge frei), dann endet
+##     der Zug automatisch bzw. per Button „Zug beenden" (nichts getan = gewartet).
+##   • Einheiten außer Reichweite lassen sich nur inspizieren (Detail-Panel).
+##   • Immer über dem Kopf: Name, LP, Initiative. Mana + Details nur beim Inspizieren.
+##
+## Steuerung (ein Grid-Cursor für Maus/Tastatur/Touch, §10.5):
+##   Cursor: Maus · Pfeile/WASD · virtueller Joystick (unten links)
+##   Bestätigen: Linksklick · Enter/Leertaste · Button „Bestätigen"
+##   Zug beenden: Button „Zug beenden" · Taste E
+##   R: neu starten
 
 const SETUP_PATH := "res://data/prototype/skirmish_setup.json"
 
-enum State { IDLE, MENU, MOVE, TARGET, GAME_OVER }
+enum State { IDLE, ACTIVE, GAME_OVER }
 
 var board: Board
 var units: Array = []
@@ -22,16 +29,15 @@ var rng := RandomNumberGenerator.new()
 var state: State = State.IDLE
 var active: Unit = null
 var has_moved := false
-var _targets: Array = []
-var _target_idx := 0
+var has_attacked := false
 var _log_lines: Array = []
 
 # UI
-var action_menu: ActionMenu = null
 var joystick: VirtualJoystick = null
 var _hud_status: Label
 var _hud_hint: Label
 var _hud_hover: Label
+var _hud_inspect: Label
 var _hud_log: Label
 var _hud_banner: Label
 
@@ -108,11 +114,15 @@ func _build_hud() -> void:
 
 	_hud_status = _make_label(layer, Vector2(16, 12), 18, Color.WHITE)
 	_hud_hint = _make_label(layer, Vector2(16, 40), 13, Color(0.82, 0.88, 1.0))
-	_hud_hint.text = "Cursor: Maus/Pfeile/Joystick  ·  Bestätigen: Klick/Enter/A  ·  Zurück: Rechtsklick/Esc/B  ·  R: neu"
+	_hud_hint.text = "Cursor: Maus/Pfeile/Joystick  ·  Bestätigen: Klick/Enter/A  ·  Zug beenden: Button/E  ·  R: neu"
 	_hud_hover = _make_label(layer, Vector2(16, 64), 14, Color(1.0, 0.95, 0.75))
 
-	_hud_log = _make_label(layer, Vector2(16, 640), 14, Color(0.95, 0.95, 0.85))
-	_hud_log.size = Vector2(760, 220)
+	_hud_inspect = _make_label(layer, Vector2(1170, 150), 14, Color(0.9, 0.95, 1.0))
+	_hud_inspect.size = Vector2(420, 320)
+	_hud_inspect.visible = false
+
+	_hud_log = _make_label(layer, Vector2(16, 660), 14, Color(0.95, 0.95, 0.85))
+	_hud_log.size = Vector2(760, 200)
 
 	_hud_banner = _make_label(layer, Vector2(0, 380), 40, Color(1, 1, 0.6))
 	_hud_banner.size = Vector2(1600, 80)
@@ -125,12 +135,10 @@ func _build_hud() -> void:
 	layer.add_child(joystick)
 
 	# Touch-Buttons unten rechts
-	var confirm_btn := _make_button(layer, "Bestätigen", Vector2(1436, 720), Vector2(140, 100),
-			Color(0.22, 0.5, 0.28))
+	var confirm_btn := _make_button(layer, "Bestätigen", Vector2(1436, 700), Vector2(140, 70))
 	confirm_btn.pressed.connect(_confirm)
-	var back_btn := _make_button(layer, "Zurück", Vector2(1290, 745), Vector2(130, 75),
-			Color(0.4, 0.28, 0.28))
-	back_btn.pressed.connect(_back)
+	var end_btn := _make_button(layer, "Zug beenden", Vector2(1436, 782), Vector2(140, 70))
+	end_btn.pressed.connect(_on_end_turn)
 
 func _make_label(parent: Node, pos: Vector2, font_size: int, col: Color) -> Label:
 	var l := Label.new()
@@ -143,7 +151,7 @@ func _make_label(parent: Node, pos: Vector2, font_size: int, col: Color) -> Labe
 	parent.add_child(l)
 	return l
 
-func _make_button(parent: Node, text: String, pos: Vector2, dim: Vector2, tint: Color) -> Button:
+func _make_button(parent: Node, text: String, pos: Vector2, dim: Vector2) -> Button:
 	var b := Button.new()
 	b.text = text
 	b.focus_mode = Control.FOCUS_NONE
@@ -151,7 +159,6 @@ func _make_button(parent: Node, text: String, pos: Vector2, dim: Vector2, tint: 
 	b.custom_minimum_size = dim
 	b.size = dim
 	b.add_theme_font_size_override("font_size", 18)
-	b.add_theme_color_override("bg_color", tint)
 	parent.add_child(b)
 	return b
 
@@ -165,10 +172,12 @@ func run_battle() -> void:
 		if u == null:
 			break
 		active = u
+		# Initiative-Balken aller Einheiten aktualisieren (Zug-Schnappschuss)
+		for x in units:
+			x.queue_redraw()
 		board.active_cell = u.grid_pos
 		board.cursor_cell = Vector2i(-1, -1)
 		board.queue_redraw()
-		_update_status()
 		if u.team == "player":
 			await take_player_turn(u)
 		else:
@@ -180,10 +189,18 @@ func run_battle() -> void:
 	active = null
 	_reset_ui()
 
+
 func take_player_turn(u: Unit) -> void:
 	has_moved = false
-	open_menu(u)
+	has_attacked = false
+	state = State.ACTIVE
+	board.cursor_cell = u.grid_pos
+	_refresh_highlights()
 	await turn_finished
+
+func _on_end_turn() -> void:
+	if state == State.ACTIVE:
+		_finish_turn()
 
 func _finish_turn() -> void:
 	state = State.IDLE
@@ -191,8 +208,9 @@ func _finish_turn() -> void:
 	turn_finished.emit()
 
 func _reset_ui() -> void:
-	if action_menu != null:
-		action_menu.visible = false
+	for u in units:
+		u.targetable = false
+		u.queue_redraw()
 	if board != null:
 		board.move_cells = []
 		board.attack_cells = []
@@ -200,155 +218,88 @@ func _reset_ui() -> void:
 		board.queue_redraw()
 	if _hud_hover != null:
 		_hud_hover.text = ""
+	if _hud_inspect != null:
+		_hud_inspect.visible = false
 
 
 # --------------------------------------------------------------------------
-# Aktionsmenü + Aktionen
+# Aktions-Highlights (erreichbare Felder + Angriffsziele)
 # --------------------------------------------------------------------------
-func open_menu(u: Unit) -> void:
-	state = State.MENU
-	board.move_cells = []
-	board.attack_cells = []
-	board.cursor_cell = Vector2i(-1, -1)
-	board.active_cell = u.grid_pos
-	board.queue_redraw()
-
-	var can_move := (not has_moved) and not _reachable_cells(u).is_empty()
-	var targets := _targets_for(u)
-	var is_magic: bool = u.weapon.get("damage_kind", "physisch") == "magisch"
-	var acts := [
-		{"id": "move", "label": "Bewegen", "glyph": "B", "enabled": can_move},
-		{"id": "attack", "label": "Zauber" if is_magic else "Angriff",
-			"glyph": "Z" if is_magic else "A", "enabled": not targets.is_empty()},
-		{"id": "wait", "label": "Warten", "glyph": "W", "enabled": true},
-	]
-	if action_menu == null:
-		action_menu = ActionMenu.new()
-		add_child(action_menu)
-	action_menu.visible = true
-	action_menu.setup(acts, u.position + Vector2(0, -Unit.RADIUS - 22.0))
-	_update_status()
-
-func _activate_action(id: String) -> void:
-	match id:
-		"move":
-			_begin_move()
-		"attack":
-			_begin_target()
-		"wait":
-			_finish_turn()
-
-func _begin_move() -> void:
-	state = State.MOVE
-	if action_menu != null:
-		action_menu.visible = false
-	board.move_cells = _reachable_cells(active)
-	board.attack_cells = []
+func _refresh_highlights() -> void:
+	for u in units:
+		u.targetable = false
+	board.move_cells = _reachable_cells(active) if not has_moved else []
+	var tcells: Array = []
+	if not has_attacked:
+		for t in _targets_for(active):
+			t.targetable = true
+			tcells.append(t.grid_pos)
+	board.attack_cells = tcells
 	board.active_cell = active.grid_pos
-	board.cursor_cell = active.grid_pos
 	board.queue_redraw()
+	for u in units:
+		u.queue_redraw()
 	_update_status()
-
-func _begin_target() -> void:
-	_targets = _targets_for(active)
-	if _targets.is_empty():
-		open_menu(active)
-		return
-	state = State.TARGET
-	if action_menu != null:
-		action_menu.visible = false
-	_target_idx = 0
-	board.move_cells = []
-	board.attack_cells = _targets.map(func(t): return t.grid_pos)
-	board.cursor_cell = _targets[0].grid_pos
-	board.queue_redraw()
-	_update_status()
-	_update_hover()
 
 
 # --------------------------------------------------------------------------
-# Vereinheitlichte Eingabe (Cursor / Bestätigen / Zurück)
+# Vereinheitlichte Eingabe
 # --------------------------------------------------------------------------
 func _confirm() -> void:
-	match state:
-		State.MENU:
-			if action_menu != null and not action_menu.actions.is_empty():
-				var a: Dictionary = action_menu.actions[action_menu.selected]
-				if a.get("enabled", true):
-					_activate_action(action_menu.current_id())
-		State.MOVE:
-			if board.cursor_cell == active.grid_pos:
-				open_menu(active)
-			elif board.move_cells.has(board.cursor_cell):
-				active.grid_pos = board.cursor_cell
-				active.refresh()
-				has_moved = true
-				open_menu(active)
-		State.TARGET:
-			if _target_idx >= 0 and _target_idx < _targets.size():
-				var t: Unit = _targets[_target_idx]
-				_do_attack(active, t)
-				_finish_turn()
+	if state != State.ACTIVE:
+		return
+	var cell := board.cursor_cell
+	if cell.x < 0:
+		return
+	# 1) Angriff auf markiertes Ziel
+	if not has_attacked and board.attack_cells.has(cell):
+		var target := unit_at(cell)
+		if target != null:
+			_do_attack(active, target)
+			has_attacked = true
+			_after_action()
+			return
+	# 2) Bewegung auf erreichbares Feld
+	if not has_moved and board.move_cells.has(cell):
+		active.grid_pos = cell
+		active.refresh()
+		has_moved = true
+		_after_action()
+		return
+	# 3) Sonst: inspizieren, falls dort eine Einheit steht
+	var u := unit_at(cell)
+	if u != null:
+		_inspect(u)
 
-func _back() -> void:
-	match state:
-		State.MOVE, State.TARGET:
-			open_menu(active)
-		_:
-			pass
+func _after_action() -> void:
+	if has_moved and has_attacked:
+		_finish_turn()
+	else:
+		_refresh_highlights()
 
 func _cursor_input(dir: Vector2i) -> void:
-	match state:
-		State.MENU:
-			if dir.x != 0 and action_menu != null:
-				action_menu.move_selection(signi(dir.x))
-				_update_status()
-		State.MOVE:
-			var c := board.cursor_cell + dir
-			if in_bounds(c):
-				board.cursor_cell = c
-				board.queue_redraw()
-				_update_hover()
-		State.TARGET:
-			if _targets.is_empty():
-				return
-			var step := signi(dir.x) if dir.x != 0 else signi(dir.y)
-			if step != 0:
-				_target_idx = (_target_idx + step + _targets.size()) % _targets.size()
-				board.cursor_cell = _targets[_target_idx].grid_pos
-				board.queue_redraw()
-				_update_hover()
+	if state != State.ACTIVE:
+		return
+	var c := board.cursor_cell + dir
+	if in_bounds(c):
+		board.cursor_cell = c
+		board.queue_redraw()
+		_update_hover()
 
 func _mouse_hover(world_pos: Vector2) -> void:
-	match state:
-		State.MENU:
-			if action_menu != null:
-				var idx := action_menu.index_at(world_pos)
-				if idx >= 0 and action_menu.actions[idx].get("enabled", true):
-					action_menu.selected = idx
-					action_menu.queue_redraw()
-					_update_status()
-		State.MOVE:
-			var c := GridUtils.world_to_cell(world_pos)
-			if in_bounds(c):
-				board.cursor_cell = c
-				board.queue_redraw()
-				_update_hover()
-		State.TARGET:
-			var c := GridUtils.world_to_cell(world_pos)
-			for i in _targets.size():
-				if _targets[i].grid_pos == c:
-					_target_idx = i
-					board.cursor_cell = c
-					board.queue_redraw()
-					_update_hover()
-					break
+	if state != State.ACTIVE:
+		return
+	var c := GridUtils.world_to_cell(world_pos)
+	if in_bounds(c):
+		board.cursor_cell = c
+		board.queue_redraw()
+		_update_hover()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_R:
 		get_tree().reload_current_scene()
 		return
-	if state != State.MENU and state != State.MOVE and state != State.TARGET:
+	if state != State.ACTIVE:
 		return
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
@@ -362,21 +313,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				_cursor_input(Vector2i(0, 1))
 			KEY_ENTER, KEY_KP_ENTER, KEY_SPACE:
 				_confirm()
-			KEY_ESCAPE, KEY_BACKSPACE:
-				_back()
+			KEY_E:
+				_on_end_turn()
+			KEY_ESCAPE:
+				if _hud_inspect != null:
+					_hud_inspect.visible = false
 	elif event is InputEventMouseMotion:
 		_mouse_hover(get_global_mouse_position())
-	elif event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			_mouse_hover(get_global_mouse_position())
-			_confirm()
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			_back()
+	elif event is InputEventMouseButton and event.pressed \
+			and event.button_index == MOUSE_BUTTON_LEFT:
+		_mouse_hover(get_global_mouse_position())
+		_confirm()
 
 func _process(delta: float) -> void:
-	if joystick == null:
-		return
-	if state != State.MENU and state != State.MOVE and state != State.TARGET:
+	if joystick == null or state != State.ACTIVE:
 		_rep_t = 0.0
 		_last_dir = Vector2i.ZERO
 		return
@@ -480,7 +430,7 @@ func _spawn_floater(on_unit: Unit, amount: int, crit: bool) -> void:
 			Color(1, 0.85, 0.3) if crit else Color(1, 0.9, 0.9))
 	l.add_theme_color_override("font_outline_color", Color.BLACK)
 	l.add_theme_constant_override("outline_size", 4)
-	l.position = on_unit.position + Vector2(-8, -40)
+	l.position = on_unit.position + Vector2(-8, -46)
 	l.z_index = 100
 	add_child(l)
 	var tw := create_tween()
@@ -534,6 +484,29 @@ func _targets_for(u: Unit) -> Array:
 
 
 # --------------------------------------------------------------------------
+# Inspizieren
+# --------------------------------------------------------------------------
+func _inspect(u: Unit) -> void:
+	if _hud_inspect == null:
+		return
+	var s: Dictionary = u.stats
+	var text := "◆ %s  (%s)\n" % [u.unit_name, "Spieler" if u.team == "player" else "Gegner"]
+	text += "LP  %d / %d\n" % [u.lp, u.max_lp]
+	text += "Mana  %d / %d\n" % [u.mana, u.max_mana]
+	text += "Initiative  %d / 100    Speed %.1f\n" % [int(u.initiative), u.speed]
+	text += "MOB  %d\n" % u.mob
+	text += "STR %d   GES %d   WIL %d\n" % [int(s.get("STR", 0)), int(s.get("GES", 0)), int(s.get("WIL", 0))]
+	text += "INT %d   VIT %d   WID %d\n" % [int(s.get("INT", 0)), int(s.get("VIT", 0)), int(s.get("WID", 0))]
+	text += "Waffe  %s (%s, Reichw. %d)\n" % [u.weapon.get("name", "?"),
+			u.weapon.get("damage_kind", "?"), int(u.weapon.get("range_max", 1))]
+	text += "Rüstung %d   Resistenz %d   Diffusion %d" % [
+			int(u.defense.get("ruestung", 0)), int(u.defense.get("resistenz", 0)),
+			int(u.defense.get("diffusion", 0))]
+	_hud_inspect.text = text
+	_hud_inspect.visible = true
+
+
+# --------------------------------------------------------------------------
 # Sieg / HUD
 # --------------------------------------------------------------------------
 func _team_count(team_name: String) -> int:
@@ -556,28 +529,30 @@ func _end_game(message: String) -> void:
 func _update_status() -> void:
 	if active == null or _hud_status == null:
 		return
-	var phase := ""
-	match state:
-		State.MENU:
-			phase = "Aktion wählen"
-		State.MOVE:
-			phase = "Ziel-Feld wählen"
-		State.TARGET:
-			phase = "Angriffsziel wählen"
+	var avail: Array = []
+	if not has_moved:
+		avail.append("Bewegen")
+	if not has_attacked:
+		avail.append("Angriff")
+	var avail_str := ", ".join(avail) if not avail.is_empty() else "—"
 	var order := tracker.preview(5)
 	var order_str := ""
 	for u in order:
 		order_str += u.abbr + " "
 	var who := "%s (%s)" % [active.unit_name, "Spieler" if active.team == "player" else "Gegner"]
-	_hud_status.text = "Am Zug: %s   ·   %s\nNächste: %s" % [who, phase, order_str]
+	_hud_status.text = "Am Zug: %s   ·   Verfügbar: %s\nNächste: %s" % [who, avail_str, order_str]
 
 func _update_hover() -> void:
 	if _hud_hover == null:
 		return
 	var u := unit_at(board.cursor_cell)
 	if u != null:
-		_hud_hover.text = "%s   LP %d/%d   Speed %.1f   MOB %d   %s" % [
-			u.unit_name, u.lp, u.max_lp, u.speed, u.mob, u.weapon.get("name", "")]
+		var role := ""
+		if board.attack_cells.has(u.grid_pos):
+			role = "  [Ziel — Bestätigen zum Angriff]"
+		elif u.team != active.team:
+			role = "  [außer Reichweite — Bestätigen zum Inspizieren]"
+		_hud_hover.text = "%s   LP %d/%d%s" % [u.unit_name, u.lp, u.max_lp, role]
 	else:
 		_hud_hover.text = ""
 

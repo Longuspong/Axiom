@@ -1,0 +1,70 @@
+{
+	"_kommentar": "Prototyp-Setup für den Skirmish-Kampfkern (Phase 1). Reine Platzhalterwerte zum Playtesten der Mechanik — datengetrieben, jederzeit anpassbar. Endgültige Werte kommen später aus weapons.json / Skilltree.",
+	"grid": { "width": 12, "height": 12 },
+	"weapons": {
+		"langschwert": {
+			"name": "Langschwert", "damage_kind": "physisch", "attack_style": "melee",
+			"range_optimal_min": 1, "range_optimal_max": 1, "range_max": 1,
+			"str": 12, "ges": 0, "wil": 0, "rd": 0, "falloff": false
+		},
+		"jagdbogen": {
+			"name": "Jagdbogen", "damage_kind": "physisch", "attack_style": "ranged",
+			"range_optimal_min": 3, "range_optimal_max": 4, "range_max": 5,
+			"str": 2, "ges": 10, "wil": 0, "rd": 0, "falloff": true
+		},
+		"zauberstab": {
+			"name": "Zauberstab", "damage_kind": "magisch", "attack_style": "ranged",
+			"range_optimal_min": 1, "range_optimal_max": 3, "range_max": 3,
+			"str": 0, "ges": 0, "wil": 12, "rd": 0, "falloff": false
+		},
+		"ork_keule": {
+			"name": "Ork-Keule", "damage_kind": "physisch", "attack_style": "melee",
+			"range_optimal_min": 1, "range_optimal_max": 1, "range_max": 1,
+			"str": 10, "ges": 0, "wil": 0, "rd": 0, "falloff": false
+		},
+		"ork_bogen": {
+			"name": "Ork-Kurzbogen", "damage_kind": "physisch", "attack_style": "ranged",
+			"range_optimal_min": 2, "range_optimal_max": 3, "range_max": 4,
+			"str": 2, "ges": 8, "wil": 0, "rd": 0, "falloff": true
+		}
+	},
+	"archetypes": {
+		"krieger": {
+			"name": "Krieger", "abbr": "KRI", "mob": 3, "speed": 0.9, "weapon": "langschwert",
+			"attributes": { "STR": 18, "GES": 10, "WIL": 5, "INT": 7, "VIT": 16, "WID": 18 },
+			"defense": { "ruestung": 8, "resistenz": 3, "diffusion": 0 }
+		},
+		"waldlaeufer": {
+			"name": "Waldläufer", "abbr": "WLD", "mob": 5, "speed": 1.2, "weapon": "jagdbogen",
+			"attributes": { "STR": 10, "GES": 20, "WIL": 5, "INT": 10, "VIT": 14, "WID": 12 },
+			"defense": { "ruestung": 3, "resistenz": 3, "diffusion": 0 }
+		},
+		"magier": {
+			"name": "Magier", "abbr": "MAG", "mob": 4, "speed": 1.0, "weapon": "zauberstab",
+			"attributes": { "STR": 5, "GES": 8, "WIL": 20, "INT": 18, "VIT": 12, "WID": 10 },
+			"defense": { "ruestung": 2, "resistenz": 5, "diffusion": 0 }
+		},
+		"ork_schlaeger": {
+			"name": "Ork-Schläger", "abbr": "ORK", "mob": 4, "speed": 1.0, "weapon": "ork_keule",
+			"attributes": { "STR": 16, "GES": 10, "WIL": 4, "INT": 5, "VIT": 15, "WID": 12 },
+			"defense": { "ruestung": 5, "resistenz": 2, "diffusion": 0 }
+		},
+		"ork_spaeher": {
+			"name": "Ork-Späher", "abbr": "SPÄ", "mob": 5, "speed": 1.2, "weapon": "ork_bogen",
+			"attributes": { "STR": 10, "GES": 16, "WIL": 4, "INT": 6, "VIT": 13, "WID": 8 },
+			"defense": { "ruestung": 2, "resistenz": 2, "diffusion": 0 }
+		}
+	},
+	"teams": {
+		"player": [
+			{ "archetype": "krieger", "pos": [2, 9] },
+			{ "archetype": "waldlaeufer", "pos": [1, 10] },
+			{ "archetype": "magier", "pos": [3, 10] }
+		],
+		"enemy": [
+			{ "archetype": "ork_schlaeger", "pos": [9, 2] },
+			{ "archetype": "ork_schlaeger", "pos": [10, 1] },
+			{ "archetype": "ork_spaeher", "pos": [8, 1] }
+		]
+	}
+}

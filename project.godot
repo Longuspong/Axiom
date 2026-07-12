@@ -9,7 +9,7 @@ config_version=5
 config/name="Axiom"
 config/description="2D Top-Down Tactics Fantasy RPG"
 config/version="0.1"
-run/main_scene="res://scenes/map_demo.tscn"
+run/main_scene="res://scenes/skirmish.tscn"
 config/features=PackedStringArray("4.3")
 config/icon="res://icon.svg"
 
@@ -23,6 +23,11 @@ window/stretch/aspect="expand"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/yggdrasil/plugin.cfg")
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+pointing/emulate_touch_from_mouse=false
 
 [rendering]
 

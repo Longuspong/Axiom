@@ -7,6 +7,7 @@ var grid_size := Vector2i(12, 12)
 var move_cells: Array = []
 var attack_cells: Array = []
 var active_cell := Vector2i(-1, -1)
+var cursor_cell := Vector2i(-1, -1)
 
 func _draw() -> void:
 	for y in grid_size.y:
@@ -23,3 +24,8 @@ func _draw() -> void:
 
 	if active_cell.x >= 0:
 		draw_rect(GridUtils.cell_rect(active_cell), Color(1.0, 0.90, 0.30), false, 3.0)
+
+	# Cursor liegt über allem (heller, dicker Rahmen).
+	if cursor_cell.x >= 0:
+		var cr := GridUtils.cell_rect(cursor_cell).grow(-2.0)
+		draw_rect(cr, Color(1.0, 1.0, 1.0, 0.95), false, 4.0)

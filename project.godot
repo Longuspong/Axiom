@@ -24,6 +24,11 @@ window/stretch/aspect="expand"
 
 enabled=PackedStringArray("res://addons/yggdrasil/plugin.cfg")
 
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+pointing/emulate_touch_from_mouse=false
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

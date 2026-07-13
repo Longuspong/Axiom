@@ -23,6 +23,7 @@ enum State { IDLE, ACTIVE, GAME_OVER }
 
 var board: Board
 var terrain: Terrain
+var _units_root: Node2D = null
 var units: Array = []
 var tracker := InitiativeTracker.new()
 var rng := RandomNumberGenerator.new()
@@ -88,6 +89,11 @@ func _build_board(data: Dictionary) -> void:
 	terrain.setup(data.get("terrain", {}), board.grid_size)
 	board.terrain = terrain
 	add_child(board)
+	board.build()
+	# Einheiten-Container mit Y-Sortierung (untere Iso-Reihen verdecken obere).
+	_units_root = Node2D.new()
+	_units_root.y_sort_enabled = true
+	add_child(_units_root)
 
 func _build_units(data: Dictionary) -> void:
 	var archetypes: Dictionary = data.get("archetypes", {})
@@ -104,12 +110,16 @@ func _build_units(data: Dictionary) -> void:
 			var u := Unit.new()
 			u.setup(team_name, arch, weapon, cell)
 			units.append(u)
-			add_child(u)
+			_units_root.add_child(u)
 
 func _build_camera(data: Dictionary) -> void:
 	var cam := Camera2D.new()
-	cam.position = Vector2(board.grid_size.x * GridUtils.TILE / 2.0,
-			board.grid_size.y * GridUtils.TILE / 2.0)
+	# Iso-Raute: Zellen (0,0) und (max,max) liegen beide auf der vertikalen
+	# Mittelachse — ihr Mittelwert ist das Kartenzentrum.
+	var lo := GridUtils.cell_to_world(Vector2i.ZERO)
+	var hi := GridUtils.cell_to_world(board.grid_size - Vector2i.ONE)
+	cam.position = (lo + hi) / 2.0
+	cam.zoom = Vector2(0.85, 0.85)  # Luft für hohe Tiles (Bäume/Klippen) am Rand
 	add_child(cam)
 	cam.make_current()
 
@@ -363,10 +373,18 @@ func _process(delta: float) -> void:
 			_rep_t = 0.0
 			_cursor_input(dir)
 
+## Analoge Bildschirm-Richtung → Grid-Schritt. Die Grid-Achsen liegen auf dem
+## Bildschirm diagonal (Iso Diamond Down: +x = unten rechts, +y = unten links),
+## also die Stick-Richtung auf beide Achsen projizieren und die stärkere nehmen.
+const ISO_AXIS_X := Vector2(0.894, 0.447)   # normiert (64, 32)
+const ISO_AXIS_Y := Vector2(-0.894, 0.447)  # normiert (−64, 32)
+
 func _dominant(v: Vector2) -> Vector2i:
-	if absf(v.x) >= absf(v.y):
-		return Vector2i(int(signf(v.x)), 0)
-	return Vector2i(0, int(signf(v.y)))
+	var ax := v.dot(ISO_AXIS_X)
+	var ay := v.dot(ISO_AXIS_Y)
+	if absf(ax) >= absf(ay):
+		return Vector2i(int(signf(ax)), 0)
+	return Vector2i(0, int(signf(ay)))
 
 
 # --------------------------------------------------------------------------
@@ -468,6 +486,7 @@ func _attack_blockade(attacker: Unit, cell: Vector2i) -> void:
 	var destroyed := terrain.damage_blockade(cell, res.damage)
 	if destroyed:
 		_log("%s zerschlägt die Blockade — der Weg ist frei." % attacker.abbr)
+		board.rebuild_cell(cell)  # Feld wird Boden → Tile-Darstellung nachziehen
 	else:
 		_log("%s trifft die Blockade für %d (LP %d/%d)." % [attacker.abbr, res.damage,
 				int(terrain.blockade_lp.get(cell, 0)), terrain.blockade_max_lp])

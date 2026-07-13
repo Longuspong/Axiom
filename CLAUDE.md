@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.26)
+## GDD-Stand (aktuell: v0.27)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -73,7 +73,16 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Aktuelle Sitzung (2026-07-12 — **Review PRs #24/#25 + Terrain in den Skirmish-Kern integriert**, Branch `claude/pool-requests-24-25-review-bajvnb`):
+Aktuelle Sitzung (2026-07-13 — **Skirmish-Darstellung auf Iso-Tileset umgestellt**, Branch `claude/godot-testing-setup-0u2p8v`):
+- **Anlass:** Nutzer wollte das Projekt lokal in Godot testen und stellte fest, dass der Skirmish orthogonal + prozedural gezeichnet aussah („Maps aus PR #24/#25 nicht hinterlegt?"). Klarstellung: die 12×12-**Funktionsschicht** war drin, nur die **Darstellung** war Platzhalter (farbige Rechtecke). Jetzt umgesetzt, was mit Tileset v1 maximal geht:
+- **`scripts/combat/board.gd` komplett neu:** rendert die Funktionsschicht über zwei `TileMapLayer` mit `terrain_tileset.tres` (isometrisch, 128×64 Diamond Down). Zuordnung: Boden→Gras-Varianten, Pfad→Straßen-Verbindungsmasken, Fluss→Fluss-Masken (Furt wird erkannt: Pfad-Zelle mit Fluss auf Gegenseiten → `FORD_EW/NS`, Fluss verbindet durch die Furt hindurch), Dickicht→Gestrüpp, Barriere→Klippe/Berg; **Platzhalter-Zuordnung, bis Tileset v2 eigene Kacheln hat:** Blockade→Findling (Props-Layer + LP-Balken), Deckung→Laubbaum, Effekt→Blumenwiese. Zerstörte Blockade → `rebuild_cell()` (setzt Boden-Tile + Nachbar-Masken neu). Overlays (Bewegung blau/Angriff rot/aktiv gelb/Cursor weiß) als **Iso-Rauten** über den Tiles (TileMapLayer auf z −10/−9, Board-eigenes `_draw` darüber, Einheiten darüber)
+- **`scripts/combat/grid_utils.gd`:** Zelle↔Welt läuft jetzt über `map_to_local`/`local_to_map` der registrierten Ground-Layer (`GridUtils.iso_layer`, `is_instance_valid`-Guard für Szenen-Reload via R) + `cell_polygon()` für Rauten-Overlays; Manhattan/STEP_DIRS unverändert — **Logik bleibt quadratisches Grid** (§5.1-Trennung Funktion/Darstellung)
+- **`scenes/skirmish.gd`:** Einheiten in Y-sortiertem Container (untere Iso-Reihen verdecken obere), Kamera zentriert auf Rauten-Mittelpunkt (Zoom 0,85 wegen hoher Tiles), Joystick-Richtung auf Iso-Achsen projiziert (Stick rechts = Feld rechts unten); Pfeiltasten bewegen entlang der Grid-Achsen (= Bildschirm-Diagonalen, Iso-Standard)
+- **GDD → v0.27** (§10.1: Skirmish-Darstellungsschicht = Iso-Tileset ✅)
+- **Nicht ausgeführt getestet** (kein Godot im Build-Env, `gdparse`-Syntaxcheck ✅) — Godot-Ersttest weiterhin beim Nutzer; erwartbare Feinschliff-Punkte: Kamera-Zoom/Offset, Überlappung hoher Tiles mit Einheiten-Labels, Platzhalter-Optik Blockade/Deckung
+- **Weiter offen (unverändert):** Nutzer-Review `docs/gravuren_vorschlag.md` + `docs/materialliste_vorschlag.md`; Blockade-LP final, Bruchkosten-UI, `effect_id`-Katalog
+
+Sitzung davor (2026-07-12 — **Review PRs #24/#25 + Terrain in den Skirmish-Kern integriert**, Branch `claude/pool-requests-24-25-review-bajvnb`):
 - **PRs #24 (Skirmish-Kampfkern) und #25 (Feld-Funktionstypen) sind gemergt** — beide reviewt und die von #25 explizit offen gelassene Brücke gebaut: **die Skirmish-Bewegung läuft jetzt über die Funktionsschicht** (§5.1), nicht mehr über ein uniformes Grid:
   - **`scripts/combat/terrain.gd` (neu):** Funktionsschicht-Klasse — parst einen `terrain`-Block (Legende + Zeichen-Zeilen) aus `skirmish_setup.json`, beantwortet Begehbarkeit/Kosten/Tarnung/Zerstörbarkeit für die 8 Typen. **Effekt-Feld bewusst noch inert** (wartet auf den `effect_id`-Katalog, §11)
   - **`skirmish_setup.json`:** 12×12-Terrain-Map ergänzt (Fluss x=2 mit Furt, Barriere-Wand mit zerstörbarer Blockade als Abkürzung, Pfad-Route, Dickicht, 2 Deckungsfelder; per Flood-Fill verifiziert: alle Spawns auf Boden, Map auch ohne Blockaden-Zerstörung voll verbunden)
@@ -242,7 +251,7 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 | `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
 | `assets/tiles/` + `docs/TILESET.md` | Terrain-Tileset v1 (prozedural generiert, Specs in GDD §10.1) |
 | `assets/placeholder/` | MVP-Placeholder (Tiny-RPG Soldat/Ork/Pfeil, Taverne) — GDD §10.4 |
-| `scenes/`, `scripts/`, `tools/` | Skirmish-Kampfkern (`scenes/skirmish.*`, `scripts/combat/` inkl. `terrain.gd` = Funktionsschicht §5.1, `scripts/ui/virtual_joystick.gd`), Map-Demo, Tile-IDs, Tileset-Generator + Preview-Renderer (Python) |
+| `scenes/`, `scripts/`, `tools/` | Skirmish-Kampfkern (`scenes/skirmish.*`, `scripts/combat/` inkl. `terrain.gd` = Funktionsschicht §5.1 + `board.gd` = **Iso-Darstellungsschicht** via `terrain_tileset.tres` (2026-07-13), `scripts/ui/virtual_joystick.gd`), Map-Demo, Tile-IDs, Tileset-Generator + Preview-Renderer (Python) |
 
 > **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
 

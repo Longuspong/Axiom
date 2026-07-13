@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.26  
-**Stand:** 2026-07-12  
+**Version:** 0.27  
+**Stand:** 2026-07-13  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -1787,6 +1787,7 @@ Kampagnen-/Basecamp-Maps werden **von Hand** im Godot-TileMap-Editor gebaut. Die
   - `move_cost` wird **Float** (0,5 / 1,0 / 1,5) statt int (bisher Gestrüpp = 2)
   - neu: `field_type` (String, einer der 8 Typen), `conceals` (bool — Typ 8 → „Scheinbar"), `destructible` (bool + `hp` — Typ 6), `flow_dir` (Richtung — Typ 4), `effect_id` (String — Typ 7, verweist auf Endlos-Event §9.6 bzw. Feld-Statuseffekt §5.2)
   - Umsetzung: `tools/generate_tileset.py` + `scripts/tile_ids.gd` erweitern ✅ *(2026-07-12)*; Bewegungslogik im Skirmish-Prototyp (`scripts/combat/`, PR #24) auf Float-Kosten umstellen ✅ *(2026-07-12: Dijkstra über `move_cost` in `scenes/skirmish.gd`, Funktionsschicht `scripts/combat/terrain.gd` + `terrain`-Block in `data/prototype/skirmish_setup.json`; Blockade/Deckung/Fluss/Barriere spielbar, Effekt-Feld wartet auf den `effect_id`-Katalog)*
+  - **Skirmish-Darstellungsschicht = Iso-Tileset ✅** *(2026-07-13)*: Der Skirmish-Prototyp rendert die Funktionsschicht jetzt isometrisch über zwei `TileMapLayer` mit `terrain_tileset.tres` (statt prozedural gezeichneter orthogonaler Rechtecke) — Boden/Pfad/Fluss (inkl. Furt- & Verbindungsmasken)/Dickicht/Barriere mit ihren echten Tiles; Blockade/Deckung/Effekt-Feld als Platzhalter-Zuordnung Findling/Laubbaum/Blumenwiese, bis Tileset v2 eigene Kacheln bekommt. Overlays (Bewegung/Angriff/Cursor) als Iso-Rauten, Einheiten Y-sortiert auf Rautenzentren. Grid-Logik unverändert quadratisch/Manhattan (`GridUtils` rechnet Zelle↔Welt über die TileMapLayer um)
 - **Sprite-Größen (Charaktere):** *(folgt)*
 
 ### 10.2 Speichersystem

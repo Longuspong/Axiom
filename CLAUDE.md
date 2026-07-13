@@ -51,7 +51,7 @@ git push -u origin <feature-branch>
 
 ---
 
-## GDD-Stand (aktuell: v0.25)
+## GDD-Stand (aktuell: v0.26)
 
 `GDD.md` ist das einzige Designdokument. Struktur:
 
@@ -73,7 +73,19 @@ git push -u origin <feature-branch>
 
 ## Stand letzte Sitzung
 
-Aktuelle Sitzung (2026-07-12 — **Übergang in Phase 1: Skirmish-Kampfkern-Prototyp**, Branch `claude/phase-zero-requirements-ly2768`):
+Aktuelle Sitzung (2026-07-12 — **Review PRs #24/#25 + Terrain in den Skirmish-Kern integriert**, Branch `claude/pool-requests-24-25-review-bajvnb`):
+- **PRs #24 (Skirmish-Kampfkern) und #25 (Feld-Funktionstypen) sind gemergt** — beide reviewt und die von #25 explizit offen gelassene Brücke gebaut: **die Skirmish-Bewegung läuft jetzt über die Funktionsschicht** (§5.1), nicht mehr über ein uniformes Grid:
+  - **`scripts/combat/terrain.gd` (neu):** Funktionsschicht-Klasse — parst einen `terrain`-Block (Legende + Zeichen-Zeilen) aus `skirmish_setup.json`, beantwortet Begehbarkeit/Kosten/Tarnung/Zerstörbarkeit für die 8 Typen. **Effekt-Feld bewusst noch inert** (wartet auf den `effect_id`-Katalog, §11)
+  - **`skirmish_setup.json`:** 12×12-Terrain-Map ergänzt (Fluss x=2 mit Furt, Barriere-Wand mit zerstörbarer Blockade als Abkürzung, Pfad-Route, Dickicht, 2 Deckungsfelder; per Flood-Fill verifiziert: alle Spawns auf Boden, Map auch ohne Blockaden-Zerstörung voll verbunden)
+  - **BFS → Dijkstra mit Float-Kosten:** MOB als Bewegungspunkte-Budget (Pfad 0,5 / Boden 1,0 / Dickicht 1,5), unbegehbare Typen + Einheiten blocken; Hover-Zeile zeigt Funktionstyp + BP-Kosten (Interim für den offenen §11-Punkt „Bruchkosten-UI")
+  - **Blockade spielbar:** LP-Platzhalter 30 (`blockade_lp` im JSON, `[Balancing]`), beide Teams können sie zerschlagen (rote Markierung in Waffenreichweite, LP-Balken am Feld), zerstört → Boden
+  - **Deckung/„Scheinbar" spielbar:** Einheit auf Deckung ist halbtransparent + nicht anvisierbar; Aufdecken bei Gegner ≤2 Felder (Manhattan), Angreifen beendet Tarnung, Feld verlassen resettet. Die Gegner-KI ignoriert Scheinbare als Ziel und läuft stattdessen zur nächstgelegenen verborgenen Einheit (deckt sie so natürlich auf) — kein Stillstand möglich
+  - **Board rendert die Funktionstypen prozedural** (Platzhalter-Optik; echte Region-Tiles = Darstellungsschicht später)
+- **Bugfixes am nie ausgeführten #24-Code:** Sieg/Niederlage wird jetzt **sofort beim tödlichen Treffer** geprüft (vorher erst am Zugende; inkl. sauberem Auflösen des laufenden Spielerzug-`await` bei Game Over); **Initiative-Gleichstand GDD-konform** (§5.1: Vorrang hat, wer noch nicht/seltener gezogen hat — `turns_taken` in Unit/Tracker/Vorschau); HUD-Hinweistext korrigiert („A" war als Bestätigen-Taste gelistet, ist aber Cursor-links)
+- **GDD → v0.26:** veraltetes „10×10 Skirmish"-Beispiel in §5.1 auf 12×12 korrigiert (Widerspruch zur Gefechtstypen-Tabelle/Vielfache-von-4-Entscheidung); §10.1 + §11 Status nachgezogen (Generator + Skirmish-Dijkstra ✅; offen bleiben: Blockade-LP final, finales Bruchkosten-UI, Regionen-Spalten, `effect_id`-Katalog)
+- **Weiter offen (unverändert):** Nutzer-Review `docs/gravuren_vorschlag.md` + `docs/materialliste_vorschlag.md`; Godot-Ersttest des Kampfkerns beim Nutzer (Build-Env hat kein Godot — Code statisch geprüft, Terrain-JSON maschinell validiert)
+
+Sitzung davor (2026-07-12 — **Übergang in Phase 1: Skirmish-Kampfkern-Prototyp**, PR **#24 gemergt**, Branch `claude/phase-zero-requirements-ly2768`):
 - **Entscheidung „prototypen statt aufräumen"**: Die zwei noch offenen Phase-0-Punkte (Gravuren-Katalog + Materialliste) sind reiner **Content**, keine Architektur — beide Review-Vorschläge liegen fertig da (`docs/gravuren_vorschlag.md`, `docs/materialliste_vorschlag.md`) und lassen sich **jederzeit nachträglich** ins Datenschema einspielen. Sie blockieren den Code-Start nicht; das Risiko liegt in den Mechaniken (Initiative-Feel, Schadensmathematik, Grid), die nur Playtests klären. Darum: erst spielbarer Kampfkern, Kataloge später. Godot-Systeme werden **datengetrieben** gebaut, damit die Kataloge reibungslos andocken.
 - **Skirmish-Kampfkern gebaut** (Gefechtstyp „Elimination", §5.1) — F5-startbar (`run/main_scene` → `scenes/skirmish.tscn`):
   - `data/prototype/skirmish_setup.json` — **datengetriebene** Platzhalter (3 Spieler-Archetypen: Krieger/Waldläufer/Magier, 3 Ork-Gegner; Waffen mit Schadenstyp/Reichweite/Falloff). Werte frei anpassbar, kommen später aus `weapons.json`/Skilltree
@@ -230,7 +242,7 @@ Ziel: **Phase 0 beenden** (Abschlusskriterien in GDD §11). Reihenfolge:
 | `addons/yggdrasil/` | Skilltree-Editor-Plugin (fürs erste Code-Projekt) |
 | `assets/tiles/` + `docs/TILESET.md` | Terrain-Tileset v1 (prozedural generiert, Specs in GDD §10.1) |
 | `assets/placeholder/` | MVP-Placeholder (Tiny-RPG Soldat/Ork/Pfeil, Taverne) — GDD §10.4 |
-| `scenes/`, `scripts/`, `tools/` | Map-Demo, Tile-IDs, Tileset-Generator + Preview-Renderer (Python) |
+| `scenes/`, `scripts/`, `tools/` | Skirmish-Kampfkern (`scenes/skirmish.*`, `scripts/combat/` inkl. `terrain.gd` = Funktionsschicht §5.1, `scripts/ui/virtual_joystick.gd`), Map-Demo, Tile-IDs, Tileset-Generator + Preview-Renderer (Python) |
 
 > **Datenhaltung (PFLICHT):** Pro Ausrüstungskategorie eine eigene JSON (`weapons`, `offhands`, `kopf-`, `koerper-`, `fussausruestung`) — immer aktuell halten. Die **Excel darf alles gebündelt** enthalten, die JSONs bleiben getrennt (Coding-DB). Jede JSON ist self-contained (eigene Seltenheitsstufen + Gewichtsklassen + Gravuren + `item_schema`).
 
@@ -289,7 +301,7 @@ tactical RPG, HD pixel art style, no background, transparent
 | Endlos-Modus | **Ausgebaut (2026-07-12, §9.6):** Ab Kampagne 10, Wellen-basiert (min. 5), Skirmish-Gefechtstyp; Regionswahl-Verzweigung Bergminen/Ebene/Schlachtfeld mit variablen Events, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung gegen Tank-Meta. Loot-Pool regionsgebunden, aber **nicht mehr auf physisch beschränkt** — „Orks droppen keine Magie" wurde revidiert |
 | Gefechtstypen | **Neu (2026-07-12, §5.1):** Skirmish (Elimination, **12×12**, kompakt 8×8), Basecamp (Angriff/Verteidigung, 20×20), Flaggenraub (NPC-Eskorte, begrenzte Gegner-Nachschub-Reserve statt Respawn) — alle drei reines PvE, Bausteine für Kampagnen/Aufträge/Endlos statt eigener Modus. **Alle Map-Kantenlängen = Vielfache von 4** (für 4×4-Chunk-Wiederverwendung, s. u.) |
 | Map-Chunk-Generierung | **Neu (2026-07-12, §9.6):** Endlos-Maps deterministisch-prozedural aus hand-gebauten **4×4-Chunks** (12 & 20 durch 4 teilbar → gleiche Bibliothek für Skirmish 12×12=3×3 & Basecamp 20×20=5×5); optionale 4×8/8×8-Prefabs (zuerst platzieren). Tür-Konvention (mittlere 2 Zellen je Kante begehbar → immer verbunden) + Flood-Fill-Check; Positions-Rollen Innen/Rand/Ecke (Rotation deckt Orientierungen); region-agnostisch gebaut; Gefahren-Dichte ≤25–30 %, Anti-Barriere-Häufung; Seed pro Run. Kampagnen/Basecamp = Handbau. Assembler/Chunk-Format → Phase 1 |
-| Gelände-Funktionstypen | **Neu (2026-07-12, §5.1):** 8 regionsunabhängige Feld-Funktionstypen, Trennung Funktions-/Darstellungsschicht (gleiche Funktion, region-spezifisches Tile-Bild). **Boden** (begehbar, Kosten 1,0) · **Dickicht** (1,5) · **Pfad** (0,5) · **Fluss** (unbegehbar, driftet nur bei Push/Pull 1 Feld flussabwärts + Straucheln §5.2) · **Barriere** (unbegehbar, unzerstörbar) · **Blockade** (unbegehbar, zerstörbar → wird Boden, LP `[Balancing]`) · **Effekt-Feld** (begehbar, Trigger für Endlos-Events §9.6 / Feld-Statuseffekte §5.2) · **Deckung** (begehbar, versetzt Einheit in „Scheinbar" §5.2, Aufdecken ≤2 Felder). MOB = **Bewegungspunkte-Budget** (Bruchkosten 0,5/1,0/1,5). **Tileset-Custom-Data verdrahtet (2026-07-12):** `generate_tileset.py`/`.tres` tragen jetzt `field_type`+`conceals`+`destructible`+`hp`, `move_cost`→Float; bestehende Tiles auf boden/dickicht/pfad/fluss/barriere gemappt (deckung/blockade/effekt = eigene Optik folgt). `flow_dir`/`effect_id` = pro Zelle (Chunk-Daten, nicht Tileset). BFS-Float-Umstellung → Phase 1 (§10.1) |
+| Gelände-Funktionstypen | **Neu (2026-07-12, §5.1):** 8 regionsunabhängige Feld-Funktionstypen, Trennung Funktions-/Darstellungsschicht (gleiche Funktion, region-spezifisches Tile-Bild). **Boden** (begehbar, Kosten 1,0) · **Dickicht** (1,5) · **Pfad** (0,5) · **Fluss** (unbegehbar, driftet nur bei Push/Pull 1 Feld flussabwärts + Straucheln §5.2) · **Barriere** (unbegehbar, unzerstörbar) · **Blockade** (unbegehbar, zerstörbar → wird Boden, LP `[Balancing]`) · **Effekt-Feld** (begehbar, Trigger für Endlos-Events §9.6 / Feld-Statuseffekte §5.2) · **Deckung** (begehbar, versetzt Einheit in „Scheinbar" §5.2, Aufdecken ≤2 Felder). MOB = **Bewegungspunkte-Budget** (Bruchkosten 0,5/1,0/1,5). **Tileset-Custom-Data verdrahtet (2026-07-12):** `generate_tileset.py`/`.tres` tragen jetzt `field_type`+`conceals`+`destructible`+`hp`, `move_cost`→Float; bestehende Tiles auf boden/dickicht/pfad/fluss/barriere gemappt (deckung/blockade/effekt = eigene Optik folgt). `flow_dir`/`effect_id` = pro Zelle (Chunk-Daten, nicht Tileset). **Skirmish-Bewegung auf Funktionsschicht umgestellt (2026-07-12):** Dijkstra über Float-`move_cost` (`scripts/combat/terrain.gd` + `terrain`-Block in `skirmish_setup.json`); Blockade (30 LP Platzhalter) + Deckung/„Scheinbar" spielbar, Effekt-Feld inert bis `effect_id`-Katalog steht |
 | Trupp-Größe | Standard: 3 Einheiten |
 | Max Level | 50 — linear bis ~25, straff ab 35, Level 46–50 ggf. challenge-gegattet |
 | Schutz vs. Schild | Absorptions-Zauber = „Schutz"; Ausrüstung = „Schild" (gilt überall inkl. Gravuren) |

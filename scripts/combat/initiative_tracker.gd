@@ -33,21 +33,29 @@ func next_unit() -> Unit:
 		return ready[0]
 	return living[0]
 
+## Gleichstand nach GDD §5.1: Vorrang hat, wer noch nicht (bzw. seltener)
+## gezogen hat; erst danach entscheidet die höhere Geschwindigkeit.
 func _cmp_ready(a: Unit, b: Unit) -> bool:
 	if a.initiative != b.initiative:
 		return a.initiative > b.initiative
+	if a.turns_taken != b.turns_taken:
+		return a.turns_taken < b.turns_taken
 	return a.speed > b.speed
 
 ## Nach dem Zug aufrufen: Schwelle abziehen, Überschuss bleibt erhalten.
 func consume(u: Unit) -> void:
 	u.initiative -= THRESHOLD
+	u.turns_taken += 1
 
 ## Vorschau der nächsten N Züge (nicht-mutierend), für die HUD-Anzeige.
+## Simuliert Leisten UND Zugzähler, damit die Gleichstandsregel identisch greift.
 func preview(count: int) -> Array:
 	var living := alive()
 	var sim := {}
+	var sim_turns := {}
 	for u in living:
 		sim[u] = u.initiative
+		sim_turns[u] = u.turns_taken
 	var order: Array = []
 	var guard := 0
 	while order.size() < count and guard < 100000:
@@ -62,8 +70,13 @@ func preview(count: int) -> Array:
 			continue
 		var picked: Unit = ready[0]
 		for u in ready:
-			if sim[u] > sim[picked] or (sim[u] == sim[picked] and u.speed > picked.speed):
+			if sim[u] > sim[picked]:
 				picked = u
+			elif sim[u] == sim[picked]:
+				if sim_turns[u] < sim_turns[picked] \
+						or (sim_turns[u] == sim_turns[picked] and u.speed > picked.speed):
+					picked = u
 		order.append(picked)
 		sim[picked] -= THRESHOLD
+		sim_turns[picked] += 1
 	return order

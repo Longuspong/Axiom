@@ -24,6 +24,9 @@ var mana: int = 100
 var initiative: float = 0.0
 var grid_pos: Vector2i = Vector2i.ZERO
 var targetable: bool = false      # zeigt Ziel-Symbol, wenn angreifbar
+var revealed: bool = false        # hat auf Deckung angegriffen → Tarnung beendet (§5.1/§5.2)
+var concealed: bool = false       # steht „Scheinbar" auf Deckung (setzt der Controller)
+var turns_taken: int = 0          # für den Initiative-Gleichstand („wer noch nicht zog")
 
 func setup(p_team: String, archetype: Dictionary, weapon_data: Dictionary, cell: Vector2i) -> void:
 	team = p_team

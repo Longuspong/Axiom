@@ -1,6 +1,28 @@
 {
 	"_kommentar": "Prototyp-Setup für den Skirmish-Kampfkern (Phase 1). Reine Platzhalterwerte zum Playtesten der Mechanik — datengetrieben, jederzeit anpassbar. Endgültige Werte kommen später aus weapons.json / Skilltree.",
 	"grid": { "width": 12, "height": 12 },
+	"terrain": {
+		"_kommentar": "Funktionsschicht (GDD §5.1): . Boden 1,0 | d Dickicht 1,5 | p Pfad 0,5 | ~ Fluss (unbegehbar) | # Barriere (unzerstörbar) | b Blockade (zerstörbar, LP s. blockade_lp) | g Deckung (Scheinbar). Effekt-Felder folgen mit dem effect_id-Katalog (§11). Fluss x=2 mit Furt (Pfad) bei y=5.",
+		"blockade_lp": 30,
+		"legend": {
+			".": "boden", "d": "dickicht", "p": "pfad", "~": "fluss",
+			"#": "barriere", "b": "blockade", "g": "deckung"
+		},
+		"rows": [
+			"............",
+			"............",
+			"..~dd..g....",
+			"..~d.#..p...",
+			"..~..##bp...",
+			"..p.....p...",
+			"..~.....p...",
+			"..~.....p.#.",
+			"..b.ppppp.#.",
+			".....g...d..",
+			".........d..",
+			"............"
+		]
+	},
 	"weapons": {
 		"langschwert": {
 			"name": "Langschwert", "damage_kind": "physisch", "attack_style": "melee",

@@ -1,0 +1,561 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stand": "2026-07-19",
+    "zweck": "Material-Coding-DB (self-contained): Barren, Aspektsplitter, Essenzen, Drop-Matrix, Regions-Bänder. Wiki-Card-Schema (name/kategorie/herkunft/verwendung/flavor) — Lex Tactica Rubrik 1 (GDD §8.5) rendert direkt hieraus. Design-Referenz: docs/materialliste_vorschlag.md; Regeln: GDD §5.8 (Crafting/Drop & Herkunft).",
+    "leitprinzip_drop": "Der Drop spiegelt den Träger: Ein Gegner droppt bevorzugt Aspektsplitter der Ausrüstung, die er sichtbar trägt (Waffe, Rüstungs-Archetyp, Offhand). Barren droppt jeder Gegner (Stufe skaliert), Gravur-Aspektsplitter droppen von Gegnern, die sichtbar Gravur-Effekte einsetzen (i. d. R. Elite+), Essenzen nur von elementaffinen Elite-/Boss-Gegnern. (GDD §5.8)",
+    "hinweise": [
+      "Alle Zahlenwerte [Balancing] (Phase 1).",
+      "Zubehör craftbar (Option A, entschieden 2026-07-19): Besonderheit über Seltenheit statt Craft-Ausschluss — Zubehör-Splitter mit drop_rate_mod 0.5.",
+      "Element-Teaser ab Region 1 (entschieden 2026-07-19, ersetzt 'Region 1 essenzfrei'): mind. 2 Elementartypen in Region 1 (Vorschlag: Natur/Gaios + Feuer/Pyros); elementaffine Ork-Eliten geringe Essenz-Chance; Regionsboss Region 1 droppt garantiert 1 Essenz seines Elements.",
+      "Essenz-Verwendung referenziert das Elementpaket des Gravuren-Reworks (docs/gravuren_vorschlag_v2.md): je Element mind. 2 Element-Gravuren. Bis zu dessen Freigabe sind die element_gravur_ids leer — Konsistenz-Check tools/check_materials.py schlägt erwartungsgemäß fehl (GDD §11)."
+    ]
+  },
+  "regions_baender": {
+    "prinzip": "Barren-Drop-Bänder sind relativ zur Regions-Progression definiert (entschieden 2026-07-19) — absolute Gegner-Level nur als abgeleitete Richtwerte, da das Level-Cap noch nicht entschieden ist (GDD §11 'Level-Cap & Level-Kurve'). Zuschnitt [Balancing]; Überlappungen bewusst (weiche Übergänge).",
+    "drop_mischung": "~70 % Barren der eigenen Band-Stufe, ~20 % eine Stufe darunter, ~10 % eine Stufe darüber [Balancing]",
+    "baender": [
+      {
+        "stufe": 1,
+        "barren": "Kupfer",
+        "band_relativ": "Region 1",
+        "richtwert_level": "1–10"
+      },
+      {
+        "stufe": 2,
+        "barren": "Eisen",
+        "band_relativ": "Region 1 (spät) – Region 2",
+        "richtwert_level": "8–18"
+      },
+      {
+        "stufe": 3,
+        "barren": "Stahl",
+        "band_relativ": "Region 2 – Region 3",
+        "richtwert_level": "15–27"
+      },
+      {
+        "stufe": 4,
+        "barren": "Titan",
+        "band_relativ": "Region 3 – Region 4",
+        "richtwert_level": "24–36"
+      },
+      {
+        "stufe": 5,
+        "barren": "Adamant",
+        "band_relativ": "Region 4+ / Endgame-Farm",
+        "richtwert_level": "33–46"
+      },
+      {
+        "stufe": 6,
+        "barren": "Kosmium",
+        "band_relativ": "kein Barren-Direktdrop — Items von Elite/Boss der letzten Regionen",
+        "richtwert_level": "~42+"
+      }
+    ]
+  },
+  "barren": [
+    {
+      "name": "Kupferbarren",
+      "kategorie": "Barren — Stufe 1",
+      "herkunft": "jeder Gegner früher Regionen (Band Region 1) + garantiert aus Zerlegen",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern; Aufstufung 7:1 bis Adamant (§5.8)",
+      "flavor": "Weich, geduldig und überall — jede Schmiedekunst beginnt mit einem Kupferbarren.",
+      "stufe": 1,
+      "band_relativ": "Region 1"
+    },
+    {
+      "name": "Eisenbarren",
+      "kategorie": "Barren — Stufe 2",
+      "herkunft": "breit farmbar (Band Region 1 spät – Region 2) + garantiert aus Zerlegen",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern; Aufstufung 7:1 bis Adamant (§5.8)",
+      "flavor": "Das ehrliche Metall: schwer, verlässlich, das Rückgrat jeder Feldschmiede.",
+      "stufe": 2,
+      "band_relativ": "Region 1 (spät) – Region 2"
+    },
+    {
+      "name": "Stahlbarren",
+      "kategorie": "Barren — Stufe 3",
+      "herkunft": "mittlere Regionen (Band Region 2–3) + garantiert aus Zerlegen",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern; Aufstufung 7:1 bis Adamant (§5.8)",
+      "flavor": "Im Feuer veredeltes Eisen — wo Stahl auftaucht, enden Scharmützel und beginnen Kriege.",
+      "stufe": 3,
+      "band_relativ": "Region 2 – Region 3"
+    },
+    {
+      "name": "Titanbarren",
+      "kategorie": "Barren — Stufe 4",
+      "herkunft": "spätere Regionen / stärkere Gegner (Band Region 3–4) + garantiert aus Zerlegen",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern; Aufstufung 7:1 bis Adamant (§5.8)",
+      "flavor": "Federleicht und doch unnachgiebig; gute Schmiede sagen, es wolle geformt werden.",
+      "stufe": 4,
+      "band_relativ": "Region 3 – Region 4"
+    },
+    {
+      "name": "Adamantbarren",
+      "kategorie": "Barren — Stufe 5",
+      "herkunft": "höchste farmbare Stufe + garantiert aus Zerlegen; Ende der Aufstufungskette 7:1",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern; Aufstufung 7:1 bis Adamant (§5.8)",
+      "flavor": "Das härteste Metall, das die Erde freiwillig hergibt — alles darüber muss man ihr abringen.",
+      "stufe": 5,
+      "band_relativ": "Region 4+ / Endgame-Farm"
+    },
+    {
+      "name": "Kosmiumbarren",
+      "kategorie": "Barren — Stufe 6",
+      "herkunft": "kein Direktdrop — ausschließlich aus dem Zerlegen von Kosmium-Items (Item-Drops: Elite/Boss der letzten Regionen, Richtwert ~L42+); nicht aufstufbar",
+      "verwendung": "Stufen-Achse im Crafting-Grid (Randfeld); Kosten beim Verbessern entfallen (Kosmium ist nicht verbesserbar, §5.8)",
+      "flavor": "Keine Mine hat je eine Kosmium-Ader gesehen — man findet es nur in Dingen, die schon jemandem gehört haben.",
+      "stufe": 6,
+      "band_relativ": "Elite/Boss der letzten Regionen (nur Item-Zerlegung)"
+    },
+    {
+      "name": "Stellar",
+      "kategorie": "Barren — ✦ (existiert nicht als Barren)",
+      "herkunft": "nicht craftbar, kein Barren — Stellar existiert ausschließlich als fertige Items (Loot, §5.3)",
+      "verwendung": "keine — Platzhalter-Eintrag für Lex Tactica (erklärt, warum es keinen Stellarbarren gibt)",
+      "flavor": "Geronnenes Sternenlicht: lässt sich nicht schmelzen, nicht gießen, nicht zähmen — nur finden.",
+      "stufe": 7,
+      "existiert_als_barren": false
+    }
+  ],
+  "aspektsplitter": {
+    "anzahl_gesamt": 44,
+    "namensregel": "Item-Identität + „Aspektsplitter“ (Waffen/Offhands/Zubehör/Gravurtypen) bzw. „…aspekt-Splitter“ (Rüstungs-Archetypen)",
+    "waffen": [
+      {
+        "name": "Breitschwert-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Breitschwert als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Breitschwert",
+        "flavor": "Erinnert sich an gerade, ehrliche Hiebe."
+      },
+      {
+        "name": "Falchion-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Falchion als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Falchion",
+        "flavor": "Eine gebogene Ahnung von Schwung und Schneide."
+      },
+      {
+        "name": "Dolchpaar-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Dolchpaar als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Dolchpaar",
+        "flavor": "Zwei Gedanken, ein Ziel — flüstert nur im Doppel."
+      },
+      {
+        "name": "Stilett-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Stilett als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Stilett",
+        "flavor": "Schmal, still, zielstrebig: der Traum vom perfekten Stich."
+      },
+      {
+        "name": "Rapier-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Rapier als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Rapier",
+        "flavor": "Tänzelt selbst als Splitter noch auf Fingerspitzen."
+      },
+      {
+        "name": "Kampfaxt-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Kampfaxt als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Kampfaxt",
+        "flavor": "Grollt leise, wenn man ihn zu sanft anfasst."
+      },
+      {
+        "name": "Pike-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Pike als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Pike",
+        "flavor": "Hält alles auf Abstand — sogar die anderen Splitter im Beutel."
+      },
+      {
+        "name": "Hammer-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Hammer als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Hammer",
+        "flavor": "Schwer wie ein Versprechen, das gehalten wird."
+      },
+      {
+        "name": "Rammbock-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Rammbock als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Rammbock",
+        "flavor": "Kennt genau eine Richtung: hindurch."
+      },
+      {
+        "name": "Zepter-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Zepter als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Zepter",
+        "flavor": "Herrschaftlich — verlangt Willen und Zähigkeit zugleich."
+      },
+      {
+        "name": "Jagdbogen-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Jagdbogen als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Jagdbogen",
+        "flavor": "Riecht nach Wald, Wind und geduldigem Warten."
+      },
+      {
+        "name": "Langbogen-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Langbogen als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Langbogen",
+        "flavor": "Spannt sich dem Horizont entgegen."
+      },
+      {
+        "name": "Kriegsarmbrust-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Kriegsarmbrust als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Kriegsarmbrust",
+        "flavor": "Spannkraft genug für ganze Schlachtreihen."
+      },
+      {
+        "name": "Repetierarmbrust-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Repetierarmbrust als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Repetierarmbrust",
+        "flavor": "Tickt ungeduldig, als zähle er Bolzen."
+      },
+      {
+        "name": "Zauberstab-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Zauberstab als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Zauberstab",
+        "flavor": "Kribbelt in jeder Hand, die ihn hält."
+      },
+      {
+        "name": "Energiesphäre-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Waffe",
+        "herkunft": "bevorzugter Drop von Gegnern mit Energiesphäre als Waffe (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Energiesphäre",
+        "flavor": "Rund, ruhelos, voller eingefangenem Licht."
+      }
+    ],
+    "offhands": [
+      {
+        "name": "Buckler-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Buckler als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Buckler",
+        "flavor": "Klein, keck, immer im Weg — genau richtig."
+      },
+      {
+        "name": "Turmschild-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Turmschild als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Turmschild",
+        "flavor": "Ein Stück Mauer, das mitmarschieren will."
+      },
+      {
+        "name": "Foliant-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Foliant als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Foliant",
+        "flavor": "Raschelt, obwohl er keine Seiten hat."
+      },
+      {
+        "name": "Energiekristall-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Energiekristall als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Energiekristall",
+        "flavor": "Summt auf der Frequenz ungesagter Zauber."
+      },
+      {
+        "name": "Kampfkette-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Kampfkette als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Kampfkette",
+        "flavor": "Klirrt kampflustig bei jedem Schritt."
+      },
+      {
+        "name": "Laterne-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Laterne als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Laterne",
+        "flavor": "Bewahrt einen Rest Licht für dunkle Stunden."
+      },
+      {
+        "name": "Fester-Gürtel-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Fester Gürtel als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Fester Gürtel",
+        "flavor": "Hält zusammen, was auseinanderfallen will."
+      },
+      {
+        "name": "Fackel-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Fackel als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Fackel",
+        "flavor": "Glimmt weiter, wo längst alles erloschen ist."
+      },
+      {
+        "name": "Signalhorn-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Signalhorn als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Signalhorn",
+        "flavor": "Trägt ein fernes Echo von „Sammeln!“ in sich."
+      },
+      {
+        "name": "Standarte-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Standarte als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Standarte",
+        "flavor": "Weht innerlich noch immer im Feldwind."
+      },
+      {
+        "name": "Rauchschwenker-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Rauchschwenker als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Rauchschwenker",
+        "flavor": "Riecht nach Nebel und guten Ausreden."
+      },
+      {
+        "name": "Köderkolben-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Offhand",
+        "herkunft": "bevorzugter Drop von Gegnern mit Köderkolben als Offhand (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid (Randfeld) — lenkt auf Köderkolben",
+        "flavor": "Verspricht Ärger — nur nie dem eigenen Träger."
+      }
+    ],
+    "ruestung_archetypen": [
+      {
+        "name": "Stoffaspekt-Splitter",
+        "kategorie": "Aspektsplitter — Rüstungs-Archetyp",
+        "herkunft": "bevorzugter Drop von Gegnern in Stoff-Rüstung (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf den Rüstungs-Archetyp Stoff; der Ziel-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen, §5.8)",
+        "flavor": "Leicht wie ein Gedanke an Zuhause."
+      },
+      {
+        "name": "Lederaspekt-Splitter",
+        "kategorie": "Aspektsplitter — Rüstungs-Archetyp",
+        "herkunft": "bevorzugter Drop von Gegnern in Leder-Rüstung (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf den Rüstungs-Archetyp Leder; der Ziel-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen, §5.8)",
+        "flavor": "Geschmeidig und zäh; erzählt gern vom Wetter."
+      },
+      {
+        "name": "Kettenaspekt-Splitter",
+        "kategorie": "Aspektsplitter — Rüstungs-Archetyp",
+        "herkunft": "bevorzugter Drop von Gegnern in Kette-Rüstung (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf den Rüstungs-Archetyp Kette; der Ziel-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen, §5.8)",
+        "flavor": "Tausend kleine Ringe, ein großes Vertrauen."
+      },
+      {
+        "name": "Schuppenaspekt-Splitter",
+        "kategorie": "Aspektsplitter — Rüstungs-Archetyp",
+        "herkunft": "bevorzugter Drop von Gegnern in Schuppe-Rüstung (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf den Rüstungs-Archetyp Schuppe; der Ziel-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen, §5.8)",
+        "flavor": "Legt sich übereinander wie gute Argumente."
+      },
+      {
+        "name": "Plattenaspekt-Splitter",
+        "kategorie": "Aspektsplitter — Rüstungs-Archetyp",
+        "herkunft": "bevorzugter Drop von Gegnern in Platte-Rüstung (Leitprinzip §5.8) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf den Rüstungs-Archetyp Platte; der Ziel-Slot kommt vom Basis-Bauteil (Geschirr/Haube/Riemen, §5.8)",
+        "flavor": "Ein Splitter, der sich für eine Festung hält."
+      }
+    ],
+    "gravurtypen": [
+      {
+        "name": "Aktiv-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Gravurtyp",
+        "herkunft": "bevorzugter Drop von Gegnern, die sichtbar Aktiv-Gravur-Effekte einsetzen (i. d. R. Elite+, §5.8-Anforderung ans Gegner-Design) + garantiert aus dem Zerlegen von Aktiv-Gravuren; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Gravuren des Typs Aktiv (§5.7)",
+        "flavor": "Zuckt bei Berührung — will benutzt werden."
+      },
+      {
+        "name": "Passiv-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Gravurtyp",
+        "herkunft": "bevorzugter Drop von Gegnern, die sichtbar Passiv-Gravur-Effekte einsetzen (i. d. R. Elite+, §5.8-Anforderung ans Gegner-Design) + garantiert aus dem Zerlegen von Passiv-Gravuren; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Gravuren des Typs Passiv (§5.7)",
+        "flavor": "Ruht in sich und wirkt trotzdem."
+      },
+      {
+        "name": "Reaktiv-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Gravurtyp",
+        "herkunft": "bevorzugter Drop von Gegnern, die sichtbar Reaktiv-Gravur-Effekte einsetzen (i. d. R. Elite+, §5.8-Anforderung ans Gegner-Design) + garantiert aus dem Zerlegen von Reaktiv-Gravuren; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Gravuren des Typs Reaktiv (§5.7)",
+        "flavor": "Wartet. Und wartet. Und schlägt zu."
+      },
+      {
+        "name": "Modifikativ-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Gravurtyp",
+        "herkunft": "bevorzugter Drop von Gegnern, die sichtbar Modifikativ-Gravur-Effekte einsetzen (i. d. R. Elite+, §5.8-Anforderung ans Gegner-Design) + garantiert aus dem Zerlegen von Modifikativ-Gravuren; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Gravuren des Typs Modifikativ (§5.7)",
+        "flavor": "Verändert alles um sich herum, nur nie sich selbst."
+      },
+      {
+        "name": "Spezial-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Gravurtyp",
+        "herkunft": "bevorzugter Drop von Gegnern, die sichtbar Spezial-Gravur-Effekte einsetzen (i. d. R. Elite+, §5.8-Anforderung ans Gegner-Design) + garantiert aus dem Zerlegen von Spezial-Gravuren; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Gravuren des Typs Spezial (§5.7)",
+        "flavor": "Folgt Regeln, die er niemandem verrät."
+      }
+    ],
+    "zubehoer": [
+      {
+        "name": "Zielvisier-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Zielvisier (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Zielvisier (Slot Kopf); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Blinzelt nie.",
+        "slot": "Kopf",
+        "drop_rate_mod": 0.5
+      },
+      {
+        "name": "Diadem-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Diadem (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Diadem (Slot Kopf); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Denkt in klaren, kühlen Linien.",
+        "slot": "Kopf",
+        "drop_rate_mod": 0.5
+      },
+      {
+        "name": "Köcher-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Köcher (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Köcher (Slot Körper); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Hat immer noch einen Pfeil übrig.",
+        "slot": "Körper",
+        "drop_rate_mod": 0.5
+      },
+      {
+        "name": "Buchrolle-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Buchrolle (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Buchrolle (Slot Körper); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Aufgerollt schweigt sie — entrollt widerspricht sie.",
+        "slot": "Körper",
+        "drop_rate_mod": 0.5
+      },
+      {
+        "name": "Steigeisen-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Steigeisen (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Steigeisen (Slot Füße); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Beißt sich in jeden Untergrund.",
+        "slot": "Füße",
+        "drop_rate_mod": 0.5
+      },
+      {
+        "name": "Windsohle-Aspektsplitter",
+        "kategorie": "Aspektsplitter — Zubehör",
+        "herkunft": "bevorzugter Drop von Gegnern mit Windsohle (Leitprinzip §5.8), aber seltener als Waffen-/Rüstungs-Splitter (drop_rate_mod 0.5 [Balancing]) + garantiert aus dem Zerlegen; Umwandlung 3:1",
+        "verwendung": "Typ-Achse im Crafting-Grid — lenkt auf Zubehör Windsohle (Slot Füße); Slot kommt vom Basis-Bauteil (§5.8)",
+        "flavor": "Trägt einen Rest Rückenwind in sich.",
+        "slot": "Füße",
+        "drop_rate_mod": 0.5
+      }
+    ]
+  },
+  "essenzen": [
+    {
+      "name": "Pyros-Essenz",
+      "kategorie": "Essenz",
+      "element": "Feuer",
+      "schadensart": "Hitzeschaden",
+      "namensherkunft": "gr. pyr/pyros = Feuer",
+      "herkunft": "geringe Drop-Chance nur von elementaffinen Elite-/Boss-Gegnern (Element-Affinität bestimmt die Sorte — der Drop spiegelt den Träger); verlässlicher Grundstrom über 3:1-Umwandlung aus zerlegten Element-Gravuren. Element-Teaser ab Region 1: elementaffine Ork-Eliten geringe Chance, Regionsboss Region 1 droppt garantiert 1 Essenz seines Elements; häufiger erst ab Region 2 (§5.8/§9.6). Region-1-Träger: Feuer-Ritualisten (Region-1-Teaser-Vorschlag)",
+      "verwendung": {
+        "beschreibung": "Element-Achse im Crafting-Grid (Randfeld) — lenkt auf das Elementpaket des Gravuren-Katalogs (Element-Gravuren, Schadenstyp elementar) und künftig auf Element-/Themen-Set-Ausrüstung (§5.2); Umwandlung 3:1",
+        "element_gravur_ids": [],
+        "hinweis": "PFLICHT-REFERENZ (offen): mind. 2 Element-Gravur-IDs aus data/engravings.json eintragen, sobald das Elementpaket (docs/gravuren_vorschlag_v2.md) freigegeben und übertragen ist — Konsistenz-Check: tools/check_materials.py (GDD §11)"
+      },
+      "flavor": "Ein Tropfen gebändigter Mittagsglut — wärmt durch das Fläschchen hindurch."
+    },
+    {
+      "name": "Kryos-Essenz",
+      "kategorie": "Essenz",
+      "element": "Eis",
+      "schadensart": "Kälteschaden",
+      "namensherkunft": "gr. kryos = Eis/Kälte",
+      "herkunft": "geringe Drop-Chance nur von elementaffinen Elite-/Boss-Gegnern (Element-Affinität bestimmt die Sorte — der Drop spiegelt den Träger); verlässlicher Grundstrom über 3:1-Umwandlung aus zerlegten Element-Gravuren. Element-Teaser ab Region 1: elementaffine Ork-Eliten geringe Chance, Regionsboss Region 1 droppt garantiert 1 Essenz seines Elements; häufiger erst ab Region 2 (§5.8/§9.6)",
+      "verwendung": {
+        "beschreibung": "Element-Achse im Crafting-Grid (Randfeld) — lenkt auf das Elementpaket des Gravuren-Katalogs (Element-Gravuren, Schadenstyp elementar) und künftig auf Element-/Themen-Set-Ausrüstung (§5.2); Umwandlung 3:1",
+        "element_gravur_ids": [],
+        "hinweis": "PFLICHT-REFERENZ (offen): mind. 2 Element-Gravur-IDs aus data/engravings.json eintragen, sobald das Elementpaket (docs/gravuren_vorschlag_v2.md) freigegeben und übertragen ist — Konsistenz-Check: tools/check_materials.py (GDD §11)"
+      },
+      "flavor": "Still und klar; die Kälte darin hat es nicht eilig."
+    },
+    {
+      "name": "Gaios-Essenz",
+      "kategorie": "Essenz",
+      "element": "Natur",
+      "schadensart": "Terraschaden",
+      "namensherkunft": "gr. gaia = Erde/Natur",
+      "herkunft": "geringe Drop-Chance nur von elementaffinen Elite-/Boss-Gegnern (Element-Affinität bestimmt die Sorte — der Drop spiegelt den Träger); verlässlicher Grundstrom über 3:1-Umwandlung aus zerlegten Element-Gravuren. Element-Teaser ab Region 1: elementaffine Ork-Eliten geringe Chance, Regionsboss Region 1 droppt garantiert 1 Essenz seines Elements; häufiger erst ab Region 2 (§5.8/§9.6). Region-1-Träger: Wald-Schamanen (Region-1-Teaser-Vorschlag)",
+      "verwendung": {
+        "beschreibung": "Element-Achse im Crafting-Grid (Randfeld) — lenkt auf das Elementpaket des Gravuren-Katalogs (Element-Gravuren, Schadenstyp elementar) und künftig auf Element-/Themen-Set-Ausrüstung (§5.2); Umwandlung 3:1",
+        "element_gravur_ids": [],
+        "hinweis": "PFLICHT-REFERENZ (offen): mind. 2 Element-Gravur-IDs aus data/engravings.json eintragen, sobald das Elementpaket (docs/gravuren_vorschlag_v2.md) freigegeben und übertragen ist — Konsistenz-Check: tools/check_materials.py (GDD §11)"
+      },
+      "flavor": "Riecht nach Regen auf frisch aufgeworfener Erde."
+    },
+    {
+      "name": "Fulguros-Essenz",
+      "kategorie": "Essenz",
+      "element": "Donner",
+      "schadensart": "Elektroschaden",
+      "namensherkunft": "lat. fulgur = Blitz (Fantasy-Form)",
+      "herkunft": "geringe Drop-Chance nur von elementaffinen Elite-/Boss-Gegnern (Element-Affinität bestimmt die Sorte — der Drop spiegelt den Träger); verlässlicher Grundstrom über 3:1-Umwandlung aus zerlegten Element-Gravuren. Element-Teaser ab Region 1: elementaffine Ork-Eliten geringe Chance, Regionsboss Region 1 droppt garantiert 1 Essenz seines Elements; häufiger erst ab Region 2 (§5.8/§9.6)",
+      "verwendung": {
+        "beschreibung": "Element-Achse im Crafting-Grid (Randfeld) — lenkt auf das Elementpaket des Gravuren-Katalogs (Element-Gravuren, Schadenstyp elementar) und künftig auf Element-/Themen-Set-Ausrüstung (§5.2); Umwandlung 3:1",
+        "element_gravur_ids": [],
+        "hinweis": "PFLICHT-REFERENZ (offen): mind. 2 Element-Gravur-IDs aus data/engravings.json eintragen, sobald das Elementpaket (docs/gravuren_vorschlag_v2.md) freigegeben und übertragen ist — Konsistenz-Check: tools/check_materials.py (GDD §11)"
+      },
+      "flavor": "Zuckt ungeduldig, als suche sie den kürzesten Weg."
+    }
+  ],
+  "drop_matrix": {
+    "prinzip": "Jede künftige Einheit wird genau einem Archetyp zugeordnet und erbt dessen Drop-Profil (§5.8). Skalierung zusätzlich nach Gegner-Stufe (Regions-Band).",
+    "anforderung_gegner_design": "Jeder Elite-/Boss-Gegner führt mind. 1 sichtbare Gravur-Fähigkeit (Telegraphing/VFX), die sein Drop-Profil begründet; der Bestiarium-Eintrag (§8.5) listet sie als Farm-Hinweis (GDD §4.2/§11).",
+    "archetypen": [
+      {
+        "archetyp": "Standard-Nahkämpfer",
+        "barren": "✓ (Band)",
+        "aspektsplitter_bevorzugt": "seine Waffe + sein Rüstungs-Archetyp",
+        "essenzen": "—",
+        "beispiel": "Ork-Plänkler"
+      },
+      {
+        "archetyp": "Schütze",
+        "barren": "✓",
+        "aspektsplitter_bevorzugt": "Bogen-/Armbrust-Typ + Leder-/Stoffaspekt, Köcher",
+        "essenzen": "—",
+        "beispiel": "Ork-Jäger"
+      },
+      {
+        "archetyp": "Zauberkundiger",
+        "barren": "✓",
+        "aspektsplitter_bevorzugt": "Zauberwaffen-Typ + Stoffaspekt, Buchrolle",
+        "essenzen": "nur wenn elementaffin",
+        "beispiel": "Ork-Schamane (Region-1-Teaser, §4.2)"
+      },
+      {
+        "archetyp": "Bruiser / Tank",
+        "barren": "✓ (+höhere Menge)",
+        "aspektsplitter_bevorzugt": "Kriegsgeräte-Typ + Ketten-/Schuppen-/Plattenaspekt, Schild-Offhands",
+        "essenzen": "—",
+        "beispiel": "Ork-Brecher"
+      },
+      {
+        "archetyp": "Elite / Anführer",
+        "barren": "✓ (+1 Band-Tendenz)",
+        "aspektsplitter_bevorzugt": "wie Basis-Archetyp + Gravurtyp-Splitter",
+        "essenzen": "geringe Chance (elementaffin)",
+        "beispiel": "Ork-Kriegsherr"
+      },
+      {
+        "archetyp": "Boss",
+        "barren": "✓ garantiert, oberes Band",
+        "aspektsplitter_bevorzugt": "wie Elite, erhöhte Menge",
+        "essenzen": "beste Chance; elementaffine Bosse garantiert 1 (inkl. Regionsboss Region 1)",
+        "beispiel": "Regionsboss"
+      }
+    ]
+  }
+}

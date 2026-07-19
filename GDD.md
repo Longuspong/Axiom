@@ -2,8 +2,8 @@
 
 > *"In seinem eigenen Weltbild hat jeder Mensch Axiome, ob er es will oder nicht. Dieses Spiel lädt dazu ein, sie zu hinterfragen."*
 
-**Version:** 0.27  
-**Stand:** 2026-07-13  
+**Version:** 0.28  
+**Stand:** 2026-07-19  
 **Engine:** Godot 4  
 **Genre:** 2D Top-Down Tactics Fantasy RPG  
 
@@ -189,10 +189,15 @@ Pro Mensch auf dem Schlachtfeld erhalten alle menschlichen Einheiten Regeneratio
 **Heimatregion:** Raldiguh ohk (waldiges Terrain)  
 **Grundcharakter:** Sonst ruhig und zurückgezogen — der Angriff ist ein Bruch ihres normalen Verhaltens.
 
-**Klassen:** *(folgt)*  
+**Klassen:** *(folgt — verbindliche Anforderungen s. u.)*  
 **KI-Verhalten & Angriffsmuster:** *(folgt)*  
 **Fraktionsbonus:** *(folgt)*  
 **Philosophisches Thema:** *(folgt)*
+
+**Verbindliche Design-Anforderungen ans Ork-Klassendesign** *(2026-07-19, aus dem Material-/Loot-System abgeleitet — Details §11)*:
+
+- **Element-Teaser ab Region 1:** Orks sind keine Hochmagier, aber sie **nutzen Buffs und einfache Schamanen-Magie** (deckt sich mit der Revision 2026-07-12 — „Orks droppen keine Magie" ist aufgehoben, §9.6). Mindestens **ein Schamanen-/Buffer-Archetyp mit Element-Affinität** gehört ins Klassenset; mindestens **zwei Elementartypen** kommen in Region 1 vor. *Vorschlag (vom Nutzer zu bestätigen, thematisch naheliegend für die Waldregion):* **Natur/Gaios** (Wald-Schamanen) und **Feuer/Pyros** (Feuer-Ritualisten).
+- **Sichtbarer Gravur-Einsatz:** Jeder **Elite-/Boss-Gegner führt mind. 1 sichtbare Gravur-Fähigkeit** (mit Telegraphing/VFX erkennbar), die sein Drop-Profil begründet (§5.8 Drop-Matrix: Gravurtyp-Splitter droppen von Gegnern, die sichtbar Gravur-Effekte einsetzen). Gegner-Design ist damit automatisch Loot-Design — dieselbe Logik wie „Der Drop spiegelt den Träger".
 
 ### 4.3 Weitere Fraktionen
 
@@ -1383,12 +1388,13 @@ Jedes unerwünschte Item kann zerlegt werden und liefert:
 |----------|-------------------------------|
 | **Komplette Waffen** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt | Alles **Stellar** (Waffen, Barren, Ressourcen) |
 | **Komplette Rüstung & Offhands** — ohne Gravuren, Stufe durch eingesetzte Barren gedeckelt (Zielslot bei Rüstung über das Basis-Bauteil Geschirr/Haube/Riemen, Archetyp über den Aspektsplitter) | **Spezial-/Signatur-Gravuren** |
+| **Zubehör** *(entschieden 2026-07-19)* — gleiche Mechanik wie Rüstung: Slot vom Basis-Bauteil (Haube/Geschirr/Riemen), Identität vom **Zubehör-Aspektsplitter** (Zielvisier, Diadem, Köcher, Buchrolle, Steigeisen, Windsohle). Besonderheit über **Seltenheit statt Craft-Ausschluss**: Zubehör-Splitter droppen seltener (Richtwert halbe Drop-Rate `[Balancing]`) | |
 | **Gravuren** — nur Level 1; höhere Level nur über Aufwertung | |
 | **Verfeinerungskerne** (für die Kapazitäts-+1-Verfeinerung, §5.7) | |
 | **Bauteile & Prägungen** (Grid-Basen, s. Tabelle) | |
 | **Kosmium-Gravuren** — nur mit Kosmiumbarren (die nur aus zerlegten Kosmium-Items stammen → limitiert sich selbst) | |
 
-*(2026-07-06 entschieden: Ausnahmslos alle Ausrüstungskategorien sind von Grund auf craftbar — symmetrisch zu Waffen. Einzige craftfreie Zone bleibt Stellar + Spezial-/Signatur-Gravuren.)*
+*(2026-07-06 entschieden: Ausnahmslos alle Ausrüstungskategorien sind von Grund auf craftbar — symmetrisch zu Waffen. Seit 2026-07-19 gilt das wirklich ausnahmslos: auch Zubehör. Einzige craftfreie Zone bleibt Stellar + Spezial-/Signatur-Gravuren.)*
 
 #### Bauteile & Prägungen (Grid-Basen)
 
@@ -1425,23 +1431,42 @@ Pro Ausrüstungskategorie ein craftbares Kernbauteil; Benennung nach der Item-Na
 - Kosten: **Barren der Zielstufe + passendes Bauteil** (Beispiel: Breitschwert Eisen→Stahl braucht Stahlbarren + Stahl-Griff; Turmschild Titan→Adamant braucht Adamantbarren + Adamant-Beschlag).
 - Gilt für **Waffen, Rüstungen und Offhands** — alle mit ihrem jeweiligen Bauteil (s. Tabelle oben).
 
-#### Drop & Herkunft *(entschieden 2026-07-06)*
+#### Drop & Herkunft *(entschieden 2026-07-06; Leitprinzip, Drop-Matrix & Element-Teaser 2026-07-19)*
+
+**Leitprinzip „Der Drop spiegelt den Träger":**
+
+> **Ein Gegner droppt bevorzugt Aspektsplitter der Ausrüstung, die er sichtbar trägt** (Waffe, Rüstungs-Archetyp, Offhand). Barren droppt jeder Gegner (Stufe skaliert), Gravur-Aspektsplitter droppen von Gegnern, die sichtbar Gravur-Effekte einsetzen (i. d. R. Elite+), Essenzen nur von elementaffinen Elite-/Boss-Gegnern.
+
+Selbsterklärend fürs Farmen („ich will Pike-Splitter → ich jage Speerträger"), braucht keine Loot-Tabellen-Pflege pro Gegner und macht Gegner-Design automatisch zu Loot-Design. Ausnahmen (z. B. Quest-Belohnungen) bleiben möglich, sind aber nie nötig.
 
 Die drei Ressourcen-Ebenen unterscheiden sich bewusst im RNG-Grad — Farmen fühlt sich anders an als Glück haben:
 
 | Ressource | RNG-Grad | Herkunft |
 |-----------|----------|----------|
-| **Barren** | Niedrig — überwiegend farmbar | Droppt von **jedem Gegner** (stufenabhängige Chance) **und** garantiert aus Zerlegen (jedes Item liefert mind. 1 Barren seiner Stufe) |
-| **Aspektsplitter** | Mittel | Bestimmte Einheiten droppen sie zusätzlich; aus Zerlegen kommt **immer garantiert** einer. *(Offen: teilweise auch im Shop erwerbbar? → Phase 1, sobald das Shop-System ansteht.)* |
-| **Essenzen** | Hoch — bewusst selten | Geringe Drop-Chance von Elite-/Boss-Gegnern; der verlässliche Grundstrom kommt über die 3:1-Umwandlung aus zerlegten Element-Gravuren. Essenzen lenken sehr spezifisch (Element/Set) — in Region 1 (Orks) weiterhin selten, da es dort noch kein dediziertes elementaffines Gegnerdesign gibt; Magie-Loot generell ist in Region 1 aber **nicht** ausgeschlossen (revidiert 2026-07-12, §9.6) |
+| **Barren** | Niedrig — überwiegend farmbar | Droppt von **jedem Gegner** (stufenabhängige Chance) **und** garantiert aus Zerlegen (jedes Item liefert mind. 1 Barren seiner Stufe). Bänder **relativ zur Regions-Progression** (Kupfer = Region 1 … Adamant = Region 4+/Endgame; absolute Level nur Richtwerte — s. `data/materials.json` `regions_baender`); Drop-Mischung ~70/20/10 % eigene/untere/obere Stufe `[Balancing]` |
+| **Aspektsplitter** | Mittel | Bevorzugt von Gegnern, die den Typ sichtbar führen (Leitprinzip); aus Zerlegen kommt **immer garantiert** einer. **Zubehör-Splitter droppen seltener** (Richtwert halbe Drop-Rate `[Balancing]`) — Besonderheit über Seltenheit statt Craft-Ausschluss. *(Offen: teilweise auch im Shop erwerbbar? → Phase 1, sobald das Shop-System ansteht.)* |
+| **Essenzen** | Hoch — bewusst selten | Geringe Drop-Chance von **elementaffinen** Elite-/Boss-Gegnern; verlässlicher Grundstrom über die 3:1-Umwandlung aus zerlegten Element-Gravuren. Die Element-Affinität des Gegners bestimmt die Sorte (Feuerschamane → Pyros). **Element-Teaser ab Region 1** *(2026-07-19, ersetzt „Region 1 essenzfrei")*: mind. 2 Elementartypen kommen schon in Region 1 vor (Vorschlag: Natur/Gaios + Feuer/Pyros, §4.2/§9.6); elementaffine Ork-Eliten haben eine geringe Essenz-Chance, der **Regionsboss von Region 1 droppt garantiert 1 Essenz** seines Elements. Häufen tun sich Essenzen erst ab Region 2 |
 
-**Drop-Skalierung**: nach **Gegner-Stufe** (höhere Stufe → höherstufige Barren/Splitter wahrscheinlicher) **und Archetyp** (z. B. Bogenschützen-Gegner droppen bevorzugt Materialien/Splitter, die Bogenschützen-Ausrüstung begünstigen).
+**Drop-Matrix nach Gegner-Archetyp** *(2026-07-19 — jede künftige Einheit wird einem Archetyp zugeordnet und erbt dessen Drop-Profil; Daten: `data/materials.json`)*:
+
+| Gegner-Archetyp | Barren | Aspektsplitter (bevorzugt) | Essenzen |
+|---|---|---|---|
+| **Standard-Nahkämpfer** | ✓ (Band) | seine Waffe + sein Rüstungs-Archetyp | — |
+| **Schütze** | ✓ | Bogen-/Armbrust-Typ + Leder-/Stoffaspekt, Köcher | — |
+| **Zauberkundiger** | ✓ | Zauberwaffen-Typ + Stoffaspekt, Buchrolle | nur wenn elementaffin |
+| **Bruiser / Tank** | ✓ (+höhere Menge) | Kriegsgeräte-Typ + Ketten-/Schuppen-/Plattenaspekt, Schild-Offhands | — |
+| **Elite / Anführer** | ✓ (+1 Band-Tendenz) | wie Basis-Archetyp **+ Gravurtyp-Splitter** | geringe Chance (elementaffin) |
+| **Boss** | ✓ garantiert, oberes Band | wie Elite, erhöhte Menge | beste Chance; elementaffine Bosse garantiert 1 |
+
+> Die Zeile „Elite + Gravurtyp-Splitter" ist eine **verbindliche Anforderung ans Gegner-Design** (§4.2/§11): jeder Elite-/Boss führt mind. 1 **sichtbare** Gravur-Fähigkeit (Telegraphing/VFX), die sein Drop-Profil begründet; der Bestiarium-Eintrag (§8.5) listet sie als Farm-Hinweis.
+
+**Drop-Skalierung**: nach **Gegner-Stufe** (höhere Stufe → höherstufige Barren/Splitter wahrscheinlicher) **und Archetyp** (Drop-Matrix oben).
 
 **Kein zusätzliches Pity auf Drop-Ebene**: Die garantierte Loot-Truhe am Levelende (§9.4 — „zumindest etwas Loot" bei jeder Wiederholung) deckt das bereits ab; ein separater Drop-Pity-Mechanismus ist nicht nötig.
 
-#### Offener Punkt: Element- & Materialliste `[Phase-0-Abschluss]`
+#### Element- & Materialliste ✅ *(geschlossen 2026-07-19)*
 
-*(2026-07-06)* Herkunfts-Prinzipien stehen (s. o.), aber die **konkrete Elementliste** (fest, z. B. Feuer/Eis/Blitz/Gift/…) und eine **vollständige Materialliste** „mit allem drum und dran" (alle Barren/Aspektsplitter/Essenzen inkl. Drop-Zuordnung nach Stufe & Archetyp) fehlen noch. Beides ist Grundlage für **Lex Tactica** (§8.5) — siehe §11.
+*(2026-07-06 als Phase-0-Punkt geöffnet)* Die Elementliste steht seit 2026-07-06 (§5.2: Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro), die **vollständige Materialliste** ist mit dem Review 2026-07-19 final: 7 Barren · **44 Aspektsplitter** (16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen + **6 Zubehör**) · 4 Essenzen · Drop-Matrix. Design-Referenz mit Flavor: `docs/materialliste_vorschlag.md`; Coding-DB: **`data/materials.json`** (Wiki-Card-Schema für Lex Tactica, §8.5). **Verbleibende Abhängigkeit:** Die Essenz-Verwendung referenziert das **Elementpaket** des Gravuren-Reworks (je Element mind. 2 Element-Gravuren) — bis zu dessen Freigabe schlägt der Konsistenz-Check `tools/check_materials.py` erwartungsgemäß fehl (§11).
 
 ---
 
@@ -1557,7 +1582,7 @@ Listet alle genutzten externen Ressourcen:
 
 | Rubrik | Inhalt | Stand |
 |---|---|---|
-| **1. Materialien** | Barren-Stufen, Aspektsplitter, Essenzen (§5.8) | Grundstock befüllt (s. u.) |
+| **1. Materialien** | Barren-Stufen, Aspektsplitter, Essenzen (§5.8) | **vollständig** *(2026-07-19, Daten: `data/materials.json`)* |
 | **2. Bauteile & Prägungen** | die 12 Crafting-Rohlinge (§5.8) | befüllt (s. u.) |
 | **3. Ausrüstung** | Waffen, Rüstung, Offhands — Katalog aus den Daten-JSONs | Platzhalter (Daten stehen, Einzug folgt) |
 | **4. Gravuren** | Gravuren-Katalog nach Typ (§5.7) | Platzhalter (Katalog offen, §11) |
@@ -1569,41 +1594,40 @@ Listet alle genutzten externen Ressourcen:
 
 - **Knappe Wiki-Card:** Jeder Eintrag folgt demselben schlanken Schema — **Name · Kategorie (Stufe/Typ) · Herkunft** (wo bekomme ich es) **· Verwendung** (wofür) **· ein Satz Flavor**. Bewusst kompakt, damit hunderte Item-/Material-Einträge pflegbar bleiben; längere Lore lebt in Rubrik 7, nicht in jeder Card.
 - **Freischaltung „Entdeckung":** Ein Eintrag füllt sich **automatisch bei der ersten Begegnung** (erstes Looten/Craften eines Materials, erstes Töten eines Gegnertyps, erstes Betreten einer Region). Vorher ist der Slot als **„? — unentdeckt"** sichtbar (man sieht, *dass* es etwas gibt = Sammel-/Fortschrittsanreiz), Werte bleiben verborgen. Deckt sich mit „wächst mit dem Spielfortschritt", braucht kein eigenes Kauf-/Forschungssystem.
-- **Bestiarium-Sonderfall (progressiv):** Erst-*Sichtung* schaltet Name/Bild frei; die **Schwächen/Resistenzen** eines Gegnertyps werden erst nach einigen Kämpfen (oder per Scout-Fähigkeit) sichtbar — belohnt Wiederbegegnung und macht Aufklärung taktisch wertvoll.
+- **Bestiarium-Sonderfall (progressiv):** Erst-*Sichtung* schaltet Name/Bild frei; die **Schwächen/Resistenzen** eines Gegnertyps werden erst nach einigen Kämpfen (oder per Scout-Fähigkeit) sichtbar — belohnt Wiederbegegnung und macht Aufklärung taktisch wertvoll. **Elite-/Boss-Einträge listen zusätzlich die sichtbare Gravur-Fähigkeit** des Gegners (§5.8-Anforderung) — zugleich Farm-Hinweis für den Spieler („dieser Elite nutzt eine Reaktiv-Gravur → droppt Reaktiv-Splitter").
 
-#### Rubrik 1 — Materialien *(Grundstock)*
+#### Rubrik 1 — Materialien *(vollständig 2026-07-19 — Daten: `data/materials.json`)*
 
-**Barren (Materialstufen)** — die Fortschritts-Achse der Ausrüstung; jede Stufe hebt Werte-Tier & Slot-Kapazität. Beschaffung: **von jedem Gegner farmbar** (Stufe skaliert mit Gegner-Stufe) **+ garantiert aus dem Zerlegen** gleichstufiger Items; Aufstufung im Crafting **7:1**, endet bei Adamant (§5.8).
+**Barren (Materialstufen)** — die Fortschritts-Achse der Ausrüstung; jede Stufe hebt Werte-Tier & Slot-Kapazität. Beschaffung: **von jedem Gegner farmbar** (Stufe skaliert mit Gegner-Stufe) **+ garantiert aus dem Zerlegen** gleichstufiger Items; Aufstufung im Crafting **7:1**, endet bei Adamant (§5.8). **Drop-Bänder relativ zur Regions-Progression** (absolute Level nur Richtwerte, §5.8):
 
-| Stufe | Barren | Beschaffung | Flavor |
+| Stufe | Barren | Beschaffung (Band relativ) | Flavor |
 |---|---|---|---|
-| 1 | **Kupfer** | frühe Regionen, jeder Standard-Gegner | *(folgt)* |
-| 2 | **Eisen** | breit farmbar | *(folgt)* |
-| 3 | **Stahl** | mittlere Regionen | *(folgt)* |
-| 4 | **Titan** | spätere Regionen / stärkere Gegner | *(folgt)* |
-| 5 | **Adamant** | höchste farm- & aufstufbare Stufe | *(folgt)* |
-| 6 | **Kosmium** | **nur aus zerlegten Kosmium-Items** (nicht aufstufbar) | *(folgt)* |
-| ✦ | **Stellar** | **nicht craftbar** — ausschließlich Loot/Drop (§5.3) | *(folgt)* |
+| 1 | **Kupfer** | Region 1, jeder Standard-Gegner | *Weich, geduldig und überall — jede Schmiedekunst beginnt mit einem Kupferbarren.* |
+| 2 | **Eisen** | Region 1 (spät) – Region 2, breit farmbar | *Das ehrliche Metall: schwer, verlässlich, das Rückgrat jeder Feldschmiede.* |
+| 3 | **Stahl** | Region 2 – Region 3 | *Im Feuer veredeltes Eisen — wo Stahl auftaucht, enden Scharmützel und beginnen Kriege.* |
+| 4 | **Titan** | Region 3 – Region 4 | *Federleicht und doch unnachgiebig; gute Schmiede sagen, es wolle geformt werden.* |
+| 5 | **Adamant** | Region 4+ / Endgame-Farm; Ende der Aufstufungskette | *Das härteste Metall, das die Erde freiwillig hergibt — alles darüber muss man ihr abringen.* |
+| 6 | **Kosmium** | **nur aus zerlegten Kosmium-Items** (Elite/Boss der letzten Regionen; nicht aufstufbar) | *Keine Mine hat je eine Kosmium-Ader gesehen — man findet es nur in Dingen, die schon jemandem gehört haben.* |
+| ✦ | **Stellar** | **nicht craftbar** — ausschließlich Loot/Drop (§5.3) | *Geronnenes Sternenlicht: lässt sich nicht schmelzen, nicht gießen, nicht zähmen — nur finden.* |
 
-**Aspektsplitter** — bestimmen im Crafting den **Typ / die Identität** des Outputs auf der Typ-Achse (Grid-Randfeld, §5.8). **Namensregel: Item-Identität + „Aspektsplitter"** (z. B. „Falchion-Aspektsplitter", „Plattenaspekt-Splitter"). Beschaffung: von bestimmten Einheiten + garantiert aus dem Zerlegen des passenden Item-Typs; Umwandlung 3:1 (§5.8).
+**Aspektsplitter (44)** — bestimmen im Crafting den **Typ / die Identität** des Outputs auf der Typ-Achse (Grid-Randfeld, §5.8). **Namensregel: Item-Identität + „Aspektsplitter"** (z. B. „Falchion-Aspektsplitter", „Plattenaspekt-Splitter"). Beschaffung nach dem Leitprinzip „Der Drop spiegelt den Träger" (§5.8): bevorzugt von Gegnern, die den Typ sichtbar führen + garantiert aus dem Zerlegen des passenden Item-Typs; Umwandlung 3:1 (§5.8). *(Flavor-Texte je Splitter: `data/materials.json` / `docs/materialliste_vorschlag.md`.)*
 
 - **Waffen (16 — je Waffentyp):** Breitschwert-, Falchion-, Dolchpaar-, Stilett-, Rapier-, Kampfaxt-, Pike-, Hammer-, Rammbock-, Zepter-, Jagdbogen-, Langbogen-, Kriegsarmbrust-, Repetierarmbrust-, Zauberstab-, Energiesphäre-Aspektsplitter.
 - **Offhands (12 — je Offhand-Typ):** Buckler-, Turmschild-, Foliant-, Energiekristall-, Kampfkette-, Laterne-, Fester-Gürtel-, Fackel-, Signalhorn-, Standarte-, Rauchschwenker-, Köderkolben-Aspektsplitter.
 - **Rüstung (5 — je Archetyp-Familie):** Stoffaspekt-, Lederaspekt-, Kettenaspekt-, Schuppenaspekt-, Plattenaspekt-Splitter. *(Der Ziel-**Slot** kommt beim Rüstungs-Craft vom Basis-Bauteil Geschirr/Haube/Riemen, der **Archetyp** vom Aspektsplitter — §5.8.)*
-- **Gravuren (5 — je Gravurtyp, §5.7):** Aktiv-, Passiv-, Reaktiv-, Modifikativ-, Spezial-Aspektsplitter. *(Konkreter Gravuren-Katalog noch offen → Platzhalter, §11.)*
+- **Gravuren (5 — je Gravurtyp, §5.7):** Aktiv-, Passiv-, Reaktiv-, Modifikativ-, Spezial-Aspektsplitter. Droppen von Gegnern, die **sichtbar Gravur-Effekte einsetzen** (Elite+, §5.8-Anforderung ans Gegner-Design). *(Konkreter Gravuren-Katalog noch offen → Platzhalter, §11.)*
+- **Zubehör (6 — je Zubehör-Typ)** *(entschieden 2026-07-19, Option A — Zubehör ist craftbar, §5.8)*: Zielvisier-, Diadem- (Kopf), Köcher-, Buchrolle- (Körper), Steigeisen-, Windsohle-Aspektsplitter (Füße). **Droppen seltener** als Waffen-/Rüstungs-Splitter (Richtwert halbe Drop-Rate `[Balancing]`) — Besonderheit über Seltenheit statt Craft-Ausschluss.
 
-> **Zubehör** (Köcher, Buchrolle, Zielvisier, Diadem, Steigeisen, Windsohle): eigene Aspektsplitter erst, sobald die Craftbarkeit von Zubehör entschieden ist (§5.8 nennt bislang nur Waffen/Rüstung/Offhands) — offen (§11).
-
-**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2). **In-World-/Lex-Name lateinisch** (Flavor); der schlichte „&lt;Element&gt;-Essenz"-Begriff bleibt als Synonym gültig:
+**Essenzen** — tragen das **Element** in Waffen/Gravuren (Grid-Element-Achse, §5.8); lenken konkret auf das **Elementpaket** des Gravuren-Reworks (je Element mind. 2 Element-Gravuren; bis zu dessen Freigabe offene Referenz, §11) und künftig auf Element-/Themen-Set-Ausrüstung (§5.2). Vier Sorten, deckungsgleich mit den vier Elementen (§5.2). **In-World-/Lex-Name lateinisch** (Flavor); der schlichte „&lt;Element&gt;-Essenz"-Begriff bleibt als Synonym gültig:
 
 | Essenz (Lex-Name) | Herkunft des Namens | Element / Schadensart | Beschaffung |
 |---|---|---|---|
-| **Pyros-Essenz** | gr. *pyr/pyros* = Feuer | Feuer / Hitzeschaden | selten, elite-/boss-gebunden |
-| **Kryos-Essenz** | gr. *kryos* = Eis/Kälte | Eis / Kälteschaden | selten, elite-/boss-gebunden |
-| **Gaios-Essenz** | gr. *gaia* = Erde/Natur | Natur / Terraschaden | selten, elite-/boss-gebunden |
-| **Fulguros-Essenz** | lat. *fulgur* = Blitz (Fantasy-Form) | Donner / Elektroschaden | selten, elite-/boss-gebunden |
+| **Pyros-Essenz** | gr. *pyr/pyros* = Feuer | Feuer / Hitzeschaden | selten, elementaffine Elite/Boss |
+| **Kryos-Essenz** | gr. *kryos* = Eis/Kälte | Eis / Kälteschaden | selten, elementaffine Elite/Boss |
+| **Gaios-Essenz** | gr. *gaia* = Erde/Natur | Natur / Terraschaden | selten, elementaffine Elite/Boss |
+| **Fulguros-Essenz** | lat. *fulgur* = Blitz (Fantasy-Form) | Donner / Elektroschaden | selten, elementaffine Elite/Boss |
 
-> Region 1 (Orks) bleibt **bewusst ohne dediziertes Elementfokus-Gegnerdesign** — Essenzen dort daher weiterhin selten. Magie-Loot generell ist in Region 1 **nicht** ausgeschlossen (revidiert 2026-07-12, §9.6 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben). Essenzen häufen sich erst mit späteren, elementaffinen Regionen/Gegnern.
+> **Element-Teaser ab Region 1** *(2026-07-19, ersetzt „Region 1 bewusst ohne Elementfokus")*: Mind. zwei Elementartypen kommen schon in Region 1 vor (Vorschlag: Natur/Gaios über Wald-Schamanen + Feuer/Pyros über Feuer-Ritualisten — §4.2); elementaffine Ork-Eliten haben eine geringe Essenz-Chance, der **Regionsboss von Region 1 droppt garantiert 1 Essenz** seines Elements. Magie-Loot generell ist in Region 1 **nicht** ausgeschlossen (revidiert 2026-07-12, §9.6). Essenzen **häufen** sich erst mit späteren, dediziert elementaffinen Regionen/Gegnern.
 
 #### Rubrik 2 — Bauteile & Prägungen *(befüllt)*
 
@@ -1716,6 +1740,7 @@ Jede Klasse hat einen eigenen mehrstufigen Auftrag, der durch eine klassenspezif
 - **Ziel:** High Score, Ressourcen und Loot farmen
 - **Struktur:** Wellen-basiert, Gefechtstyp **Skirmish** (§5.1, Map **12×12** = 3×3 Chunks). Ein Durchlauf gilt ab **mindestens 5 Wellen am Stück** als abgeschlossen; jederzeit abbrechbar, aber **ohne** Mitnahme von Loot/Progress.
 - **Loot-Pool:** Regionsgebunden, aber **nicht** auf physische Gegenstände beschränkt *(revidiert 2026-07-12 — die frühere Regel „Orks droppen keine Magie" ist aufgehoben: die Ork-Fraktion kann auch magiekundige Einheiten enthalten, §4.2)*.
+- **Element-Teaser ab Region 1** *(2026-07-19, ersetzt „Region 1 essenzfrei")*: Mind. **zwei Elementartypen** kommen bereits in Region 1 vor *(Vorschlag, vom Nutzer zu bestätigen: Natur/Gaios über Wald-Schamanen + Feuer/Pyros über Feuer-Ritualisten — §4.2)*. Elementaffine Ork-Eliten haben eine geringe Essenz-Drop-Chance; der **Regionsboss von Region 1 droppt garantiert 1 Essenz** seines Elements (§5.8/§8.5). Der Spieler sieht das Element-/Essenz-System damit nicht erst ab Region 2.
 - **Map-Auswahl:** Deterministisch-prozedural statt reiner Zufalls-Progression oder Endlos-Scroll — der Spieler **wählt** aus vorgegebenen, thematisch festen, aber intern prozedural generierten Regionsrichtungen:
   - **Einstieg:** 2 Richtungen (z. B. Nordwest = Bergminen-Region, Nordost = Ebene)
   - **Ab einer bestimmten Tiefe** `[Balancing]`: 3 Richtungen (Ebene / Schlachtfeld / Bergminen)
@@ -1883,7 +1908,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Rüstungswerte Kopf/Körper/Füße kalibriert *(2026-07-04)*: Slot-Kapazitäten & Verfeinerung final (Grundkapazität = Stufe, Slots 1/2, Verfeinerung 1×/2×/3×); Prim-Tiers Körper 3/5/7/10/13/17/23 + Kopf/Füße 2/3/4/5/7/9/12 (2/5-Rüstung-zu-3/5-Skilltree-Budget); Flat-Basis Körper 2/3/4/5/6/8/10 + Kopf/Füße 1/2/2/3/4/5/6; WID-Defensivzeile gestrichen; Stufe 7 befüllt (§5.3)
 - [x] Stufe-7-Waffen (Stellar) Werte/Slots ausgearbeitet *(2026-07-04, §5.3 „Stellar-Stufe")*: Prim 84/100/70, Kapazität +2 über Kosmium (L4/L5-Signatur-Unlock), Verfeinerung 3×, Stellar-Eigenarten ✦, Lichtresonanz-Flag; Sek-WID eingedampft (Hammer → Körper-Tier, Jagd-/Langbogen → Sek STR); Zweihand-Kapazitätsbonus auf S7-B-Waffen angewandt; Zepter → B
 - [x] `itemliste_v7.xlsx` erstellt (Offhands, Rüstung, Bogen-Notation) *(2026-07-03)*
-- [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05/06, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen inkl. Geschirr/Haube/Riemen/Beschlag, alle Ausrüstungskategorien craftbar, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **offen nur noch: Gravuren-Katalog + Materialherkunft/Essenzen (s. u.)**
+- [ ] Waffensystem-Rest designt — **Crafting-System komplett** *(2026-07-05/06, §5.8 Resonanz-Matrix: Zerlegen/Barren/Aspektsplitter/Essenzen, 3×3-Grid mit Resonanz-Mustern, Pity via Duplikat-Zerfall, Verbessern, Bauteile/Prägungen inkl. Geschirr/Haube/Riemen/Beschlag, alle Ausrüstungskategorien craftbar — seit 2026-07-19 inkl. **Zubehör**, Kosmium-Umbenennung, Stellar-Verfeinerung 3×)*; **Materialherkunft/Essenzen ✅ erledigt (2026-07-19, s. u.) — offen nur noch: Gravuren-Katalog**
 - [x] Skilltree-Struktur designt *(2026-07-07, §5.4)*: radialer Baum mit 6 Attribut-Sektoren, klassenabhängige Einstiegspunkte, Attributs-/Notable-/Keystone-Nodes, Punkte-Ökonomie (1/Level, Wegkosten erzeugen die §5.3-Kurve), Frühgame-Führungspfad, weiche Kombo-Gates über Keystone-Kosten, Respec (frei bis Level 15, danach kostenpflichtig). Offen bleiben Notable-/Keystone-Listen pro Klasse + die *Umsetzung* in Godot — das ist dann der Startschuss für Phase 1 (Editor-Plugin Yggdrasil liegt bereits unter `addons/`)
 - [x] Technische Specs vervollständigt *(2026-07-04)*: **Zielplattform entschieden (§10.5)** — PC/Steam (Windows + Linux, Steam Deck) primär, Android als geplanter Post-Release-Port inkl. verbindlicher UI-Design-Regeln; Projektstruktur ist angelegt (§10.3)
 - [x] **Gefechtstypen & Map-Größen definiert** *(2026-07-12, §5.1)*: Skirmish/Basecamp/Flaggenraub als PvE-Missionsziel-Vorlagen (kein PvP), Map-Größen pro Typ, Archetypen-Verteilungsprinzip; **Endlos-Modus ausgebaut** (§9.6): Wellen-Struktur (min. 5), Regionswahl-Verzweigung (Bergminen/Ebene/Schlachtfeld) mit variablen Events, Meta-Progression (Run ab Welle 5 verlassen zum Craften), Schadensskalierung gegen Tank-Meta; Roguelike-Perk-System bewusst verworfen. **Dabei revidiert:** „Orks droppen keine Magie" ist aufgehoben — Magie-Loot in Region 1 nicht mehr grundsätzlich ausgeschlossen (§4.2/§5.8/§8.5 nachgezogen)
@@ -1917,7 +1942,7 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 - [x] Crafting-System designt *(2026-07-05, §5.8 „Resonanz-Matrix")*: nicht-deterministisch, Grid-basiert, Live-Verteilungs-Vorschau als PFLICHT; Zerlegen → Barren/Aspektsplitter/Essenzen, Umwandlung 3:1, Aufstufung 7:1 (endet bei Adamant), Pity über Duplikat-Zerfall + Resonanzladung (pro Kategorie × Stufe), Verbessern (deterministisch, 1×, Kosmium ausgenommen), Bauteile Griff/Stichklinge/Axtblatt/Schlagkopf/Schaft/Stave/Fokuskern/Geschirr/Prägung; craftbar: Waffen (ohne Gravuren) + Gravuren (L1); nie: Stellar & Spezial-Gravuren
 - [x] Stufe-6-Material umbenannt: **Diamant → Kosmium** *(2026-07-05)* — alle 5 Daten-JSONs + Excel + GDD; Stellar-Verfeinerung = 3× (Platzhalter §5.7 aufgelöst)
 - [x] Crafting-Detailfragen entschieden *(2026-07-06, §5.8)*: **alle Ausrüstungskategorien craftbar** (Waffen, Rüstung, Offhands — symmetrisch, Zielslot bei Rüstung via Slot-Aspektsplitter); Bauteil-Tabelle verfeinert — **Geschirr** (Körper), **Haube** (Kopf), **Riemen** (Füße), **Beschlag** (Offhands, alle 12 Typen). Offen bleibt nur noch Materialherkunft/Essenzen (s. u.)
-- [x] Drop & Herkunft entschieden *(2026-07-06, §5.8)*: Barren farmbar (jeder Gegner) + garantiert aus Zerlegen; Aspektsplitter zusätzlich von bestimmten Einheiten + garantiert aus Zerlegen (Shop-Kauf offen, → Phase 1); Essenzen selten/elite-gebunden, Region 1 (Orks) bewusst ohne Elementfokus (deckt sich mit §9.6); Skalierung nach Gegner-Stufe **und** Archetyp; kein zusätzliches Drop-Pity nötig (Level-Ende-Truhe reicht, §9.4)
+- [x] Drop & Herkunft entschieden *(2026-07-06, §5.8)*: Barren farmbar (jeder Gegner) + garantiert aus Zerlegen; Aspektsplitter zusätzlich von bestimmten Einheiten + garantiert aus Zerlegen (Shop-Kauf offen, → Phase 1); Essenzen selten/elite-gebunden, Region 1 (Orks) bewusst ohne Elementfokus *(Letzteres revidiert 2026-07-19 → Element-Teaser ab Region 1, §5.8/§9.6)*; Skalierung nach Gegner-Stufe **und** Archetyp; kein zusätzliches Drop-Pity nötig (Level-Ende-Truhe reicht, §9.4)
 - [x] **Lex Tactica** als neues Konzept eingeführt *(2026-07-06, §8.5)*: das große Buch des Protagonisten, funktional das interne Spiel-Wiki (Material-/Elementliste, Item-/Gravuren-Katalog, Bestiarium, Lore); Struktur/Freischalt-Logik/UI noch zu designen (§11)
 - [x] Einhand/Zweihand-Systematik + Offhand-System definiert; `data/offhands.json` befüllt (12 Typen × 7 Stufen, §5.3)
 - [x] Zweihand-Ausgleich (+35 %) festgelegt: globaler Aufschlag beim Anzeigen/Ausrüsten (`meta.zweihand_grundwert_bonus`), Grundwerte bleiben echt; Infokarte zeigt Endwert + Bonus-Zeile
@@ -1945,17 +1970,19 @@ Alle Placeholder-Grafiken liegen unter `assets/placeholder/` bzw. `assets/tiles/
 
 - [ ] Skilltree-Notable-/Keystone-Listen pro Klasse + Attributsnode-Dichte/-Kosten final ausarbeiten (Grundstruktur steht, §5.4) — erstes gemeinsames Code-Projekt (Yggdrasil-Plugin)
 - [~] Gravuren-Katalog — **Schema bestätigt + Muster-Attribut STR steht** *(2026-07-09, §5.7 + `data/engravings.json` v0.2)*: Klasse = 6 Attribute, Eigenschaft = 8 Wirkkategorien (erweiterbar), Typ ✅ + Schadenstyp ✅; visuelle Kodierung festgelegt (Form = Typ inkl. Hexagon=Flex; Farbe = Attribut, 6er-Palette). **Revision 2026-07-09:** jeder Typ kann jede Eigenschaft tragen; **Katalog-Leitlinie: 2 Kontrast-Gravuren pro Eigenschaft**, jede mit Wirkungstext (3 Level-Werte inline). **STR + GES vollständig** (je 16 Basis + 1 Signatur = 17; GES-Signatur *Klingentanz* = Dolch-GES-Schadensskalierung). `engravings.json` v0.3. **Offen:** WIL/INT/VIT/WID nach demselben Muster ausarbeiten
-- [~] **Elementliste + vollständige Materialliste ausarbeiten** *(§5.8/§8.5, Phase-0-Abschlusskriterium)*: Herkunfts-Prinzipien sind entschieden (Barren farmbar+garantiert, Aspektsplitter Drop+garantiert aus Zerlegen, Essenzen selten/elite-gebunden; Skalierung nach Gegner-Stufe & Archetyp; kein Drop-Pity nötig, Level-Ende-Truhe reicht). Die **vier Elemente stehen** *(2026-07-06, §5.2 „Elementarschaden": Feuer/Hitze, Eis/Kälte, Natur/Terra, Donner/Elektro)*. **Vollständiger Materiallisten-Vorschlag liegt vor** *(2026-07-11)*: `docs/materialliste_vorschlag.md` — Flavor-Texte für alle Barren/Aspektsplitter/Essenzen + Bauteile, Drop-Leitprinzip „Der Drop spiegelt den Träger", Level-Bänder, Drop-Matrix nach Gegner-Archetyp, Entscheidungsvorlage Zubehör-Aspektsplitter (Option A = craftbar empfohlen) — **wartet auf Nutzer-Review**, danach Übertrag in §8.5/§5.8 + `data/materials.json`
+- [x] **Elementliste + vollständige Materialliste ausarbeiten** ✅ *(abgeschlossen 2026-07-19 — Phase-0-Abschlusskriterium erfüllt)*: Die **vier Elemente stehen** *(2026-07-06, §5.2)*; Materialliste nach Nutzer-Review 2026-07-19 final — 7 Barren (Bänder **relativ zur Regions-Progression**) · **44 Aspektsplitter** (inkl. 6 Zubehör — **Option A: Zubehör craftbar**, Besonderheit über halbe Drop-Rate statt Craft-Ausschluss) · 4 Essenzen (**Element-Teaser ab Region 1** statt „Region 1 essenzfrei") · Drop-Leitprinzip „Der Drop spiegelt den Träger" · Drop-Matrix nach Gegner-Archetyp. Übertragen in §5.8 + §8.5 Rubrik 1; Coding-DB **`data/materials.json`** (Wiki-Card-Schema); Design-Referenz `docs/materialliste_vorschlag.md`. **Rest-Abhängigkeit → eigener Punkt „Essenz→Element-Gravur-Referenzen" (s. u.)**
+- [ ] **Essenz→Element-Gravur-Referenzen auflösen** *(2026-07-19, aus dem Materialliste-Review)*: Die Essenzen lenken im Crafting-Grid auf **Element-Gravuren** — der Katalog (`data/engravings.json` + `docs/gravuren_vorschlag.md`) enthält aber noch **keine einzige**. Der Gravuren-Rework (**`docs/gravuren_vorschlag_v2.md`**, Elementpaket: je Element mind. 2 Gravuren quer über die Attribut-Paletten, Schadenstyp-Achse = elementar) muss sie liefern; nach Freigabe die IDs in `data/materials.json` (`verwendung.element_gravur_ids`) eintragen. **Konsistenz-Check `tools/check_materials.py`**: jede der 4 Essenzen muss auf mind. 2 existierende Element-Gravuren zeigen — schlägt bis dahin erwartungsgemäß fehl
+- [ ] **Level-Cap & Level-Kurve entscheiden** *(2026-07-19)*: Die Barren-Bänder sind bewusst **relativ zur Regions-Progression** definiert (§5.8/`materials.json`), weil die früheren absoluten Bänder (1–10 … 33–46) implizit ein ~L50-Cap voraussetzten, das nirgends entschieden ist. Blockiert nichts, muss aber **vor dem Balancing in Phase 1** stehen; danach die absoluten Richtwerte einmal nachziehen
 - [ ] **Element-/Themen-Set-Ausrüstung designen** *(§5.2, 2026-07-07)* — die einzige Quelle für **Elementardiffusion**: Werteskala, Mischverhältnis mit Rüstung/Resistenz, Drop/Craft-Herkunft (heutige „Pures Material"-Rüstung bleibt Diffusion-frei)
 - [ ] **Elementarschaden-Feinschliff** *(§5.2, 2026-07-06/07)*: konkrete Element-Anteile auf Waffen/Gravuren (Phase 1)
-- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: Materialien (Barren-Stufen, **vollständige Aspektsplitter-Liste** — 16 Waffen + 12 Offhands + 5 Rüstungs-Archetypen + 5 Gravurtypen, Zubehör offen; 4 Essenzen: Pyros/Kryos/Gaios/Fulguros), Bauteile & Prägungen (12 Rohlinge), Kampf-Kodex (spiegelt §5.2). **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), Flavor-Texte je Eintrag, UI-Darstellung
+- [~] **Lex Tactica (§8.5)** — **Struktur + Grundstock steht** *(2026-07-09)*; **Rubrik 1 vollständig** *(2026-07-19)*: 7 Rubriken, knappe-Wiki-Card-Template, Freischaltung „Entdeckung" (automatisch bei Erstbegegnung, Bestiarium progressiv). Befüllt: **Materialien vollständig inkl. Flavor** (7 Barren mit relativen Bändern, **44 Aspektsplitter** inkl. 6 Zubehör, 4 Essenzen Pyros/Kryos/Gaios/Fulguros mit Region-1-Teaser — Daten: `data/materials.json`), Bauteile & Prägungen (12 Rohlinge, Flavor in `materials.json`-Referenzdoc), Kampf-Kodex (spiegelt §5.2). Bestiarium-Template ergänzt: Elite-/Boss-Einträge listen die sichtbare Gravur als Farm-Hinweis. **Offen:** Rubriken 3–5 & 7 inhaltlich befüllen (hängen an Item-Einzug bzw. Gravuren-/Gegner-/Lore-Design), restliche Flavor-Texte (Ausrüstung/Gravuren), UI-Darstellung
 - [ ] Umschmieden von Waffeneigenarten — bewusst aus Crafting v1 gestrichen *(2026-07-05)*, ggf. Phase-1+-Evaluation
 - [ ] Klassen-Arks für alle Klassen definieren (Freischalt-Bedingungen & Rewards)
 - [ ] Reaktiv-Gravur-Deckelung final festlegen (aktuell „max. 3 Auslösungen/Zug (TBD)", `data/weapons.json`)
 
 **Offen — Welt & Inhalt:**
 
-- [ ] Ork-Klassen & KI-Verhalten definieren
+- [ ] Ork-Klassen & KI-Verhalten definieren — **mit zwei verbindlichen Anforderungen** *(2026-07-19, §4.2/§5.8)*: **(a)** mind. **1 Schamanen-/Buffer-Archetyp mit Element-Affinität** (Vorschlag: Natur oder Feuer — Element-Teaser Region 1); **(b)** **jeder Elite-/Boss-Gegner führt mind. 1 sichtbare Gravur-Fähigkeit** (Telegraphing/VFX), die sein Drop-Profil begründet (Gravurtyp-Splitter-Drop); Bestiarium-Eintrag listet sie als Farm-Hinweis (§8.5)
 - [ ] Ork-Fraktionsbonus definieren
 - [ ] Menschen-Fraktionsbonus „Gemeinschaft" — konkrete Regenerationswerte festlegen
 - [ ] Weitere Regionen definieren
